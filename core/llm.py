@@ -4,7 +4,8 @@ import time
 import os
 import logging
 from openai import OpenAI
-
+from typing import Dict, List, Union
+import requests
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -79,3 +80,49 @@ def call_llm(
     
     # Raise error if all attempts fail
     raise LLMError("All retry attempts failed")
+
+
+def call_llm_with_tools(
+    base_url: str,
+    api_key: str,
+    model_id: str,
+    system_prompt: str,
+    user_prompt: str,
+    temperature: float,
+    max_tokens: int = 500,
+    max_retries: int = 3,
+    tools: List[Dict] = None
+) -> Union[str, Dict]:
+    client = OpenAI(base_url=base_url, api_key=api_key)
+    
+    messages = [
+        #{"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ]
+
+    try:
+        print(model_id)
+        print(tools)
+        print(temperature)
+        response = client.chat.completions.create(
+            model=model_id,
+            messages=messages,
+            temperature=temperature,
+            tools=tools,
+            tool_choice="auto"# if tools else None
+        )
+        
+        message = response.choices[0].message
+
+        # If there are tool calls, return both tool calls and content
+        if hasattr(message, 'tool_calls') and message.tool_calls:
+            return {
+                'tool_calls': message.tool_calls[0],
+                'content': message.content
+            }
+        
+        # Otherwise return just the content
+        return message
+
+    except Exception as e:
+        raise LLMError(f"LLM API call failed: {str(e)}")

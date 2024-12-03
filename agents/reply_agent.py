@@ -21,8 +21,8 @@ dotenv.load_dotenv()
 # Constants
 HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
-LARGE_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
-SMALL_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
+LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
+SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 IMAGE_GENERATION_PROBABILITY = 0.5
 REPLY_CHECK_INTERVAL = 60
 RATE_LIMIT_SLEEP = 120
