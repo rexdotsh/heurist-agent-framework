@@ -34,7 +34,11 @@ else:
     print("LIVE MODE: Will post real tweets")
 
 class PromptConfig:
-    def __init__(self, config_path: str = "prompts.yaml"):
+    def __init__(self, config_path: str = None):
+        if config_path is None:
+            # Get the project root directory (2 levels up from the current file)
+            project_root = Path(__file__).parent.parent
+            config_path = project_root / "config" / "prompts.yaml"
         self.config_path = Path(config_path)
         self.config = self._load_config()
 
