@@ -96,14 +96,11 @@ def call_llm_with_tools(
     client = OpenAI(base_url=base_url, api_key=api_key)
     
     messages = [
-        {"role": "system", "content": system_prompt},
+        #{"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt}
     ]
 
     try:
-        print(model_id)
-        print(tools)
-        print(temperature)
         response = client.chat.completions.create(
             model=model_id,
             messages=messages,
@@ -111,7 +108,7 @@ def call_llm_with_tools(
             tools=tools,
             tool_choice="auto"# if tools else None
         )
-        
+
         message = response.choices[0].message
 
         # If there are tool calls, return both tool calls and content

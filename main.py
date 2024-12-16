@@ -1,5 +1,5 @@
 import logging
-from agents.telegram_agent import TelegramAgent
+from interfaces.telegram import TelegramAgent
 import dotenv
 
 # Set up logging

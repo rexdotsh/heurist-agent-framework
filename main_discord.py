@@ -1,4 +1,4 @@
-from agents.discord_agent import DiscordAgent
+from interfaces.discord import DiscordAgent
 
 def main():
     discord_agent = DiscordAgent()
