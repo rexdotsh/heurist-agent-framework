@@ -1,3 +1,7 @@
+<div align="center">
+    <img src="./docs/img/agent-framework-poster.png" alt="Heurist Agent Framework Banner" width="100%" />
+</div>
+
 # Heurist Agent Framework
 *The Raspberry Pi of Agent Frameworks*
 
