@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./docs/img/agent-framework-poster.png" alt="Heurist Agent Framework Banner" width="100%" />
+    <img src="./docs/img/agent-framework-poster.jpg" alt="Heurist Agent Framework Banner" width="100%" />
 </div>
 
 # Heurist Agent Framework
