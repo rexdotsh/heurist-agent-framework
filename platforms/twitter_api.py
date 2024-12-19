@@ -202,4 +202,4 @@ def get_referenced_tweet_id(tweet_id: str, ref_type: str = 'replied_to') -> Opti
 # text_only_tweet = "This is a text-only tweet using API v2!"
 # tweet_text_only(text_only_tweet)
 
-print(get_user_id("tee_hee_he"))
+print(get_user_id("heurist_ai"))

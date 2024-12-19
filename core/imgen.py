@@ -4,7 +4,7 @@ import os
 import time
 import logging
 from dotenv import load_dotenv
-from llm import call_llm
+from .llm import call_llm
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)

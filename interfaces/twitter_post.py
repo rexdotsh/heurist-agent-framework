@@ -21,8 +21,8 @@ dotenv.load_dotenv()
 # Constants
 HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
-LARGE_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
-SMALL_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
+LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
+SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
 IMAGE_GENERATION_PROBABILITY = 0.3
 TWEET_HISTORY_FILE = "tweet_history.json"
@@ -34,7 +34,11 @@ else:
     print("LIVE MODE: Will post real tweets")
 
 class PromptConfig:
-    def __init__(self, config_path: str = "prompts.yaml"):
+    def __init__(self, config_path: str = None):
+        if config_path is None:
+            # Get the project root directory (2 levels up from the current file)
+            project_root = Path(__file__).parent.parent
+            config_path = project_root / "config" / "prompts.yaml"
         self.config_path = Path(config_path)
         self.config = self._load_config()
 
