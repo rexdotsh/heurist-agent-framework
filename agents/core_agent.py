@@ -25,7 +25,7 @@ SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
 IMAGE_GENERATION_PROBABILITY = 0.3
 DRYRUN = os.getenv("DRYRUN")
-BASE_IMAGE_PROMPT = ""#" long straight purple hair, blunt bangs, blue eyes, purple witch hat, white robe, best quality, masterpiece,"
+BASE_IMAGE_PROMPT = ""
 
 
 # Add new constants
@@ -93,6 +93,12 @@ class PromptConfig:
 
     def get_twitter_rules(self) -> str:
         return self.config['rules']['twitter']
+    
+    def get_reply_to_comment_template(self) -> str:
+        return self.config['reply']['reply_to_comment_template']
+
+    def get_reply_to_tweet_template(self) -> str:
+        return self.config['reply']['reply_to_tweet_template']
 
 class CoreAgent:
     def __init__(self):
