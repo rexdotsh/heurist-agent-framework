@@ -1,19 +1,17 @@
 import time
-import json
-import logging
+from typing import Dict, Optional, List
 import os
 import base64
-import yaml
-import uuid
-import random
-import dotenv
-import requests
-from pathlib import Path
 from urllib.request import urlopen
-from typing import Dict, Optional, List
+import uuid
+import dotenv
+import random
+import json
 from datetime import datetime, timezone
-from core.llm import LLMError, call_llm
-from core.imgen import generate_image_prompt, generate_image
+import logging
+import yaml
+from pathlib import Path
+import requests
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Set up logging
@@ -25,18 +23,18 @@ dotenv.load_dotenv()
 # Constants
 HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
-LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
-SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
-IMAGE_GENERATION_PROBABILITY = 0.5
-REPLY_CHECK_INTERVAL = 60
-RATE_LIMIT_SLEEP = 120
-DRYRUN = os.getenv("DRYRUN")
+LARGE_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
+SMALL_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
+IMAGE_GENERATION_PROBABILITY = 1  # 100% chance to generate an image
+REPLY_CHECK_INTERVAL = 10  # Seconds between checks
+RATE_LIMIT_SLEEP = 5  # Seconds between API calls
 
 # Farcaster Constants
 FARCASTER_API_KEY = os.getenv("FARCASTER_API_KEY")
 FARCASTER_SIGNER_UUID = os.getenv("FARCASTER_SIGNER_UUID")
 FARCASTER_FID = int(os.getenv("FARCASTER_FID"))
 
+DRYRUN = os.getenv("DRYRUN")
 if DRYRUN:
     print("DRYRUN MODE: Not posting real casts")
 else:
@@ -52,21 +50,27 @@ def upload_to_imgbb(image_url: str) -> Optional[str]:
         image_data = urlopen(image_url).read()
         base64_image = base64.b64encode(image_data).decode('utf-8')
         
-        response = requests.post(
-            "https://api.imgbb.com/1/upload",
-            data={
-                "key": api_key,
-                "image": base64_image,
-            }
-        )
+        url = "https://api.imgbb.com/1/upload"
+        payload = {
+            "key": api_key,
+            "image": base64_image,
+        }
+        
+        response = requests.post(url, payload)
         
         if response.status_code == 200:
-            return response.json()['data']['url']
-        return None
+            json_data = response.json()
+            return json_data['data']['url']
+        else:
+            return None
             
     except Exception as e:
         logger.error(f"Error uploading to IMGBB: {str(e)}")
         return None
+
+class LLMError(Exception):
+    """Custom exception for LLM-related errors"""
+    pass
 
 class FarcasterAPI:
     def __init__(self, api_key: str, signer_uuid: str):
@@ -80,57 +84,63 @@ class FarcasterAPI:
         }
 
     def send_cast(self, message: str, parent_hash: Optional[str] = None, image_url: Optional[str] = None) -> Optional[Dict]:
-        """Send a cast with optional parent and image"""
-        try:
-            data = {
-                "signer_uuid": self.signer_uuid,
-                "text": message
-            }
+        endpoint = f"{self.base_url}/cast"
+        
+        data = {
+            "signer_uuid": self.signer_uuid,
+            "text": message
+        }
+        
+        if parent_hash:
+            data["parent"] = parent_hash
             
-            if parent_hash:
-                data["parent"] = parent_hash
-                
-            if image_url:
-                imgbb_url = upload_to_imgbb(image_url)
-                if imgbb_url:
-                    data["embeds"] = [{"url": imgbb_url}]
+        if image_url:
+            imgbb_url = upload_to_imgbb(image_url)
+            if imgbb_url:
+                data["embeds"] = [{"url": imgbb_url}]
 
+        try:
+            logger.info(f"Sending cast: {message}")
             response = requests.post(
-                f"{self.base_url}/cast",
+                endpoint,
                 headers=self.headers,
                 json=data
             )
             
             if response.status_code == 200:
+                result = response.json()
                 logger.info("Cast sent successfully!")
-                return response.json()
-                
-            logger.error(f"Failed to send cast. Status: {response.status_code}")
-            logger.error(f"Error: {response.text}")
-            return None
+                return result
+            else:
+                logger.error(f"Failed to send cast. Status: {response.status_code}")
+                logger.error(f"Error: {response.text}")
+                return None
                 
         except Exception as e:
             logger.error(f"Error sending cast: {str(e)}")
             return None
 
     def get_mentions(self, fid: int, limit: int = 25) -> List[Dict]:
-        """Get mentions for a specific FID"""
+        endpoint = f"{self.base_url}/notifications"
+        params = {
+            'fid': fid,
+            'type': 'mentions',
+            'priority_mode': 'false'
+        }
+
         try:
             response = requests.get(
-                f"{self.base_url}/notifications",
+                endpoint,
                 headers=self.headers,
-                params={
-                    'fid': fid,
-                    'type': 'mentions',
-                    'priority_mode': 'false'
-                }
+                params=params
             )
             
             if response.status_code == 200:
-                return response.json().get('notifications', [])
-                
-            logger.error(f"Failed to get mentions. Status: {response.status_code}")
-            return []
+                data = response.json()
+                return data.get('notifications', [])
+            else:
+                logger.error(f"Failed to get mentions. Status: {response.status_code}")
+                return []
 
         except Exception as e:
             logger.error(f"Error getting mentions: {str(e)}")
@@ -138,31 +148,28 @@ class FarcasterAPI:
 
     def get_cast(self, cast_hash: str) -> Optional[Dict]:
         """Get a specific cast by its hash"""
+        endpoint = f"{self.base_url}/cast"
+        params = {
+            'hash': cast_hash
+        }
+
         try:
             response = requests.get(
-                f"{self.base_url}/cast",
+                endpoint,
                 headers=self.headers,
-                params={'hash': cast_hash}
+                params=params
             )
             
             if response.status_code == 200:
-                return response.json().get('cast')
-                
-            logger.error(f"Failed to get cast. Status: {response.status_code}")
-            return None
+                data = response.json()
+                return data.get('cast')
+            else:
+                logger.error(f"Failed to get cast. Status: {response.status_code}")
+                return None
 
         except Exception as e:
             logger.error(f"Error getting cast: {str(e)}")
             return None
-
-def parse_timestamp(timestamp_str: str) -> Optional[datetime]:
-    """Convert ISO 8601 timestamp to datetime object"""
-    try:
-        return datetime.strptime(timestamp_str, '%Y-%m-%dT%H:%M:%S.000Z').replace(tzinfo=timezone.utc)
-    except Exception as e:
-        logger.error(f"Error parsing timestamp {timestamp_str}: {str(e)}")
-        return None
-
 
 class ReplyDatabase:
     def __init__(self, db_file: str = "farcaster_reply_history.json"):
@@ -286,18 +293,88 @@ class PromptConfig:
             return self.config['reply']['reply_to_comment_template']
         return self.config['reply']['reply_to_tweet_template']
 
-class FarcasterReplyGenerator:
+class ReplyGenerator:
     def __init__(self):
         self.prompt_config = PromptConfig()
 
     def get_conversation_context(self, thread: List[Dict]) -> str:
         """Format the conversation thread into a readable context"""
-        return "\n".join(f"@{msg['author']}: {msg['text']}" for msg in thread)
+        context = []
+        for msg in thread:
+            context.append(f"@{msg['author']}: {msg['text']}")
+        return "\n".join(context)
+
+    def generate_image_prompt(self, text: str) -> Optional[str]:
+        """Generate a prompt for image creation based on the text content"""
+        try:
+            system_prompt = "You are an AI that converts social media posts into image generation prompts. Create vivid, detailed prompts that capture the essence of the post."
+            user_prompt = f"""Given this social media post: "{text}"
+            Create a detailed prompt for generating an image that would complement this post.
+            The prompt should be vivid and specific, but avoid any text or words in the image.
+            Keep the prompt under 100 words."""
+            
+            image_prompt = call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY,
+                SMALL_MODEL_ID,
+                system_prompt,
+                user_prompt,
+                0.7
+            )
+            return image_prompt.strip()
+        except Exception as e:
+            logger.error(f"Error generating image prompt: {str(e)}")
+            return None
+
+    def generate_image(self, prompt: str) -> Optional[str]:
+        """Generate an image using Heurist Sequencer API"""
+        try:
+            url = "http://sequencer.heurist.xyz/submit_job"
+            
+            random_uuid = str(uuid.uuid4())
+            job_id = f"heuman-sdk-{random_uuid}"
+            
+            payload = {
+                "job_id": job_id,
+                "model_input": {
+                    "SD": {
+                        "prompt": prompt,
+                        "neg_prompt": "Avoid any signs of text, words, letters, numbers",
+                        "num_iterations": 20,
+                        "width": 1024,
+                        "height": 512,
+                        "guidance_scale": 7.5,
+                        "seed": -1
+                    }
+                },
+                "model_id": "HeuristLogo",
+                "deadline": 60,
+                "priority": 1
+            }
+            
+            headers = {
+                "Authorization": f"Bearer {HEURIST_API_KEY}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+            
+            image_url = response.text.strip().strip('"')
+            if image_url and image_url.startswith('http'):
+                return image_url
+                
+            logger.error(f"Image generation failed: {response.text}")
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error generating image: {str(e)}")
+            return None
 
     def format_instruction(self, notification: Dict, conversation_context: Optional[List[Dict]] = None) -> str:
-        """Format instruction for LLM based on notification and context"""
         cast = notification.get('cast', {})
-        username = cast.get('author', {}).get('username', 'anonymous')
+        author = cast.get('author', {})
+        username = author.get('username', 'anonymous')
         content = cast.get('text', '')
         
         if conversation_context:
@@ -308,28 +385,27 @@ class FarcasterReplyGenerator:
 
 The latest reply is from @{username}: "{content}"
 
-Please generate a contextually relevant reply that takes into account the entire conversation history."""
-        
-        return self.prompt_config.get_reply_template("tweet").format(
-            author_name=username,
-            original_tweet=content
-        )
+Please generate a contextually relevant reply that takes into account the entire conversation history. 
+Keep the response casual and engaging while maintaining the context of the discussion."""
+        else:
+            return self.prompt_config.get_reply_template("tweet").format(
+                author_name=username,
+                original_tweet=content
+            )
 
-    def generate_reply(self, notification: Dict, conversation_context: Optional[List[Dict]] = None) -> tuple[Optional[str], Optional[Dict]]:
+    def generate_reply(self, notification: Dict, db: ReplyDatabase, conversation_context: Optional[List[Dict]] = None) -> tuple[Optional[str], Optional[Dict]]:
         """Generate a reply based on the notification and conversation context"""
         try:
             user_prompt = self.format_instruction(notification, conversation_context)
-            system_prompt = "\n\n".join([
-                self.prompt_config.get_system_prompt(),
-                self.prompt_config.get_basic_prompt(),
-                self.prompt_config.get_heurist_knowledge()
-            ])
+            system_prompt = self.prompt_config.get_system_prompt()
+            
+            full_system_prompt = f"{system_prompt}\n\n{self.prompt_config.get_basic_prompt()}\n\n{self.prompt_config.get_heurist_knowledge()}"
             
             reply = call_llm(
                 HEURIST_BASE_URL, 
                 HEURIST_API_KEY, 
                 LARGE_MODEL_ID, 
-                system_prompt, 
+                full_system_prompt, 
                 user_prompt, 
                 0.8
             )
@@ -337,17 +413,56 @@ Please generate a contextually relevant reply that takes into account the entire
             if not reply:
                 raise LLMError("Empty reply generated")
             
-            return reply.replace('"', ''), {}
+            # Clean reply
+            reply = reply.replace('"', '')
             
+            # Prepare metadata
+            metadata = {}
+            
+            return reply, metadata
+            
+        except LLMError as e:
+            logger.error(f"Failed to generate reply due to LLMError: {str(e)}")
         except Exception as e:
-            logger.error(f"Error generating reply: {str(e)}")
-            return None, None
+            logger.error(f"Unexpected error in reply generation: {str(e)}")
+            logger.exception("Full traceback:")
+        
+        return None, None
+
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+def call_llm(url: str, api_key: str, model_id: str, 
+             system_prompt: str, user_prompt: str, 
+             temperature: float = 0.7) -> str:
+    """Call the LLM API with retry logic"""
+    try:
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": model_id,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            "temperature": temperature
+        }
+        
+        response = requests.post(f"{url}/v1/chat/completions", 
+                               headers=headers, 
+                               json=payload)
+        response.raise_for_status()
+        
+        return response.json()["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        raise LLMError(f"LLM call failed: {str(e)}")
 
 def build_conversation_tree(notification: Dict, farcaster_api: FarcasterAPI) -> List[Dict]:
-    """Build a tree of conversation from a notification"""
+    """Build a tree of conversation from a notification, fetching parent casts as needed"""
     conversation = []
     current_cast = notification.get('cast', {})
-    visited_hashes = set()
+    visited_hashes = set()  # To prevent infinite loops
     
     while current_cast and current_cast.get('hash') not in visited_hashes:
         visited_hashes.add(current_cast.get('hash'))
@@ -361,26 +476,35 @@ def build_conversation_tree(notification: Dict, farcaster_api: FarcasterAPI) -> 
         
         if current_cast.get('parent_hash'):
             parent_cast = farcaster_api.get_cast(current_cast['parent_hash'])
-            current_cast = parent_cast if parent_cast else None
+            if parent_cast:
+                current_cast = parent_cast
+            else:
+                break
         else:
             break
     
+    # Reverse to get chronological order
     return list(reversed(conversation))
 
-def is_recent_mention(timestamp_str: str, threshold_seconds: int = 300) -> bool:
-    """Check if a mention is within the recent threshold"""
+def parse_timestamp(timestamp_str: str) -> Optional[datetime]:
+    """Convert ISO 8601 timestamp to datetime object"""
     try:
-        mention_time = datetime.strptime(
-            timestamp_str, 
-            '%Y-%m-%dT%H:%M:%S.000Z'
-        ).replace(tzinfo=timezone.utc)
-        
-        return (datetime.now(timezone.utc) - mention_time).total_seconds() <= threshold_seconds
+        return datetime.strptime(timestamp_str, '%Y-%m-%dT%H:%M:%S.000Z').replace(tzinfo=timezone.utc)
     except Exception as e:
-        logger.error(f"Error parsing timestamp: {str(e)}")
-        return False
+        logger.error(f"Error parsing timestamp {timestamp_str}: {str(e)}")
+        return None
 
-def process_mentions(farcaster_api: FarcasterAPI, db: ReplyDatabase, generator: FarcasterReplyGenerator):
+def is_recent_mention(timestamp_str: str, threshold_seconds: int = 300) -> bool:  # 5 minutes
+    mention_time = parse_timestamp(timestamp_str)
+    if not mention_time:
+        return False
+        
+    current_time = datetime.now(timezone.utc)
+    time_diff = (current_time - mention_time).total_seconds()
+    
+    return time_diff <= threshold_seconds
+
+def process_mentions(farcaster_api: FarcasterAPI, db: ReplyDatabase, generator: ReplyGenerator):
     """Process new mentions and generate contextual replies"""
     mentions = farcaster_api.get_mentions(FARCASTER_FID)
     
@@ -395,60 +519,77 @@ def process_mentions(farcaster_api: FarcasterAPI, db: ReplyDatabase, generator: 
             parent_hash = cast.get('parent_hash')
             timestamp = cast.get('timestamp')
             
+            # Skip if already processed
             if db.is_processed(cast_hash):
                 continue
-                
+            
+            # Store the mention as pending
             db.add_pending_reply(cast_hash, notification)
             
+            # Build and store the conversation thread
             if parent_hash:
+                # Get the full conversation tree
                 conversation_tree = build_conversation_tree(notification, farcaster_api)
+                
+                # Find the root hash (first message in the conversation)
                 root_hash = conversation_tree[0]['hash'] if conversation_tree else parent_hash
                 
+                # Add each part of the conversation to the thread
                 for cast_entry in conversation_tree:
                     db.add_to_conversation_thread(root_hash, cast_entry['hash'], {
-                        'cast': cast_entry
+                        'cast': {
+                            'hash': cast_entry['hash'],
+                            'text': cast_entry['text'],
+                            'author': {'username': cast_entry['author']},
+                            'timestamp': cast_entry['timestamp'],
+                            'parent_hash': cast_entry['parent_hash']
+                        }
                     })
             
+            # Process all mentions within the time window
             if is_recent_mention(timestamp):
-                logger.info(f"Processing mention from @{cast.get('author', {}).get('username')}")
+                author = cast.get('author', {})
+                logger.info(f"Processing mention from @{author.get('username')}")
                 
+                # Get the conversation context
                 conversation_context = None
                 if parent_hash:
                     root_hash = conversation_tree[0]['hash'] if conversation_tree else parent_hash
                     conversation_context = db.get_conversation_thread(root_hash)
                 
+                # Generate reply with conversation context
                 reply_text, metadata = generator.generate_reply(
                     notification,
+                    db,
                     conversation_context=conversation_context
                 )
                 
                 if reply_text:
                     if not DRYRUN:
+                        # Check if we should generate an image
                         image_url = None
                         if random.random() < IMAGE_GENERATION_PROBABILITY:
-                            image_prompt = generate_image_prompt(reply_text)
+                            image_prompt = generator.generate_image_prompt(reply_text)
                             if image_prompt:
-                                image_url = generate_image(image_prompt, HEURIST_API_KEY)
-                                if image_url:
-                                    metadata = metadata or {}
-                                    metadata.update({
-                                        'image_prompt': image_prompt,
-                                        'image_url': image_url
-                                    })
+                                image_url = generator.generate_image(image_prompt)
+                                if image_url and metadata is None:
+                                    metadata = {}
+                                if image_url and metadata:
+                                    metadata['image_prompt'] = image_prompt
+                                    metadata['image_url'] = image_url
                         
                         response = farcaster_api.send_cast(
                             reply_text,
                             parent_hash=cast_hash,
-                            image_url=image_url or (metadata or {}).get('image_url')
+                            image_url=image_url if image_url else metadata.get('image_url') if metadata else None
                         )
                         
                         if response:
+                            # Add our reply to the conversation thread
                             if parent_hash:
-                                db.add_to_conversation_thread(
-                                    root_hash,
-                                    response['cast']['hash'],
-                                    {'cast': response['cast']}
-                                )
+                                db.add_to_conversation_thread(root_hash, response['cast']['hash'], {
+                                    'cast': response['cast']
+                                })
                             
                             db.mark_as_processed(cast_hash, reply_text, metadata)
                             logger.info(f"Successfully sent reply to cast {cast_hash}")
@@ -468,10 +609,9 @@ def process_mentions(farcaster_api: FarcasterAPI, db: ReplyDatabase, generator: 
             db.mark_as_failed(cast_hash, str(e))
 
 def main():
-    """Main execution loop"""
     farcaster_api = FarcasterAPI(FARCASTER_API_KEY, FARCASTER_SIGNER_UUID)
-    db = ReplyDatabase(db_file="farcaster_reply_history.json")
-    generator = FarcasterReplyGenerator()
+    db = ReplyDatabase()
+    generator = ReplyGenerator()
     
     logger.info(f"Starting Farcaster reply bot for FID: {FARCASTER_FID}")
     logger.info("Monitoring for mentions...")
