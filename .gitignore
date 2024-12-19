@@ -163,3 +163,4 @@ cython_debug/
 /audio
 bak.main.py
 config/test.prompts.yaml
+tweet_history.json
