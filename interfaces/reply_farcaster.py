@@ -83,6 +83,31 @@ class FarcasterAPI:
             'Content-Type': 'application/json'
         }
 
+    def get_cast_with_context(self, cast_hash: str) -> Optional[Dict]:
+            """Get a cast and its full context by hash"""
+            endpoint = f"{self.base_url}/cast"
+            params = {
+                'identifier': cast_hash,
+                'type': 'hash'
+            }
+
+            try:
+                response = requests.get(
+                    endpoint,
+                    headers=self.headers,
+                    params=params
+                )
+                
+                if response.status_code == 200:
+                    return response.json()
+                else:
+                    logger.error(f"Failed to get cast context. Status: {response.status_code}")
+                    return None
+
+            except Exception as e:
+                logger.error(f"Error getting cast context: {str(e)}")
+                return None
+        
     def send_cast(self, message: str, parent_hash: Optional[str] = None, image_url: Optional[str] = None) -> Optional[Dict]:
         endpoint = f"{self.base_url}/cast"
         
@@ -164,7 +189,6 @@ class FarcasterAPI:
                 data = response.json()
                 return data.get('cast')
             else:
-                logger.error(f"Failed to get cast. Status: {response.status_code}")
                 return None
 
         except Exception as e:
@@ -221,9 +245,9 @@ class ReplyDatabase:
         }
         data["conversation_threads"][root_hash].append(thread_entry)
         
-        # Sort by timestamp to maintain chronological order
+        # Sort by timestamp, ensuring all timestamps are UTC
         data["conversation_threads"][root_hash].sort(
-            key=lambda x: parse_timestamp(x["timestamp"]) if x["timestamp"] else datetime.min
+            key=lambda x: parse_timestamp(x["timestamp"]) or datetime.min.replace(tzinfo=timezone.utc)
         )
         
         self._write_data(data)
@@ -339,7 +363,7 @@ class ReplyGenerator:
                 "model_input": {
                     "SD": {
                         "prompt": prompt,
-                        "neg_prompt": "Avoid any signs of text, words, letters, numbers",
+                        "neg_prompt": "",
                         "num_iterations": 20,
                         "width": 1024,
                         "height": 512,
@@ -466,18 +490,32 @@ def build_conversation_tree(notification: Dict, farcaster_api: FarcasterAPI) -> 
     
     while current_cast and current_cast.get('hash') not in visited_hashes:
         visited_hashes.add(current_cast.get('hash'))
-        conversation.append({
-            'hash': current_cast.get('hash'),
-            'text': current_cast.get('text', ''),
-            'author': current_cast.get('author', {}).get('username', 'anonymous'),
-            'timestamp': current_cast.get('timestamp'),
-            'parent_hash': current_cast.get('parent_hash')
-        })
+        
+        # Get full cast context
+        full_cast_data = farcaster_api.get_cast_with_context(current_cast.get('hash'))
+        if full_cast_data and 'cast' in full_cast_data:
+            cast_details = full_cast_data['cast']
+            conversation.append({
+                'hash': cast_details.get('hash'),
+                'text': cast_details.get('text', ''),
+                'author': cast_details.get('author', {}).get('username', 'anonymous'),
+                'timestamp': cast_details.get('timestamp'),
+                'parent_hash': cast_details.get('parent_hash')
+            })
+        else:
+            # Fallback to basic cast info if full context fetch fails
+            conversation.append({
+                'hash': current_cast.get('hash'),
+                'text': current_cast.get('text', ''),
+                'author': current_cast.get('author', {}).get('username', 'anonymous'),
+                'timestamp': current_cast.get('timestamp'),
+                'parent_hash': current_cast.get('parent_hash')
+            })
         
         if current_cast.get('parent_hash'):
-            parent_cast = farcaster_api.get_cast(current_cast['parent_hash'])
-            if parent_cast:
-                current_cast = parent_cast
+            parent_cast = farcaster_api.get_cast_with_context(current_cast['parent_hash'])
+            if parent_cast and 'cast' in parent_cast:
+                current_cast = parent_cast['cast']
             else:
                 break
         else:
@@ -489,7 +527,9 @@ def build_conversation_tree(notification: Dict, farcaster_api: FarcasterAPI) -> 
 def parse_timestamp(timestamp_str: str) -> Optional[datetime]:
     """Convert ISO 8601 timestamp to datetime object"""
     try:
-        return datetime.strptime(timestamp_str, '%Y-%m-%dT%H:%M:%S.000Z').replace(tzinfo=timezone.utc)
+        # Always parse to UTC timezone
+        dt = datetime.strptime(timestamp_str, '%Y-%m-%dT%H:%M:%S.000Z')
+        return dt.replace(tzinfo=timezone.utc)
     except Exception as e:
         logger.error(f"Error parsing timestamp {timestamp_str}: {str(e)}")
         return None
