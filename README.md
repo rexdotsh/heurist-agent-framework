@@ -24,7 +24,7 @@ The Heurist Agent Framework is built on a modular architecture that allows an AI
   - REST API
 
 <div align="center">
-<img src="./docs/img/hfa_2.png" alt="Heurist Agent Framework" width="500">
+<img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
 </div>
 
 ## Installation
@@ -103,7 +103,7 @@ The framework follows a modular design:
 Each interface inherits from the CoreAgent and implements platform-specific handling.
 
 <div align="center">
-<img src="./docs/img/hfa_1.png" alt="Heurist Agent Framework" width="500">
+<img src="./docs/img/HFA_1.png" alt="Heurist Agent Framework" width="500">
 </div>
 
 
@@ -148,7 +148,7 @@ More features and refinement on the way!
 Example structure for finalized tweet flow on the works:
 
 <div align="center">
-<img src="./docs/img/TwitterFinalFlow.png" alt="Heurist Agent Framework" width="500">
+<img src="./docs/img/TwitterFinalFLow.png" alt="Heurist Agent Framework" width="500">
 </div>
 
 *"_eval" param indicates requires agent to evaluate if it should respond*
