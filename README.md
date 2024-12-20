@@ -6,7 +6,7 @@
 *The Raspberry Pi of Agent Frameworks*
 
 A flexible multi-interface AI agent framework that can interact through various platforms including Telegram, Discord, Twitter, Farcaster, and REST API.
-
+Grab a Heurist API Key instantly for free by using the code 'agent' while submitting the form on https://heurist.ai/dev-access
 ## Overview
 
 The Heurist Agent Framework is built on a modular architecture that allows an AI agent to:
