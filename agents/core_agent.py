@@ -11,6 +11,9 @@ import yaml
 from core.llm import call_llm_with_tools, call_llm, LLMError
 from core.imgen import generate_image_with_retry, generate_image_prompt
 from core.voice import transcribe_audio, speak_text
+import threading
+from queue import Queue
+import asyncio
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +50,6 @@ TOOLS = [
             }
         }
     },
-
 ]
 
 class PromptConfig:
@@ -103,6 +105,33 @@ class PromptConfig:
 class CoreAgent:
     def __init__(self):
         self.prompt_config = PromptConfig()
+        self.interfaces = {}
+        self._message_queue = Queue()
+        self._lock = threading.Lock()
+        self._is_proxy = False  # Flag to indicate if this is a proxy to another CoreAgent
+        self.test_value = "39"
+
+    def get_test_value(self):
+        return self.test_value
+    def set_test_value(self, value):
+        self.test_value = value
+    
+    def register_interface(self, name, interface):
+        with self._lock:
+            self.interfaces[name] = interface
+            
+    def _proxy_to(self, core_agent):
+        """
+        Make this instance proxy to another CoreAgent instance.
+        Transfers all attributes and methods while maintaining inheritance.
+        """
+        self._is_proxy = True
+        # Copy all attributes from the passed core_agent
+        for attr_name, attr_value in vars(core_agent).items():
+            setattr(self, attr_name, attr_value)
+        
+        # Keep track of original core_agent
+        self._original_core = core_agent
 
     async def handle_image_generation(self, prompt: str, base_prompt: str = "") -> Optional[str]:
         """
@@ -158,17 +187,25 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str) -> tuple[str, str | None]:
+    async def handle_message(self, message: str, source_interface: str = None):
         """
-        Handle incoming messages and return appropriate response
+        Handle message and optionally notify other interfaces.
+        If this is a proxy, calls will be forwarded to the original core agent.
         
         Args:
-            message: The user's message
+            message: The message to process
+            source_interface: Optional name of the interface that sent the message
             
         Returns:
-            tuple containing (text_response, image_url)
+            tuple: (text_response, image_url)
         """
+        logger.info(f"Handling message from {source_interface}")
+        logger.info(f"registered interfaces: {self.interfaces}")
+        if self._is_proxy:
+            return await self._original_core.handle_message(message, source_interface)
+        
         try:
+            # Call LLM with tools to process the message
             response = call_llm_with_tools(
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
@@ -178,25 +215,115 @@ class CoreAgent:
                 temperature=0.01,
                 tools=TOOLS
             )
-            
+            print(response)
             # Check if response is valid
             if not response:
                 return "Sorry, I couldn't process your message.", None
-
-            # Handle tool calls (image generation)
+                
+            # Extract text response
+            text_response = ""
+            if hasattr(response, 'content') and response.content:
+                text_response = response.content
+                
+            image_url = None
+            
+            # Check if image generation was requested
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
                 if tool_call.function.name == 'generate_image':
                     args = json.loads(tool_call.function.arguments)
                     image_url = await self.handle_image_generation(args['prompt'])
-                    return None, image_url
+
             
-            # Handle regular text response
-            if hasattr(response, 'content') and response.content:
-                return response.content, None
-                
-            return "I received your message but couldn't generate a proper response.", None
-                
+            # Notify other interfaces if needed
+            if source_interface:
+                for interface_name, interface in self.interfaces.items():
+                    if interface_name != source_interface:
+                        await self.send_to_interface(interface_name, {
+                            'type': 'message',
+                            'content': text_response,
+                            'image_url': image_url,
+                            'source': source_interface,
+                            'chat_id': '0'
+                        })
+            
+            return text_response, image_url
+            
         except LLMError as e:
-            logger.error(f"LLM call failed: {str(e)}")
+            logger.error(f"LLM processing failed: {str(e)}")
             return "Sorry, I encountered an error processing your message.", None
+        except Exception as e:
+            logger.error(f"Message handling failed: {str(e)}")
+            return "Sorry, something went wrong.", None
+
+    async def send_to_interface(self, target_interface: str, message: dict):
+        """
+        Send a message to a specific interface
+        
+        Args:
+            target_interface (str): Name of the interface to send to
+            message (dict): Message data containing at minimum:
+                {
+                    'type': str,  # Type of message (e.g., 'message', 'image', 'voice')
+                    'content': str,  # Main content
+                    'image_url': Optional[str],  # Optional image URL
+                    'source': Optional[str]  # Source interface name
+                }
+        
+        Returns:
+            bool: True if message was queued successfully, False otherwise
+        """
+        try:
+            with self._lock:
+                if target_interface not in self.interfaces:
+                    logger.error(f"Interface {target_interface} not registered")
+                    return False
+                
+                # Validate message format
+                if not isinstance(message, dict) or 'type' not in message or 'content' not in message:
+                    logger.error("Invalid message format")
+                    return False
+                
+                # Add timestamp and target
+                message['timestamp'] = datetime.now().isoformat()
+                message['target'] = target_interface
+                
+                # Queue the message
+                self._message_queue.put(message)
+                
+                # Get interface instance
+                interface = self.interfaces[target_interface]
+                logger.info(f"Interface: {interface}")
+                logger.info(f"Message: {message}")
+                logger.info("trying to send message")
+                # Handle different message types
+                logger.info(f"Message type: {message['type']}")
+                if message['type'] == 'message':
+                    logger.info(f"interface has method {hasattr(interface, 'send_message')}")
+                    if hasattr(interface, 'send_message'):
+                        try:
+                            logger.info(f"Attempting to send message via {target_interface} interface")
+                            await interface.send_message(
+                                chat_id=message['chat_id'],
+                                message=message['content'],
+                                image_url=message['image_url']
+                            )
+                            logger.info("Message sent successfully")
+                        except Exception as e:
+                            logger.error(f"Failed to send message via {target_interface}: {str(e)}")
+                            raise
+                # Log successful queue
+                logger.info(f"Message queued for {target_interface}: {message['type']}")
+                return True
+                
+        except Exception as e:
+            logger.error(f"Error sending message to {target_interface}: {str(e)}")
+            return False
+
+    @property
+    def is_shared(self):
+        return self._is_proxy
+
+    @property
+    def original_core(self):
+        return self._original_core if self._is_proxy else self
