@@ -101,6 +101,9 @@ class PromptConfig:
 
     def get_reply_to_tweet_template(self) -> str:
         return self.config['reply']['reply_to_tweet_template']
+    
+    def get_telegram_rules(self) -> str:
+        return self.config['rules']['telegram']
 
 class CoreAgent:
     def __init__(self):
@@ -113,6 +116,33 @@ class CoreAgent:
         with self._lock:
             self.interfaces[name] = interface
         
+    async def pre_validation(self, message: str) -> bool:
+        """
+        Pre-validation of the message
+        
+        Args:
+            message: The user's message
+            
+        Returns:
+            True if the message is valid, False otherwise
+        """
+        try:
+            response = call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY, 
+                SMALL_MODEL_ID,
+                self.prompt_config.get_telegram_rules(),
+                message,
+                temperature=0.5,
+            )
+            print(response)
+            response = response.lower()
+            validation = False if "false" in response else True if "true" in response else False
+            print(validation)
+            return validation
+        except Exception as e:
+            logger.error(f"Pre-validation failed: {str(e)}")
+            return False
 
     async def handle_image_generation(self, prompt: str, base_prompt: str = "") -> Optional[str]:
         """
@@ -181,6 +211,13 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
+        preValidation = False if source_interface in ["api"] else True
+        preValidationResult = True
+        if preValidation:
+            preValidationResult = await self.pre_validation(message)
+
+        if not preValidationResult:
+            return "Ignoring message.", None
         try:
             # Call LLM with tools to process the message
             response = call_llm_with_tools(
