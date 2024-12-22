@@ -22,16 +22,31 @@ if not TELEGRAM_API_TOKEN:
 class TelegramAgent(CoreAgent):
     def __init__(self, core_agent=None):
         if core_agent:
-            super().__init__()
-            self._proxy_to(core_agent)
+            super().__setattr__('_parent',core_agent)
         else:
+            # Need to set _parent = self first before super().__init__()
+            super().__setattr__('_parent', self)  # Bypass normal __setattr__
             super().__init__()
-        if(core_agent != None):
-            logger.info("Telegram agent is a proxy to another core agent")
+            
         # Initialize telegram specific stuff
         self.app = Application.builder().token(TELEGRAM_API_TOKEN).build()
         self._setup_handlers()
         self.register_interface('telegram', self)
+
+    def __getattr__(self, name):
+        # Delegate to the parent instance for missing attributes/methods
+        return getattr(self._parent, name)
+        
+    def __setattr__(self, name, value):
+        if not hasattr(self, '_parent'):
+            # During initialization, before _parent is set
+            super().__setattr__(name, value)
+        elif name == "_parent" or self is self._parent or name in self.__dict__:
+            # Set local attributes (like _parent or already existing attributes)
+            super().__setattr__(name, value)
+        else:
+            # Delegate attribute setting to the parent instance
+            setattr(self._parent, name, value)
 
     def _setup_handlers(self):
         # Register the /start command handler
@@ -80,7 +95,7 @@ class TelegramAgent(CoreAgent):
             source_interface='telegram'
         )
         logger.info(f"Telegram message: {update.message.text}")
-        if self.is_shared:
+        if self._parent != self:
             logger.info("Operating in shared mode with core agent")
         else:
             logger.info("Operating in standalone mode")

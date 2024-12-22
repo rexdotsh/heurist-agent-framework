@@ -108,30 +108,11 @@ class CoreAgent:
         self.interfaces = {}
         self._message_queue = Queue()
         self._lock = threading.Lock()
-        self._is_proxy = False  # Flag to indicate if this is a proxy to another CoreAgent
-        self.test_value = "39"
-
-    def get_test_value(self):
-        return self.test_value
-    def set_test_value(self, value):
-        self.test_value = value
     
     def register_interface(self, name, interface):
         with self._lock:
             self.interfaces[name] = interface
-            
-    def _proxy_to(self, core_agent):
-        """
-        Make this instance proxy to another CoreAgent instance.
-        Transfers all attributes and methods while maintaining inheritance.
-        """
-        self._is_proxy = True
-        # Copy all attributes from the passed core_agent
-        for attr_name, attr_value in vars(core_agent).items():
-            setattr(self, attr_name, attr_value)
         
-        # Keep track of original core_agent
-        self._original_core = core_agent
 
     async def handle_image_generation(self, prompt: str, base_prompt: str = "") -> Optional[str]:
         """
@@ -187,11 +168,9 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str, source_interface: str = None):
+    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None):
         """
-        Handle message and optionally notify other interfaces.
-        If this is a proxy, calls will be forwarded to the original core agent.
-        
+        Handle message and optionally notify other interfaces.        
         Args:
             message: The message to process
             source_interface: Optional name of the interface that sent the message
@@ -201,9 +180,7 @@ class CoreAgent:
         """
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
-        if self._is_proxy:
-            return await self._original_core.handle_message(message, source_interface)
-        
+
         try:
             # Call LLM with tools to process the message
             response = call_llm_with_tools(
@@ -236,7 +213,7 @@ class CoreAgent:
 
             
             # Notify other interfaces if needed
-            if source_interface:
+            if source_interface and chat_id:
                 for interface_name, interface in self.interfaces.items():
                     if interface_name != source_interface:
                         await self.send_to_interface(interface_name, {
@@ -244,7 +221,7 @@ class CoreAgent:
                             'content': text_response,
                             'image_url': image_url,
                             'source': source_interface,
-                            'chat_id': '0'
+                            'chat_id': chat_id
                         })
             
             return text_response, image_url
@@ -319,11 +296,3 @@ class CoreAgent:
         except Exception as e:
             logger.error(f"Error sending message to {target_interface}: {str(e)}")
             return False
-
-    @property
-    def is_shared(self):
-        return self._is_proxy
-
-    @property
-    def original_core(self):
-        return self._original_core if self._is_proxy else self

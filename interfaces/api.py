@@ -24,18 +24,37 @@ def require_api_key(f):
 class FlaskAgent(CoreAgent):
     def __init__(self, core_agent=None):
         if core_agent:
-            # If core_agent is provided, initialize parent then proxy to provided core_agent
-            super().__init__()
-            self._proxy_to(core_agent)
+            super().__setattr__('_parent', core_agent)
         else:
-            # Standalone mode - just initialize normally
+            super().__setattr__('_parent', self)  # Bypass normal __setattr__
             super().__init__()
             
-        self.app = Flask(__name__)
+        # Initialize Flask specific stuff
+        self._app = Flask(__name__)  # Store as _app to avoid delegation
         self._setup_routes()
-        
-        # Register this interface with the core agent (either self or proxied)
         self.register_interface('api', self)
+
+    def __getattr__(self, name):
+        # Delegate to the parent instance for missing attributes/methods
+        return getattr(self._parent, name)
+        
+    def __setattr__(self, name, value):
+        if not hasattr(self, '_parent'):
+            # During initialization, before _parent is set
+            super().__setattr__(name, value)
+        elif name == "_parent" or self is self._parent or name in self.__dict__:
+            # Set local attributes (like _parent or already existing attributes)
+            super().__setattr__(name, value)
+        else:
+            # Delegate attribute setting to the parent instance
+            setattr(self._parent, name, value)
+            
+    def run(self, host='0.0.0.0', port=5005):
+        """Run the Flask application"""
+        if hasattr(self, '_app'):
+            self._app.run(host=host, port=port, debug=False)
+        else:
+            raise RuntimeError("Flask app not initialized")
 
     def _setup_routes(self):
         # Example usage:
@@ -48,20 +67,23 @@ class FlaskAgent(CoreAgent):
         #   "text": "AI is a field of computer science...", 
         #   "image_url": "http://example.com/image.jpg"  # Optional
         # }
-        @self.app.route('/message', methods=['POST'])
+        @self._app.route('/message', methods=['POST'])
         @require_api_key
         async def handle_message():
             try:
                 data = request.get_json()
                 if not data or 'message' not in data:
                     return jsonify({'error': 'No message provided'}), 400
-
+                chat_id = None
+                if 'chat_id' in data:
+                    chat_id = data['chat_id']
                 text_response, image_url = await self.handle_message(
                     data['message'],
-                    source_interface='api'
+                    source_interface='api',
+                    chat_id=chat_id    
                 )
                 
-                if self.is_shared:
+                if self._parent != self:
                     logger.info("Operating in shared mode with core agent")
                 else:
                     logger.info("Operating in standalone mode")
@@ -76,11 +98,6 @@ class FlaskAgent(CoreAgent):
             except Exception as e:
                 logger.error(f"Message handling failed: {str(e)}")
                 return jsonify({'error': 'Internal server error'}), 500
-
-    def run(self, host='0.0.0.0', port=5005):
-        """Start the Flask server"""
-        logger.info(f"Starting Flask API on port {port}...")
-        self.app.run(host=host, port=port)
 
 def main():
     agent = FlaskAgent()

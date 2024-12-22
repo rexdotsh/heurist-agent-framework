@@ -56,23 +56,8 @@ def main():
         dotenv.load_dotenv()
             # Create shared core agent and interfaces
         core_agent = CoreAgent()
-        print(f"CoreAgent Test value: {core_agent.get_test_value()}")
-        core_agent.set_test_value("42")
-        print(f"CoreAgent Test value: {core_agent.get_test_value()}")
         flask_agent = FlaskAgent(core_agent)
-        print(f"FlaskAgent Test value: {flask_agent.get_test_value()}")
         telegram_agent = TelegramAgent(core_agent)
-        print(f"TelegramAgent Test value: {telegram_agent.get_test_value()}")
-
-        # When either interface registers itself, it updates the same interfaces dict
-        print(core_agent.interfaces)  # Shows both 'telegram' and 'api' interfaces
-        print(telegram_agent.interfaces)  # Same dict as core.interfaces
-        print(flask_agent.interfaces)     # Same dict as core.interfaces
-
-        core_agent.set_test_value("47")
-        print(f"CoreAgent Test value: {core_agent.get_test_value()}")
-        print(f"TelegramAgent Test value: {telegram_agent.get_test_value()}")
-        print(f"FlaskAgent Test value: {flask_agent.get_test_value()}")
 
         # Start Flask in a separate thread
         flask_thread = threading.Thread(
