@@ -57,7 +57,7 @@ class PromptConfig:
         if config_path is None:
             # Get the project root directory (2 levels up from the current file)
             project_root = Path(__file__).parent.parent
-            config_path = project_root / "config" / "prompts.yaml"
+            config_path = project_root / "config" / "test.prompts.yaml"
         self.config_path = Path(config_path)
         self.config = self._load_config()
 
@@ -105,6 +105,9 @@ class PromptConfig:
     def get_telegram_rules(self) -> str:
         return self.config['rules']['telegram']
 
+    def get_template_image_prompt(self) -> str:
+        return self.config['image_rules']['template_image_prompt']
+
 class CoreAgent:
     def __init__(self):
         self.prompt_config = PromptConfig()
@@ -143,7 +146,26 @@ class CoreAgent:
         except Exception as e:
             logger.error(f"Pre-validation failed: {str(e)}")
             return False
-
+    async def generate_image_prompt(self, message: str) -> str:
+        """Generate an image prompt based on the tweet content"""
+        logger.info("Generating image prompt")
+        prompt = self.prompt_config.get_template_image_prompt().format(tweet=message)
+        logger.info("Prompt: %s", prompt)
+        try:
+            image_prompt = call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY, 
+                SMALL_MODEL_ID,
+                self.prompt_config.get_system_prompt(),
+                prompt,
+                temperature=0.7,
+            )
+        except Exception as e:
+            logger.error(f"Failed to generate image prompt: {str(e)}")
+            return None
+        logger.info("Generated image prompt: %s", image_prompt)
+        return image_prompt
+    
     async def handle_image_generation(self, prompt: str, base_prompt: str = "") -> Optional[str]:
         """
         Handle image generation requests with retry logic
@@ -211,7 +233,7 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
-        preValidation = False if source_interface in ["api"] else True
+        preValidation = False if source_interface in ["api", "twitter"] else True
         preValidationResult = True
         if preValidation:
             preValidationResult = await self.pre_validation(message)

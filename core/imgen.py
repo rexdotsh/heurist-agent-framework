@@ -5,6 +5,7 @@ import time
 import logging
 from dotenv import load_dotenv
 from .llm import call_llm
+from requests.exceptions import Timeout
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -18,7 +19,7 @@ HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 SEQUENCER_API_ENDPOINT = "http://sequencer.heurist.xyz/submit_job"
 PROMPT_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
-IMAGE_MODEL_ID = "FLUX.1-dev"
+IMAGE_MODEL_ID = "ArthemyComics"
 
 # Image generation settings
 IMAGE_SETTINGS = {
@@ -94,15 +95,22 @@ def generate_image(prompt: str) -> dict:
         "priority": 1
     }
 
-    response = requests.post(SEQUENCER_API_ENDPOINT, headers=headers, data=json.dumps(payload))
-    
+    try:
+        response = requests.post(SEQUENCER_API_ENDPOINT, 
+                               headers=headers, 
+                               data=json.dumps(payload),
+                               timeout=30)
+    except Timeout:
+        logger.error("Request timed out after 30 seconds")
+        return None
+        
     if response.status_code == 200:
         return response.json()
     else:
         logger.error(f"Image generation failed: {response.status_code} - {response.text}")
         return None
 
-def generate_image_with_retry(prompt: str, max_retries: int = 3, delay: int = 1) -> dict:
+def generate_image_with_retry(prompt: str, max_retries: int = 5, delay: int = 3) -> dict:
     """Generate an image with retry mechanism"""
     for attempt in range(max_retries):
         try:

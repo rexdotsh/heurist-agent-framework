@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import Dict, Any
 import dotenv
 import yaml
-from core.llm import call_llm, LLMError
+from agents.core_agent import CoreAgent
 from platforms.twitter_api import tweet_with_image, tweet_text_only
-from core.imgen import generate_image_with_retry, generate_image_prompt
+import asyncio
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -24,55 +24,14 @@ HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
-IMAGE_GENERATION_PROBABILITY = 0.3
+IMAGE_GENERATION_PROBABILITY = 1
 TWEET_HISTORY_FILE = "tweet_history.json"
-DRYRUN = os.getenv("DRYRUN")
+DRYRUN = False#os.getenv("DRYRUN")
 
 if DRYRUN:
     print("DRYRUN MODE: Not posting real tweets")
 else:
     print("LIVE MODE: Will post real tweets")
-
-class PromptConfig:
-    def __init__(self, config_path: str = None):
-        if config_path is None:
-            # Get the project root directory (2 levels up from the current file)
-            project_root = Path(__file__).parent.parent
-            config_path = project_root / "config" / "prompts.yaml"
-        self.config_path = Path(config_path)
-        self.config = self._load_config()
-
-    def _load_config(self) -> dict:
-        try:
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f)
-        except Exception as e:
-            logger.error(f"Error loading config: {str(e)}")
-            raise
-
-    def get_system_prompt(self) -> str:
-        return self.config['system']['base']
-
-    def get_basic_settings(self) -> list:
-        return self.config['character']['basic_settings']
-
-    def get_interaction_styles(self) -> list:
-        return self.config['character']['interaction_styles']
-
-    def get_basic_prompt_template(self) -> str:
-        return self.config['templates']['basic_prompt']
-
-    def get_tweet_instruction_template(self) -> str:
-        return self.config['templates']['tweet_instruction']
-
-    def get_context_twitter_template(self) -> str:
-        return self.config['templates']['context_twitter']
-
-    def get_tweet_ideas(self) -> list:
-        return self.config['tweet_ideas']['options']
-
-    def get_twitter_rules(self) -> str:
-        return self.config['rules']['twitter']
 
 class TweetHistoryManager:
     def __init__(self, history_file=TWEET_HISTORY_FILE):
@@ -108,11 +67,28 @@ class TweetHistoryManager:
     def get_recent_tweets(self, n=6):
         return [entry['tweet']['tweet'] for entry in self.history[-n:]]
 
-class TweetGenerator:
-    def __init__(self):
-        self.prompt_config = PromptConfig()
+class TwitterAgent(CoreAgent):
+    def __init__(self, core_agent=None):
+        if core_agent:
+            super().__setattr__('_parent', core_agent)
+        else:
+            super().__setattr__('_parent', self)
+            super().__init__()
+        
+        # Initialize twitter specific stuff
         self.history_manager = TweetHistoryManager()
+        self.register_interface('twitter', self)
 
+    def __getattr__(self, name):
+        return getattr(self._parent, name)
+        
+    def __setattr__(self, name, value):
+        if not hasattr(self, '_parent'):
+            super().__setattr__(name, value)
+        elif name == "_parent" or self is self._parent or name in self.__dict__:
+            super().__setattr__(name, value)
+        else:
+            setattr(self._parent, name, value)
     def fill_basic_prompt(self, basic_options, style_options):
         return self.prompt_config.get_basic_prompt_template().format(
             basic_option_1=basic_options[0],
@@ -139,8 +115,8 @@ class TweetGenerator:
         if tweets is None:
             tweets = []
         return self.prompt_config.get_context_twitter_template().format(tweets=tweets)
-
-    def generate_tweet(self) -> tuple[str | None, str | None, dict | None]:
+    
+    async def generate_tweet(self) -> tuple[str | None, str | None, dict | None]:
         """Generate a tweet with improved error handling"""
         tweet_data: Dict[str, Any] = {'metadata': {}}
         
@@ -163,103 +139,127 @@ class TweetGenerator:
             user_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
                           self.format_context(past_tweets) + instruction_tweet_idea)
             
-            try:
-                ideas = call_llm(
-                    HEURIST_BASE_URL, 
-                    HEURIST_API_KEY, 
-                    SMALL_MODEL_ID, 
-                    self.prompt_config.get_system_prompt(), 
-                    user_prompt, 
-                    0.9
-                )
-                tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
-                tweet_data['metadata']['ideas'] = ideas
-            except LLMError as e:
-                logger.warning(f"Failed to generate ideas: {str(e)}")
-                ideas = None
+            # try:
+            #     ideas = call_llm(
+            #         HEURIST_BASE_URL, 
+            #         HEURIST_API_KEY, 
+            #         SMALL_MODEL_ID, 
+            #         self.prompt_config.get_system_prompt(), 
+            #         user_prompt, 
+            #         0.9
+            #     )
+            #     tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
+            #     tweet_data['metadata']['ideas'] = ideas
+            # except LLMError as e:
+            #     logger.warning(f"Failed to generate ideas: {str(e)}")
+            #     ideas = None
+            ideas = None
+            tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
+            ideas, _ = await self.handle_message(instruction_tweet_idea, source_interface='twitter')
+            tweet_data['metadata']['ideas'] = ideas
             
             # Generate final tweet
             user_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
                           self.format_context(past_tweets) + 
                           self.format_tweet_instruction(basic_options, style_options, ideas))
             
-            tweet = call_llm(
-                HEURIST_BASE_URL, 
-                HEURIST_API_KEY, 
-                LARGE_MODEL_ID, 
-                self.prompt_config.get_system_prompt(), 
-                user_prompt, 
-                0.9
-            )
-            if not tweet:
-                raise LLMError("Empty tweet generated")
+
+            tweet, _ = await self.handle_message(user_prompt, source_interface='twitter')
+            # tweet = call_llm(
+            #     HEURIST_BASE_URL, 
+            #     HEURIST_API_KEY, 
+            #     LARGE_MODEL_ID, 
+            #     self.prompt_config.get_system_prompt(), 
+            #     user_prompt, 
+            #     0.9
+            # )
+            # if not tweet:
+            #     raise LLMError("Empty tweet generated")
             
             # Clean and store tweet
+            
+            #tweet = tweet.replace('"', '')
             tweet = tweet.replace('"', '')
             tweet_data['tweet'] = tweet
 
             # Image generation
             image_url = None
             if random.random() < IMAGE_GENERATION_PROBABILITY:
+                logger.info("Generating image")
                 try:
-                    image_prompt = generate_image_prompt(tweet)
-                    image_url = generate_image_with_retry(image_prompt)
+                    image_prompt = await self.generate_image_prompt(tweet)
+                    image_url = await self.handle_image_generation(image_prompt)
                     tweet_data['metadata']['image_prompt'] = image_prompt
                     tweet_data['metadata']['image_url'] = image_url
                 except Exception as e:
                     logger.warning(f"Failed to generate image: {str(e)}")
             
             return tweet, image_url, tweet_data
-            
-        except LLMError as e:
-            logger.error(f"Failed to generate tweet due to LLMError: {str(e)}")
+
         except Exception as e:
             logger.error(f"Unexpected error in tweet generation: {str(e)}")
         
         return None, None, None
+
+    def run(self):
+        """Start the Twitter bot"""
+        logger.info("Starting Twitter bot...")
+        asyncio.run(self._run())
+
+    async def _run(self):
+        while True:
+            try:
+                tweet, image_url, tweet_data = await self.generate_tweet()
+                
+                if tweet:
+                    if not DRYRUN:
+                        if image_url:
+                            tweet_id = tweet_with_image(tweet, image_url)
+                            logger.info("Successfully posted tweet with image: %s", tweet)
+                        else:
+                            tweet_id = tweet_text_only(tweet)
+                            logger.info("Successfully posted tweet: %s", tweet)
+                        tweet_data['metadata']['tweet_id'] = tweet_id
+                        for interface_name, interface in self.interfaces.items():
+                            if interface_name == 'telegram':
+                                await self.send_to_interface(interface_name, {
+                                    'type': 'message',
+                                    'content': "Just posted a tweet: " + tweet_id,
+                                    'image_url': None,
+                                    'source': 'twitter',
+                                    'chat_id': "0"
+                                })
+                    else:
+                        logger.info("Generated tweet: %s", tweet)
+                    
+                    self.history_manager.add_tweet(tweet_data)
+                    wait_time = random_interval()
+                else:
+                    logger.error("Failed to generate tweet")
+                    wait_time = 10
+                
+                next_time = datetime.now() + timedelta(seconds=wait_time)
+                logger.info("Next tweet will be posted at: %s", next_time.strftime('%H:%M:%S'))
+                await asyncio.sleep(wait_time)
+                
+            except Exception as e:
+                logger.error("Error occurred: %s", str(e))
+                await asyncio.sleep(10)
+                continue
 
 def random_interval():
     """Generate a random interval between 1 and 2 hours in seconds"""
     return random.uniform(3600, 7200)
 
 def main():
-    generator = TweetGenerator()
-    while True:
-        try:
-            tweet, image_url, tweet_data = generator.generate_tweet()
-            
-            if tweet:
-                if not DRYRUN:
-                    if image_url:
-                        tweet_id = tweet_with_image(tweet, image_url)
-                        logger.info("Successfully posted tweet with image: %s", tweet)
-                    else:
-                        tweet_id = tweet_text_only(tweet)
-                        logger.info("Successfully posted tweet: %s", tweet)
-                    tweet_data['metadata']['tweet_id'] = tweet_id
-                else:
-                    logger.info("Generated tweet: %s", tweet)
-                
-                generator.history_manager.add_tweet(tweet_data)
-                wait_time = random_interval()
-            else:
-                logger.error("Failed to generate tweet")
-                wait_time = 10
-            
-            next_time = datetime.now() + timedelta(seconds=wait_time)
-            logger.info("Next tweet will be posted at: %s", next_time.strftime('%H:%M:%S'))
-            time.sleep(wait_time)
-            
-        except Exception as e:
-            logger.error("Error occurred: %s", str(e))
-            time.sleep(10)
-            continue
+    agent = TwitterAgent()
+    agent.run()
 
 if __name__ == "__main__":
     try:
-        logger.info("Starting tweet automation...")
+        logger.info("Starting Twitter agent...")
         main()
     except KeyboardInterrupt:
-        logger.info("\nTweet automation stopped by user")
+        logger.info("\nTwitter agent stopped by user")
     except Exception as e:
         logger.error("Fatal error: %s", str(e))

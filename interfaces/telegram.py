@@ -134,6 +134,7 @@ class TelegramAgent(CoreAgent):
             if image_url:
                 await self.app.bot.send_photo(chat_id=chat_id, photo=image_url, caption="")
             else:
+                message = message.replace('"', '')
                 await self.app.bot.send_message(chat_id=chat_id, text=message)
             
         except Exception as e:
@@ -166,7 +167,7 @@ class TelegramAgent(CoreAgent):
             if image_url:
                 await update.message.reply_photo(photo=image_url)
             elif text_response:
-                await update.message.reply_text(text_response)
+                await update.message.reply_text(text_response.replace('"', ''))
     def run(self):
         """Start the bot"""
         logger.info("Starting Telegram bot...")
