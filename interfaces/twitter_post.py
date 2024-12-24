@@ -24,7 +24,7 @@ HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
-IMAGE_GENERATION_PROBABILITY = 1
+IMAGE_GENERATION_PROBABILITY = 0.75
 TWEET_HISTORY_FILE = "tweet_history.json"
 DRYRUN = False#os.getenv("DRYRUN")
 
@@ -139,20 +139,6 @@ class TwitterAgent(CoreAgent):
             user_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
                           self.format_context(past_tweets) + instruction_tweet_idea)
             
-            # try:
-            #     ideas = call_llm(
-            #         HEURIST_BASE_URL, 
-            #         HEURIST_API_KEY, 
-            #         SMALL_MODEL_ID, 
-            #         self.prompt_config.get_system_prompt(), 
-            #         user_prompt, 
-            #         0.9
-            #     )
-            #     tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
-            #     tweet_data['metadata']['ideas'] = ideas
-            # except LLMError as e:
-            #     logger.warning(f"Failed to generate ideas: {str(e)}")
-            #     ideas = None
             ideas = None
             tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
             ideas, _ = await self.handle_message(instruction_tweet_idea, source_interface='twitter')
@@ -165,20 +151,7 @@ class TwitterAgent(CoreAgent):
             
 
             tweet, _ = await self.handle_message(user_prompt, source_interface='twitter')
-            # tweet = call_llm(
-            #     HEURIST_BASE_URL, 
-            #     HEURIST_API_KEY, 
-            #     LARGE_MODEL_ID, 
-            #     self.prompt_config.get_system_prompt(), 
-            #     user_prompt, 
-            #     0.9
-            # )
-            # if not tweet:
-            #     raise LLMError("Empty tweet generated")
-            
-            # Clean and store tweet
-            
-            #tweet = tweet.replace('"', '')
+
             tweet = tweet.replace('"', '')
             tweet_data['tweet'] = tweet
 
@@ -220,6 +193,7 @@ class TwitterAgent(CoreAgent):
                             tweet_id = tweet_text_only(tweet)
                             logger.info("Successfully posted tweet: %s", tweet)
                         tweet_data['metadata']['tweet_id'] = tweet_id
+                        self.last_tweet_id = tweet_id
                         for interface_name, interface in self.interfaces.items():
                             if interface_name == 'telegram':
                                 await self.send_to_interface(interface_name, {
@@ -249,7 +223,7 @@ class TwitterAgent(CoreAgent):
 
 def random_interval():
     """Generate a random interval between 1 and 2 hours in seconds"""
-    return random.uniform(3600, 7200)
+    return random.uniform(60*60, 60*60*2)
 
 def main():
     agent = TwitterAgent()

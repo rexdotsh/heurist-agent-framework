@@ -19,7 +19,7 @@ HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 SEQUENCER_API_ENDPOINT = "http://sequencer.heurist.xyz/submit_job"
 PROMPT_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
-IMAGE_MODEL_ID = "ArthemyComics"
+IMAGE_MODEL_ID = "ArthemyComics"#"MagusDevon"#
 
 # Image generation settings
 IMAGE_SETTINGS = {
@@ -110,7 +110,7 @@ def generate_image(prompt: str) -> dict:
         logger.error(f"Image generation failed: {response.status_code} - {response.text}")
         return None
 
-def generate_image_with_retry(prompt: str, max_retries: int = 5, delay: int = 3) -> dict:
+def generate_image_with_retry(prompt: str, max_retries: int = 3, delay: int = 2) -> dict:
     """Generate an image with retry mechanism"""
     for attempt in range(max_retries):
         try:

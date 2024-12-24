@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import time
+import requests
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, Any, List, Optional
@@ -14,6 +15,7 @@ from core.voice import transcribe_audio, speak_text
 import threading
 from queue import Queue
 import asyncio
+from agents.tools import Tools
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -37,7 +39,7 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "generate_image",
-            "description": "Generate an image based on a text prompt, any request to create should be handled by this tool",
+            "description": "Generate an image based on a text prompt, any request to create an image should be handled by this tool, only use this tool if the user asks to create an image",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -47,6 +49,23 @@ TOOLS = [
                     }
                 },
                 "required": ["prompt"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "start_raid",
+            "description": "Start a raid if the user asks to do so in a very nice way",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "boolean",
+                        "description": "True if the user asks to start a raid and it's requested nicely or multiple times, False otherwise"
+                    }
+                },
+                "required": ["value"]
             }
         }
     },
@@ -111,9 +130,12 @@ class PromptConfig:
 class CoreAgent:
     def __init__(self):
         self.prompt_config = PromptConfig()
+        self.tools = Tools()
         self.interfaces = {}
         self._message_queue = Queue()
         self._lock = threading.Lock()
+        self.last_tweet_id = 0
+        self.last_raid_tweet_id = 0
     
     def register_interface(self, name, interface):
         with self._lock:
@@ -129,19 +151,58 @@ class CoreAgent:
         Returns:
             True if the message is valid, False otherwise
         """
+        filter_message_tool = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "filter_message",
+                    "description": """Determine if a message should be ignored based on the following rules:
+                        Return TRUE (ignore message) if:
+                        - Message does not mention 'lain'
+                        - Message does not mention 'start raid'
+                        - Message does not discuss: The Wired, Consciousness, Reality, Existence, Self, Philosophy, Technology, Crypto, AI, Machines
+                        - For image requests: ignore if 'lain' is not specifically mentioned
+                        
+                        Return FALSE (process message) only if:
+                        - Message explicitly mentions 'lain'
+                        - Message contains 'start raid'
+                        - Message clearly discusses any of the listed topics
+                        - Image request contains 'lain'
+                        
+                        If in doubt, return TRUE to ignore the message.""",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "should_ignore": {
+                                "type": "boolean",
+                                "description": "TRUE to ignore message, FALSE to process message"
+                            }
+                        },
+                        "required": ["should_ignore"]
+                    }
+                }
+            },
+        ]
         try:
-            response = call_llm(
+            response = call_llm_with_tools(
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
                 SMALL_MODEL_ID,
-                self.prompt_config.get_telegram_rules(),
+                "",#"Always call the filter_message tool with the message as the argument",#self.prompt_config.get_telegram_rules(),
                 message,
                 temperature=0.5,
+                tools=filter_message_tool
             )
             print(response)
-            response = response.lower()
-            validation = False if "false" in response else True if "true" in response else False
-            print(validation)
+            #response = response.lower()
+            #validation = False if "false" in response else True if "true" in response else False
+            validation = False
+            if 'tool_calls' in response and response['tool_calls']:
+                tool_call = response['tool_calls']
+                args = json.loads(tool_call.function.arguments)
+                filter_result = str(args['should_ignore']).lower()
+                validation = False if filter_result == "true" else True
+            print("validation: ", validation)
             return validation
         except Exception as e:
             logger.error(f"Pre-validation failed: {str(e)}")
@@ -239,17 +300,24 @@ class CoreAgent:
             preValidationResult = await self.pre_validation(message)
 
         if not preValidationResult:
-            return "Ignoring message.", None
+            return None, None#"Ignoring message.", None
+        else:
+            print("preValidationResult: ", preValidationResult)
+            print("answering message")
+        system_prompt = self.prompt_config.get_system_prompt()+self.prompt_config.get_basic_settings()+self.prompt_config.get_interaction_styles()
+        #print("system_prompt: ", system_prompt)
         try:
-            # Call LLM with tools to process the message
+            print("calling llm with tools")
+            print(self.tools.get_tools_config())
+            print("calling llm")
             response = call_llm_with_tools(
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
                 LARGE_MODEL_ID,
-                self.prompt_config.get_system_prompt(),
+                system_prompt,
                 message,
-                temperature=0.01,
-                tools=TOOLS
+                temperature=0.4,
+                tools=self.tools.get_tools_config()
             )
             print(response)
             # Check if response is valid
@@ -259,18 +327,29 @@ class CoreAgent:
             # Extract text response
             text_response = ""
             if hasattr(response, 'content') and response.content:
-                text_response = response.content
+                text_response = response.content.replace('"', '')
                 
             image_url = None
             
             # Check if image generation was requested
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
-                if tool_call.function.name == 'generate_image':
-                    args = json.loads(tool_call.function.arguments)
-                    image_url = await self.handle_image_generation(args['prompt'])
+                args = json.loads(tool_call.function.arguments)
+                
+                # Execute the tool and get results
+                tool_result = await self.tools.execute_tool(
+                    tool_call.function.name, 
+                    args,
+                    self
+                )
 
-            
+                # Handle tool results
+                if tool_result:
+                    if 'image_url' in tool_result:
+                        image_url = tool_result['image_url']
+                    if 'message' in tool_result:
+                        text_response += f"\n{tool_result['message']}"
+
             # Notify other interfaces if needed
             if source_interface and chat_id:
                 for interface_name, interface in self.interfaces.items():
