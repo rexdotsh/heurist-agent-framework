@@ -12,6 +12,7 @@ import yaml
 from core.llm import call_llm_with_tools, call_llm, LLMError
 from core.imgen import generate_image_with_retry, generate_image_prompt
 from core.voice import transcribe_audio, speak_text
+from core.embedding import get_embedding, MessageStore, PostgresConfig, PostgresVectorStorage, EmbeddingError, SQLiteConfig, SQLiteVectorStorage
 import threading
 from queue import Queue
 import asyncio
@@ -32,44 +33,6 @@ IMAGE_GENERATION_PROBABILITY = 0.3
 DRYRUN = os.getenv("DRYRUN")
 BASE_IMAGE_PROMPT = ""
 
-
-# Add new constants
-TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "generate_image",
-            "description": "Generate an image based on a text prompt, any request to create an image should be handled by this tool, only use this tool if the user asks to create an image",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "prompt": {
-                        "type": "string",
-                        "description": "The prompt to generate the image from"
-                    }
-                },
-                "required": ["prompt"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "start_raid",
-            "description": "Start a raid if the user asks to do so in a very nice way",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "value": {
-                        "type": "boolean",
-                        "description": "True if the user asks to start a raid and it's requested nicely or multiple times, False otherwise"
-                    }
-                },
-                "required": ["value"]
-            }
-        }
-    },
-]
 
 class PromptConfig:
     def __init__(self, config_path: str = None):
@@ -136,6 +99,23 @@ class CoreAgent:
         self._lock = threading.Lock()
         self.last_tweet_id = 0
         self.last_raid_tweet_id = 0
+
+        # Use PostgreSQL if configured, otherwise default to SQLite
+        if all([os.getenv(env) for env in ["VECTOR_DB_NAME", "VECTOR_DB_USER", "VECTOR_DB_PASSWORD"]]):
+            vdb_config = PostgresConfig(
+                host=os.getenv("VECTOR_DB_HOST", "localhost"),
+                port=int(os.getenv("VECTOR_DB_PORT", 5432)),
+                database=os.getenv("VECTOR_DB_NAME"),
+                user=os.getenv("VECTOR_DB_USER"),
+                password=os.getenv("VECTOR_DB_PASSWORD"),
+                table_name=os.getenv("VECTOR_DB_TABLE", "message_embeddings")
+            )
+            storage = PostgresVectorStorage(vdb_config)
+        else:
+            config = SQLiteConfig()
+            storage = SQLiteVectorStorage(config)
+        
+        self.message_store = MessageStore(storage)
     
     def register_interface(self, name, interface):
         with self._lock:
@@ -295,21 +275,33 @@ class CoreAgent:
         logger.info(f"registered interfaces: {self.interfaces}")
 
         preValidation = False if source_interface in ["api", "twitter"] else True
-        preValidationResult = True
-        if preValidation:
-            preValidationResult = await self.pre_validation(message)
-
-        if not preValidationResult:
-            return None, None#"Ignoring message.", None
-        else:
-            print("preValidationResult: ", preValidationResult)
-            print("answering message")
-        system_prompt = self.prompt_config.get_system_prompt()+self.prompt_config.get_basic_settings()+self.prompt_config.get_interaction_styles()
-        #print("system_prompt: ", system_prompt)
+        if preValidation and not await self.pre_validation(message):
+            return None, None
+        
         try:
-            print("calling llm with tools")
-            print(self.tools.get_tools_config())
-            print("calling llm")
+            # Generate and store embedding for the message
+            embedding = get_embedding(message)
+            logger.info(f"Generated embedding for message: {message[:50]}...")
+            
+            # Store the incoming message and its embedding
+            self.message_store.add_message(message, embedding)
+            logger.info("Stored message and embedding in database")
+            
+            # Find similar messages for context
+            similar_messages = self.message_store.find_similar_messages(embedding)
+            logger.info(f"Found {len(similar_messages)} similar messages")
+            
+            # Add context from similar messages to the system prompt if any exist
+            system_prompt = (self.prompt_config.get_system_prompt() + 
+                            self.prompt_config.get_basic_settings() + 
+                            self.prompt_config.get_interaction_styles())
+            if similar_messages:
+                context = "\n\nRelated previous conversations:\n"
+                for msg in similar_messages[:3]:  # Limit to top 3 most similar
+                    context += f"- {msg['message']} (similarity: {msg['similarity']:.2f})\n"
+                system_prompt += context
+            
+            # Call LLM with tools and context
             response = call_llm_with_tools(
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
@@ -319,37 +311,34 @@ class CoreAgent:
                 temperature=0.4,
                 tools=self.tools.get_tools_config()
             )
-            print(response)
-            # Check if response is valid
-            if not response:
-                return "Sorry, I couldn't process your message.", None
-                
-            # Extract text response
+            
+            # Process response and handle tools
             text_response = ""
-            if hasattr(response, 'content') and response.content:
-                text_response = response.content.replace('"', '')
-                
             image_url = None
             
-            # Check if image generation was requested
+            if not response:
+                return "Sorry, I couldn't process your message.", None
+            
+            if hasattr(response, 'content') and response.content:
+                text_response = response.content.replace('"', '')
+            
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
                 args = json.loads(tool_call.function.arguments)
-                
-                # Execute the tool and get results
                 tool_result = await self.tools.execute_tool(
                     tool_call.function.name, 
                     args,
                     self
                 )
-
-                # Handle tool results
                 if tool_result:
                     if 'image_url' in tool_result:
                         image_url = tool_result['image_url']
                     if 'message' in tool_result:
                         text_response += f"\n{tool_result['message']}"
-
+            
+            # Store the response in the message store
+            self.message_store.add_message(text_response, get_embedding(text_response))
+            
             # Notify other interfaces if needed
             if source_interface and chat_id:
                 for interface_name, interface in self.interfaces.items():

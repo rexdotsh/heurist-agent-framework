@@ -201,7 +201,7 @@ class TwitterAgent(CoreAgent):
                                     'content': "Just posted a tweet: " + tweet_id,
                                     'image_url': None,
                                     'source': 'twitter',
-                                    'chat_id': "0"
+                                    'chat_id': None
                                 })
                     else:
                         logger.info("Generated tweet: %s", tweet)

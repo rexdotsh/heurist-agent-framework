@@ -12,7 +12,7 @@ class Tools:
                 "type": "function",
                 "function": {
                     "name": "generate_image",
-                    "description": "Generate an image based on a text prompt...",
+                    "description": "Generate an image based on a text prompt, any request to create an image should be handled by this tool, only use this tool if the user asks to create an image",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -25,7 +25,6 @@ class Tools:
         ]
         self.tool_handlers = {
             "generate_image": self.handle_image_generation,
-            "start_raid": self.handle_raid
         }
 
     def get_tools_config(self, filter_tools: List[str] = None) -> List[Dict[str, Any]]:
@@ -61,4 +60,3 @@ class Tools:
         except Exception as e:
             logger.error(f"Image generation failed: {str(e)}")
             return {"error": str(e)}
-
