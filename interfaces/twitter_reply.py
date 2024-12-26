@@ -34,7 +34,7 @@ else:
     print("LIVE MODE: Will post real tweets")
 
 class PromptConfig:
-    def __init__(self, config_path: str = "prompts.yaml"):
+    def __init__(self, config_path: str = "config/prompts.yaml"):
         self.config_path = Path(config_path)
         self.config = self._load_config()
 

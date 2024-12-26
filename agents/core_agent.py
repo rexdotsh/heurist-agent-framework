@@ -39,7 +39,7 @@ class PromptConfig:
         if config_path is None:
             # Get the project root directory (2 levels up from the current file)
             project_root = Path(__file__).parent.parent
-            config_path = project_root / "config" / "test.prompts.yaml"
+            config_path = project_root / "config" / "prompts.yaml"
         self.config_path = Path(config_path)
         self.config = self._load_config()
 

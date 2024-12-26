@@ -4,6 +4,7 @@ import threading
 import asyncio
 from interfaces.api import FlaskAgent
 from interfaces.telegram import TelegramAgent
+from interfaces.farcaster_post import FarcasterAgent
 from interfaces.twitter_post import TwitterAgent
 from agents.core_agent import CoreAgent
 
@@ -49,6 +50,7 @@ def main():
         flask_agent = FlaskAgent(core_agent)
         telegram_agent = TelegramAgent(core_agent)
         twitter_agent = TwitterAgent(core_agent)
+        farcaster_agent = FarcasterAgent
 
         # Start Flask in a separate thread
         flask_thread = threading.Thread(

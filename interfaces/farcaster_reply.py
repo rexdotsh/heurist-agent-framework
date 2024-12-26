@@ -428,7 +428,7 @@ def process_mentions(farcaster_api: FarcasterAPI, db: ReplyDatabase, generator: 
             logger.exception("Full traceback:")
             db.mark_as_failed(cast_hash, str(e))
 
-def main():
+def Farcaster_reply():
     farcaster_api = FarcasterAPI(CONFIG['FARCASTER_API_KEY'], CONFIG['FARCASTER_SIGNER_UUID'])
     db = ReplyDatabase()
     generator = ReplyGenerator()
@@ -448,11 +448,3 @@ def main():
         except Exception as e:
             logger.error(f"Unexpected error in main loop: {str(e)}")
             time.sleep(CONFIG['REPLY_CHECK_INTERVAL'])
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        logger.info("\nFarcaster reply automation stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {str(e)}")
