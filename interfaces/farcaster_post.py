@@ -28,7 +28,7 @@ FARCASTER_SIGNER_UUID = os.getenv("FARCASTER_SIGNER_UUID")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 CAST_WORD_LIMITS = [15, 20, 30, 35]
-IMAGE_GENERATION_PROBABILITY = 0.3
+IMAGE_GENERATION_PROBABILITY = 1
 CAST_HISTORY_FILE = "cast_history.json"
 DRYRUN = False
 
@@ -185,6 +185,7 @@ class FarcasterAgent(CoreAgent):
         self.history_manager = CastHistoryManager()
         self.farcaster_api = FarcasterAPI(FARCASTER_API_KEY, FARCASTER_SIGNER_UUID)
         self.register_interface('farcaster', self)
+        self.last_cast_hash = None
 
     def __getattr__(self, name):
         return getattr(self._parent, name)
@@ -197,7 +198,54 @@ class FarcasterAgent(CoreAgent):
         else:
             setattr(self._parent, name, value)
 
+    async def _call_llm_directly(self, prompt: str) -> str:
+        """Direct LLM call without embedding"""
+        try:
+            response = call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY,
+                LARGE_MODEL_ID,
+                self.prompt_config.get_system_prompt(),
+                prompt,
+                temperature=0.7
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Error calling LLM: {str(e)}")
+            return None
+
+    async def generate_cast_ideas(self, basic_options, style_options, past_casts):
+        """Generate ideas for the cast"""
+        try:
+            prompt = self.fill_basic_prompt(basic_options, style_options)
+            instruction_cast_idea = random.choice(self.prompt_config.get_cast_ideas())
+            
+            # Direct LLM call for ideas
+            ideas = await self._call_llm_directly(instruction_cast_idea)
+            
+            return ideas, instruction_cast_idea
+        except Exception as e:
+            logger.error(f"Error generating cast ideas: {str(e)}")
+            return None, None
+
+    async def generate_cast_content(self, basic_options, style_options, past_casts, ideas):
+        """Generate the main cast content"""
+        try:
+            prompt = self.fill_basic_prompt(basic_options, style_options)
+            user_prompt = (prompt + self.prompt_config.get_rules() + 
+                         self.format_context(past_casts) + 
+                         self.format_cast_instruction(basic_options, style_options, ideas))
+            
+            # Direct LLM call for cast content
+            cast = await self._call_llm_directly(user_prompt)
+            
+            return cast.replace('"', '') if cast else None
+        except Exception as e:
+            logger.error(f"Error generating cast content: {str(e)}")
+            return None
+
     def fill_basic_prompt(self, basic_options, style_options):
+        """Fill the basic prompt template with the given options"""
         return self.prompt_config.get_basic_prompt_template().format(
             basic_option_1=basic_options[0],
             basic_option_2=basic_options[1],
@@ -206,6 +254,7 @@ class FarcasterAgent(CoreAgent):
         )
 
     def format_cast_instruction(self, basic_options, style_options, ideas=None):
+        """Format the cast instruction with the given options and ideas"""
         decoration_ideas = f"Ideas: {ideas}" if ideas else "\n"
         num_words = random.choice(CAST_WORD_LIMITS)
         
@@ -220,19 +269,31 @@ class FarcasterAgent(CoreAgent):
         )
 
     def format_context(self, casts):
+        """Format the context template with recent casts"""
         if not casts:
             return ""
         return self.prompt_config.get_context_template().format(tweets=casts)
 
+    async def generate_cast_image(self, cast):
+        """Generate an image for the cast if probability check passes"""
+        if random.random() < IMAGE_GENERATION_PROBABILITY:
+            try:
+                image_prompt = await self.generate_image_prompt(cast)
+                image_url = await self.handle_image_generation(image_prompt)
+                return image_url, image_prompt
+            except Exception as e:
+                logger.warning(f"Failed to generate image: {str(e)}")
+        return None, None
+
     async def generate_cast(self):
-        """Generate a cast with improved error handling"""
+        """Generate a complete cast with improved error handling"""
         cast_data: Dict[str, Any] = {'metadata': {}}
         
         try:
             # Get recent casts for context
             past_casts = self.history_manager.get_recent_casts()
             
-            # Generate randomized prompt
+            # Generate randomized options
             basic_options = random.sample(self.prompt_config.get_basic_settings(), 2)
             style_options = random.sample(self.prompt_config.get_interaction_styles(), 2)
             cast_data['metadata'].update({
@@ -240,49 +301,83 @@ class FarcasterAgent(CoreAgent):
                 'style_options': style_options
             })
             
-            prompt = self.fill_basic_prompt(basic_options, style_options)
-            
             # Generate ideas
-            instruction_cast_idea = random.choice(self.prompt_config.get_cast_ideas())
-            user_prompt = (prompt + self.prompt_config.get_rules() + 
-                         self.format_context(past_casts) + instruction_cast_idea)
+            ideas, instruction_idea = await self.generate_cast_ideas(
+                basic_options, 
+                style_options, 
+                past_casts
+            )
             
-            ideas = None
-            cast_data['metadata']['ideas_instruction'] = instruction_cast_idea
-            ideas, _ = await self.handle_message(instruction_cast_idea, source_interface='farcaster')
-            cast_data['metadata']['ideas'] = ideas
+            if not ideas:
+                raise Exception("Failed to generate cast ideas")
             
-            # Generate final cast
-            user_prompt = (prompt + self.prompt_config.get_rules() + 
-                         self.format_context(past_casts) + 
-                         self.format_cast_instruction(basic_options, style_options, ideas))
+            cast_data['metadata'].update({
+                'ideas_instruction': instruction_idea,
+                'ideas': ideas
+            })
             
-            cast, _ = await self.handle_message(user_prompt, source_interface='farcaster')
+            # Generate cast content
+            cast = await self.generate_cast_content(
+                basic_options,
+                style_options,
+                past_casts,
+                ideas
+            )
             
             if not cast:
-                raise Exception("Empty cast generated")
+                raise Exception("Failed to generate cast content")
             
-            # Clean and store cast
-            cast = cast.replace('"', '')
             cast_data['cast'] = cast
-
-            # Image generation
-            image_url = None
-            if random.random() < IMAGE_GENERATION_PROBABILITY:
-                try:
-                    image_prompt = await self.generate_image_prompt(cast)
-                    image_url = await self.handle_image_generation(image_prompt)
-                    cast_data['metadata']['image_prompt'] = image_prompt
-                    cast_data['metadata']['image_url'] = image_url
-                except Exception as e:
-                    logger.warning(f"Failed to generate image: {str(e)}")
+            
+            # Generate image if applicable
+            image_url, image_prompt = await self.generate_cast_image(cast)
+            if image_url:
+                cast_data['metadata'].update({
+                    'image_prompt': image_prompt,
+                    'image_url': image_url
+                })
             
             return cast, image_url, cast_data
             
         except Exception as e:
             logger.error(f"Unexpected error in cast generation: {str(e)}")
-        
-        return None, None, None
+            return None, None, None
+
+    async def send_notification(self, cast_hash):
+        """Send notification about new cast to other interfaces"""
+        try:
+            for interface_name, interface in self.interfaces.items():
+                if interface_name == 'telegram':
+                    await self.send_to_interface(interface_name, {
+                        'type': 'message',
+                        'content': f"Just posted a cast: {cast_hash}",
+                        'image_url': None,
+                        'source': 'farcaster',
+                        'chat_id': None
+                    })
+        except Exception as e:
+            logger.error(f"Error sending notification: {str(e)}")
+
+    async def post_cast(self, cast, image_url, cast_data):
+        """Post the cast to Farcaster"""
+        try:
+            if not DRYRUN:
+                cast_hash = self.farcaster_api.post_cast(cast, image_url)
+                if cast_hash:
+                    cast_data['metadata']['cast_hash'] = cast_hash
+                    self.last_cast_hash = cast_hash
+                    logger.info(f"Successfully posted cast: {cast}")
+                    await self.send_notification(cast_hash)
+                    return True
+                else:
+                    logger.error("Failed to post cast")
+                    return False
+            else:
+                logger.info(f"[DRYRUN] Generated cast: {cast}")
+                return True
+        except Exception as e:
+            logger.error(f"Error posting cast: {str(e)}")
+            return False
 
     def run(self):
         """Start the Farcaster bot"""
@@ -290,43 +385,32 @@ class FarcasterAgent(CoreAgent):
         asyncio.run(self._run())
 
     async def _run(self):
+        """Main bot loop"""
         while True:
             try:
+                # Generate cast
                 cast, image_url, cast_data = await self.generate_cast()
                 
                 if cast:
-                    if not DRYRUN:
-                        cast_hash = self.farcaster_api.post_cast(cast, image_url)
-                        if cast_hash:
-                            cast_data['metadata']['cast_hash'] = cast_hash
-                            self.last_cast_hash = cast_hash
-                            logger.info("Successfully posted cast: %s", cast)
-                            for interface_name, interface in self.interfaces.items():
-                                if interface_name == 'telegram':
-                                    await self.send_to_interface(interface_name, {
-                                        'type': 'message',
-                                        'content': "Just posted a cast: " + cast_hash,
-                                        'image_url': None,
-                                        'source': 'farcaster',
-                                        'chat_id': None
-                                    })
-                        else:
-                            logger.error("Failed to post cast")
-                    else:
-                        logger.info("Generated cast: %s", cast)
+                    # Post cast
+                    success = await self.post_cast(cast, image_url, cast_data)
                     
-                    self.history_manager.add_cast(cast_data)
-                    wait_time = random_interval()
+                    if success:
+                        self.history_manager.add_cast(cast_data)
+                        wait_time = random_interval()
+                    else:
+                        wait_time = 10
                 else:
                     logger.error("Failed to generate cast")
                     wait_time = 10
                 
+                # Schedule next cast
                 next_time = datetime.now() + timedelta(seconds=wait_time)
-                logger.info("Next cast will be posted at: %s", next_time.strftime('%H:%M:%S'))
+                logger.info(f"Next cast will be posted at: {next_time.strftime('%H:%M:%S')}")
                 await asyncio.sleep(wait_time)
                 
             except Exception as e:
-                logger.error("Error occurred: %s", str(e))
+                logger.error(f"Error occurred in main loop: {str(e)}")
                 await asyncio.sleep(10)
                 continue
 

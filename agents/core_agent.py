@@ -268,13 +268,14 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None):
+    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, skip_validation: bool = False):
         """
         Handle message and optionally notify other interfaces.        
         Args:
             message: The message to process
             source_interface: Optional name of the interface that sent the message
             chat_id: Optional chat ID for the conversation
+            skip_validation: Optional flag to skip pre-validation
             
         Returns:
             tuple: (text_response, image_url)
@@ -282,7 +283,7 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
-        preValidation = False if source_interface in ["api", "twitter"] else True
+        preValidation = False if source_interface in ["api", "twitter"] or skip_validation else True
         if preValidation and not await self.pre_validation(message):
             return None, None
         

@@ -22,7 +22,7 @@ def main():
         # Initialize and run Farcaster agent
         logger.info("Starting Farcaster agent...")
         agent = FarcasterAgent()
-        reply_agent = Farcaster_reply() #to handle the reply for mentions
+        # reply_agent = Farcaster_reply() #to handle the reply for mentions
         agent.run()
         
                 
