@@ -7,6 +7,7 @@ from interfaces.telegram import TelegramAgent
 from interfaces.farcaster_post import FarcasterAgent
 from interfaces.twitter_post import TwitterAgent
 from agents.core_agent import CoreAgent
+import os
 
 # Set up logging
 logging.basicConfig(
@@ -39,11 +40,17 @@ def run_twitter(twitter_agent):
     except Exception as e:
         logger.error(f"Twitter agent error: {str(e)}")
 
+def reload_environment():
+    """Reload environment variables"""
+    os.environ.clear()
+    dotenv.load_dotenv(override=True)
+    logger.info("Environment variables reloaded")
+
 def main():
     """Main entry point"""
     try:
-        # Load environment variables
-        dotenv.load_dotenv()
+        # Initial load of environment variables
+        reload_environment()
         
         # Create shared core agent and interfaces
         core_agent = CoreAgent()

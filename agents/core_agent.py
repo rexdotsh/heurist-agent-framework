@@ -21,25 +21,32 @@ from agents.tools import Tools
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+# os.reload_environ()
+# dotenv.load_dotenv(override=True)
 
-dotenv.load_dotenv()
+
+os.environ.clear()
+dotenv.load_dotenv(override=True)
+logger.info("Environment variables reloaded")
 # Constants
-HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
+HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
 IMAGE_GENERATION_PROBABILITY = 0.3
-DRYRUN = os.getenv("DRYRUN")
 BASE_IMAGE_PROMPT = ""
+CONFIG_PROMPTS = os.getenv("CONFIG_PROMPTS", "prompts.yaml")
 
 
 class PromptConfig:
     def __init__(self, config_path: str = None):
+    
         if config_path is None:
             # Get the project root directory (2 levels up from the current file)
             project_root = Path(__file__).parent.parent
-            config_path = project_root / "config" / "prompts.yaml"
+            config_path = project_root / "config" / CONFIG_PROMPTS
+            logger.info(f"Using config file: {config_path}")
         self.config_path = Path(config_path)
         self.config = self._load_config()
 

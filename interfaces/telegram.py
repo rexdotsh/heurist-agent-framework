@@ -10,7 +10,7 @@ from agents.core_agent import CoreAgent
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+os.environ.clear()
 dotenv.load_dotenv()
 
 # Constants

@@ -16,19 +16,19 @@ import asyncio
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-dotenv.load_dotenv()
+os.environ.clear()
+dotenv.load_dotenv(override=True)
+logger.info("Environment variables reloaded")
 
 # Constants
-HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
-HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
-LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
-SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 TWEET_WORD_LIMITS = [15, 20, 30, 35]
 IMAGE_GENERATION_PROBABILITY = 0.75
 TWEET_HISTORY_FILE = "tweet_history.json"
-DRYRUN = False#os.getenv("DRYRUN")
+
+DRYRUN = False if os.getenv("DRYRUN") == "False" else True
 
 if DRYRUN:
+    print(DRYRUN)
     print("DRYRUN MODE: Not posting real tweets")
 else:
     print("LIVE MODE: Will post real tweets")
@@ -187,21 +187,23 @@ class TwitterAgent(CoreAgent):
                 if tweet:
                     if not DRYRUN:
                         if image_url:
-                            tweet_id = tweet_with_image(tweet, image_url)
+                            tweet_id, username = tweet_with_image(tweet, image_url)
                             logger.info("Successfully posted tweet with image: %s", tweet)
                         else:
-                            tweet_id = tweet_text_only(tweet)
+                            tweet_id, username = tweet_text_only(tweet)
                             logger.info("Successfully posted tweet: %s", tweet)
                         tweet_data['metadata']['tweet_id'] = tweet_id
+                        tweet_data['metadata']['tweet_url'] = f"https://x.com/{username}/status/{tweet_id}"
                         self.last_tweet_id = tweet_id
                         for interface_name, interface in self.interfaces.items():
                             if interface_name == 'telegram':
+                                telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", None) 
                                 await self.send_to_interface(interface_name, {
                                     'type': 'message',
-                                    'content': "Just posted a tweet: " + tweet_id,
+                                    'content': "Just posted a tweet: " + tweet_data['metadata']['tweet_url'],
                                     'image_url': None,
                                     'source': 'twitter',
-                                    'chat_id': None
+                                    'chat_id': telegram_chat_id
                                 })
                     else:
                         logger.info("Generated tweet: %s", tweet)

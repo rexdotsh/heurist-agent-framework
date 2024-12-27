@@ -55,19 +55,28 @@ def tweet_with_image(text, image_source):
     # Post the tweet with the uploaded media using v2 API
     response = client.create_tweet(text=text, media_ids=[media.media_id])
     
+    # Get authenticated user info
+    me = client.get_me()
+    author_username = me.data.username
+    
     # If the image was downloaded, delete the temporary file
     if image_source.startswith(('http://', 'https://')):
         os.remove(filename)
     
     print(f"Tweet posted successfully! Tweet ID: {response.data['id']}")
-    return response.data['id']
+    return response.data['id'], author_username
 
 def tweet_text_only(text):
     # Post tweet with text only using v2 API
     print("Posting tweet with text only using v2 API")
     response = client.create_tweet(text=text)
+    
+    # Get authenticated user info
+    me = client.get_me()
+    author_username = me.data.username
+    
     print(f"Tweet posted successfully! Tweet ID: {response.data['id']}")
-    return response.data['id']
+    return response.data['id'], author_username
 
 def reply(text, in_reply_to_tweet_id):
     print("Posting tweet in reply")
