@@ -40,6 +40,18 @@ class SQLiteConfig(StorageConfig):
     db_path: str = "embeddings.db"
     table_name: str = "message_embeddings"
 
+@dataclass
+class MessageData:
+    message: str
+    embedding: List[float]
+    timestamp: str
+    message_type: str
+    chat_id: Optional[str]
+    source_interface: Optional[str]
+    original_query: Optional[str]
+    response_type: Optional[str]
+    key_topics: Optional[List[str]]
+
 class VectorStorageProvider(ABC):
     """Abstract base class for vector storage providers"""
     
@@ -49,8 +61,8 @@ class VectorStorageProvider(ABC):
         pass
     
     @abstractmethod
-    def store_embedding(self, message: str, embedding: List[float]) -> None:
-        """Store a message and its embedding"""
+    def store_embedding(self, message_data: MessageData) -> None:
+        """Store a message and its metadata with embedding"""
         pass
     
     @abstractmethod
@@ -83,12 +95,19 @@ class PostgresVectorStorage(VectorStorageProvider):
                 # Enable pgvector extension
                 cur.execute("CREATE EXTENSION IF NOT EXISTS vector")
                 
-                # Create table for storing embeddings
+                # Create table with extended fields
                 cur.execute(f"""
                     CREATE TABLE IF NOT EXISTS {self.config.table_name} (
                         id SERIAL PRIMARY KEY,
                         message TEXT NOT NULL,
                         embedding vector(1536) NOT NULL,
+                        timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+                        message_type VARCHAR(50) NOT NULL,
+                        chat_id VARCHAR(100),
+                        source_interface VARCHAR(50),
+                        original_query TEXT,
+                        response_type VARCHAR(50),
+                        key_topics TEXT[],
                         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
@@ -105,19 +124,25 @@ class PostgresVectorStorage(VectorStorageProvider):
             logger.error(f"Failed to initialize PostgreSQL storage: {str(e)}")
             raise
 
-    def store_embedding(self, message: str, embedding: List[float]) -> None:
+    def store_embedding(self, message_data: MessageData) -> None:
         """Store a message and its embedding in PostgreSQL"""
         try:
             with self.conn.cursor() as cur:
-                logger.info(f"Storing embedding for message: {message[:50]}...")
                 cur.execute(
-                    f"INSERT INTO {self.config.table_name} (message, embedding) VALUES (%s, %s)",
-                    (message, embedding)
+                    f"""INSERT INTO {self.config.table_name} 
+                    (message, embedding, timestamp, message_type, chat_id,
+                    source_interface, original_query, response_type, key_topics)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    (message_data.message, message_data.embedding,
+                     message_data.timestamp, message_data.message_type,
+                     message_data.chat_id, message_data.source_interface,
+                     message_data.original_query, message_data.response_type,
+                     message_data.key_topics)
                 )
             self.conn.commit()
-            logger.info("Successfully stored embedding in database")
+            logger.info("Successfully stored message with metadata in database")
         except Exception as e:
-            logger.error(f"Failed to store embedding: {str(e)}")
+            logger.error(f"Failed to store message: {str(e)}")
             raise
 
     def find_similar(self, embedding: List[float], threshold: float = 0.8) -> List[Dict[str, Any]]:
@@ -163,6 +188,13 @@ class SQLiteVectorStorage(VectorStorageProvider):
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         message TEXT NOT NULL,
                         embedding TEXT NOT NULL,
+                        timestamp TEXT NOT NULL,
+                        message_type TEXT NOT NULL,
+                        chat_id TEXT,
+                        source_interface TEXT,
+                        original_query TEXT,
+                        response_type TEXT,
+                        key_topics TEXT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
@@ -171,19 +203,26 @@ class SQLiteVectorStorage(VectorStorageProvider):
             logger.error(f"Failed to initialize SQLite storage: {str(e)}")
             raise
 
-    def store_embedding(self, message: str, embedding: List[float]) -> None:
+    def store_embedding(self, message_data: MessageData) -> None:
         """Store a message and its embedding in SQLite"""
         try:
+            embedding_json = json.dumps(message_data.embedding)
+            key_topics_json = json.dumps(message_data.key_topics) if message_data.key_topics else None
+            
             with self.conn:
-                cur = self.conn.cursor()
-                embedding_json = json.dumps(embedding)
-                cur.execute(
-                    f"INSERT INTO {self.config.table_name} (message, embedding) VALUES (?, ?)",
-                    (message, embedding_json)
+                self.conn.execute(
+                    f"""INSERT INTO {self.config.table_name}
+                    (message, embedding, timestamp, message_type, chat_id,
+                    source_interface, original_query, response_type, key_topics)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    (message_data.message, embedding_json, message_data.timestamp,
+                     message_data.message_type, message_data.chat_id,
+                     message_data.source_interface, message_data.original_query,
+                     message_data.response_type, key_topics_json)
                 )
-            logger.info("Successfully stored embedding in database")
+            logger.info("Successfully stored message with metadata in database")
         except Exception as e:
-            logger.error(f"Failed to store embedding: {str(e)}")
+            logger.error(f"Failed to store message: {str(e)}")
             raise
 
     def find_similar(self, embedding: List[float], threshold: float = 0.8) -> List[Dict[str, Any]]:
@@ -255,7 +294,7 @@ class MessageStore:
         self.storage_provider = storage_provider
         self.storage_provider.initialize()
 
-    def add_message(self, message: str, embedding: list):
+    def add_message(self, message_data: MessageData) -> None:
         """
         Add a message and its embedding to the store.
         
@@ -263,9 +302,9 @@ class MessageStore:
             message (str): The message text
             embedding (list): The embedding vector for the message
         """
-        self.storage_provider.store_embedding(message, embedding)
+        self.storage_provider.store_embedding(message_data)
 
-    def find_similar_messages(self, new_embedding: list, threshold: float = 0.8) -> list:
+    def find_similar_messages(self, embedding: List[float], threshold: float = 0.8) -> List[Dict[str, Any]]:
         """
         Find messages similar to the given embedding.
         
@@ -276,7 +315,7 @@ class MessageStore:
         Returns:
             list: List of dictionaries containing similar messages and their similarity scores
         """
-        return self.storage_provider.find_similar(new_embedding, threshold)
+        return self.storage_provider.find_similar(embedding, threshold)
 
     def __del__(self):
         """Cleanup resources when the store is destroyed"""

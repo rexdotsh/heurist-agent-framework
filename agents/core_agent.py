@@ -12,7 +12,7 @@ import yaml
 from core.llm import call_llm_with_tools, call_llm, LLMError
 from core.imgen import generate_image_with_retry, generate_image_prompt
 from core.voice import transcribe_audio, speak_text
-from core.embedding import get_embedding, MessageStore, PostgresConfig, PostgresVectorStorage, EmbeddingError, SQLiteConfig, SQLiteVectorStorage
+from core.embedding import get_embedding, MessageStore, PostgresConfig, PostgresVectorStorage, EmbeddingError, SQLiteConfig, SQLiteVectorStorage, MessageData
 import threading
 from queue import Queue
 import asyncio
@@ -274,6 +274,7 @@ class CoreAgent:
         Args:
             message: The message to process
             source_interface: Optional name of the interface that sent the message
+            chat_id: Optional chat ID for the conversation
             
         Returns:
             tuple: (text_response, image_url)
@@ -286,32 +287,63 @@ class CoreAgent:
             return None, None
         
         try:
-            # Generate and store embedding for the message
+            # Generate embedding for the incoming message
             embedding = get_embedding(message)
             logger.info(f"Generated embedding for message: {message[:50]}...")
             
-            # Store the incoming message and its embedding
-            self.message_store.add_message(message, embedding)
+            # Create MessageData for incoming message
+            message_data = MessageData(
+                message=message,
+                embedding=embedding,
+                timestamp=datetime.now().isoformat(),
+                message_type="user_message",
+                chat_id=chat_id,
+                source_interface=source_interface,
+                original_query=None,
+                response_type=None,
+                key_topics=None
+            )
+            
+            # Store the incoming message
+            self.message_store.add_message(message_data)
             logger.info("Stored message and embedding in database")
             
-            # Find similar messages for context
-            similar_messages = self.message_store.find_similar_messages(embedding)
+            # Find similar messages and their responses
+            similar_messages = self.message_store.find_similar_messages(embedding, threshold=0.8)
             logger.info(f"Found {len(similar_messages)} similar messages")
             
-            # Add context from similar messages to the system prompt if any exist
+            # Build context from similar conversations and responses
             system_prompt = (self.prompt_config.get_system_prompt() + 
                             self.prompt_config.get_basic_settings() + 
                             self.prompt_config.get_interaction_styles())
-            if similar_messages:
-                context = "\n\nRelated previous conversations:\n"
-                for msg in similar_messages[:3]:  # Limit to top 3 most similar
-                    context += f"- {msg['message']} (similarity: {msg['similarity']:.2f})\n"
-                system_prompt += context
             
-            # Call LLM with tools and context
+            if similar_messages:
+                context = "\n\nRelated previous conversations and responses\nNOTE: Please provide a response that differs from these recent replies:\n"
+                seen_responses = set()  # Track unique responses
+                
+                for msg in similar_messages:
+                    if msg.get('message_type') == 'agent_response' and msg.get('original_query'):
+                        response = msg['message']
+                        # Skip if we've seen this exact response before
+                        if response in seen_responses:
+                            continue
+                        seen_responses.add(response)
+                        context += f"""
+                            Previous similar question: {msg.get('original_query')}
+                            My response: {response}
+                            Similarity score: {msg.get('similarity', 0):.2f}
+
+                            """
+                
+                context += "\nConsider the above responses for context, but provide a fresh perspective that adds value to the conversation.\n"
+                system_prompt += context
+                
+                logger.info("Added context from similar conversations")
+            
+            # Call LLM with tools and enhanced context
             response = call_llm_with_tools(
                 HEURIST_BASE_URL,
-                HEURIST_API_KEY, 
+                HEURIST_API_KEY,
                 LARGE_MODEL_ID,
                 system_prompt,
                 message,
@@ -329,11 +361,12 @@ class CoreAgent:
             if hasattr(response, 'content') and response.content:
                 text_response = response.content.replace('"', '')
             
+            # Handle tool calls
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
                 args = json.loads(tool_call.function.arguments)
                 tool_result = await self.tools.execute_tool(
-                    tool_call.function.name, 
+                    tool_call.function.name,
                     args,
                     self
                 )
@@ -343,8 +376,21 @@ class CoreAgent:
                     if 'message' in tool_result:
                         text_response += f"\n{tool_result['message']}"
             
-            # Store the response in the message store
-            self.message_store.add_message(text_response, get_embedding(text_response))
+            # Create and store MessageData for the response
+            response_data = MessageData(
+                message=text_response,
+                embedding=get_embedding(text_response),
+                timestamp=datetime.now().isoformat(),
+                message_type="agent_response",
+                chat_id=chat_id,
+                source_interface=source_interface,
+                original_query=message,
+                response_type=await self._classify_response_type(text_response),
+                key_topics=await self._extract_key_topics(text_response)
+            )
+            
+            # Store the response
+            self.message_store.add_message(response_data)
             
             # Notify other interfaces if needed
             if source_interface and chat_id:
@@ -366,6 +412,44 @@ class CoreAgent:
         except Exception as e:
             logger.error(f"Message handling failed: {str(e)}")
             return "Sorry, something went wrong.", None
+
+    async def _classify_response_type(self, response: str) -> str:
+        """Classify the type of response (factual, opinion, question, etc.)"""
+        classify_prompt = {
+            "role": "system",
+            "content": "Classify this response as one of: FACTUAL, OPINION, QUESTION, EMOTIONAL, ACTION. Response:"
+        }
+        try:
+            classification = await call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY,
+                SMALL_MODEL_ID,  # Use smaller model for classification
+                classify_prompt["content"],
+                response,
+                temperature=0.3
+            )
+            return classification.strip().upper()
+        except:
+            return "general"
+
+    async def _extract_key_topics(self, text: str) -> List[str]:
+        """Extract key topics from the response for better similarity matching"""
+        topic_prompt = {
+            "role": "system",
+            "content": "Extract 2-3 main topics from this text as comma-separated keywords:"
+        }
+        try:
+            topics = await call_llm(
+                HEURIST_BASE_URL,
+                HEURIST_API_KEY,
+                SMALL_MODEL_ID,
+                topic_prompt["content"],
+                text,
+                temperature=0.3
+            )
+            return [t.strip() for t in topics.split(',')]
+        except:
+            return []
 
     async def send_to_interface(self, target_interface: str, message: dict):
         """
