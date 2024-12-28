@@ -6,6 +6,7 @@ import logging
 import dotenv
 from .llm import call_llm
 from requests.exceptions import Timeout
+import random
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -21,13 +22,22 @@ HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 SEQUENCER_API_ENDPOINT = "http://sequencer.heurist.xyz/submit_job"
 PROMPT_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
-IMAGE_MODEL_ID = os.getenv("IMAGE_MODEL_ID")
+
+AVAILABLE_IMAGE_MODELS = [
+    "AnimagineXL",
+    "BrainDance",
+    "BluePencilRealistic",
+    "ArthemyComics",
+    "AAMXLAnimeMix"
+    ]
+
+IMAGE_MODEL_ID = os.getenv("IMAGE_MODEL_ID") or random.choice(AVAILABLE_IMAGE_MODELS)
 
 # Image generation settings
 IMAGE_SETTINGS = {
     "width": 1024,
     "height": 1024,
-    "num_iterations": 20,
+    "num_iterations": 30,
     "guidance_scale": 3,
     "deadline": 60
 }
@@ -78,7 +88,7 @@ def generate_image(prompt: str) -> dict:
         "Authorization": f"Bearer {HEURIST_API_KEY}",
         "Content-Type": "application/json"
     }
-
+    print("Image model: ", IMAGE_MODEL_ID)
     payload = {
         "job_id": generate_job_id(),
         "model_input": {
