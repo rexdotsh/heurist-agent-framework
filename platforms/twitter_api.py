@@ -168,7 +168,7 @@ def get_tweet(tweet_id: str):
 def get_tweet_text(tweet_id: str) -> Optional[str]:
     """Get just the text content of a tweet"""
     try:
-        tweet = client.get_tweet(tweet_id)
+        tweet = client.get_tweet(tweet_id, tweet_fields=['text'])
         if tweet.data:
             return tweet.data.text
         return None
@@ -211,4 +211,5 @@ def get_referenced_tweet_id(tweet_id: str, ref_type: str = 'replied_to') -> Opti
 # text_only_tweet = "This is a text-only tweet using API v2!"
 # tweet_text_only(text_only_tweet)
 
-print(get_user_id("heurist_ai"))
+# print(get_user_id("heurist_ai"))
+# print(get_tweet("1870107660260880471"))

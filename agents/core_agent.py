@@ -79,18 +79,15 @@ class PromptConfig:
     def get_context_twitter_template(self) -> str:
         return self.config['templates']['context_twitter']
 
+    def get_social_reply_template(self) -> str:
+        return self.config['templates']['social_reply']
+
     def get_tweet_ideas(self) -> list:
         return self.config['tweet_ideas']['options']
-
+    
     def get_twitter_rules(self) -> str:
         return self.config['rules']['twitter']
-    
-    def get_reply_to_comment_template(self) -> str:
-        return self.config['reply']['reply_to_comment_template']
 
-    def get_reply_to_tweet_template(self) -> str:
-        return self.config['reply']['reply_to_tweet_template']
-    
     def get_telegram_rules(self) -> str:
         return self.config['rules']['telegram']
 
@@ -272,7 +269,7 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, system_prompt_fixed: str = None, skip_validation: bool = False):
+    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, system_prompt_fixed: str = None, skip_validation: bool = False, skip_embedding: bool = False, skip_tools: bool = False):
         """
         Handle message and optionally notify other interfaces.        
         Args:
@@ -280,7 +277,9 @@ class CoreAgent:
             source_interface: Optional name of the interface that sent the message
             chat_id: Optional chat ID for the conversation
             skip_validation: Optional flag to skip pre-validation
-            
+            skip_embedding: Optional flag to skip embedding
+            skip_tools: Optional flag to skip tools
+
         Returns:
             tuple: (text_response, image_url)
         """
@@ -292,42 +291,42 @@ class CoreAgent:
             return None, None
         
         try:
-            # Generate embedding for the incoming message
-            embedding = get_embedding(message)
-            logger.info(f"Generated embedding for message: {message[:50]}...")
+            similar_messages = []
+            if not skip_embedding:
+                # Generate embedding for the incoming message
+                embedding = get_embedding(message)
+                logger.info(f"Generated embedding for message: {message[:50]}...")
             
-            # Create MessageData for incoming message
-            message_data = MessageData(
-                message=message,
-                embedding=embedding,
-                timestamp=datetime.now().isoformat(),
-                message_type="user_message",
-                chat_id=chat_id,
-                source_interface=source_interface,
-                original_query=None,
-                response_type=None,
-                key_topics=None
-            )
-            
-            # Store the incoming message
-            self.message_store.add_message(message_data)
-            logger.info("Stored message and embedding in database")
-            
-            # First find messages similar to the incoming user message
-            similar_messages = self.message_store.find_similar_messages(
-                embedding, 
-                threshold=0.9            
-            )
-            logger.info(f"Found {len(similar_messages)} similar messages")
+                # Create MessageData for incoming message
+                message_data = MessageData(
+                    message=message,
+                    embedding=embedding,
+                    timestamp=datetime.now().isoformat(),
+                    message_type="user_message",
+                    chat_id=chat_id,
+                    source_interface=source_interface,
+                    original_query=None,
+                    response_type=None,
+                    key_topics=None
+                )
+                
+                # Store the incoming message
+                self.message_store.add_message(message_data)
+                logger.info("Stored message and embedding in database")
+                
+                # First find messages similar to the incoming user message
+                similar_messages = self.message_store.find_similar_messages(
+                    embedding, 
+                    threshold=0.9            
+                )
+                logger.info(f"Found {len(similar_messages)} similar messages")
             
             # Build context from similar conversations and responses
             if system_prompt_fixed is None:
-                system_prompt_fixed = "Use the following settings as part of your personality and voice: "
+                system_prompt_fixed = "Use the following settings as part of your personality and voice if applicable in the conversation context: "
                 basic_options = random.sample(self.prompt_config.get_basic_settings(), 2)
                 style_options = random.sample(self.prompt_config.get_interaction_styles(), 2)
-                system_prompt_fixed = (self.prompt_config.get_reply_to_tweet_template() + 
-                                    ' '.join(basic_options) + ' ' + 
-                                    ' '.join(style_options))
+                system_prompt_fixed = ' '.join(basic_options) + ' ' + ' '.join(style_options)
             
             system_prompt_context = ""
             if similar_messages:
@@ -359,18 +358,29 @@ class CoreAgent:
                 system_prompt_context += context
                 
                 logger.info("Added context from similar conversations")
+            
             print("system_prompt_context: ", system_prompt_context)
             print("system_prompt_fixed: ", system_prompt_fixed)
             print("message: ", message)
             # Call LLM with tools and enhanced context
 
             system_prompt = self.prompt_config.get_system_prompt() + system_prompt_fixed + system_prompt_context
-            response = call_llm_with_tools(
-                HEURIST_BASE_URL,
-                HEURIST_API_KEY,
-                LARGE_MODEL_ID,
-                system_prompt,
-                message,
+            if skip_tools:
+                response = call_llm(
+                    HEURIST_BASE_URL,
+                    HEURIST_API_KEY,
+                    LARGE_MODEL_ID,
+                    system_prompt,
+                    message,
+                    temperature=0.4,
+                )
+            else:
+                response = call_llm_with_tools(
+                    HEURIST_BASE_URL,
+                    HEURIST_API_KEY,
+                    LARGE_MODEL_ID,
+                    system_prompt,
+                    message,
                 temperature=0.4,
                 tools=self.tools.get_tools_config()
             )
@@ -400,21 +410,22 @@ class CoreAgent:
                     if 'message' in tool_result:
                         text_response += f"\n{tool_result['message']}"
             
-            # Create and store MessageData for the response
-            response_data = MessageData(
-                message=text_response,
-                embedding=get_embedding(text_response),
-                timestamp=datetime.now().isoformat(),
-                message_type="agent_response",
-                chat_id=chat_id,
-                source_interface=source_interface,
-                original_query=message,
-                response_type=await self._classify_response_type(text_response),
-                key_topics=await self._extract_key_topics(text_response)
-            )
-            
-            # Store the response
-            self.message_store.add_message(response_data)
+            if not skip_embedding:
+                # Create and store MessageData for the response
+                response_data = MessageData(
+                    message=text_response,
+                    embedding=get_embedding(text_response),
+                    timestamp=datetime.now().isoformat(),
+                    message_type="agent_response",
+                    chat_id=chat_id,
+                    source_interface=source_interface,
+                    original_query=message,
+                    response_type=await self._classify_response_type(text_response),
+                    key_topics=await self._extract_key_topics(text_response)
+                )
+                
+                # Store the response
+                self.message_store.add_message(response_data)
             
             # Notify other interfaces if needed
             if source_interface and chat_id:
