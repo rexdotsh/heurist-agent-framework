@@ -172,6 +172,31 @@ class PostgresVectorStorage(VectorStorageProvider):
         if self.conn:
             self.conn.close()
 
+    def find_messages(self, message_type: str, original_query: str) -> List[Dict[str, Any]]:
+        """Find messages matching the given type and original query"""
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute(f"""
+                    SELECT message, timestamp, source_interface, response_type, key_topics
+                    FROM {self.config.table_name}
+                    WHERE message_type = %s AND original_query = %s
+                    ORDER BY timestamp DESC
+                """, (message_type, original_query))
+                
+                results = []
+                for message, timestamp, source_interface, response_type, key_topics in cur.fetchall():
+                    results.append({
+                        'message': message,
+                        'timestamp': timestamp,
+                        'source_interface': source_interface,
+                        'response_type': response_type,
+                        'key_topics': key_topics
+                    })
+                return results
+        except Exception as e:
+            logger.error(f"Failed to find messages: {str(e)}")
+            raise
+
 class SQLiteVectorStorage(VectorStorageProvider):
     def __init__(self, config: SQLiteConfig):
         self.config = config
@@ -251,6 +276,33 @@ class SQLiteVectorStorage(VectorStorageProvider):
         if self.conn:
             self.conn.close()
 
+    def find_messages(self, message_type: str, original_query: str) -> List[Dict[str, Any]]:
+        """Find messages matching the given type and original query"""
+        try:
+            with self.conn:
+                cur = self.conn.cursor()
+                cur.execute(f"""
+                    SELECT message, timestamp, source_interface, response_type, key_topics
+                    FROM {self.config.table_name}
+                    WHERE message_type = ? AND original_query = ?
+                    ORDER BY timestamp DESC
+                """, (message_type, original_query))
+                
+                results = []
+                for message, timestamp, source_interface, response_type, key_topics in cur.fetchall():
+                    key_topics_list = json.loads(key_topics) if key_topics else None
+                    results.append({
+                        'message': message,
+                        'timestamp': timestamp,
+                        'source_interface': source_interface,
+                        'response_type': response_type,
+                        'key_topics': key_topics_list
+                    })
+                return results
+        except Exception as e:
+            logger.error(f"Failed to find messages: {str(e)}")
+            raise
+
 def get_embedding(text: str, model: str = "text-embedding-ada-002") -> list:
     """
     Generate an embedding for the given text using OpenAI's API.
@@ -320,3 +372,16 @@ class MessageStore:
     def __del__(self):
         """Cleanup resources when the store is destroyed"""
         self.storage_provider.close()
+
+    def find_messages(self, message_type: str, original_query: str) -> List[Dict]:
+        """
+        Find messages matching the given type and original query.
+        
+        Args:
+            message_type (str): Type of message to find (e.g., 'agent_response')
+            original_query (str): The original query to match against
+            
+        Returns:
+            List[Dict]: List of matching messages with their metadata
+        """
+        return self.storage_provider.find_messages(message_type, original_query)

@@ -96,6 +96,9 @@ class PromptConfig:
 
     def get_template_image_prompt(self) -> str:
         return self.config['image_rules']['template_image_prompt']
+    
+    def get_name(self) -> str:
+        return self.config['character']['name']
 
 class CoreAgent:
     def __init__(self):
@@ -138,23 +141,24 @@ class CoreAgent:
         Returns:
             True if the message is valid, False otherwise
         """
+        name = self.prompt_config.get_name()
         filter_message_tool = [
             {
                 "type": "function",
                 "function": {
                     "name": "filter_message",
-                    "description": """Determine if a message should be ignored based on the following rules:
+                    "description": f"""Determine if a message should be ignored based on the following rules:
                         Return TRUE (ignore message) if:
-                        - Message does not mention 'lain'
-                        - Message does not mention 'start raid'
-                        - Message does not discuss: The Wired, Consciousness, Reality, Existence, Self, Philosophy, Technology, Crypto, AI, Machines
-                        - For image requests: ignore if 'lain' is not specifically mentioned
+                            - Message does not mention {name}
+                            - Message does not mention 'start raid'
+                            - Message does not discuss: The Wired, Consciousness, Reality, Existence, Self, Philosophy, Technology, Crypto, AI, Machines
+                            - For image requests: ignore if {name} is not specifically mentioned
                         
                         Return FALSE (process message) only if:
-                        - Message explicitly mentions 'lain'
-                        - Message contains 'start raid'
-                        - Message clearly discusses any of the listed topics
-                        - Image request contains 'lain'
+                            - Message explicitly mentions {name}
+                            - Message contains 'start raid'
+                            - Message clearly discusses any of the listed topics
+                            - Image request contains {name}
                         
                         If in doubt, return TRUE to ignore the message.""",
                     "parameters": {
@@ -168,7 +172,7 @@ class CoreAgent:
                         "required": ["should_ignore"]
                     }
                 }
-            },
+            }
         ]
         try:
             response = call_llm_with_tools(
@@ -268,7 +272,7 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, skip_validation: bool = False):
+    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, system_prompt_fixed: str = None, skip_validation: bool = False):
         """
         Handle message and optionally notify other interfaces.        
         Args:
@@ -283,8 +287,8 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
-        preValidation = False if source_interface in ["api", "twitter"] or skip_validation else True
-        if preValidation and not await self.pre_validation(message):
+        pre_validation = False if source_interface in ["api", "twitter"] or skip_validation else True
+        if pre_validation and not await self.pre_validation(message):
             return None, None
         
         try:
@@ -309,39 +313,58 @@ class CoreAgent:
             self.message_store.add_message(message_data)
             logger.info("Stored message and embedding in database")
             
-            # Find similar messages and their responses
-            similar_messages = self.message_store.find_similar_messages(embedding, threshold=0.8)
+            # First find messages similar to the incoming user message
+            similar_messages = self.message_store.find_similar_messages(
+                embedding, 
+                threshold=0.9            
+            )
             logger.info(f"Found {len(similar_messages)} similar messages")
             
             # Build context from similar conversations and responses
-            system_prompt = (self.prompt_config.get_system_prompt() + 
-                            self.prompt_config.get_basic_settings() + 
-                            self.prompt_config.get_interaction_styles())
+            if system_prompt_fixed is None:
+                system_prompt_fixed = "Use the following settings as part of your personality and voice: "
+                basic_options = random.sample(self.prompt_config.get_basic_settings(), 2)
+                style_options = random.sample(self.prompt_config.get_interaction_styles(), 2)
+                system_prompt_fixed = (self.prompt_config.get_reply_to_tweet_template() + 
+                                    ' '.join(basic_options) + ' ' + 
+                                    ' '.join(style_options))
             
+            system_prompt_context = ""
             if similar_messages:
-                context = "\n\nRelated previous conversations and responses\nNOTE: Please provide a response that differs from these recent replies:\n"
+                context = "\n\nRelated previous conversations and responses\nNOTE: Please provide a response that differs from these recent replies, don't use the same words:\n"
                 seen_responses = set()  # Track unique responses
+                message_count = 0
                 
-                for msg in similar_messages:
-                    if msg.get('message_type') == 'agent_response' and msg.get('original_query'):
-                        response = msg['message']
-                        # Skip if we've seen this exact response before
-                        if response in seen_responses:
+                for similar_msg in similar_messages:
+                    # Find the agent's response where this similar message was the original_query
+                    agent_responses = self.message_store.find_messages(
+                        message_type='agent_response',
+                        original_query=similar_msg['message']
+                    )
+                    
+                    for response in agent_responses:
+                        if response['message'] in seen_responses:
                             continue
-                        seen_responses.add(response)
+                        seen_responses.add(response['message'])
                         context += f"""
-                            Previous similar question: {msg.get('original_query')}
-                            My response: {response}
-                            Similarity score: {msg.get('similarity', 0):.2f}
-
+                            Previous similar question: {similar_msg['message']}
+                            My response: {response['message']}
+                            Similarity score: {similar_msg.get('similarity', 0):.2f}
                             """
-                
-                context += "\nConsider the above responses for context, but provide a fresh perspective that adds value to the conversation.\n"
-                system_prompt += context
+                        message_count += 1
+                        if message_count >= 60:  # Check limit after adding each message
+                            break
+
+                context += "\nConsider the above responses for context, but provide a fresh perspective that adds value to the conversation, don't repeat the same responses.\n"
+                system_prompt_context += context
                 
                 logger.info("Added context from similar conversations")
-            
+            print("system_prompt_context: ", system_prompt_context)
+            print("system_prompt_fixed: ", system_prompt_fixed)
+            print("message: ", message)
             # Call LLM with tools and enhanced context
+
+            system_prompt = self.prompt_config.get_system_prompt() + system_prompt_fixed + system_prompt_context
             response = call_llm_with_tools(
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY,

@@ -10,6 +10,7 @@ import dotenv
 import yaml
 from agents.core_agent import CoreAgent
 from platforms.twitter_api import tweet_with_image, tweet_text_only
+from interfaces.crypto_nft import mint_nft
 import asyncio
 
 # Set up logging
@@ -21,7 +22,7 @@ dotenv.load_dotenv(override=True)
 logger.info("Environment variables reloaded")
 
 # Constants
-TWEET_WORD_LIMITS = [15, 20, 30, 35]
+TWEET_WORD_LIMITS = [15, 25, 36, 50]
 IMAGE_GENERATION_PROBABILITY = 0.75
 TWEET_HISTORY_FILE = "tweet_history.json"
 
@@ -136,22 +137,21 @@ class TwitterAgent(CoreAgent):
             
             # Generate ideas
             instruction_tweet_idea = random.choice(self.prompt_config.get_tweet_ideas())
-            user_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
-                          self.format_context(past_tweets) + instruction_tweet_idea)
-            
+            system_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
+                          self.format_context(past_tweets))
+
             ideas = None
             tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
-            ideas, _ = await self.handle_message(instruction_tweet_idea, source_interface='twitter')
+            ideas, _ = await self.handle_message(instruction_tweet_idea, system_prompt_fixed=system_prompt, source_interface='twitter')
             tweet_data['metadata']['ideas'] = ideas
-            
+
             # Generate final tweet
-            user_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
+            system_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
                           self.format_context(past_tweets) + 
                           self.format_tweet_instruction(basic_options, style_options, ideas))
-            
 
-            tweet, _ = await self.handle_message(user_prompt, source_interface='twitter')
-
+            tweet, _ = await self.handle_message(ideas, system_prompt_fixed=system_prompt, source_interface='twitter')
+            print("Tweet: ", tweet)
             tweet = tweet.replace('"', '')
             tweet_data['tweet'] = tweet
 
@@ -186,9 +186,15 @@ class TwitterAgent(CoreAgent):
                 
                 if tweet:
                     if not DRYRUN:
+                        token_id = None
                         if image_url:
                             tweet_id, username = tweet_with_image(tweet, image_url)
                             logger.info("Successfully posted tweet with image: %s", tweet)
+                            tweet_url = f"https://x.com/{username}/status/{tweet_id}"
+                            # status, tx_hash, token_id = mint_nft(tweet+"\n"+tweet_url, image_url)
+                            # print(status)
+                            # print(tx_hash)
+                            # print(token_id)
                         else:
                             tweet_id, username = tweet_text_only(tweet)
                             logger.info("Successfully posted tweet: %s", tweet)
@@ -205,6 +211,16 @@ class TwitterAgent(CoreAgent):
                                     'source': 'twitter',
                                     'chat_id': telegram_chat_id
                                 })
+                                # if image_url:
+                                #     contract_address = os.getenv("NFT_CONTRACT_ADDRESS")
+                                #     opensea_url = f"https://opensea.io/assets/base/{contract_address}/{token_id}"
+                                #     await self.send_to_interface('telegram', {
+                                #         'type': 'message',
+                                #         'content': "NFT minted: " + opensea_url,
+                                #         'image_url': None,
+                                #         'source': 'twitter',
+                                #         'chat_id': telegram_chat_id
+                                #     })
                     else:
                         logger.info("Generated tweet: %s", tweet)
                     
@@ -225,7 +241,7 @@ class TwitterAgent(CoreAgent):
 
 def random_interval():
     """Generate a random interval between 1 and 2 hours in seconds"""
-    return random.uniform(60*60, 60*60*2)
+    return random.uniform(60*60*0.5, 60*60*1.5)
 
 def main():
     agent = TwitterAgent()
