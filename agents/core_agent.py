@@ -10,7 +10,7 @@ from typing import Dict, Any, List, Optional
 import dotenv
 import yaml
 from core.llm import call_llm_with_tools, call_llm, LLMError
-from core.imgen import generate_image_with_retry, generate_image_prompt
+from core.imgen import generate_image_with_retry, generate_image_prompt, generate_image_smartgen
 from core.voice import transcribe_audio, speak_text
 from core.embedding import get_embedding, MessageStore, PostgresConfig, PostgresVectorStorage, EmbeddingError, SQLiteConfig, SQLiteVectorStorage, MessageData
 import threading
@@ -229,6 +229,8 @@ class CoreAgent:
         try:
             full_prompt = base_prompt + prompt if base_prompt else prompt
             result = generate_image_with_retry(prompt=full_prompt)
+            #SMARTGEN
+            #result = await generate_image_smartgen(prompt=full_prompt)
             print(result)
             return result
         except Exception as e:

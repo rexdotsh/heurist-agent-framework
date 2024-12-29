@@ -7,7 +7,7 @@ import dotenv
 from .llm import call_llm
 from requests.exceptions import Timeout
 import random
-
+from core.heurist_image.SmartGen import SmartGen
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -81,6 +81,27 @@ def generate_image_convo_prompt(original_tweet: str, reply: str) -> str:
     user_prompt = template_heuman_convo_prompt.format(original_tweet=original_tweet, reply=reply)
     system_prompt = "You are a helpful AI assistant. You are an expert in creating prompts for AI art. Your output only contains the prompt texts."
     return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt, user_prompt, 0.7)
+
+async def generate_image_smartgen(prompt: str) -> dict:
+    """Generate an image using SmartGen with enhanced parameters."""
+    try:
+        async with SmartGen(api_key=HEURIST_API_KEY) as generator:
+            response = await generator.generate_image(
+                description=prompt,
+                image_model=IMAGE_MODEL_ID,
+                width=IMAGE_SETTINGS["width"],
+                height=IMAGE_SETTINGS["height"],
+                stylization_level=4,
+                detail_level=5,
+                color_level=5,
+                lighting_level=4,
+                quality="high"
+            )
+            print(response)
+            return response['url']
+    except Exception as e:
+        logger.error(f"SmartGen image generation failed: {str(e)}")
+        return None
 
 def generate_image(prompt: str) -> dict:
     """Generate an image from a prompt"""
