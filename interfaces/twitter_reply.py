@@ -22,58 +22,36 @@ from typing import Dict, List
 import dotenv
 import yaml
 import platforms.twitter_api as twitter_api
-from core.llm import LLMError, call_llm
 from core.imgen import generate_image_convo_prompt, generate_image_with_retry
+from core.config import PromptConfig
 from agents.core_agent import CoreAgent
+from utils.text_utils import strip_tweet_text
+from utils.llm_utils import should_ignore_message
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 dotenv.load_dotenv()
 
 # Constants
+HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
+HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
 SELF_TWITTER_NAME = os.getenv("SELF_TWITTER_NAME")
 DRYRUN = os.getenv("DRYRUN")
 
 RATE_LIMIT_SLEEP = 120
-TAGGING_CHECK_INTERVAL = 300
+TAGGING_CHECK_INTERVAL = 1800
 
 if DRYRUN:
     print("DRYRUN MODE: Not posting real tweets")
 else:
     print("LIVE MODE: Will post real tweets")
 
-class PromptConfig:
-    def __init__(self, config_path: str = "config/prompts.yaml"):
-        self.config_path = Path(config_path)
-        self.config = self._load_config()
-
-    def _load_config(self) -> dict:
-        """Load YAML config file"""
-        try:
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f)
-        except Exception as e:
-            logger.error(f"Error loading config: {str(e)}")
-            raise
-
-    def get_system_prompt(self) -> str:
-        return self.config['system']['base']
-
-    def get_basic_prompt(self) -> str:
-        return self.config['reply']['basic_prompt']
-
-    def get_heurist_knowledge(self) -> str:
-        return self.config['reply']['heurist_knowledge']
-
-    def get_reply_to_comment_template(self) -> str:
-        return self.config['reply']['reply_to_comment_template']
-
-    def get_reply_to_tweet_template(self) -> str:
-        return self.config['reply']['reply_to_tweet_template']
+prompt_config = PromptConfig()
 
 class QueueManager:
     def __init__(self, file_path="reply_history.json"):
@@ -83,7 +61,11 @@ class QueueManager:
     def _ensure_file_exists(self):
         """Create file with initial structure if it doesn't exist"""
         if not self.file_path.exists():
-            self.write_data({"processed_replies": [], "pending_replies": []})
+            self.write_data({
+                "processed_replies": [], 
+                "pending_replies": [],
+                "processing_replies": {}
+            })
     
     def read_data(self) -> Dict:
         """Read current data from file"""
@@ -104,6 +86,7 @@ class QueueManager:
     
     def add_reply(self, reply_data: dict):
         """Add new reply to queue"""
+        logger.debug(f"Adding new reply to queue: {reply_data['tweet_id']}")
         data = self.read_data()
         # Use tweet_id from the API response
         reply_data["message_id"] = reply_data["tweet_id"]  # Store tweet_id as message_id
@@ -111,32 +94,40 @@ class QueueManager:
         self.write_data(data)
     
     def pop_pending_reply(self):
-        """Get next pending reply"""
+        """Get next pending reply and mark as processing"""
         data = self.read_data()
-        if not data["pending_replies"]:
-            return None
-            
-        # Get first pending reply (oldest)
-        reply_data = data["pending_replies"][0]
         
-        response = {
-            'message_id': reply_data["tweet_id"],
-            'data': json.dumps(reply_data)
-        }
+        # Find first pending reply that's not being processed
+        for reply in data["pending_replies"]:
+            tweet_id = reply["tweet_id"]
+            if tweet_id not in data.get("processing_replies", {}):
+                logger.debug(f"Found unprocessed reply {tweet_id}, marking as processing")
+                data["processing_replies"][tweet_id] = {
+                    "data": reply,
+                    "started_at": datetime.now().isoformat()
+                }
+                self.write_data(data)
+                
+                return {
+                    'message_id': tweet_id,
+                    'data': json.dumps(reply)
+                }
         
-        return response
+        logger.debug("No pending replies found")
+        return None
     
     def mark_as_done(self, message_id, response_data: dict):
-        """Mark reply as processed"""
+        """Move from processing to processed"""
+        logger.debug(f"Marking reply {message_id} as done")
         data = self.read_data()
         
-        # Find and remove from pending
-        for i, reply in enumerate(data["pending_replies"]):
-            if reply["tweet_id"] == message_id:
-                data["pending_replies"].pop(i)
-                data["processed_replies"].append(response_data)
-                break
-                
+        # Remove from pending and processing
+        data["pending_replies"] = [r for r in data["pending_replies"] 
+                                 if r["tweet_id"] != message_id]
+        data["processing_replies"].pop(message_id, None)
+        
+        # Add to processed
+        data["processed_replies"].append(response_data)
         self.write_data(data)
 
     def get_all_tweet_ids(self) -> set:
@@ -225,6 +216,23 @@ class TwitterSearchMonitor:
                     break
             if at_count >= 3:
                 continue
+            
+            # strip the tweet text of URLs and @ mentions
+            cleaned_text = strip_tweet_text(tweet['text'])
+            if len(cleaned_text) < 10:
+                continue
+
+            # check if the tweet should be ignored
+            if should_ignore_message(
+                base_url=HEURIST_BASE_URL,
+                api_key=HEURIST_API_KEY,
+                model_id=SMALL_MODEL_ID,
+                criteria=prompt_config.get_social_reply_filter(),
+                message=cleaned_text,
+                temperature=0.0
+            ):
+                logger.info(f"Ignoring tweet {cleaned_text} because it matches the ignore criteria")
+                continue
      
             filtered_tweets.append(tweet)
             
@@ -245,6 +253,9 @@ class TwitterSearchMonitor:
             if not response_data.get('tweets'):
                 logger.info("No tweets found in response")
                 break
+
+            logger.debug(f"Fetched {len(response_data['tweets'])} tweets")
+            logger.debug(f"Response data: {response_data}")
             
             candidate_tweets = self.filter_tweets(response_data['tweets'])
             
@@ -296,7 +307,8 @@ class TwitterReplyAgent(CoreAgent):
         self.set_search_terms(["@heurist_ai"])  # Set default search term
 
     async def send_message(self, chat_id: str, message: str, image_url: str = None):
-        """Interface method called by CoreAgent's send_to_interface"""
+        """Interface method called by CoreAgent's send_to_interface. chat_id is the tweet_id"""
+        logger.debug(f"send_message {chat_id} {message} {image_url}")
         if not DRYRUN:
             if image_url:
                 twitter_api.reply_with_image(message, image_url, chat_id)
@@ -308,16 +320,30 @@ class TwitterReplyAgent(CoreAgent):
 
     async def process_reply(self, message_data):
         """Process single reply using CoreAgent's handle_message"""
+        logger.debug(f"Processing reply for tweet {message_data['tweet_id']}")
         try:
+            social_reply_template = prompt_config.get_social_reply_template()
+            context = None
+            if message_data["related_tweet_text"]:
+                context = "Related tweet: " + message_data["related_tweet_text"]
+            message = social_reply_template.format(
+                user_name=message_data["author_name"],
+                social_platform="Twitter",
+                user_message=message_data["content"],
+                context=context
+            )
             response, image_url = await self.handle_message(
-                message=message_data["content"],
+                message=message,
                 source_interface="twitter_reply",
                 chat_id=message_data["tweet_id"],
                 skip_embedding=True,
                 skip_tools=True
             )
             
-            # CoreAgent will automatically call send_message via send_to_interface
+            # send the response to the original tweet
+            await self.send_message(message_data["tweet_id"], response, image_url)
+
+            # CoreAgent will automatically call send_to_interface to other registered interfaces
             return response, image_url
             
         except Exception as e:
@@ -334,16 +360,21 @@ class TwitterReplyAgent(CoreAgent):
                         await asyncio.sleep(RATE_LIMIT_SLEEP)
                         continue
 
-                    reply_data = json.loads(message.data)
-                    await self.process_reply(reply_data)
+                    reply_data = json.loads(message["data"])
+                    response, image_url = await self.process_reply(reply_data)
+                    
+                    response_data = reply_data.copy()
+                    response_data["response"] = response
+                    if image_url:
+                        response_data["image_url"] = image_url
+                            
+                    self.queue_manager.mark_as_done(message["message_id"], response_data)
                     await asyncio.sleep(RATE_LIMIT_SLEEP)
 
                 except Exception as e:
                     logger.error(f"Worker error: {str(e)}")
                     await asyncio.sleep(RATE_LIMIT_SLEEP)
-                finally:
-                    self.queue_manager.mark_as_done(message.message_id, reply_data)
-
+                        
         workers = [worker() for _ in range(num_workers)]
         await asyncio.gather(*workers)
 
