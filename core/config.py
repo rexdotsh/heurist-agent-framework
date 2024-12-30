@@ -2,8 +2,14 @@ import yaml
 import logging
 from pathlib import Path
 from typing import Optional
+import os
+import dotenv
 
 logger = logging.getLogger(__name__)
+os.environ.clear()
+dotenv.load_dotenv(override=True)
+
+CONFIG_PROMPTS = os.getenv("CONFIG_PROMPTS", "prompts.yaml")
 
 class PromptConfig:
     _instance: Optional['PromptConfig'] = None
@@ -19,8 +25,9 @@ class PromptConfig:
             return
             
         if config_path is None:
+            # Get the project root directory (2 levels up from the current file)
             project_root = Path(__file__).parent.parent
-            config_path = project_root / "config" / "prompts.yaml"
+            config_path = project_root / "config" / CONFIG_PROMPTS
             logger.info(f"Using config file: {config_path}")
         
         self.config_path = Path(config_path)

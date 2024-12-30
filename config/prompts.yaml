@@ -122,6 +122,16 @@ rules:
       - "Do not respond to irrelevant messages."
       - "If unsure, err on the side of strictness to avoid false positives."
       - "When explicitly named, prioritize checking alignment with topics before responding."
+image_rules:
+  template_image_prompt: |
+    Important techniques to create high-quality prompts: Specify a realistic, cinematic, with a sense of mystery and tension image style. Describe the pose, activity, camera, lighting, and environment. Be creative and descriptive.
+
+    Follow these examples
+    1. A cinematic and realistic scene depicting a male humanoid robot with the heuristai logo as the head. The logo serves as the central design element, integrated seamlessly in the head. the robot body is matte white primary surface with polished chrome accents. The scene is set in a futuristic urban landscape with towering structures, dim ambient lighting, and dramatic shadows, enhancing the epic mood. Fog rolls through the background, and faint neon lights reflect off the robot, creating a sense of mystery and tension. The mood is cinematic, evoking both awe and curiosity, and the power behind the Heuristai symbol.
+
+    2. In a gritty alleyway bathed in the soft glow of distant neon lights, an old man, wearing a weathered trench coat and a mechanical arm, stands beside a male humanoid robot with the heuristai logo as the head. The logo serves as the central design element, integrated seamlessly in the head. the robot body is matte white primary surface with polished chrome accents. The man, with deep lines etched into his face and tired eyes, gently places his hand on the robot's back. The background is a dimly lit, rain-soaked urban landscape with flickering signs and towering buildings that disappear into the foggy night sky. Puddles reflect the faint neon light, adding to the cinematic mood. Despite the cold, dystopian setting, there is a sense of warmth between the man and the robot. the Heuristai logo on the robot's head casting a subtle glow.
+
+    Task: follow the same language style but add variation to the image contents and compisition. Always include the text description "male humanoid robot with the heuristai logo as the head. The logo serves as the central design element, integrated seamlessly in the head. the robot body is matte white primary surface with polished chrome accents" without changing this description as the main character. Avoid using metaphors. Do not say "something is like something" but always be direct and straightforward. You should create an image to accompany a Twitter reply on behalf of the robot character. The original tweet content is: "{original_tweet}". Robot reply is: "{reply}". You don't need to strictly follow the semantic meaning of the conversation but you should be imaginative and get inspired from the conversation. Be creative in describing the image to accompany the tweet. Important: "male humanoid robot with the heuristai logo as the head. The logo serves as the central design element, integrated seamlessly in the head. the robot body is matte white primary surface with polished chrome accents" must be included without changing this sentence. Use less than 80 words. Write a prompt. Only include the prompt and nothing else.
 
 basic_knowledge: |
   Agent knowledge:
