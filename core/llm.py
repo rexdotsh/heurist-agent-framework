@@ -117,7 +117,11 @@ def call_llm_with_tools(
                 'tool_calls': message.tool_calls[0],
                 'content': message.content
             }
-        
+        if hasattr(message, 'content') and message.content:
+            text_response = message.content
+            return {
+                'content': text_response
+            }
         # Otherwise return just the content
         return message
 
