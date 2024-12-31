@@ -72,17 +72,21 @@ class FlaskAgent(CoreAgent):
         async def handle_message():
             try:
                 data = request.get_json()
+                logger.info(data)
                 if not data or 'message' not in data:
                     return jsonify({'error': 'No message provided'}), 400
                 chat_id = None
+                external_tools = data.get('tools', [])
+                logger.info(external_tools)
                 if 'chat_id' in data:
                     chat_id = data['chat_id']
-                text_response, image_url = await self.handle_message(
+                text_response, image_url, tool_calls = await self.handle_message(
                     data['message'],
                     source_interface='api',
-                    chat_id=chat_id    
+                    chat_id=chat_id,
+                    external_tools=external_tools
                 )
-                
+                print(tool_calls)
                 if self._parent != self:
                     logger.info("Operating in shared mode with core agent")
                 else:
@@ -93,7 +97,8 @@ class FlaskAgent(CoreAgent):
                     response['image_url'] = image_url
                 if text_response:
                     response['text'] = text_response
-                
+                if tool_calls:
+                    response['tool_calls'] = tool_calls
                 return jsonify(response)
             except Exception as e:
                 logger.error(f"Message handling failed: {str(e)}")

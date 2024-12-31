@@ -211,7 +211,16 @@ class CoreAgent:
             logger.error(f"Text-to-speech conversion failed: {str(e)}")
             raise
 
-    async def handle_message(self, message: str, source_interface: str = None, chat_id: str = None, system_prompt_fixed: str = None, skip_validation: bool = False, skip_embedding: bool = False, skip_tools: bool = False):
+    async def handle_message(self, 
+                             message: str, 
+                             source_interface: str = None, 
+                             chat_id: str = None, 
+                             system_prompt_fixed: str = None, 
+                             skip_validation: bool = False, 
+                             skip_embedding: bool = False, 
+                             skip_tools: bool = False,
+                             external_tools: List[str] = []
+                             ):
         """
         Handle message and optionally notify other interfaces.        
         Args:
@@ -306,7 +315,6 @@ class CoreAgent:
             print("system_prompt_fixed: ", system_prompt_fixed)
             print("message: ", message)
             # Call LLM with tools and enhanced context
-
             system_prompt = self.prompt_config.get_system_prompt() + system_prompt_fixed + system_prompt_context
             if skip_tools:
                 response_content = call_llm(
@@ -328,12 +336,13 @@ class CoreAgent:
                     system_prompt,
                     message,
                 temperature=0.4,
-                tools=self.tools.get_tools_config()
+                tools=self.tools.get_tools_config() + external_tools
             )
             
             # Process response and handle tools
             text_response = ""
             image_url = None
+            tool_back = None
             
             if not response:
                 return "Sorry, I couldn't process your message.", None
@@ -345,16 +354,30 @@ class CoreAgent:
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
                 args = json.loads(tool_call.function.arguments)
-                tool_result = await self.tools.execute_tool(
-                    tool_call.function.name,
-                    args,
-                    self
-                )
-                if tool_result:
-                    if 'image_url' in tool_result:
-                        image_url = tool_result['image_url']
-                    if 'message' in tool_result:
-                        text_response += f"\n{tool_result['message']}"
+                tool_name = tool_call.function.name
+                available_tools = [t["function"]["name"] for t in self.tools.get_tools_config()]
+                if tool_name in available_tools:
+                    logger.info(f"Executing tool {tool_name} with args {args}")
+                    tool_result = await self.tools.execute_tool(
+                        tool_name,
+                        args,
+                        self
+                    )
+                    if tool_result:
+                        if 'image_url' in tool_result:
+                            image_url = tool_result['image_url']
+                        if 'message' in tool_result:
+                            text_response += f"\n{tool_result['message']}"
+                else:
+                    logger.info(f"Tool {tool_name} not found in tools config")
+                    tool_back = f'{{"tool_call": "{tool_name}", "args": {args}}}'
+                    tool_back = (tool_back.replace("'", '"')
+                            .replace('True', 'true')
+                            .replace('False', 'false')
+                            .replace('TRUE', 'true')
+                            .replace('FALSE', 'false')
+                            .replace('None', 'null')
+                            .strip())
             
             if not skip_embedding:
                 # Create and store MessageData for the response
@@ -385,7 +408,7 @@ class CoreAgent:
                             'chat_id': chat_id
                         })
             
-            return text_response, image_url
+            return text_response, image_url, tool_back
             
         except LLMError as e:
             logger.error(f"LLM processing failed: {str(e)}")
