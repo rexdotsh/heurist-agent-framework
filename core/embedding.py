@@ -1,4 +1,5 @@
 import os
+from openai import OpenAI
 import openai
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
@@ -96,11 +97,13 @@ class PostgresVectorStorage(VectorStorageProvider):
                 cur.execute("CREATE EXTENSION IF NOT EXISTS vector")
                 
                 # Create table with extended fields
+                # NOTE: embedding vector(1024) is bge-large-en-v1.5
+                # NOTE: embedding vector(1536) is text-embedding-ada-002
                 cur.execute(f"""
                     CREATE TABLE IF NOT EXISTS {self.config.table_name} (
                         id SERIAL PRIMARY KEY,
                         message TEXT NOT NULL,
-                        embedding vector(1536) NOT NULL,
+                        embedding vector(1024) NOT NULL,
                         timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
                         message_type VARCHAR(50) NOT NULL,
                         chat_id VARCHAR(100),
@@ -303,13 +306,13 @@ class SQLiteVectorStorage(VectorStorageProvider):
             logger.error(f"Failed to find messages: {str(e)}")
             raise
 
-def get_embedding(text: str, model: str = "text-embedding-ada-002") -> list:
+def get_embedding(text: str, model: str = "BAAI/bge-large-en-v1.5") -> list:
     """
-    Generate an embedding for the given text using OpenAI's API.
+    Generate an embedding for the given text using Heurist's API.
     
     Args:
         text (str): The text to generate an embedding for
-        model (str): The model to use for embedding generation
+        model (str): The model to use for embedding generation (default is kept for compatibility)
         
     Returns:
         list: The embedding vector
@@ -318,11 +321,20 @@ def get_embedding(text: str, model: str = "text-embedding-ada-002") -> list:
         EmbeddingError: If embedding generation fails
     """
     try:
-        response = openai.embeddings.create(
-            model=model,
-            input=text
+        client = OpenAI(
+            api_key=os.environ.get("HEURIST_API_KEY"), 
+            base_url=os.environ.get("HEURIST_BASE_URL")
         )
+
+        response = client.embeddings.create(
+            model=model,
+            input=text,
+            encoding_format="float"
+        )
+        
+        # Return the embedding vector for the input text
         return response.data[0].embedding
+        
     except Exception as e:
         logger.error(f"Failed to generate embedding: {str(e)}")
         raise EmbeddingError(f"Embedding generation failed: {str(e)}")
