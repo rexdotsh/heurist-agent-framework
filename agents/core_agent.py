@@ -338,8 +338,8 @@ class CoreAgent:
             if not response:
                 return "Sorry, I couldn't process your message.", None
             
-            if 'content' in response:
-                text_response = response['content'].strip('"')
+            if 'content' in response and response['content']:  # Add null check
+                text_response = response['content'].strip('"') if isinstance(response['content'], str) else str(response['content'])
             
             # Handle tool calls
             if 'tool_calls' in response and response['tool_calls']:
