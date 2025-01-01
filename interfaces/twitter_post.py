@@ -142,15 +142,23 @@ class TwitterAgent(CoreAgent):
 
             ideas = None
             tweet_data['metadata']['ideas_instruction'] = instruction_tweet_idea
-            ideas, _ = await self.handle_message(instruction_tweet_idea, system_prompt_fixed=system_prompt, source_interface='twitter')
-            tweet_data['metadata']['ideas'] = ideas
+            ideas_text, _, _ = await self.handle_message(
+                instruction_tweet_idea, 
+                system_prompt_fixed=system_prompt, 
+                source_interface='twitter'
+            )
+            tweet_data['metadata']['ideas'] = ideas_text
 
             # Generate final tweet
             system_prompt = (prompt + self.prompt_config.get_twitter_rules() + 
                           self.format_context(past_tweets) + 
-                          self.format_tweet_instruction(basic_options, style_options, ideas))
+                          self.format_tweet_instruction(basic_options, style_options, ideas_text))
 
-            tweet, _ = await self.handle_message(ideas, system_prompt_fixed=system_prompt, source_interface='twitter')
+            tweet, _, _ = await self.handle_message(
+                ideas_text, 
+                system_prompt_fixed=system_prompt, 
+                source_interface='twitter'
+            )
             print("Tweet: ", tweet)
             tweet = tweet.replace('"', '')
             tweet_data['tweet'] = tweet
@@ -171,8 +179,7 @@ class TwitterAgent(CoreAgent):
 
         except Exception as e:
             logger.error(f"Unexpected error in tweet generation: {str(e)}")
-        
-        return None, None, None
+            return None, None, None
 
     def run(self):
         """Start the Twitter bot"""
@@ -182,7 +189,12 @@ class TwitterAgent(CoreAgent):
     async def _run(self):
         while True:
             try:
-                tweet, image_url, tweet_data = await self.generate_tweet()
+                # Generate tweet returns (tweet, image_url, tweet_data)
+                tweet_result = await self.generate_tweet()
+                logger.info("Tweet result: %s", tweet_result)
+                
+                # Unpack all three values
+                tweet, image_url, tweet_data = tweet_result
                 
                 if tweet:
                     if not DRYRUN:
@@ -191,36 +203,26 @@ class TwitterAgent(CoreAgent):
                             tweet_id, username = tweet_with_image(tweet, image_url)
                             logger.info("Successfully posted tweet with image: %s", tweet)
                             tweet_url = f"https://x.com/{username}/status/{tweet_id}"
-                            # status, tx_hash, token_id = mint_nft(tweet+"\n"+tweet_url, image_url)
-                            # print(status)
-                            # print(tx_hash)
-                            # print(token_id)
                         else:
                             tweet_id, username = tweet_text_only(tweet)
                             logger.info("Successfully posted tweet: %s", tweet)
+                        
                         tweet_data['metadata']['tweet_id'] = tweet_id
                         tweet_data['metadata']['tweet_url'] = f"https://x.com/{username}/status/{tweet_id}"
                         self.last_tweet_id = tweet_id
+                        
+                        # Notify Telegram channel if configured
                         for interface_name, interface in self.interfaces.items():
                             if interface_name == 'telegram':
                                 telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", None) 
-                                await self.send_to_interface(interface_name, {
-                                    'type': 'message',
-                                    'content': "Just posted a tweet: " + tweet_data['metadata']['tweet_url'],
-                                    'image_url': None,
-                                    'source': 'twitter',
-                                    'chat_id': telegram_chat_id
-                                })
-                                # if image_url:
-                                #     contract_address = os.getenv("NFT_CONTRACT_ADDRESS")
-                                #     opensea_url = f"https://opensea.io/assets/base/{contract_address}/{token_id}"
-                                #     await self.send_to_interface('telegram', {
-                                #         'type': 'message',
-                                #         'content': "NFT minted: " + opensea_url,
-                                #         'image_url': None,
-                                #         'source': 'twitter',
-                                #         'chat_id': telegram_chat_id
-                                #     })
+                                if telegram_chat_id:
+                                    await self.send_to_interface(interface_name, {
+                                        'type': 'message',
+                                        'content': "Just posted a tweet: " + tweet_data['metadata']['tweet_url'],
+                                        'image_url': None,
+                                        'source': 'twitter',
+                                        'chat_id': telegram_chat_id
+                                    })
                     else:
                         logger.info("Generated tweet: %s", tweet)
                     
