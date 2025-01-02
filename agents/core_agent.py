@@ -168,9 +168,9 @@ class CoreAgent:
         """
         try:
             full_prompt = base_prompt + prompt if base_prompt else prompt
-            result = generate_image_with_retry(prompt=full_prompt)
+            #result = generate_image_with_retry(prompt=full_prompt)
             #SMARTGEN
-            #result = await generate_image_smartgen(prompt=full_prompt)
+            result = await generate_image_smartgen(prompt=full_prompt)
             print(result)
             return result
         except Exception as e:
@@ -244,31 +244,15 @@ class CoreAgent:
         
         try:
             similar_messages = []
+            message_embedding = None
             if not skip_embedding:
                 # Generate embedding for the incoming message
-                embedding = get_embedding(message)
+                message_embedding = get_embedding(message)
                 logger.info(f"Generated embedding for message: {message[:50]}...")
             
-                # Create MessageData for incoming message
-                message_data = MessageData(
-                    message=message,
-                    embedding=embedding,
-                    timestamp=datetime.now().isoformat(),
-                    message_type="user_message",
-                    chat_id=chat_id,
-                    source_interface=source_interface,
-                    original_query=None,
-                    response_type=None,
-                    key_topics=None
-                )
-                
-                # Store the incoming message
-                self.message_store.add_message(message_data)
-                logger.info("Stored message and embedding in database")
-                
                 # First find messages similar to the incoming user message
                 similar_messages = self.message_store.find_similar_messages(
-                    embedding, 
+                    message_embedding, 
                     threshold=0.9            
                 )
                 logger.info(f"Found {len(similar_messages)} similar messages")
@@ -370,14 +354,10 @@ class CoreAgent:
                             text_response += f"\n{tool_result['message']}"
                 else:
                     logger.info(f"Tool {tool_name} not found in tools config")
-                    tool_back = f'{{"tool_call": "{tool_name}", "args": {args}}}'
-                    tool_back = (tool_back.replace("'", '"')
-                            .replace('True', 'true')
-                            .replace('False', 'false')
-                            .replace('TRUE', 'true')
-                            .replace('FALSE', 'false')
-                            .replace('None', 'null')
-                            .strip())
+                    tool_back = json.dumps({
+                        "tool_call": tool_name,
+                        "args": args
+                    }, default=str)  # default=str handles any non-JSON serializable objects
             
             if not skip_embedding:
                 # Create and store MessageData for the response
