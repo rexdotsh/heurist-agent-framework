@@ -360,6 +360,23 @@ class CoreAgent:
                     }, default=str)  # default=str handles any non-JSON serializable objects
             
             if not skip_embedding:
+                #moved to post post processing as it is not relevant until finished processing
+                # Create MessageData for incoming message
+                message_data = MessageData(
+                    message=message,
+                    embedding=message_embedding,
+                    timestamp=datetime.now().isoformat(),
+                    message_type="user_message",
+                    chat_id=chat_id,
+                    source_interface=source_interface,
+                    original_query=None,
+                    response_type=None,
+                    key_topics=None
+                )
+                
+                # Store the incoming message
+                self.message_store.add_message(message_data)
+                logger.info("Stored message and embedding in database")
                 # Create and store MessageData for the response
                 response_data = MessageData(
                     message=text_response,
