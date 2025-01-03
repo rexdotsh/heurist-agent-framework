@@ -1,6 +1,6 @@
 import logging
-from interfaces.farcaster_post import FarcasterAgent
-import dotenv
+import asyncio
+from interfaces.farcaster_reply  import FarcasterReplyAgent
 
 # Set up logging
 logging.basicConfig(
@@ -9,21 +9,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def main():
+async def main():
     """
     Main entry point for the Heuman Agent Framework.
     Runs the Farcaster agent for automated casting.
-    """ 
+    """
     try:
-        # Load environment variables
-        dotenv.load_dotenv()
-        
         # Initialize and run Farcaster agent
         logger.info("Starting Farcaster agent...")
-        agent = FarcasterAgent()
-        agent.run()
-        
-                
+        agent = FarcasterReplyAgent()
+        await agent.start()
     except KeyboardInterrupt:
         logger.info("Application stopped by user")
     except Exception as e:
@@ -31,4 +26,4 @@ def main():
         raise
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

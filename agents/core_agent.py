@@ -216,7 +216,6 @@ class CoreAgent:
                              source_interface: str = None, 
                              chat_id: str = None, 
                              system_prompt_fixed: str = None, 
-                             skip_validation: bool = False, 
                              skip_embedding: bool = False, 
                              skip_tools: bool = False,
                              external_tools: List[str] = []
@@ -237,7 +236,7 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
-        do_pre_validation = False if source_interface in ["api", "twitter", "twitter_reply"] or skip_validation else True
+        do_pre_validation = False if source_interface in ["api", "twitter", "twitter_reply", "farcaster", "farcaster_reply"] else True
         if do_pre_validation and not await self.pre_validation(message):
             logger.debug(f"Message failed pre-validation: {message[:100]}...")
             return None, None

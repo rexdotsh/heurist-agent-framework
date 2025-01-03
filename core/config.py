@@ -65,6 +65,9 @@ class PromptConfig:
 
     def get_social_reply_template(self) -> str:
         return self.config['templates']['social_reply']
+    
+    def get_farcaster_reply_template(self) -> str:
+        return self.config['templates']['farcaster_reply']
 
     def get_tweet_ideas(self) -> list:
         return self.config['tweet_ideas']['options']
@@ -83,3 +86,6 @@ class PromptConfig:
     
     def get_name(self) -> str:
         return self.config['character']['name']
+    
+    def get_basic_knowledge(self) -> str:
+        return self.config['basic_knowledge']
