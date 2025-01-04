@@ -231,7 +231,7 @@ class CoreAgent:
             skip_tools: Optional flag to skip tools
 
         Returns:
-            tuple: (text_response, image_url)
+            tuple: (text_response, image_url, tool_back)
         """
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
@@ -239,7 +239,7 @@ class CoreAgent:
         do_pre_validation = False if source_interface in ["api", "twitter", "twitter_reply", "farcaster", "farcaster_reply"] else True
         if do_pre_validation and not await self.pre_validation(message):
             logger.debug(f"Message failed pre-validation: {message[:100]}...")
-            return None, None
+            return None, None, None
         
         try:
             similar_messages = []
