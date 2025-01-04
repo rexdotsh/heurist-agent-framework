@@ -9,7 +9,6 @@ dotenv.load_dotenv()
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
-from core.llm import call_llm_with_tools
 from agents.tool_decorator import tool
 
 @tool("Add two integers together")
