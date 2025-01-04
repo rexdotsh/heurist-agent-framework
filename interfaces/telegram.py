@@ -90,7 +90,7 @@ class TelegramAgent(CoreAgent):
 
     async def message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle incoming messages."""
-        text_response, image_url = await self.handle_message(
+        text_response, image_url, _ = await self.handle_message(
             update.message.text,
             source_interface='telegram'
         )
@@ -162,7 +162,7 @@ class TelegramAgent(CoreAgent):
             # Notify the user
             await update.message.reply_text("Voice note received. Processing...")
             user_message = await self.transcribe_audio(file_path)
-            text_response, image_url = await self.handle_message(user_message)
+            text_response, image_url,_ = await self.handle_message(user_message)
         
             if image_url:
                 await update.message.reply_photo(photo=image_url)

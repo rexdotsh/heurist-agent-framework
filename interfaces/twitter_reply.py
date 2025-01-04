@@ -332,7 +332,7 @@ class TwitterReplyAgent(CoreAgent):
                 user_message=message_data["content"],
                 context=context
             )
-            response, image_url = await self.handle_message(
+            response, image_url, _ = await self.handle_message(
                 message=message,
                 source_interface="twitter_reply",
                 chat_id=message_data["tweet_id"],

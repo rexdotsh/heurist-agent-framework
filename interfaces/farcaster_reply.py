@@ -286,7 +286,7 @@ Please generate a contextually relevant reply that takes into account the entire
                 )
             
             # Generate response using CoreAgent's handle_message
-            response, image_url = await self.handle_message(
+            response, image_url, _ = await self.handle_message(
                 message=message,
                 source_interface="farcaster_reply",
                 chat_id=cast_hash,
