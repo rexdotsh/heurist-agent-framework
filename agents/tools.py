@@ -1,31 +1,37 @@
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Callable
 import logging
 import requests
-from core.imgen import generate_image_with_retry
+from .tool_decorator import get_tool_schemas
+from .tool_box import ToolBox
+from .tool_decorator_example import DECORATED_TOOLS
 
 logger = logging.getLogger(__name__)
 
-class Tools:
+class Tools(ToolBox):
     def __init__(self):
-        self.tools_config = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "generate_image",
-                    "description": "Generate an image based on a text prompt, any request to create an image should be handled by this tool, only use this tool if the user asks to create an image",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "prompt": {"type": "string", "description": "The prompt to generate the image from"}
-                        },
-                        "required": ["prompt"]
-                    }
-                }
-            },
-        ]
-        self.tool_handlers = {
-            "generate_image": self.handle_image_generation,
-        }
+        # Initialize the base class
+        super().__init__()
+        
+        # Store decorated tools
+        # Not necessary to as it is already stored in the ToolBox class
+        # But explicitly storing it here for clarity
+        self._decorated_tools: List[Callable] = self.decorated_tools
+        
+        # Register the decorated tools
+        self.register_decorated_tools(DECORATED_TOOLS + self._decorated_tools)
+
+    def register_decorated_tool(self, tool_func: Callable) -> None:
+        """Register a decorated tool function"""
+        if hasattr(tool_func, 'name') and hasattr(tool_func, 'args_schema'):
+            self._decorated_tools.append(tool_func)
+            self.tool_handlers[tool_func.name] = tool_func
+        else:
+            logger.warning(f"Tool {tool_func.__name__} is not properly decorated")
+
+    def register_decorated_tools(self, tools: List[Callable]) -> None:
+        """Register multiple decorated tools at once"""
+        for tool in tools:
+            self.register_decorated_tool(tool)
 
     def get_tools_config(self, filter_tools: List[str] = None) -> List[Dict[str, Any]]:
         """
@@ -37,10 +43,12 @@ class Tools:
         Returns:
             List of tool configurations
         """
+        all_tools = self.tools_config + get_tool_schemas(self._decorated_tools)
+        
         if filter_tools:
-            return [tool for tool in self.tools_config 
+            return [tool for tool in all_tools 
                     if tool["function"]["name"] in filter_tools]
-        return self.tools_config
+        return all_tools
 
     async def execute_tool(self, tool_name: str, args: Dict[str, Any], agent_context: Any) -> Optional[Dict[str, Any]]:
         """Execute a tool by name with given arguments"""
@@ -50,13 +58,4 @@ class Tools:
             
         return await self.tool_handlers[tool_name](args, agent_context)
 
-    async def handle_image_generation(self, args: Dict[str, Any], agent_context: Any) -> Dict[str, Any]:
-        """Handle image generation tool"""
-        logger.info(args['prompt'])
-        try:
-            image_prompt = args['prompt']#await agent_context.generate_image_prompt(args['prompt'])
-            image_url = await agent_context.handle_image_generation(image_prompt)
-            return {"image_url": image_url}
-        except Exception as e:
-            logger.error(f"Image generation failed: {str(e)}")
-            return {"error": str(e)}
+
