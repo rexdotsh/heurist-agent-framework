@@ -47,26 +47,6 @@ class ToolBox:
             return {"error": str(e)}
 
     @staticmethod
-    async def normalize_ticker(ticker: str) -> str:
-        """Normalize various token names to Binance ticker format"""
-        ticker_map = {
-            "BTC": "BTC",
-            "BITCOIN": "BTC",
-            "ETH": "ETH",
-            "ETHEREUM": "ETH",
-            "MATIC": "MATIC",
-            "POLYGON": "MATIC",
-            "SOL": "SOL",
-            "SOLANA": "SOL",
-            # Add more mappings as needed
-        }
-        
-        normalized = ticker_map.get(ticker.upper())
-        if normalized:
-            return f"{normalized}USDT"
-        return f"{ticker.upper()}USDT"
-
-    @staticmethod
     @tool("Get the current price of a cryptocurrency in USD")
     async def get_crypto_price(ticker: str) -> float:
         """
@@ -79,7 +59,6 @@ class ToolBox:
             float: Current price in USD
         """
         try:
-            #normalized_ticker = await ToolBox.normalize_ticker(ticker)
             normalized_ticker = f"{ticker.upper()}USDT"
             async with aiohttp.ClientSession() as session:
                 url = f"https://api.binance.com/api/v3/ticker/price?symbol={normalized_ticker}"
