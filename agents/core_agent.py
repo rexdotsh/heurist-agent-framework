@@ -237,7 +237,7 @@ class CoreAgent:
         logger.info(f"Handling message from {source_interface}")
         logger.info(f"registered interfaces: {self.interfaces}")
 
-        do_pre_validation = False if source_interface in ["api", "twitter", "twitter_reply", "farcaster", "farcaster_reply"] else True
+        do_pre_validation = False if source_interface in ["api", "twitter", "twitter_reply", "farcaster", "farcaster_reply", "terminal"] else True
         if do_pre_validation and not await self.pre_validation(message):
             logger.debug(f"Message failed pre-validation: {message[:100]}...")
             return None, None, None
@@ -327,14 +327,16 @@ class CoreAgent:
             text_response = ""
             image_url = None
             tool_back = None
-            
+            logger.info("response: ", response)
+            print("response: ", response)
             if not response:
                 return "Sorry, I couldn't process your message.", None
             
             if 'content' in response and response['content']:  # Add null check
                 text_response = response['content'].strip('"') if isinstance(response['content'], str) else str(response['content'])
-            
+
             # Handle tool calls
+            
             if 'tool_calls' in response and response['tool_calls']:
                 tool_call = response['tool_calls']
                 args = json.loads(tool_call.function.arguments)
@@ -348,14 +350,18 @@ class CoreAgent:
                         self
                     )
                     if tool_result:
+                        print("tool_result: ", tool_result)
                         if 'image_url' in tool_result:
                             image_url = tool_result['image_url']
                         if 'message' in tool_result:
                             text_response += f"\n{tool_result['message']}"
+                        if 'tool_call' in tool_result:
+                            tool_back = tool_result['tool_call']
                 else:
                     logger.info(f"Tool {tool_name} not found in tools config")
                     tool_back = json.dumps({
                         "tool_call": tool_name,
+                        "processed": False,
                         "args": args
                     }, default=str)  # default=str handles any non-JSON serializable objects
             

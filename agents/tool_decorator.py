@@ -2,16 +2,16 @@ import inspect
 from typing import Callable, Dict, Any
 
 
-def tool(description: str) -> Callable[[Callable], Callable]:
+def tool(description: str):
     """
     A decorator factory that creates a tool decorator with a specified description.
     """
-    def decorator(func: Callable) -> Callable:
+    def decorator(func):
         # Add metadata to the function
         func.name = func.__name__
         func.description = func.__doc__ if func.__doc__ != inspect._empty else description
-        
-        # Generate the parameter schema from the function signature
+
+        # Generate the parameter schema from the original function
         signature = inspect.signature(func)
         func.args_schema = {
             "type": "object",
@@ -29,7 +29,19 @@ def tool(description: str) -> Callable[[Callable], Callable]:
             ]
         }
         
-        return func
+        async def wrapper(args: Dict[str, Any], agent_context: Any):
+            # Remove agent_context from args if it exists
+            if "agent_context" in args:
+                args["agent_context"] = agent_context   
+            result = await func(**args) if inspect.iscoroutinefunction(func) else func(**args)
+            return result
+            
+        wrapper.name = func.name
+        wrapper.description = func.description
+        wrapper.args_schema = func.args_schema
+        wrapper.original = func
+        
+        return wrapper
     return decorator
 
 
