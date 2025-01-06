@@ -159,6 +159,22 @@ def generate_image_with_retry(prompt: str, max_retries: int = 3, delay: int = 2)
     logger.error(f"Image generation failed after {max_retries} attempts")
     return None
 
+async def generate_image_with_retry_smartgen(prompt: str, max_retries: int = 3, delay: int = 2) -> dict:
+    """Generate an image with retry mechanism"""
+    for attempt in range(max_retries):
+        try:
+            result = await generate_image_smartgen(prompt=prompt)
+            if result:
+                return result
+        except Exception as e:
+            logger.warning(f"Image generation attempt {attempt + 1} failed: {str(e)}")
+        
+        if attempt < max_retries - 1:
+            time.sleep(delay)
+    
+    logger.error(f"Image generation failed after {max_retries} attempts")
+    return None
+
 if __name__ == "__main__":
     # Test image generation
     test_tweet = "test tweet"
