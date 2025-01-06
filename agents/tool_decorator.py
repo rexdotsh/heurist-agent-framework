@@ -30,6 +30,9 @@ def tool(description: str):
         }
         
         async def wrapper(args: Dict[str, Any], agent_context: Any):
+            # Remove agent_context from args if it exists
+            if "agent_context" in args:
+                args["agent_context"] = agent_context   
             result = await func(**args) if inspect.iscoroutinefunction(func) else func(**args)
             return result
             

@@ -3,7 +3,7 @@ import logging
 import requests
 from .tool_decorator import get_tool_schemas
 from .tool_box import ToolBox
-from .tool_decorator_example import DECORATED_TOOLS
+from .tool_decorator_example import DECORATED_TOOLS_EXAMPLES
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class Tools(ToolBox):
         self._decorated_tools: List[Callable] = self.decorated_tools
         
         # Register the decorated tools
-        self.register_decorated_tools(DECORATED_TOOLS + self._decorated_tools)
+        self.register_decorated_tools(DECORATED_TOOLS_EXAMPLES + self._decorated_tools)
 
     def register_decorated_tool(self, tool_func: Callable) -> None:
         """Register a decorated tool function"""
