@@ -50,8 +50,10 @@ class MessageData:
     chat_id: Optional[str]
     source_interface: Optional[str]
     original_query: Optional[str]
+    original_embedding: Optional[List[float]]
     response_type: Optional[str]
     key_topics: Optional[List[str]]
+    tool_call: Optional[str]
 
 class VectorStorageProvider(ABC):
     """Abstract base class for vector storage providers"""
@@ -109,8 +111,10 @@ class PostgresVectorStorage(VectorStorageProvider):
                         chat_id VARCHAR(100),
                         source_interface VARCHAR(50),
                         original_query TEXT,
+                        original_embedding vector(1024),
                         response_type VARCHAR(50),
                         key_topics TEXT[],
+                        tool_call TEXT,
                         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
@@ -134,13 +138,14 @@ class PostgresVectorStorage(VectorStorageProvider):
                 cur.execute(
                     f"""INSERT INTO {self.config.table_name} 
                     (message, embedding, timestamp, message_type, chat_id,
-                    source_interface, original_query, response_type, key_topics)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    source_interface, original_query, original_embedding, response_type, key_topics, tool_call)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                     (message_data.message, message_data.embedding,
                      message_data.timestamp, message_data.message_type,
                      message_data.chat_id, message_data.source_interface,
-                     message_data.original_query, message_data.response_type,
-                     message_data.key_topics)
+                     message_data.original_query, message_data.original_embedding,
+                     message_data.response_type, message_data.key_topics,
+                     message_data.tool_call)
                 )
             self.conn.commit()
             logger.info("Successfully stored message with metadata in database")
@@ -221,8 +226,10 @@ class SQLiteVectorStorage(VectorStorageProvider):
                         chat_id TEXT,
                         source_interface TEXT,
                         original_query TEXT,
+                        original_embedding TEXT,
                         response_type TEXT,
                         key_topics TEXT,
+                        tool_call TEXT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
@@ -241,12 +248,12 @@ class SQLiteVectorStorage(VectorStorageProvider):
                 self.conn.execute(
                     f"""INSERT INTO {self.config.table_name}
                     (message, embedding, timestamp, message_type, chat_id,
-                    source_interface, original_query, response_type, key_topics)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    source_interface, original_query, original_embedding, response_type, key_topics, tool_call)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                     (message_data.message, embedding_json, message_data.timestamp,
                      message_data.message_type, message_data.chat_id,
                      message_data.source_interface, message_data.original_query,
-                     message_data.response_type, key_topics_json)
+                     message_data.original_embedding, message_data.response_type, key_topics_json, message_data.tool_call)
                 )
             logger.info("Successfully stored message with metadata in database")
         except Exception as e:

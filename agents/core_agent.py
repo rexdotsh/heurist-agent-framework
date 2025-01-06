@@ -170,6 +170,7 @@ class CoreAgent:
             full_prompt = base_prompt + prompt if base_prompt else prompt
             #result = generate_image_with_retry(prompt=full_prompt)
             #SMARTGEN
+            print("full_image_prompt: ", full_prompt)
             result = await generate_image_smartgen(prompt=full_prompt)
             print(result)
             return result
@@ -369,8 +370,10 @@ class CoreAgent:
                     chat_id=chat_id,
                     source_interface=source_interface,
                     original_query=None,
+                    original_embedding=None,
                     response_type=None,
-                    key_topics=None
+                    key_topics=None, 
+                    tool_call=None
                 )
                 
                 # Store the incoming message
@@ -385,8 +388,10 @@ class CoreAgent:
                     chat_id=chat_id,
                     source_interface=source_interface,
                     original_query=message,
+                    original_embedding=message_embedding,
                     response_type=await self._classify_response_type(text_response),
-                    key_topics=await self._extract_key_topics(text_response)
+                    key_topics=await self._extract_key_topics(text_response),
+                    tool_call=tool_back
                 )
                 
                 # Store the response
@@ -408,10 +413,10 @@ class CoreAgent:
             
         except LLMError as e:
             logger.error(f"LLM processing failed: {str(e)}")
-            return "Sorry, I encountered an error processing your message.", None
+            return "Sorry, I encountered an error processing your message.", None, None
         except Exception as e:
             logger.error(f"Message handling failed: {str(e)}")
-            return "Sorry, something went wrong.", None
+            return "Sorry, something went wrong.", None, None
 
     async def _classify_response_type(self, response: str) -> str:
         """Classify the type of response (factual, opinion, question, etc.)"""

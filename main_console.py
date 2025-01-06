@@ -21,8 +21,8 @@ async def main():
             # Process the message using the core agent
             response = await agent.handle_message(
                 message=user_message,
-                source_interface="console",
-                skip_embedding=True  # Skip embedding for simple console interaction
+                source_interface="terminal",
+                skip_embedding=False  # Skip embedding for simple console interaction
             )
             
             # Print the response
