@@ -63,6 +63,9 @@ class PromptConfig:
     def get_context_twitter_template(self) -> str:
         return self.config['templates']['context_twitter']
 
+    def get_context_farcaster_template(self) -> str:
+        return self.config['templates']['context_farcaster']
+    
     def get_social_reply_template(self) -> str:
         return self.config['templates']['social_reply']
     
@@ -77,6 +80,9 @@ class PromptConfig:
 
     def get_telegram_rules(self) -> str:
         return self.config['rules']['telegram']
+    
+    def get_farcaster_rules(self) -> str:
+        return self.config['rules']['farcaster']
 
     def get_social_reply_filter(self) -> str:
         return self.config['rules']['social_reply_filter']
