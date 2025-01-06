@@ -1,6 +1,7 @@
 from typing import List, Dict, Any, Optional, Callable
 import logging
 import requests
+import json
 from .tool_decorator import get_tool_schemas
 from .tool_box import ToolBox
 from .tool_decorator_example import DECORATED_TOOLS_EXAMPLES
@@ -55,7 +56,13 @@ class Tools(ToolBox):
         if tool_name not in self.tool_handlers:
             logger.error(f"Unknown tool: {tool_name}")
             return None
-            
-        return await self.tool_handlers[tool_name](args, agent_context)
+        result = await self.tool_handlers[tool_name](args, agent_context)
+        result["tool_call"] = json.dumps({
+                        "tool_call": tool_name,
+                        "processed": True,
+                        "args": args,
+                        "result": result
+                    }, default=str)
+        return result
 
 
