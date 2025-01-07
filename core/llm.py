@@ -6,6 +6,8 @@ import logging
 from openai import OpenAI
 from typing import Dict, List, Union
 import requests
+from types import SimpleNamespace
+import re
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -119,11 +121,46 @@ def call_llm_with_tools(
             }
         if hasattr(message, 'content') and message.content:
             text_response = message.content
-            return {
-                'content': text_response
-            }
+            #text_response = '<function=handle_image_generation>{"prompt": "a cat", "agent_context": "None"} </function>'
+            tool_calls = extract_function_calls_to_tool_calls(text_response)
+            if tool_calls:
+                logger.info("found tool calls in response")
+                return {
+                    'tool_calls': tool_calls,
+                    'content': ""
+                }
+            else:
+                return {
+                    'content': text_response
+                }
         # Otherwise return just the content
         return message
 
     except Exception as e:
         raise LLMError(f"LLM API call failed: {str(e)}")
+    
+def extract_function_calls_to_tool_calls(llm_text: str) -> SimpleNamespace:
+    
+    """
+    Scan the LLM's text output for a <function=NAME>{...}</function> pattern,
+    and convert to appropriate format for tool calls
+    """
+    pattern = r"<function=([^>]+)>(.*?)</function>"
+    matches = re.findall(pattern, llm_text)
+    
+    # If we find at least one match
+    if matches:
+        function_name, args_json_str = matches[0]  # Just take the first match
+        # Parse the JSON to ensure it's valid
+        parsed_args = json.loads(args_json_str.strip())
+        
+
+        function_obj = SimpleNamespace(
+            name=function_name,
+            arguments=json.dumps(parsed_args)
+        )
+        # Build the structure that your existing code expects
+        return SimpleNamespace(function=function_obj)
+    
+    # If no matches, return an empty dict or whatever fallback you need
+    return None
