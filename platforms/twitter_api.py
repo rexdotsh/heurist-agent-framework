@@ -55,19 +55,28 @@ def tweet_with_image(text, image_source):
     # Post the tweet with the uploaded media using v2 API
     response = client.create_tweet(text=text, media_ids=[media.media_id])
     
+    # Get authenticated user info
+    me = client.get_me()
+    author_username = me.data.username
+    
     # If the image was downloaded, delete the temporary file
     if image_source.startswith(('http://', 'https://')):
         os.remove(filename)
     
     print(f"Tweet posted successfully! Tweet ID: {response.data['id']}")
-    return response.data['id']
+    return response.data['id'], author_username
 
 def tweet_text_only(text):
     # Post tweet with text only using v2 API
     print("Posting tweet with text only using v2 API")
     response = client.create_tweet(text=text)
+    
+    # Get authenticated user info
+    me = client.get_me()
+    author_username = me.data.username
+    
     print(f"Tweet posted successfully! Tweet ID: {response.data['id']}")
-    return response.data['id']
+    return response.data['id'], author_username
 
 def reply(text, in_reply_to_tweet_id):
     print("Posting tweet in reply")
@@ -159,7 +168,7 @@ def get_tweet(tweet_id: str):
 def get_tweet_text(tweet_id: str) -> Optional[str]:
     """Get just the text content of a tweet"""
     try:
-        tweet = client.get_tweet(tweet_id)
+        tweet = client.get_tweet(tweet_id, tweet_fields=['text'])
         if tweet.data:
             return tweet.data.text
         return None
@@ -202,4 +211,5 @@ def get_referenced_tweet_id(tweet_id: str, ref_type: str = 'replied_to') -> Opti
 # text_only_tweet = "This is a text-only tweet using API v2!"
 # tweet_text_only(text_only_tweet)
 
-print(get_user_id("heurist_ai"))
+# print(get_user_id("heurist_ai"))
+# print(get_tweet("1870107660260880471"))

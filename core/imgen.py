@@ -3,28 +3,41 @@ import json
 import os
 import time
 import logging
-from dotenv import load_dotenv
+import dotenv
 from .llm import call_llm
-
+from requests.exceptions import Timeout
+import random
+from core.heurist_image.SmartGen import SmartGen
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Load environment variables
-load_dotenv()
+os.environ.clear()
+dotenv.load_dotenv(override=True)
+logger.info("Environment variables reloaded image generation")
 
 # Constants
-HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
+HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 SEQUENCER_API_ENDPOINT = "http://sequencer.heurist.xyz/submit_job"
 PROMPT_MODEL_ID = "mistralai/mixtral-8x7b-instruct"
-IMAGE_MODEL_ID = "FLUX.1-dev"
+
+AVAILABLE_IMAGE_MODELS = [
+    "AnimagineXL",
+    "BrainDance",
+    "BluePencilRealistic",
+    "ArthemyComics",
+    "AAMXLAnimeMix"
+    ]
+
+IMAGE_MODEL_ID = os.getenv("IMAGE_MODEL_ID") or random.choice(AVAILABLE_IMAGE_MODELS)
 
 # Image generation settings
 IMAGE_SETTINGS = {
     "width": 1024,
     "height": 1024,
-    "num_iterations": 20,
+    "num_iterations": 30,
     "guidance_scale": 3,
     "deadline": 60
 }
@@ -69,13 +82,34 @@ def generate_image_convo_prompt(original_tweet: str, reply: str) -> str:
     system_prompt = "You are a helpful AI assistant. You are an expert in creating prompts for AI art. Your output only contains the prompt texts."
     return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt, user_prompt, 0.7)
 
+async def generate_image_smartgen(prompt: str) -> dict:
+    """Generate an image using SmartGen with enhanced parameters."""
+    try:
+        async with SmartGen(api_key=HEURIST_API_KEY) as generator:
+            response = await generator.generate_image(
+                description=prompt,
+                image_model=IMAGE_MODEL_ID,
+                width=IMAGE_SETTINGS["width"],
+                height=IMAGE_SETTINGS["height"],
+                stylization_level=4,
+                detail_level=5,
+                color_level=5,
+                lighting_level=4,
+                quality="high"
+            )
+            print(response)
+            return response['url']
+    except Exception as e:
+        logger.error(f"SmartGen image generation failed: {str(e)}")
+        return None
+
 def generate_image(prompt: str) -> dict:
     """Generate an image from a prompt"""
     headers = {
         "Authorization": f"Bearer {HEURIST_API_KEY}",
         "Content-Type": "application/json"
     }
-
+    print("Image model: ", IMAGE_MODEL_ID)
     payload = {
         "job_id": generate_job_id(),
         "model_input": {
@@ -94,19 +128,42 @@ def generate_image(prompt: str) -> dict:
         "priority": 1
     }
 
-    response = requests.post(SEQUENCER_API_ENDPOINT, headers=headers, data=json.dumps(payload))
-    
+    try:
+        response = requests.post(SEQUENCER_API_ENDPOINT, 
+                               headers=headers, 
+                               data=json.dumps(payload),
+                               timeout=30)
+    except Timeout:
+        logger.error("Request timed out after 30 seconds")
+        return None
+        
     if response.status_code == 200:
         return response.json()
     else:
         logger.error(f"Image generation failed: {response.status_code} - {response.text}")
         return None
 
-def generate_image_with_retry(prompt: str, max_retries: int = 3, delay: int = 1) -> dict:
+def generate_image_with_retry(prompt: str, max_retries: int = 3, delay: int = 2) -> dict:
     """Generate an image with retry mechanism"""
     for attempt in range(max_retries):
         try:
             result = generate_image(prompt=prompt)
+            if result:
+                return result
+        except Exception as e:
+            logger.warning(f"Image generation attempt {attempt + 1} failed: {str(e)}")
+        
+        if attempt < max_retries - 1:
+            time.sleep(delay)
+    
+    logger.error(f"Image generation failed after {max_retries} attempts")
+    return None
+
+async def generate_image_with_retry_smartgen(prompt: str, max_retries: int = 3, delay: int = 2) -> dict:
+    """Generate an image with retry mechanism"""
+    for attempt in range(max_retries):
+        try:
+            result = await generate_image_smartgen(prompt=prompt)
             if result:
                 return result
         except Exception as e:

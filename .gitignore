@@ -164,3 +164,6 @@ cython_debug/
 bak.main.py
 config/test.prompts.yaml
 tweet_history.json
+embeddings.db
+*.DS_Store
+.DS_Store

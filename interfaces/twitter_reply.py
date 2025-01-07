@@ -1,241 +1,403 @@
+'''
+Agent flow:
+1. Monitor finds tweets
+2. Tweets go into JSON file
+3. Workers pull from queue
+4. CoreAgent processes messages
+5. Results automatically route back through send_message
+6. Queue tracks completion
+'''
+import asyncio
+import threading
+from concurrent.futures import ThreadPoolExecutor
 import json
 import logging
 import os
 import random
 import time
+import requests
 from datetime import datetime
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 import dotenv
 import yaml
 import platforms.twitter_api as twitter_api
-from core.llm import LLMError, call_llm
 from core.imgen import generate_image_convo_prompt, generate_image_with_retry
+from core.config import PromptConfig
+from agents.core_agent import CoreAgent
+from utils.text_utils import strip_tweet_text
+from utils.llm_utils import should_ignore_message
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 dotenv.load_dotenv()
 
 # Constants
-HEURIST_BASE_URL = "https://llm-gateway.heurist.xyz"
+HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 LARGE_MODEL_ID = os.getenv("LARGE_MODEL_ID")
 SMALL_MODEL_ID = os.getenv("SMALL_MODEL_ID")
-IMAGE_GENERATION_PROBABILITY = 0.5
-REPLY_CHECK_INTERVAL = 60
-RATE_LIMIT_SLEEP = 120
-
+SELF_TWITTER_NAME = os.getenv("SELF_TWITTER_NAME")
 DRYRUN = os.getenv("DRYRUN")
+
+RATE_LIMIT_SLEEP = 120
+TAGGING_CHECK_INTERVAL = 1800
+
 if DRYRUN:
     print("DRYRUN MODE: Not posting real tweets")
 else:
     print("LIVE MODE: Will post real tweets")
 
-class PromptConfig:
-    def __init__(self, config_path: str = "prompts.yaml"):
-        self.config_path = Path(config_path)
-        self.config = self._load_config()
+prompt_config = PromptConfig()
 
-    def _load_config(self) -> dict:
-        """Load YAML config file"""
-        try:
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f)
-        except Exception as e:
-            logger.error(f"Error loading config: {str(e)}")
-            raise
-
-    def get_system_prompt(self) -> str:
-        return self.config['system']['base']
-
-    def get_basic_prompt(self) -> str:
-        return self.config['reply']['basic_prompt']
-
-    def get_heurist_knowledge(self) -> str:
-        return self.config['reply']['heurist_knowledge']
-
-    def get_reply_to_comment_template(self) -> str:
-        return self.config['reply']['reply_to_comment_template']
-
-    def get_reply_to_tweet_template(self) -> str:
-        return self.config['reply']['reply_to_tweet_template']
-
-class ReplyDatabase:
-    """Handles persistent storage of replies and responses"""
-    def __init__(self, db_file: str = "reply_history.json"):
-        self.db_file = Path(db_file)
+class QueueManager:
+    def __init__(self, file_path="reply_history.json"):
+        self.file_path = Path(file_path)
         self._ensure_file_exists()
     
     def _ensure_file_exists(self):
-        if not self.db_file.exists():
-            self._write_data({
-                "processed_replies": {},
-                "pending_replies": {}
+        """Create file with initial structure if it doesn't exist"""
+        if not self.file_path.exists():
+            self.write_data({
+                "processed_replies": [], 
+                "pending_replies": [],
+                "processing_replies": {}
             })
     
-    def _read_data(self) -> Dict:
+    def read_data(self) -> Dict:
+        """Read current data from file"""
         try:
-            with self.db_file.open('r') as f:
+            with self.file_path.open('r') as f:
                 return json.load(f)
-        except json.JSONDecodeError:
-            logger.error(f"Error reading database. Creating new one.")
-            return {"processed_replies": {}, "pending_replies": {}}
+        except Exception as e:
+            logger.error(f"Error reading reply history: {str(e)}")
+            return {"processed_replies": [], "pending_replies": []}
     
-    def _write_data(self, data: Dict):
+    def write_data(self, data: Dict):
+        """Write data to file"""
         try:
-            with self.db_file.open('w') as f:
+            with self.file_path.open('w') as f:
                 json.dump(data, f, indent=2)
         except Exception as e:
-            logger.error(f"Error writing to database: {str(e)}")
-
-    def mark_as_processed(self, reply_id, ai_response, add_metadata):
-        """Move reply from pending to processed and store AI response"""
-        data = self._read_data()
-        if reply_id in data["pending_replies"]:
-            reply_data = data["pending_replies"].pop(reply_id)
-            reply_data["ai_response"] = ai_response
-            reply_data["processed_timestamp"] = datetime.now().isoformat()
-            reply_data.update(add_metadata)
-            data["processed_replies"][reply_id] = reply_data
-            self._write_data(data)
-            logger.info(f"Marked reply as processed: {reply_id}")
-
-    def mark_as_failed(self, reply_id: str, failure: str):
-        data = self._read_data()
-        if reply_id in data["pending_replies"]:
-            reply_data = data["pending_replies"].pop(reply_id)
-            reply_data["failure"] = failure
-            reply_data["processed_timestamp"] = datetime.now().isoformat()
-            data["processed_replies"][reply_id] = reply_data
-            self._write_data(data)
-            logger.info(f"Marked reply as failed: {reply_id}")
-
-    def get_pending_replies(self) -> Dict[str, Dict]:
-        return self._read_data()["pending_replies"]
+            logger.error(f"Error writing reply history: {str(e)}")
     
-    def is_processed(self, reply_id: str) -> bool:
-        data = self._read_data()
-        return reply_id in data["processed_replies"]
-
-class ReplyGenerator:
-    def __init__(self):
-        self.prompt_config = PromptConfig()
-
-    def format_instruction_tweet(self, original_tweet=None, user_reply=None, author_name=None) -> str:
-        """Format the appropriate instruction template based on input"""
-        if user_reply:
-            return self.prompt_config.get_reply_to_comment_template().format(
-                original_tweet=original_tweet,
-                user_reply=user_reply
-            )
-        else:
-            return self.prompt_config.get_reply_to_tweet_template().format(
-                original_tweet=original_tweet,
-                author_name=author_name
-            )
-
-    def generate_reply(self, original_tweet, user_reply, author_name):
-        """Generate a reply with possible image"""
-        try:
-            user_prompt = self.format_instruction_tweet(original_tweet, user_reply, author_name)
-            
-            tweet = call_llm(
-                HEURIST_BASE_URL, 
-                HEURIST_API_KEY, 
-                LARGE_MODEL_ID, 
-                self.prompt_config.get_system_prompt(), 
-                user_prompt, 
-                0.8
-            )
-            if not tweet:
-                raise LLMError("Empty tweet generated")
-            
-            # Clean tweet and prepare metadata
-            tweet = tweet.replace('"', '')
-            add_metadata = {}
-
-            # Generate image for original tweets (not replies)
-            if user_reply is None and author_name is not None:
-                if random.random() < IMAGE_GENERATION_PROBABILITY:
-                    try:
-                        image_prompt = generate_image_convo_prompt(original_tweet, tweet)
-                        image_url = generate_image_with_retry(image_prompt)
-                        add_metadata['image_prompt'] = image_prompt
-                        add_metadata['image_url'] = image_url
-                    except Exception as e:
-                        logger.warning(f"Failed to generate image: {str(e)}")
-
-            return tweet, add_metadata
-            
-        except LLMError as e:
-            logger.error(f"Failed to generate tweet due to LLMError: {str(e)}")
-        except Exception as e:
-            logger.error(f"Unexpected error in tweet generation: {str(e)}")
+    def add_reply(self, reply_data: dict):
+        """Add new reply to queue"""
+        logger.debug(f"Adding new reply to queue: {reply_data['tweet_id']}")
+        data = self.read_data()
+        # Use tweet_id from the API response
+        reply_data["message_id"] = reply_data["tweet_id"]  # Store tweet_id as message_id
+        data["pending_replies"].append(reply_data)  # Append to maintain order
+        self.write_data(data)
+    
+    def pop_pending_reply(self):
+        """Get next pending reply and mark as processing"""
+        data = self.read_data()
         
-        return None, None
-
-def post_ai_replies(db: ReplyDatabase, generator: ReplyGenerator):
-    """Generate and post AI replies to pending replies"""
-    pending_replies = db.get_pending_replies()
+        # Find first pending reply that's not being processed
+        for reply in data["pending_replies"]:
+            tweet_id = reply["tweet_id"]
+            if tweet_id not in data.get("processing_replies", {}):
+                logger.debug(f"Found unprocessed reply {tweet_id}, marking as processing")
+                data["processing_replies"][tweet_id] = {
+                    "data": reply,
+                    "started_at": datetime.now().isoformat()
+                }
+                self.write_data(data)
+                
+                return {
+                    'message_id': tweet_id,
+                    'data': json.dumps(reply)
+                }
+        
+        logger.debug("No pending replies found")
+        return None
     
-    for reply_id, reply_data in pending_replies.items():
+    def mark_as_done(self, message_id, response_data: dict):
+        """Move from processing to processed"""
+        logger.debug(f"Marking reply {message_id} as done")
+        data = self.read_data()
+        
+        # Remove from pending and processing
+        data["pending_replies"] = [r for r in data["pending_replies"] 
+                                 if r["tweet_id"] != message_id]
+        data["processing_replies"].pop(message_id, None)
+        
+        # Add to processed
+        data["processed_replies"].append(response_data)
+        self.write_data(data)
+
+    def get_all_tweet_ids(self) -> set:
+        """Get set of all tweet IDs from both pending and processed replies"""
+        data = self.read_data()
+        processed_ids = {reply["tweet_id"] for reply in data["processed_replies"]}
+        pending_ids = {reply["tweet_id"] for reply in data["pending_replies"]}
+        return processed_ids | pending_ids
+
+    def get_pending_tweet_ids(self) -> set:
+        """Get set of all tweet IDs from pending replies"""
+        data = self.read_data()
+        pending_ids = {reply["tweet_id"] for reply in data["pending_replies"]}
+        return pending_ids
+
+    def get_processed_tweet_ids(self) -> set:
+        """Get set of all tweet IDs from processed replies"""
+        data = self.read_data()
+        processed_ids = {reply["tweet_id"] for reply in data["processed_replies"]}
+        return processed_ids
+
+class TwitterSearchMonitor:
+    def __init__(self, api_key: str, queue_manager: QueueManager):
+        self.api_key = api_key
+        self.queue_manager = queue_manager
+        self.base_url = "https://api.apidance.pro/sapi/Search"
+        self.search_terms = []  # Initialize empty list
+
+    def set_search_terms(self, terms: list):
+        """Set the search terms to monitor"""
+        self.search_terms = terms
+
+    def fetch_tweets(self, cursor: str = "") -> Dict:
+        """Fetch tweets matching configured search terms"""
+        # Join terms with OR for the search query
+        query = " OR ".join(self.search_terms)
+        params = {
+            "q": query,
+            "cursor": cursor
+        }
+        headers = {
+            "apikey": self.api_key
+        }
+        
         try:
-            if reply_data.get("is_quest_reply"):
+            response = requests.get(self.base_url, headers=headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Request failed: {e}")
+            return {"tweets": [], "next_cursor_str": None}
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse JSON response: {e}")
+            return {"tweets": [], "next_cursor_str": None}
+
+    def filter_tweets(self, tweets: List[Dict]) -> List[Dict]:
+        """Filter tweets based on criteria. Return the tweets that are selected for processing"""
+        # Get all processed tweet IDs from queues
+        processed_tweets = self.queue_manager.get_all_tweet_ids()
+
+        filtered_tweets = []
+        for tweet in tweets:
+            if SELF_TWITTER_NAME == tweet['user']['name']:
                 continue
 
-            # Generate AI response
-            response, add_metadata = generator.generate_reply(
-                original_tweet=reply_data.get("original_tweet"),
-                user_reply=reply_data.get("content"),
-                author_name=reply_data.get("author_name")
-            )
-
-            if response and "ignore" in response.lower():
-                logger.info(f'Ignoring reply to {reply_id}')
-                db.mark_as_processed(reply_id, "IGNORE", add_metadata)
+            # Skip if tweet is from the author itself
+            if tweet.get('is_self_send'):
                 continue
-            
-            if response:
-                if not DRYRUN:
-                    if add_metadata.get("image_url"):
-                        twitter_api.reply_with_image(response, add_metadata["image_url"], reply_id)
-                    else:
-                        twitter_api.reply(response, reply_id)
-                    logger.info(f'Posted reply to {reply_id}. AI response: {response}')
+                
+            # Skip if we've already processed this tweet
+            if tweet['tweet_id'] in processed_tweets:
+                continue
+                
+            # Check if tweet contains any of the search terms
+            if not any(term.lower() in tweet['text'].lower() for term in self.search_terms):
+                continue
+
+            # filter out nested replies that >= 3 replies deep
+            # tweet['text'] looks like "@user1 @user2 @user3 contents..." we should count the number of @userX at the beginning of the string
+            words = tweet['text'].split()
+            at_count = 0
+            for word in words:
+                if word.startswith('@'):
+                    at_count += 1
                 else:
-                    logger.info(f"DRYRUN: Would reply to {reply_id} with: {response}")
-                
-                db.mark_as_processed(reply_id, response, add_metadata)
-                time.sleep(RATE_LIMIT_SLEEP)
-                
-        except Exception as e:
-            logger.error(f"Error posting reply to {reply_id}: {str(e)}")
-            db.mark_as_failed(reply_id, str(e))
-
-def main():
-    db = ReplyDatabase()
-    generator = ReplyGenerator()
-    
-    while True:
-        try:
-            post_ai_replies(db, generator)
-            logger.info(f"Waiting {REPLY_CHECK_INTERVAL} seconds before next check...")
-            time.sleep(REPLY_CHECK_INTERVAL)
+                    break
+            if at_count >= 3:
+                continue
             
-        except KeyboardInterrupt:
-            logger.info("Stopping reply processor...")
-            break
-        except Exception as e:
-            logger.error(f"Unexpected error in main loop: {str(e)}")
-            time.sleep(REPLY_CHECK_INTERVAL)
+            # strip the tweet text of URLs and @ mentions
+            cleaned_text = strip_tweet_text(tweet['text'])
+            if len(cleaned_text) < 10:
+                continue
 
-if __name__ == "__main__":
-    try:
-        logger.info("Starting reply automation...")
-        main()
-    except KeyboardInterrupt:
-        logger.info("\nReply automation stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {str(e)}")
+            # check if the tweet should be ignored
+            if should_ignore_message(
+                base_url=HEURIST_BASE_URL,
+                api_key=HEURIST_API_KEY,
+                model_id=SMALL_MODEL_ID,
+                criteria=prompt_config.get_social_reply_filter(),
+                message=cleaned_text,
+                temperature=0.0
+            ):
+                logger.info(f"Ignoring tweet {cleaned_text} because it matches the ignore criteria")
+                continue
+     
+            filtered_tweets.append(tweet)
+            
+        return filtered_tweets
+
+    def process_mentions(self) -> List[Dict]:
+        """Main function to process mentions and queue new tweets"""
+        logger.info("Fetching tweets...")
+        
+        cursor = ""
+        api_calls = 0
+        all_candidates = []
+        
+        while api_calls < 5:
+            api_calls += 1
+            response_data = self.fetch_tweets(cursor)
+            
+            if not response_data.get('tweets'):
+                logger.info("No tweets found in response")
+                break
+
+            logger.debug(f"Fetched {len(response_data['tweets'])} tweets")
+            logger.debug(f"Response data: {response_data}")
+            
+            candidate_tweets = self.filter_tweets(response_data['tweets'])
+            
+            # Queue new candidates
+            for tweet in candidate_tweets:
+                related_tweet_id = tweet.get("related_tweet_id", None)
+                related_tweet = None    
+                if related_tweet_id:
+                    related_tweet = twitter_api.get_tweet_text(related_tweet_id)
+                self.queue_manager.add_reply({
+                    "tweet_id": tweet["tweet_id"],
+                    "content": tweet["text"],
+                    "author_name": tweet["user"]["name"],
+                    "related_tweet_id": related_tweet_id,
+                    "related_tweet_text": related_tweet
+                })
+            
+            all_candidates.extend(candidate_tweets)
+            
+            # Stop if we found at least one candidate
+            if candidate_tweets:
+                break
+            
+            # Get next cursor for pagination
+            cursor = response_data.get('next_cursor_str')
+            if not cursor:
+                logger.info("No more pages to fetch")
+                break
+            
+            # sleep for 5 seconds to avoid rate limiting
+            time.sleep(5)
+
+        return all_candidates
+
+class TwitterReplyAgent(CoreAgent):
+    def __init__(self, core_agent=None):
+        if core_agent:
+            super().__setattr__('_parent', core_agent)
+        else:
+            super().__setattr__('_parent', self)
+            super().__init__()
+        
+        self.queue_manager = QueueManager()
+        self.monitor = TwitterSearchMonitor(
+            api_key=os.getenv("TWITTER_SEARCH_API_KEY"),
+            queue_manager=self.queue_manager
+        )
+        self.register_interface('twitter_reply', self)
+        self.set_search_terms(["@heurist_ai"])  # Set default search term
+
+    async def send_message(self, chat_id: str, message: str, image_url: str = None):
+        """Interface method called by CoreAgent's send_to_interface. chat_id is the tweet_id"""
+        logger.debug(f"send_message {chat_id} {message} {image_url}")
+        if not DRYRUN:
+            if image_url:
+                twitter_api.reply_with_image(message, image_url, chat_id)
+            else:
+                twitter_api.reply(message, chat_id)
+        else:
+            print(f"DRYRUN MODE: Would have replied to {chat_id} with {message} and image {image_url}")
+            return
+
+    async def process_reply(self, message_data):
+        """Process single reply using CoreAgent's handle_message"""
+        logger.debug(f"Processing reply for tweet {message_data['tweet_id']}")
+        try:
+            social_reply_template = prompt_config.get_social_reply_template()
+            context = None
+            if message_data["related_tweet_text"]:
+                context = "Related tweet: " + message_data["related_tweet_text"]
+            message = social_reply_template.format(
+                user_name=message_data["author_name"],
+                social_platform="Twitter",
+                user_message=message_data["content"],
+                context=context
+            )
+            response, image_url, _ = await self.handle_message(
+                message=message,
+                source_interface="twitter_reply",
+                chat_id=message_data["tweet_id"],
+                skip_embedding=True,
+                skip_tools=True
+            )
+            
+            # send the response to the original tweet
+            await self.send_message(message_data["tweet_id"], response, image_url)
+
+            # CoreAgent will automatically call send_to_interface to other registered interfaces
+            return response, image_url
+            
+        except Exception as e:
+            logger.error(f"Error processing reply: {str(e)}")
+            return None, None
+
+    async def run_workers(self, num_workers: int = 3):
+        """Run multiple reply workers"""
+        async def worker():
+            while True:
+                try:
+                    message = self.queue_manager.pop_pending_reply()
+                    if not message:
+                        await asyncio.sleep(RATE_LIMIT_SLEEP)
+                        continue
+
+                    reply_data = json.loads(message["data"])
+                    response, image_url = await self.process_reply(reply_data)
+                    
+                    response_data = reply_data.copy()
+                    response_data["response"] = response
+                    if image_url:
+                        response_data["image_url"] = image_url
+                            
+                    self.queue_manager.mark_as_done(message["message_id"], response_data)
+                    await asyncio.sleep(RATE_LIMIT_SLEEP)
+
+                except Exception as e:
+                    logger.error(f"Worker error: {str(e)}")
+                    await asyncio.sleep(RATE_LIMIT_SLEEP)
+                        
+        workers = [worker() for _ in range(num_workers)]
+        await asyncio.gather(*workers)
+
+    def start_monitoring(self):
+        """Start tag monitoring in background thread"""
+        def process_new_tags():
+            while True:
+                self.monitor.process_mentions()  # this handles queueing
+                time.sleep(TAGGING_CHECK_INTERVAL)
+
+        monitor_thread = threading.Thread(target=process_new_tags, daemon=True)
+        monitor_thread.start()
+        return monitor_thread
+
+    async def start(self):
+        """Main entry point to start the agent"""
+        monitor_thread = self.start_monitoring()
+        
+        try:
+            await self.run_workers()
+        except KeyboardInterrupt:
+            logger.info("Shutting down...")
+
+    def set_search_terms(self, terms: list):
+        """Configure which terms to monitor for"""
+        self.monitor.set_search_terms(terms)

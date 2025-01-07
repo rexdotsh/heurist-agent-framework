@@ -51,7 +51,7 @@ class DiscordAgent(CoreAgent):
                 user_message = message.content.lower()
 
                 # Handle message using core agent functionality
-                text_response, image_url = await self.handle_message(user_message)
+                text_response, image_url, _ = await self.handle_message(user_message)
 
                 if image_url:
                     embed = discord.Embed(title="Here you go!", color=discord.Color.blue())
