@@ -10,7 +10,6 @@ import dotenv
 import yaml
 from agents.core_agent import CoreAgent
 from platforms.twitter_api import tweet_with_image, tweet_text_only
-from interfaces.crypto_nft import mint_nft
 import asyncio
 
 # Set up logging

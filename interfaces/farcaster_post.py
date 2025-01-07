@@ -13,7 +13,6 @@ import yaml
 from agents.core_agent import CoreAgent
 from core.llm import call_llm, LLMError
 from core.imgen import generate_image_with_retry, generate_image_prompt
-from interfaces.crypto_nft import mint_nft
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
