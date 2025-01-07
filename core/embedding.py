@@ -213,7 +213,7 @@ class SQLiteVectorStorage(VectorStorageProvider):
     def initialize(self) -> None:
         """Initialize SQLite connection and create necessary tables"""
         try:
-            self.conn = sqlite3.connect(self.config.db_path)
+            self.conn = sqlite3.connect(self.config.db_path, check_same_thread=False)
             with self.conn:
                 cur = self.conn.cursor()
                 cur.execute(f"""
@@ -242,6 +242,7 @@ class SQLiteVectorStorage(VectorStorageProvider):
         """Store a message and its embedding in SQLite"""
         try:
             embedding_json = json.dumps(message_data.embedding)
+            original_embedding_json = json.dumps(message_data.original_embedding) if message_data.original_embedding else None
             key_topics_json = json.dumps(message_data.key_topics) if message_data.key_topics else None
             
             with self.conn:
@@ -253,7 +254,7 @@ class SQLiteVectorStorage(VectorStorageProvider):
                     (message_data.message, embedding_json, message_data.timestamp,
                      message_data.message_type, message_data.chat_id,
                      message_data.source_interface, message_data.original_query,
-                     message_data.original_embedding, message_data.response_type, key_topics_json, message_data.tool_call)
+                     original_embedding_json, message_data.response_type, key_topics_json, message_data.tool_call)
                 )
             logger.info("Successfully stored message with metadata in database")
         except Exception as e:
