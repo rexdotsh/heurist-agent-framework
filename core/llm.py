@@ -145,7 +145,7 @@ def extract_function_calls_to_tool_calls(llm_text: str) -> SimpleNamespace:
     Scan the LLM's text output for a <function=NAME>{...}</function> pattern,
     and convert to appropriate format for tool calls
     """
-    pattern = r"<function=([^>]+)>(.*?)</function>"
+    pattern = r"<function=([^>]+)>(.*?})(?:</?\s*function>)?"
     matches = re.findall(pattern, llm_text)
     
     # If we find at least one match
