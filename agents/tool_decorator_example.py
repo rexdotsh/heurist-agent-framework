@@ -14,12 +14,12 @@ from agents.tool_decorator import tool
 @tool("Add two integers together")
 def add(a: int, b: int) -> int:
     """Add two integers."""
-    return {"message": a + b}
+    return {"result": a + b}
 
 @tool("Multiply two integers together")
 def multiply(a: int, b: int) -> int:
     """Multiply two integers."""
-    return {"message": a * b}
+    return {"result": a * b}
 
 @tool("Filter messages based on content relevance")
 def filter_message(should_ignore: bool) -> bool:

@@ -91,7 +91,7 @@ def call_llm_with_tools(
     system_prompt: str,
     user_prompt: str,
     temperature: float,
-    max_tokens: int = 500,
+    max_tokens: int = None,
     max_retries: int = 3,
     tools: List[Dict] = None
 ) -> Union[str, Dict]:
@@ -108,7 +108,8 @@ def call_llm_with_tools(
             messages=messages,
             temperature=temperature,
             tools=tools,
-            tool_choice="auto"# if tools else None
+            tool_choice="auto" if tools else None,
+            max_tokens=max_tokens
         )
 
         message = response.choices[0].message
