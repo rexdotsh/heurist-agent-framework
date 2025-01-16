@@ -97,7 +97,6 @@ class TelegramAgent(CoreAgent):
         message_data = update.message.text
         chat_id = update.message.chat_id
         if not COT:
-
             text_response, image_url, _ = await self.handle_message(
                 update.message.text,
                 source_interface='telegram'
