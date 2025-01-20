@@ -56,13 +56,13 @@ class Tools(ToolBox):
         if tool_name not in self.tool_handlers:
             logger.error(f"Unknown tool: {tool_name}")
             return None
-        result, data = await self.tool_handlers[tool_name](args, agent_context)
+        result = await self.tool_handlers[tool_name](args, agent_context)
         result["tool_call"] = json.dumps({
                         "tool_call": tool_name,
                         "processed": True,
                         "args": args,
-                        "result": result,
-                        "data": data
+                        "result": result["result"] if "result" in result else None,
+                        "data": result["data"] if "data" in result else None
                     }, default=str)
         return result
 

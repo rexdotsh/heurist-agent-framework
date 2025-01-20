@@ -50,7 +50,7 @@ class ToolBox:
         logger.info(prompt)
         try:
             image_url = await agent_context.handle_image_generation(prompt) #args['prompt'] for explicitly defined schema
-            return {"image_url": image_url}
+            return {"image_url": image_url, "result": image_url}
         except Exception as e:
             logger.error(f"Image generation failed: {str(e)}")
             return {"error": str(e)}

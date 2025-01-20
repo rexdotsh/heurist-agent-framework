@@ -93,7 +93,8 @@ def call_llm_with_tools(
     temperature: float,
     max_tokens: int = None,
     max_retries: int = 3,
-    tools: List[Dict] = None
+    tools: List[Dict] = None,
+    tool_choice: str = "auto"
 ) -> Union[str, Dict]:
     client = OpenAI(base_url=base_url, api_key=api_key)
     
@@ -108,7 +109,7 @@ def call_llm_with_tools(
             messages=messages,
             temperature=temperature,
             tools=tools,
-            tool_choice="auto" if tools else None,
+            tool_choice=tool_choice if tools else None,
             max_tokens=max_tokens
         )
 
