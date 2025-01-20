@@ -235,7 +235,8 @@ class CoreAgent:
                              max_tokens: int = None,
                              model_id: str = LARGE_MODEL_ID,
                              temperature: float = 0.4,
-                             skip_pre_validation: bool = False
+                             skip_pre_validation: bool = False,
+                             tool_choice: str = "auto"
                              ):
         """
         Handle message and optionally notify other interfaces.        
@@ -293,7 +294,8 @@ class CoreAgent:
                 message,
                 temperature=temperature,
                 max_tokens=max_tokens,
-                tools=self.tools.get_tools_config() + external_tools if not skip_tools else None
+                tools=self.tools.get_tools_config() + external_tools if not skip_tools else None,
+                tool_choice=tool_choice if not skip_tools else None
             )
             
             # Process response and handle tools
@@ -476,8 +478,29 @@ class CoreAgent:
                     skip_conversation_context=skip_conversation_context,
                     skip_embedding=True,
                     skip_pre_validation=True,
-                    skip_tools=skip_tools
+                    skip_tools=skip_tools,
+                    tool_choice="required" if not skip_tools else None
                 )
+                retries = 5
+                while retries > 0:
+                    if "<function" in text_response or (not tool_calls and step['tool'] != "None"):
+                        print("Found function in text_response or failed to call tool")
+                        text_response, image_url, tool_calls = await self.handle_message(
+                            system_prompt=text_response,
+                            message=str(text_response),
+                            message_type="REASONING_STEP",
+                            source_interface=source_interface,
+                            skip_conversation_context=True,
+                            skip_similar=True,
+                            skip_embedding=True,
+                            skip_pre_validation=True,
+                            skip_tools=False,
+                            tool_choice="required"
+                        )
+                        retries -= 1
+                        await asyncio.sleep(5)
+                    else:
+                        break
                 step_response = {
                     "step": step,
                     "response": text_response
@@ -505,18 +528,6 @@ class CoreAgent:
                 skip_pre_validation=True
             )
         try:
-            # social_reply_template = self.prompt_config.get_social_reply_template()
-            # context = None
-            # if message_data:
-            #     context = "Related tweet: " + message_data
-            #     context = context + "\n\nInformation about request: " + text_response
-            # message = social_reply_template.format(
-            #     user_name=display_name,
-            #     social_platform="Twitter",
-            #     user_message=message_data,
-            #     chat_id=chat_id,
-            #     context=context
-            # )
             message_final = f"User: {display_name}, Username: {username}, \nMessage: {message_data}"
             prompt_final += f"Generate the final response for the user. Given the context of your reasoning, and the steps you've taken, generate a final response for the user. {text_response}"
             if final_format_prompt:
