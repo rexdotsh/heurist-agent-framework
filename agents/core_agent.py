@@ -523,7 +523,6 @@ class CoreAgent:
                 prompt_final += final_format_prompt
             else:
                 prompt_final += self.basic_personality_settings()
-            #await asyncio.sleep(30)
             response, _, _ = await self.handle_message(
                 message=message_final,
                 system_prompt=prompt_final,
