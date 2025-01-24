@@ -2,16 +2,6 @@ from typing import Dict, Any
 from .mesh_agent import MeshAgent, monitor_execution, with_retry, with_cache
 from core.llm import call_llm_async
 from clients.merkl_client import MerklClient
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# TODO: use the model that is specified in the config
-MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
-
-base_url = os.getenv('HEURIST_BASE_URL')
-api_key = os.getenv('HEURIST_API_KEY')
 
 system_prompt = '''You are a professional DeFi analyst. Based on the raw data list provided by the user, generate a concise and comprehensive overview of top 10 yield opportunities on ZKsync Era. These projects are participants of ZKIgnite program, which streams 300M ZK tokens over 9 months to DeFi users who provide liquidity for key token pairs, supply to lending markets, and trade on selected DeFi protocols. Each item in the list is a yield opportunity, which may be a DEX liquidity pool, or a lending market where user can supply assets to earn yields.
 
@@ -123,9 +113,9 @@ class ZkIgniteYieldAgent(MeshAgent):
             })
 
         analysis_result = await call_llm_async(
-            base_url=base_url,
-            api_key=api_key,
-            model_id=MODEL_ID,
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.large_model_id,
             system_prompt=system_prompt,
             user_prompt=data_to_analyze,
             temperature=0.1

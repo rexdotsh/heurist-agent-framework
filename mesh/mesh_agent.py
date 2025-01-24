@@ -2,6 +2,16 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 from decorators import with_cache, with_retry, monitor_execution
 import asyncio
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DEFAULT_LARGE_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
+DEFAULT_SMALL_MODEL_ID = "hermes-3-llama3.1-8b"
+
+HEURIST_BASE_URL = os.getenv('HEURIST_BASE_URL')
+HEURIST_API_KEY = os.getenv('HEURIST_API_KEY')
 
 class MeshAgent(ABC):
     """Base class for all mesh agents"""
@@ -20,6 +30,10 @@ class MeshAgent(ABC):
             'tags': [],
             'mcp_tool_name': None
         }
+        self.large_model_id = DEFAULT_LARGE_MODEL_ID
+        self.small_model_id = DEFAULT_SMALL_MODEL_ID
+        self.heurist_base_url = HEURIST_BASE_URL
+        self.heurist_api_key = HEURIST_API_KEY
         self._api_clients: Dict[str, Any] = {}
     
     @abstractmethod
