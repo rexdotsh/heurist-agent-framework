@@ -9,10 +9,16 @@ class MeshAgent(ABC):
     def __init__(self):
         self.agent_name: str = self.__class__.__name__
         self.metadata: Dict[str, Any] = {
+            'name': self.agent_name,
             'version': '1.0.0',
-            'author': None,
-            'description': None,
-            'external_apis': []
+            'author': 'unknown',
+            'author_address': '0x0000000000000000000000000000000000000000',
+            'description': '',
+            'inputs': [],
+            'outputs': [],
+            'external_apis': [],
+            'tags': [],
+            'mcp_tool_name': None
         }
         self._api_clients: Dict[str, Any] = {}
     

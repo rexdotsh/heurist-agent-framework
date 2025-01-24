@@ -59,7 +59,7 @@ class ZkIgniteYieldAgent(MeshAgent):
                 {
                     'name': 'response',
                     'description': 'The analysis result of the yield opportunities, describing the top pools, their APR, and how to earn yield',
-                    'type': 'string'
+                    'type': 'str'
                 },
                 {
                     'name': 'data',
@@ -67,7 +67,9 @@ class ZkIgniteYieldAgent(MeshAgent):
                     'type': 'list'
                 }
             ],
-            'external_apis': ['merkl']
+            'mcp_tool_name': 'get_zksync_ignite_yield_opportunities',
+            'external_apis': ['merkl'],
+            'tags': ['DeFi', 'ZKsync', 'Data']
         })
         self._api_clients['merkl'] = MerklClient()
 
