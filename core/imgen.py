@@ -74,13 +74,13 @@ def generate_image_prompt(tweet: str) -> str:
     """Generate an image prompt from a tweet"""
     user_prompt = template_heuman_prompt.format(tweet=tweet)
     system_prompt = "You are a helpful AI assistant. You are an expert in creating prompts for AI art. Your output only contains the prompt texts."
-    return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt, user_prompt, 0.7)
+    return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.7)
 
 def generate_image_convo_prompt(original_tweet: str, reply: str) -> str:
     """Generate an image prompt from a conversation"""
     user_prompt = template_heuman_convo_prompt.format(original_tweet=original_tweet, reply=reply)
     system_prompt = "You are a helpful AI assistant. You are an expert in creating prompts for AI art. Your output only contains the prompt texts."
-    return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt, user_prompt, 0.7)
+    return call_llm(HEURIST_BASE_URL, HEURIST_API_KEY, PROMPT_MODEL_ID, system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.7)
 
 async def generate_image_smartgen(prompt: str) -> dict:
     """Generate an image using SmartGen with enhanced parameters."""

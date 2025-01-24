@@ -17,13 +17,25 @@ class LLMError(Exception):
     """Custom exception for LLM-related errors"""
     pass
 
+def _format_messages(system_prompt: str = None, user_prompt: str = None, messages: List[Dict] = None) -> List[Dict]:
+    """Convert between different message formats while maintaining backward compatibility"""
+    if messages is not None:
+        return messages
+    if system_prompt is not None and user_prompt is not None:
+        return [
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_prompt}
+        ]
+    raise ValueError("Either (system_prompt, user_prompt) or messages must be provided")
+
 def call_llm(
     base_url: str,
     api_key: str,
     model_id: str,
-    system_prompt: str,
-    user_prompt: str,
-    temperature: float,
+    system_prompt: str = None,
+    user_prompt: str = None,
+    messages: List[Dict] = None,
+    temperature: float = 0.7,
     max_tokens: int = 500,
     max_retries: int = 3,
     initial_retry_delay: int = 1
@@ -46,102 +58,128 @@ def call_llm(
     Raises:
         LLMError: If all retry attempts fail.
     """
-
     client = OpenAI(base_url=base_url, api_key=api_key)
-    
-    messages = [
-        {'role': 'system', 'content': system_prompt},
-        {'role': 'user', 'content': user_prompt}
-    ]
-    
+    formatted_messages = _format_messages(system_prompt, user_prompt, messages)
     retry_delay = initial_retry_delay
     
     for attempt in range(max_retries):
         try:
             result = client.chat.completions.create(
                 model=model_id,
-                messages=messages,
+                messages=formatted_messages,
                 stream=False,
                 temperature=temperature,
                 max_tokens=max_tokens
             )
-
             return result.choices[0].message.content
-        
-        except requests.exceptions.RequestException as e:
-            logger.warning(f"API request failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        except (KeyError, IndexError, json.JSONDecodeError) as e:
-            logger.warning(f"Response parsing failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        except Exception as e:
-            logger.warning(f"Unexpected error (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        
-        # Wait before next retry if there are attempts left
-        if attempt < max_retries - 1:
-            logger.info(f"Retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
-            retry_delay *= 2  # Exponential backoff
+            
+        except (requests.exceptions.RequestException, KeyError, IndexError, json.JSONDecodeError, Exception) as e:
+            logger.warning(f"{type(e).__name__} (attempt {attempt + 1}/{max_retries}): {str(e)}")
+            
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+                retry_delay *= 2
     
-    # Raise error if all attempts fail
     raise LLMError("All retry attempts failed")
-
 
 def call_llm_with_tools(
     base_url: str,
     api_key: str,
     model_id: str,
-    system_prompt: str,
-    user_prompt: str,
-    temperature: float,
+    system_prompt: str = None,
+    user_prompt: str = None,
+    messages: List[Dict] = None,
+    temperature: float = 0.7,
     max_tokens: int = None,
     max_retries: int = 3,
     tools: List[Dict] = None,
     tool_choice: str = "auto"
 ) -> Union[str, Dict]:
     client = OpenAI(base_url=base_url, api_key=api_key)
-    
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ]
+    formatted_messages = _format_messages(system_prompt, user_prompt, messages)
 
     try:
         response = client.chat.completions.create(
             model=model_id,
-            messages=messages,
+            messages=formatted_messages,
             temperature=temperature,
             tools=tools,
             tool_choice=tool_choice if tools else None,
             max_tokens=max_tokens
         )
-
-        message = response.choices[0].message
-
-        # If there are tool calls, return both tool calls and content
-        if hasattr(message, 'tool_calls') and message.tool_calls:
-            return {
-                'tool_calls': message.tool_calls[0],
-                'content': message.content
-            }
-        if hasattr(message, 'content') and message.content:
-            text_response = message.content
-            #text_response = '<function=handle_image_generation>{"prompt": "a cat", "agent_context": "None"} </function>'
-            tool_calls = extract_function_calls_to_tool_calls(text_response)
-            if tool_calls:
-                logger.info("found tool calls in response")
-                return {
-                    'tool_calls': tool_calls,
-                    'content': ""
-                }
-            else:
-                return {
-                    'content': text_response
-                }
-        # Otherwise return just the content
-        return message
+        return _handle_tool_response(response.choices[0].message)
 
     except Exception as e:
         raise LLMError(f"LLM API call failed: {str(e)}")
+
+async def call_llm_async(
+    base_url: str,
+    api_key: str,
+    model_id: str,
+    system_prompt: str = None,
+    user_prompt: str = None,
+    messages: List[Dict] = None,
+    temperature: float = 0.7,
+    max_tokens: int = 500,
+    max_retries: int = 3,
+    initial_retry_delay: int = 1
+) -> str:
+    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
+    formatted_messages = _format_messages(system_prompt, user_prompt, messages)
+    retry_delay = initial_retry_delay
     
+    for attempt in range(max_retries):
+        try:
+            result = await client.chat.completions.create(
+                model=model_id,
+                messages=formatted_messages,
+                stream=False,
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+            return result.choices[0].message.content
+            
+        except (requests.exceptions.RequestException, KeyError, IndexError, json.JSONDecodeError, Exception) as e:
+            logger.warning(f"{type(e).__name__} (attempt {attempt + 1}/{max_retries}): {str(e)}")
+            
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying in {retry_delay} seconds...")
+                await asyncio.sleep(retry_delay)
+                retry_delay *= 2
+    
+    raise LLMError("All retry attempts failed")
+
+async def call_llm_with_tools_async(
+    base_url: str,
+    api_key: str,
+    model_id: str,
+    system_prompt: str = None,
+    user_prompt: str = None,
+    messages: List[Dict] = None,
+    temperature: float = 0.7,
+    max_tokens: int = 500,
+    max_retries: int = 3,
+    tools: List[Dict] = None,
+    tool_choice: str = "auto"
+) -> Union[str, Dict]:
+    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
+    formatted_messages = _format_messages(system_prompt, user_prompt, messages)
+
+    try:
+        response = await client.chat.completions.create(
+            model=model_id,
+            messages=formatted_messages,
+            temperature=temperature,
+            tools=tools,
+            tool_choice=tool_choice if tools else None,
+            max_tokens=max_tokens
+        )
+        return _handle_tool_response(response.choices[0].message)
+
+    except Exception as e:
+        raise LLMError(f"LLM API call failed: {str(e)}")
+
 def extract_function_calls_to_tool_calls(llm_text: str) -> SimpleNamespace:
     
     """
@@ -168,103 +206,23 @@ def extract_function_calls_to_tool_calls(llm_text: str) -> SimpleNamespace:
     # If no matches, return an empty dict or whatever fallback you need
     return None
 
-async def call_llm_async(
-    base_url: str,
-    api_key: str,
-    model_id: str,
-    system_prompt: str,
-    user_prompt: str,
-    temperature: float,
-    max_tokens: int = 500,
-    max_retries: int = 3,
-    initial_retry_delay: int = 1
-) -> str:
-    """Async version of call_llm"""
-    
-    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
-    
-    messages = [
-        {'role': 'system', 'content': system_prompt},
-        {'role': 'user', 'content': user_prompt}
-    ]
-    
-    retry_delay = initial_retry_delay
-    
-    for attempt in range(max_retries):
-        try:
-            result = await client.chat.completions.create(
-                model=model_id,
-                messages=messages,
-                stream=False,
-                temperature=temperature,
-                max_tokens=max_tokens
-            )
-
-            return result.choices[0].message.content
-        
-        except requests.exceptions.RequestException as e:
-            logger.warning(f"API request failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        except (KeyError, IndexError, json.JSONDecodeError) as e:
-            logger.warning(f"Response parsing failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        except Exception as e:
-            logger.warning(f"Unexpected error (attempt {attempt + 1}/{max_retries}): {str(e)}")
-        
-        if attempt < max_retries - 1:
-            logger.info(f"Retrying in {retry_delay} seconds...")
-            await asyncio.sleep(retry_delay)
-            retry_delay *= 2
-    
-    raise LLMError("All retry attempts failed")
-
-async def call_llm_with_tools_async(
-    base_url: str,
-    api_key: str,
-    model_id: str,
-    system_prompt: str,
-    user_prompt: str,
-    temperature: float,
-    max_tokens: int = 500,
-    max_retries: int = 3,
-    tools: List[Dict] = None
-) -> Union[str, Dict]:
-    """Async version of call_llm_with_tools"""
-    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
-    
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ]
-
-    try:
-        response = await client.chat.completions.create(
-            model=model_id,
-            messages=messages,
-            temperature=temperature,
-            tools=tools,
-            tool_choice="auto"
-        )
-
-        message = response.choices[0].message
-
-        if hasattr(message, 'tool_calls') and message.tool_calls:
+def _handle_tool_response(message):
+    if hasattr(message, 'tool_calls') and message.tool_calls:
+        return {
+            'tool_calls': message.tool_calls[0],
+            'content': message.content
+        }
+    if hasattr(message, 'content') and message.content:
+        text_response = message.content
+        tool_calls = extract_function_calls_to_tool_calls(text_response)
+        if tool_calls:
+            logger.info("found tool calls in response")
             return {
-                'tool_calls': message.tool_calls[0],
-                'content': message.content
+                'tool_calls': tool_calls,
+                'content': ""
             }
-        if hasattr(message, 'content') and message.content:
-            text_response = message.content
-            tool_calls = extract_function_calls_to_tool_calls(text_response)
-            if tool_calls:
-                logger.info("found tool calls in response")
-                return {
-                    'tool_calls': tool_calls,
-                    'content': ""
-                }
-            else:
-                return {
-                    'content': text_response
-                }
-        return message
-
-    except Exception as e:
-        raise LLMError(f"LLM API call failed: {str(e)}")
+        else:
+            return {
+                'content': text_response
+            }
+    return message

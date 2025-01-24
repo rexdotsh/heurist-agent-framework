@@ -125,8 +125,8 @@ class CoreAgent:
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
                 SMALL_MODEL_ID,
-                "",#"Always call the filter_message tool with the message as the argument",#self.prompt_config.get_telegram_rules(),
-                message,
+                system_prompt="",#"Always call the filter_message tool with the message as the argument",#self.prompt_config.get_telegram_rules(),
+                user_prompt=message,
                 temperature=0.5,
                 tools=filter_message_tool
             )
@@ -154,8 +154,8 @@ class CoreAgent:
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY, 
                 SMALL_MODEL_ID,
-                self.prompt_config.get_system_prompt(),
-                prompt,
+                system_prompt=self.prompt_config.get_system_prompt(),
+                user_prompt=prompt,
                 temperature=0.7,
             )
         except Exception as e:
@@ -290,8 +290,8 @@ class CoreAgent:
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY,
                 model_id,
-                system_prompt,
-                message,
+                system_prompt=system_prompt,
+                user_prompt=message,
                 temperature=temperature,
                 max_tokens=max_tokens,
                 tools=self.tools.get_tools_config() + external_tools if not skip_tools else None,
@@ -649,8 +649,8 @@ class CoreAgent:
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY,
                 SMALL_MODEL_ID,  # Use smaller model for classification
-                classify_prompt["content"],
-                response,
+                system_prompt=classify_prompt["content"],
+                user_prompt=response,
                 temperature=0.3
             )
             return classification.strip().upper()
@@ -668,8 +668,8 @@ class CoreAgent:
                 HEURIST_BASE_URL,
                 HEURIST_API_KEY,
                 SMALL_MODEL_ID,
-                topic_prompt["content"],
-                text,
+                system_prompt=topic_prompt["content"],
+                user_prompt=text,
                 temperature=0.3
             )
             return [t.strip() for t in topics.split(',')]
