@@ -1,0 +1,8 @@
+input:
+  query: Predict ETH price in 5 minutes
+output:
+  response: "ETH Price Prediction (5-minute timeframe):\nPredicted Price: $3411.16\n\
+    Confidence Levels: \n- 2.28%: $3411.16\n- 15.87%: $3411.16\n- 50.0% (Median):\
+    \ $3411.16\n- 84.13%: $3411.16\n- 97.72%: $3411.16\n**Analysis:** Extremely high\
+    \ confidence in minimal price fluctuation, indicating a stable short-term outlook\
+    \ for ETH."
