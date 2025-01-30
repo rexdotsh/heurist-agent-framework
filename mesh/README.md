@@ -12,9 +12,8 @@
    - [Coding Style and Practices](#coding-style-and-practices)  
    - [Metadata Requirements](#metadata-requirements)  
    - [Testing Requirements](#testing-requirements)  
-6. [Revenue Sharing & Monetization](#revenue-sharing--monetization)  
-7. [Examples](#examples)  
-8. [Contact & Support](#contact--support)  
+6. [Examples](#examples)  
+7. [Contact & Support](#contact--support)  
 
 ---
 
@@ -22,8 +21,14 @@
 
 - **Mesh Agents** can process information from external APIs, or access other mesh agents.
 - Agents run on a decentralized compute layer, and each agent can optionally use external APIs, Large Language Models, or other tools provided by Heurist.
-- **Developers** can contribute by adding specialized agents to the network. Each invocation of an agent can generate pay-per-use revenue for the agent’s author.  
-- **End Users** get access to a rich library of pre-built, purpose-driven AI agents they can seamlessly integrate into their products or workflows via REST APIs or frontend interface usage.  
+- **Agent Developers** can contribute by adding specialized agents to the network. Each invocation of an agent can generate pay-per-use revenue for the agent’s author.  
+- **End Users, Agents, or Developers** get access to a rich library of pre-built, purpose-driven AI agents they can seamlessly integrate into their products or workflows via REST APIs or frontend interface usage.
+
+## Agent Deployment
+
+Mesh agents are deployed on Heurist's compute layer. Agents are deployed after a pull request is merged into the main branch, and will be available for use in the Heurist Mesh via API or frontend interface. Heurist team will take care of the API keys and other environment variables used by the agents.
+
+We plan to enable local hosting of agents in the future where you can deploy your agents on your own servers without giving up any sensitive data, while being composable with the Heurist Mesh.
 
 ---
 
@@ -191,7 +196,7 @@ Each agent’s `metadata` dictionary should at least contain:
 - **`description`**: Short, clear summary of your agent’s purpose.  
 - **`inputs`**: List of inputs with `name`, `description`, and `type`.  
 - **`outputs`**: List of outputs with `name`, `description`, and `type`.  
-- **`external_apis`**: Any external service your agent accesses (e.g., `['some_api_name']`).  
+- **`external_apis`**: Any external service your agent accesses (e.g., `['defillama']`).  
 - **`tags`**: Keywords or categories to help users discover your agent.  
 - **`mcp_tool_name` (optional)**: If you want your agent interoperable through Claude’s MCP interface, specify a unique tool name.
 
