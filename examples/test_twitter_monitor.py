@@ -1,7 +1,11 @@
 import os
 import json
 import dotenv
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
 from interfaces.twitter_reply import TwitterSearchMonitor, QueueManager
+
 
 def main():
     dotenv.load_dotenv()
