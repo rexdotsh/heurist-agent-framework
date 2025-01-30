@@ -8,18 +8,18 @@ import json
 
 load_dotenv()
 
-class ContractSecurityAgent(MeshAgent):
+class TokenContractSecurityAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.metadata.update({
-            'name': 'Contract Security Agent',
+            'name': 'Token Contract Security Agent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'Fetch and analyze security details of blockchain contracts using GoPlus API',
+            'description': 'Fetch and analyze security details of blockchain token contracts using GoPlus API. Analyze the token holder count, liquidity distribution, admin rights, mintable / pausable status, and other security metrics. This agents helps you understand whether the token is safe to interact with and catch any potential scams or honeypots.',
             'inputs': [
                 {
                     'name': 'query',
-                    'description': 'The query containing contract address and chain ID',
+                    'description': 'The query containing token contract address and chain ID or chain name',
                     'type': 'str'
                 }
             ],
@@ -27,11 +27,16 @@ class ContractSecurityAgent(MeshAgent):
                 {
                     'name': 'response',
                     'description': 'Security analysis and explanation',
+                    'type': 'str'
+                },
+                {
+                    'name': 'data',
+                    'description': 'The security details of the token contract. Raw data from GoPlus API',
                     'type': 'dict'
                 }
             ],
-            'external_apis': ['gopluslabs'],
-            'tags': ['Security', 'Blockchain']
+            'external_apis': ['goplus'],
+            'tags': ['Security']
         })
         
         self.supported_blockchains = {
@@ -69,20 +74,12 @@ class ContractSecurityAgent(MeshAgent):
             print(f"Error fetching security details: {e}")
             return None
 
-    def validate_input(self, user_prompt: str) -> Optional[str]:
-        """
-        Validate user input and extract chain ID
-        """
-        for chain_id in self.supported_blockchains:
-            if chain_id in user_prompt and "0x" in user_prompt:
-                return chain_id
-        return None
-
     def get_system_prompt(self) -> str:
-        return """You are a helpful assistant that can fetch and analyze security details of blockchain contracts.
+        return f"""You are a helpful assistant that can fetch and analyze security details of blockchain token contracts.
         You should identify the contract address and chain ID from the user's query and use the provided tool to fetch security information.
-        Provide a clear and concise analysis of the security details returned by the API.
-        If the query is invalid or out of scope, return a brief error message explaining why."""
+        Supported chains: {', '.join([f"{name} (Chain ID: {id})" for id, name in self.supported_blockchains.items()])}
+        If the blockchain is not supported, return a brief error message explaining why.
+        If you obtain data from the tool, provide a clear and concise analysis of the security details. Focus on important metrics and risks."""
 
     def get_tool_schema(self) -> Dict:
         return {
@@ -100,7 +97,7 @@ class ContractSecurityAgent(MeshAgent):
                         'chain_id': {
                             'type': 'integer',
                             'description': 'The blockchain chain ID',
-                            'default': 8453
+                            'default': 1
                         }
                     },
                     'required': ['contract_address'],
@@ -114,12 +111,6 @@ class ContractSecurityAgent(MeshAgent):
         query = params.get('query')
         if not query:
             raise ValueError("Query parameter is required")
-
-        chain_id = self.validate_input(query)
-        if not chain_id:
-            return {
-                "response": "Invalid input. Please provide a supported blockchain and a valid contract address."
-            }
 
         response = await call_llm_with_tools_async(
             base_url=self.heurist_base_url,
@@ -136,9 +127,9 @@ class ContractSecurityAgent(MeshAgent):
 
         tool_call = response['tool_calls']
         function_args = json.loads(tool_call.function.arguments)
-        result = await self.fetch_security_details(
+        tool_result = await self.fetch_security_details(
             function_args['contract_address'],
-            function_args.get('chain_id', 8453)
+            function_args.get('chain_id', 1)
         )
 
         explanation = await call_llm_async(
@@ -146,13 +137,14 @@ class ContractSecurityAgent(MeshAgent):
             api_key=self.heurist_api_key,
             model_id=self.large_model_id,
             messages=[
-                {"role": "system", "content": "You are an assistant that explains technical details in simple language."},
-                {"role": "user", "content": f"Explain these security analysis results: {result}"}
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(tool_result), "tool_call_id": tool_call.id}
             ],
             temperature=0.7
         )
 
-        token_data = result.get('result', {}).get(function_args['contract_address'].lower(), {})
+        token_data = tool_result.get('result', {}).get(function_args['contract_address'].lower(), {})
         
         essential_security_info = {
             "token_info": {
@@ -184,12 +176,6 @@ class ContractSecurityAgent(MeshAgent):
         }
         
         return {
-            "response": {
-                "status": {
-                    "code": result.get('code'),
-                    "message": result.get('message')
-                },
-                "security_analysis": essential_security_info,
-                "risk_summary": explanation
-            }
+            "response": explanation,
+            "data": essential_security_info
         }

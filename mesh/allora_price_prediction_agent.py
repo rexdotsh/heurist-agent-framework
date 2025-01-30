@@ -29,8 +29,8 @@ class AlloraPricePredictionAgent(MeshAgent):
             'outputs': [
                 {
                     'name': 'response',
-                    'description': 'The price prediction and confidence intervals',
-                    'type': 'dict'
+                    'description': 'The price prediction with confidence intervals',
+                    'type': 'str'
                 }
             ],
             'external_apis': ['allora'],
