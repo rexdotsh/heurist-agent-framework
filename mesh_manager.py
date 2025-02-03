@@ -145,11 +145,12 @@ class MeshManager:
                     #     "some_other_field": "additional inputs",
                     #   },
                     #   "task_id": "task_id",
-                    #   "user_id": "user_id",
-                    #   "api_key": "api_key"
+                    #   "heurist_api_key": "heurist_api_key",
                     # }
                     # The "input" field is the input for the agent
                     # The other fields are added by the V2 server for internal use
+                    # IMPORTANT: if a self-hosted server queries the V2 server, it will not have the heurist_api_key
+                    # TODO: V2 server should accept a PROTOCOL_AUTH_TOKEN variable that can be used to authenticate the request
 
                     if "input" in resp_data:
                         task_id = resp_data.get("task_id")
@@ -160,6 +161,8 @@ class MeshManager:
                         logger.info(f"[{agent_id}] Current active tasks: {len(self.active_tasks[agent_id])}")
 
                         agent = agent_cls()
+                        if "heurist_api_key" in resp_data:
+                            agent.set_heurist_api_key(resp_data["heurist_api_key"])
                         logger.info(f"[{agent_id}] Processing task_id={task_id} with input={user_input}")
                         try:
                             result = await agent.handle_message(user_input)

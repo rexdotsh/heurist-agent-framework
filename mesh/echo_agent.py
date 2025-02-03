@@ -33,7 +33,11 @@ class EchoAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Sleep for a random 1-4 seconds, then echo the input."""
         query = params.get("query", "")
-        # Sleep for random delay between 1 and 4 seconds
+        logger.info(f"[{self.agent_name}] Query: {query}")
+
+        # Example of accessing auth info
+        user_context = f"heurist_api_key: {self.heurist_api_key}"
+        logger.info(f"[{self.agent_name}] User context: {user_context}")
         delay = random.uniform(1, 4)
         await asyncio.sleep(delay)
 

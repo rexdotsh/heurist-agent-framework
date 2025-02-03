@@ -40,7 +40,10 @@ class MeshAgent(ABC):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Handle incoming message - must be implemented by subclasses"""
         pass
-    
+
+    def set_heurist_api_key(self, api_key: str) -> None:
+        self.heurist_api_key = api_key
+
     async def cleanup(self):
         """Cleanup API clients"""
         for client in self._api_clients.values():
