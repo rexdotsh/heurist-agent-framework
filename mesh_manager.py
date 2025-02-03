@@ -3,6 +3,8 @@ import asyncio
 import aiohttp
 import logging
 import json
+import boto3
+from datetime import datetime
 
 from typing import Dict, Type, List, Any
 from importlib import import_module
@@ -25,7 +27,7 @@ logger = logging.getLogger("MeshManager")
 PROTOCOL_V2_SERVER_URL = os.getenv("PROTOCOL_V2_SERVER_URL", "https://sequencer-v2.heurist.xyz")
 POLL_INTERVAL_SECONDS = float(os.getenv("POLL_INTERVAL_SECONDS", "2.0"))
 
-PROTOCOL_V2_API_KEY = os.getenv("PROTOCOL_V2_API_KEY", "test_key")
+PROTOCOL_V2_AUTH_TOKEN = os.getenv("PROTOCOL_V2_AUTH_TOKEN", "test_key")
 
 # TODO: this is unused for now
 DEFAULT_AGENT_TYPE = "AGENT"
@@ -34,16 +36,33 @@ DEFAULT_AGENT_TYPE = "AGENT"
 # Make sure this path matches your actual package structure
 from mesh.mesh_agent import MeshAgent
 
+# Add these env vars at the top with other env vars
+S3_ENDPOINT = os.getenv('S3_ENDPOINT')
+S3_ACCESS_KEY = os.getenv('ACCESS_KEY')
+S3_SECRET_KEY = os.getenv('SECRET_KEY')
+S3_BUCKET = os.getenv('S3_BUCKET', 'mesh')
 
 def load_agents_from_mesh_folder() -> Dict[str, Type[MeshAgent]]:
     """
     Dynamically imports all modules in the 'heurist_agent_framework.mesh' package
     and returns a dict of {agent_id: agent_class} for every subclass of MeshAgent found.
 
-    agent_id is up to you. This example uses agent class name as the ID, but
-    you can adapt to read metadata or rename as needed.
+    Also uploads the metadata to S3.
     """
     agents_dict = {}
+    agents_metadata = {
+        "last_updated": datetime.utcnow().isoformat(),
+        "agents": {}
+    }
+
+    # Configure S3 client
+    s3_client = boto3.client(
+        's3',
+        region_name='enam',
+        endpoint_url=S3_ENDPOINT,
+        aws_access_key_id=S3_ACCESS_KEY,
+        aws_secret_access_key=S3_SECRET_KEY
+    )
 
     # The package name of your mesh folder
     package_name = "mesh"
@@ -79,9 +98,26 @@ def load_agents_from_mesh_folder() -> Dict[str, Type[MeshAgent]]:
                 agent_id = attr.__name__
                 agents_dict[agent_id] = attr
 
-                logger.info(f"Found agent class: {attr.__name__} (module: {full_module_name})")
+                # Get agent metadata
+                agent = attr()
+                agents_metadata["agents"][agent_id] = {
+                    "metadata": agent.metadata,
+                    "module": module_name
+                }
+                logger.info(f"Found agent: {agent_id} in {module_name}")
 
-    # TODO: update the metadata of all agents
+    # Upload metadata to S3
+    try:
+        metadata_json = json.dumps(agents_metadata, indent=2)
+        s3_client.put_object(
+            Bucket=S3_BUCKET,
+            Key='mesh_agents_metadata.json',
+            Body=metadata_json,
+            ContentType='application/json'
+        )
+        logger.info("Successfully uploaded agents metadata to S3")
+    except Exception as e:
+        logger.error(f"Failed to upload metadata to S3: {e}")
 
     return agents_dict
 
@@ -150,7 +186,7 @@ class MeshManager:
                     # The "input" field is the input for the agent
                     # The other fields are added by the V2 server for internal use
                     # IMPORTANT: if a self-hosted server queries the V2 server, it will not have the heurist_api_key
-                    # TODO: V2 server should accept a PROTOCOL_AUTH_TOKEN variable that can be used to authenticate the request
+                    # TODO: V2 server should accept a PROTOCOL_V2_AUTH_TOKEN variable that can be used to authenticate the request
 
                     if "input" in resp_data:
                         task_id = resp_data.get("task_id")
