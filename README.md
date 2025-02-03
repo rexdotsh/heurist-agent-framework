@@ -139,6 +139,37 @@ To add a new interface:
    - `handle_image_generation()`
    - `transcribe_audio()`
 
+## How to Use GitHub Issues
+
+We encourage the community to open **GitHub issues** whenever you have a new idea or find something that needs attention. When creating an issue, please use our [Issue Template](./.github/ISSUE_TEMPLATE/general_issue_template.md) and select one of the following categories:
+
+1. **Integration Request**  
+   - For requests to integrate with a new data source (e.g., CoinGecko, arXiv) or a new AI use case.  
+   - **Most important** for the community, as these issues help drive the direction of our framework’s evolution.  
+   - If you have an idea but aren’t sure how to implement it, open an issue under this label so others can pick it up or offer suggestions.
+
+2. **Bug**  
+   - For reporting errors or unexpected behavior in the framework.  
+   - Provide as much detail as possible (logs, steps to reproduce, environment, etc.).
+
+3. **Question**  
+   - For inquiries about usage, best practices, or clarifications on existing features.
+
+4. **Bounty**  
+   - For tasks with a **reward** (e.g., tokens, NFTs, or other benefits).  
+   - The bounty label indicates that Heurist team or another community member are offering a reward to whoever resolves the issue.  
+   - **Bounty Rules**: 
+     - Make sure to read the issue description carefully for scope and acceptance criteria.  
+     - Once your Pull Request addressing the bounty is merged, we’ll follow up on fulfilling the reward.  
+     - Additional instructions (e.g., contact method) may be included in the issue itself.
+
+### Picking Up an Issue
+
+- Look for **Integration Requests** or **Bounty** issues if you want to contribute new features or earn rewards.  
+- Feel free to discuss approaches in the comments. If you’re ready to tackle it, mention “I’m working on this!” so others know it’s in progress.
+
+This process helps us stay organized, encourages community involvement, and keeps development transparent.
+
 ## License
 
 MIT License - See LICENSE file for details.
