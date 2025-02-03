@@ -145,10 +145,6 @@ class Workflow:
 
     async def execute_workflow(self, task: WorkflowTask) -> str:
         """Execute a workflow task."""
-        await self.resource_request(
-            task.consumer_id or self.default_consumer_id,
-            task.workflow_id
-        )
         return await self.create_task(task)
 
     async def query_task_result(self, task_id: str) -> WorkflowTaskResult:
