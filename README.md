@@ -201,3 +201,7 @@ Example structure for finalized tweet flow on the works:
 *"_eval" param indicates requires agent to evaluate if it should respond*
 
 *"_HITL" param indicates requirement to activate Human In The Loop flow*
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=heurist-network/heurist-agent-framework&type=Date)](https://star-history.com/#heurist-network/heurist-agent-framework&Date)
