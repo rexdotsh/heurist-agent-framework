@@ -1,8 +1,10 @@
+import logging
 import asyncio
 import random
 from typing import Dict, Any
-
 from .mesh_agent import MeshAgent  # Adjust this import to match your project structure
+
+logger = logging.getLogger(__name__)
 
 class EchoAgent(MeshAgent):
     def __init__(self):

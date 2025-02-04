@@ -160,6 +160,7 @@ class MeshManager:
             try:
                 # Example payload to poll for tasks for a specific agent
                 poll_endpoint = f"{PROTOCOL_V2_SERVER_URL}/mesh_manager_poll"
+                submit_endpoint = f"{PROTOCOL_V2_SERVER_URL}/mesh_manager_submit"
                 payload = {
                     "agent_info": [
                         {
