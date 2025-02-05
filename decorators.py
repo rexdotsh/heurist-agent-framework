@@ -8,15 +8,27 @@ logger = logging.getLogger(__name__)
 
 T = TypeVar('T', bound=Callable)
 
+# Features:
+# Shares cache across all instances of the same agent class
+# Python's dict operations are atomic so it's thread-safe
 def with_cache(ttl_seconds: int = 300):
     """Cache function results for specified duration"""
     def decorator(func: T) -> T:
-        cache: Dict[str, Any] = {}
-        cache_ttl: Dict[str, datetime] = {}
+        # Move cache to class level using a unique key
+        cache_key_base = f"_cache_{func.__name__}"
+        ttl_key = f"_cache_ttl_{func.__name__}"
         
         @wraps(func)
-        async def wrapper(*args, **kwargs) -> Any:
-            cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
+        async def wrapper(self, *args, **kwargs) -> Any:
+            # Initialize class-level cache
+            if not hasattr(self.__class__, cache_key_base):
+                setattr(self.__class__, cache_key_base, {})
+                setattr(self.__class__, ttl_key, {})
+            
+            cache = getattr(self.__class__, cache_key_base)
+            cache_ttl = getattr(self.__class__, ttl_key)
+            
+            cache_key = f"{str(args)}:{str(kwargs)}"
             
             # Check cache
             if cache_key in cache and datetime.now() < cache_ttl[cache_key]:
@@ -24,7 +36,7 @@ def with_cache(ttl_seconds: int = 300):
                 return cache[cache_key]
             
             # Execute function
-            result = await func(*args, **kwargs)
+            result = await func(self, *args, **kwargs)
             
             # Update cache
             cache[cache_key] = result
