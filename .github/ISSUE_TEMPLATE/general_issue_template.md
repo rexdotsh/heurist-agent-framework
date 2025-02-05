@@ -35,15 +35,16 @@ assignees: ''
 ### 1. Summary/Context
 <!-- 
   Give a brief statement of the problem or request. For example, for an Integration Request, 
-  specify which data source or use case you'd like to see supported. 
+  specify which platform, data source or use case you'd like to see supported. 
   For a Bug, describe what’s broken. For a Question, clarify what you need help with. 
 -->
 
 ### 2. Details & Motivation
 <!--
   - If Integration Request: 
-      - Why is this data source or use case important?
-      - How would it benefit the community or your project?
+      - The expected input and output schema, if user or agent interaction is involved.
+      - 3rd party API documentation, if applicable.
+      - Any API keys or credentials required.
   - If Bug: 
       - Steps to reproduce?
       - Expected vs. actual behavior?
