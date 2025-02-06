@@ -116,7 +116,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
         response = await call_llm_with_tools_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
-            model_id=self.large_model_id,
+            model_id=self.metadata['large_model_id'],
             system_prompt=self.get_system_prompt(),
             user_prompt=query,
             temperature=0.1,
@@ -135,7 +135,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
         explanation = await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
-            model_id=self.large_model_id,
+            model_id=self.metadata['large_model_id'],
             messages=[
                 {"role": "system", "content": self.get_system_prompt()},
                 {"role": "user", "content": query},

@@ -13,7 +13,7 @@ class ComposableEchoAgent(MeshAgent):
             'name': 'ComposableEchoAgent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'An agent that calls EchoAgent and prefixes its response',
+            'description': 'An agent that calls EchoAgent and prefixes its response. This agent is for testing only.',
             'inputs': [
                 {
                     'name': 'query',
@@ -28,7 +28,7 @@ class ComposableEchoAgent(MeshAgent):
                     'type': 'str'
                 }
             ],
-            'tags': ['echo', 'test', 'composable']
+            'tags': ['test', 'composable']
         })
         self.mesh_client = MeshClient(self.heurist_base_url)
         if not self.heurist_base_url:

@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEFAULT_LARGE_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
-DEFAULT_SMALL_MODEL_ID = "hermes-3-llama3.1-8b"
+# By default, large and small models are the same
+DEFAULT_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
 
 HEURIST_BASE_URL = os.getenv('HEURIST_BASE_URL')
 HEURIST_API_KEY = os.getenv('HEURIST_API_KEY')
@@ -28,10 +28,10 @@ class MeshAgent(ABC):
             'outputs': [],
             'external_apis': [],
             'tags': [],
+            'large_model_id': DEFAULT_MODEL_ID,
+            'small_model_id': DEFAULT_MODEL_ID,
             'mcp_tool_name': None
         }
-        self.large_model_id = DEFAULT_LARGE_MODEL_ID
-        self.small_model_id = DEFAULT_SMALL_MODEL_ID
         self.heurist_base_url = HEURIST_BASE_URL
         self.heurist_api_key = HEURIST_API_KEY
         self._api_clients: Dict[str, Any] = {}

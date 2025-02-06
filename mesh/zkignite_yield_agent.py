@@ -115,7 +115,7 @@ class ZkIgniteYieldAgent(MeshAgent):
         analysis_result = await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
-            model_id=self.large_model_id,
+            model_id=self.metadata['large_model_id'],
             system_prompt=system_prompt,
             user_prompt=data_to_analyze,
             temperature=0.1

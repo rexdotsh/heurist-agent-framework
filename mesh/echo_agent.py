@@ -14,7 +14,7 @@ class EchoAgent(MeshAgent):
             'name': 'EchoAgent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'An agent that simply echoes user input after a random delay (1-4 seconds).',
+            'description': 'An agent that simply echoes user input after a random delay (1-4 seconds). This agent is for testing only.',
             'inputs': [
                 {
                     'name': 'query',
@@ -29,7 +29,7 @@ class EchoAgent(MeshAgent):
                     'type': 'str'
                 }
             ],
-            'tags': ['echo', 'test']
+            'tags': ['test']
         })
 
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
