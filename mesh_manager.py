@@ -1,4 +1,5 @@
 import os
+import time
 import asyncio
 import aiohttp
 import logging
@@ -205,23 +206,27 @@ class MeshManager:
                         if "heurist_api_key" in resp_data:
                             agent.set_heurist_api_key(resp_data["heurist_api_key"])
                         logger.info(f"[{agent_id}] Processing task_id={task_id} with input={user_input}")
+
+                        inference_start = time.time()
                         try:
                             result = await agent.handle_message(user_input)
+                            inference_latency = time.time() - inference_start
                             logger.info(f"[{agent_id}] Task result: {result}")
                         except Exception as e:
                             logger.error(f"[{agent_id}] Error in handle_message: {e}", exc_info=True)
                             result = {"error": str(e)}
+                            inference_latency = 0
                         finally:
                             self.active_tasks[agent_id].remove(task_id)
                             await agent.cleanup()
-
 
                         # Submit the result back
                         submit_data = {
                             "task_id": task_id,
                             "agent_id": agent_id,
                             "agent_type": DEFAULT_AGENT_TYPE,
-                            "results": result
+                            "results": result,
+                            "inference_latency": round(inference_latency, 3)
                         }
                         try:
                             async with self.session.post(submit_endpoint, json=submit_data, headers=headers) as submit_resp:
