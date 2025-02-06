@@ -156,6 +156,10 @@ class MeshManager:
         Runs in a loop with a fixed polling interval.
         """
         self.active_tasks[agent_id] = set()
+        headers = {
+            "Authorization": PROTOCOL_V2_AUTH_TOKEN,
+            "Content-Type": "application/json"
+        }
         while True:
             try:
                 # Example payload to poll for tasks for a specific agent
@@ -171,7 +175,7 @@ class MeshManager:
                 }
 
                 logger.debug(f"Polling for tasks (agent_id={agent_id})...")
-                async with self.session.post(poll_endpoint, json=payload) as resp:
+                async with self.session.post(poll_endpoint, json=payload, headers=headers) as resp:
                     resp_data = await resp.json()
                     logger.debug(f"Poll response (agent_id={agent_id}): {resp_data}")
 
@@ -220,7 +224,7 @@ class MeshManager:
                             "results": result
                         }
                         try:
-                            async with self.session.post(submit_endpoint, json=submit_data) as submit_resp:
+                            async with self.session.post(submit_endpoint, json=submit_data, headers=headers) as submit_resp:
                                 submit_resp_data = await submit_resp.json()
                                 logger.info(f"[{agent_id}] Submitted result for task_id={task_id}: {submit_resp_data}")
                         except Exception as e:
