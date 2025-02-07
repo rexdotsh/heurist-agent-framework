@@ -1,0 +1,409 @@
+input_by_id:
+  query: Get information about ethereum
+output_by_id:
+  response: '**Ethereum (ETH) Token Information**
+
+
+    ### **Overview**
+
+
+    * **Name:** Ethereum
+
+    * **Symbol:** ETH
+
+    * **Market Cap Rank:** #2
+
+
+    ### **Categories**
+
+
+    * Smart Contract Platform
+
+    * Layer 1 (L1)
+
+    * Ethereum Ecosystem
+
+    * FTX Holdings
+
+    * Multicoin Capital Portfolio
+
+    * Proof of Stake (PoS)
+
+    * Alameda Research Portfolio
+
+    * Andreessen Horowitz (a16z) Portfolio
+
+    * GMCI Layer 1 Index
+
+    * GMCI 30 Index
+
+    * Delphi Ventures Portfolio
+
+    * Galaxy Digital Portfolio
+
+    * GMCI Index
+
+    * World Liberty Financial Portfolio
+
+
+    ### **Description**
+
+
+    Ethereum is a global, open-source platform for decentralized applications, aiming
+    to create a world computer for decentralized app development. It supports smart
+    contracts, enabling the programming of digital value. Examples of decentralized
+    apps (dapps) on Ethereum include tokens, non-fungible tokens, decentralized finance
+    apps, lending protocols, and decentralized exchanges. Transactions and smart contract
+    executions require a fee known as Gas, paid in Ether (ETH), with prices fluctuating
+    based on network demand.
+
+
+    ### **Market Metrics**
+
+
+    * **Current Price (USD):** $2,680.14
+
+    * **Market Cap (USD):** $323,431,218,234
+
+    * **Fully Diluted Valuation (USD):** $323,431,218,234
+
+    * **Total Volume (USD) (24h):** $29,095,637,064
+
+
+    ### **Price Metrics**
+
+
+    * **All-Time High (USD):** $4,878.26
+
+    * **ATH Change Percentage:** -44.98334%
+
+    * **ATH Date:** November 10, 2021, 14:24:19 UTC
+
+    * **High (24h) (USD):** $2,854.63
+
+    * **Low (24h) (USD):** $2,672.50
+
+    * **Price Change (24h):** -$103.35
+
+    * **Price Change Percentage (24h):** -3.71287%
+
+
+    ### **Supply Information**
+
+
+    * **Total Supply:** 120,528,602.252677 ETH
+
+    * **Max Supply:** None
+
+    * **Circulating Supply:** 120,528,602.252677 ETH
+
+
+    ---
+
+
+    **How can I assist you further?**
+
+
+    1. **Search for another token**: Provide the name or CoinGecko ID of the token.
+
+    2. **Get current trending coins**: I can fetch the top trending cryptocurrencies
+    for you.
+
+    3. **Specific question about Ethereum or any other topic**: Feel free to ask!'
+  data:
+    token_info:
+      name: Ethereum
+      symbol: ETH
+      market_cap_rank: 2
+      categories: &id001
+      - Smart Contract Platform
+      - Layer 1 (L1)
+      - Ethereum Ecosystem
+      - FTX Holdings
+      - Multicoin Capital Portfolio
+      - Proof of Stake (PoS)
+      - Alameda Research Portfolio
+      - Andreessen Horowitz (a16z) Portfolio
+      - GMCI Layer 1 Index
+      - GMCI 30 Index
+      - Delphi Ventures Portfolio
+      - Galaxy Digital Portfolio
+      - GMCI Index
+      - World Liberty Financial Portfolio
+      description: "Ethereum is a global, open-source platform for decentralized applications.\
+        \ In other words, the vision is to create a world computer that anyone can\
+        \ build applications in a decentralized manner; while all states and data\
+        \ are distributed and publicly accessible. Ethereum supports smart contracts\
+        \ in which developers can write code in order to program digital value. Examples\
+        \ of decentralized apps (dapps) that are built on Ethereum includes tokens,\
+        \ non-fungible tokens, decentralized finance apps, lending protocol, decentralized\
+        \ exchanges, and much more.\r\n\r\nOn Ethereum, all transactions and smart\
+        \ contract executions require a small fee to be paid. This fee is called Gas.\
+        \ In technical terms, Gas refers to the unit of measure on the amount of computational\
+        \ effort required to execute an operation or a smart contract. The more complex\
+        \ the execution operation is, the more gas is required to fulfill that operation.\
+        \ Gas fees are paid entirely in Ether (ETH), which is the native coin of the\
+        \ blockchain. The price of gas can fluctuate from time to time depending on\
+        \ the network demand."
+    market_metrics:
+      current_price_usd: 2680.14
+      market_cap_usd: 323431218234
+      fully_diluted_valuation_usd: 323431218234
+      total_volume_usd: 29095637064
+    price_metrics:
+      ath_usd: 4878.26
+      ath_change_percentage: -44.98334
+      ath_date: '2021-11-10T14:24:19.604Z'
+      high_24h_usd: 2854.63
+      low_24h_usd: 2672.5
+      price_change_24h: -103.347186817252
+      price_change_percentage_24h: -3.71287
+    supply_info:
+      total_supply: 120528602.252677
+      max_supply: null
+      circulating_supply: 120528602.252677
+input_by_name:
+  query: analyze ETH
+output_by_name:
+  response: '**Token Analysis: Ethereum (ETH)**
+
+
+    **Overview**
+
+
+    * **Name:** Ethereum
+
+    * **Symbol:** ETH
+
+    * **Market Cap Rank:** #2
+
+
+    **Categories**
+
+
+    * Smart Contract Platform
+
+    * Layer 1 (L1)
+
+    * Ethereum Ecosystem
+
+    * (and several notable investment portfolios, e.g., FTX Holdings, Andreessen Horowitz
+    (a16z) Portfolio)
+
+
+    **Description**
+
+    Ethereum is a decentralized, open-source platform for building decentralized applications
+    (dApps). It enables the creation of smart contracts, facilitating the programming
+    of digital value. Examples of dApps on Ethereum include tokens, non-fungible tokens
+    (NFTs), decentralized finance (DeFi) apps, lending protocols, and decentralized
+    exchanges (DEXs). Transactions and smart contract executions require a fee, known
+    as Gas, paid in Ether (ETH).
+
+
+    **Key Metrics**
+
+
+    ### **Market Metrics**
+
+
+    | **Metric** | **Value** |
+
+    | --- | --- |
+
+    | **Current Price (USD)** | $2,680.14 |
+
+    | **Market Cap (USD)** | $323,431,218,234 |
+
+    | **Fully Diluted Valuation (USD)** | $323,431,218,234 |
+
+    | **Total Volume (24h, USD)** | $29,095,637,064 |
+
+
+    ### **Price Metrics**
+
+
+    | **Metric** | **Value** |
+
+    | --- | --- |
+
+    | **All-Time High (USD)** | $4,878.26 |
+
+    | **ATH Change Percentage** | -44.98% |
+
+    | **ATH Date** | Nov 10, 2021 |
+
+    | **24h High (USD)** | $2,854.63 |
+
+    | **24h Low (USD)** | $2,672.50 |
+
+    | **24h Price Change** | -$103.35 |
+
+    | **24h Price Change Percentage** | -3.71% |
+
+
+    ### **Supply Information**
+
+
+    | **Metric** | **Value** |
+
+    | --- | --- |
+
+    | **Total Supply** | 120,528,602.25 |
+
+    | **Max Supply** | None |
+
+    | **Circulating Supply** | 120,528,602.25 (matches Total Supply, indicating no
+    max supply cap) |
+
+
+    **Insights and Observations**
+
+
+    1. **Market Position**: Ethereum holds the second position in market capitalization,
+    underscoring its significant presence in the cryptocurrency market.
+
+    2. **Price Volatility**: The 24-hour price change indicates a decline, suggesting
+    current market volatility. The all-time high change percentage shows a substantial
+    drop from its peak, reflecting broader market fluctuations.
+
+    3. **Supply Dynamics**: The absence of a maximum supply cap, with total and circulating
+    supply being equal, implies that ETH supply can continue to grow, potentially
+    impacting its value over time.
+
+    4. **Use Case Breadth**: Ethereum''s platform supports a wide array of applications,
+    from DeFi and NFTs to decentralized exchanges, highlighting its versatility and
+    adoption across various sectors of the crypto ecosystem.
+
+    5. **Investment and Portfolio Presence**: Ethereum''s inclusion in numerous high-profile
+    investment portfolios (e.g., FTX Holdings, Andreessen Horowitz) signifies institutional
+    and investment community interest, potentially influencing market stability and
+    growth prospects.'
+  data:
+    token_info:
+      name: Ethereum
+      symbol: ETH
+      market_cap_rank: 2
+      categories: *id001
+      description: "Ethereum is a global, open-source platform for decentralized applications.\
+        \ In other words, the vision is to create a world computer that anyone can\
+        \ build applications in a decentralized manner; while all states and data\
+        \ are distributed and publicly accessible. Ethereum supports smart contracts\
+        \ in which developers can write code in order to program digital value. Examples\
+        \ of decentralized apps (dapps) that are built on Ethereum includes tokens,\
+        \ non-fungible tokens, decentralized finance apps, lending protocol, decentralized\
+        \ exchanges, and much more.\r\n\r\nOn Ethereum, all transactions and smart\
+        \ contract executions require a small fee to be paid. This fee is called Gas.\
+        \ In technical terms, Gas refers to the unit of measure on the amount of computational\
+        \ effort required to execute an operation or a smart contract. The more complex\
+        \ the execution operation is, the more gas is required to fulfill that operation.\
+        \ Gas fees are paid entirely in Ether (ETH), which is the native coin of the\
+        \ blockchain. The price of gas can fluctuate from time to time depending on\
+        \ the network demand."
+    market_metrics:
+      current_price_usd: 2680.14
+      market_cap_usd: 323431218234
+      fully_diluted_valuation_usd: 323431218234
+      total_volume_usd: 29095637064
+    price_metrics:
+      ath_usd: 4878.26
+      ath_change_percentage: -44.98334
+      ath_date: '2021-11-10T14:24:19.604Z'
+      high_24h_usd: 2854.63
+      low_24h_usd: 2672.5
+      price_change_24h: -103.347186817252
+      price_change_percentage_24h: -3.71287
+    supply_info:
+      total_supply: 120528602.252677
+      max_supply: null
+      circulating_supply: 120528602.252677
+input_by_trending:
+  query: Get information about trending coins
+output_by_trending:
+  response: '**Current Top Trending Cryptocurrencies**
+
+
+    Below is the list of trending coins in the market, along with their key details:
+
+
+    | **#** | **Coin Name** | **Symbol** | **Market Cap Rank** | **Current Price (USD)**
+    |
+
+    | --- | --- | --- | --- | --- |
+
+    | 1. | **Berachain** | BERA | 98 | $8.20 |
+
+    | 2. | **Elon4AfD** | ELON4AFD | 527 | $0.08 |
+
+    | 3. | **Ondo** | ONDO | 33 | $1.36 |
+
+    | 4. | **Notcoin** | NOT | 247 | $0.003 |
+
+    | 5. | **Qubic** | QUBIC | 298 | ~$0.000002 |
+
+    | 6. | **Solana** | SOL | 5 | $189.45 |
+
+    | 7. | **Hyperliquid** | HYPE | 23 | $24.15 |
+
+    | 8. | **Sui** | SUI | 17 | $3.15 |
+
+    | 9. | **XRP** | XRP | 4 | $2.33 |
+
+    | 10. | **Virtuals Protocol** | VIRTUAL | 110 | $1.17 |
+
+
+    **Key:**
+
+    - **#**: Trending List Position (Note: This is not a direct ranking but a list
+    position in the provided data)
+
+    - **Coin Name**: Full name of the cryptocurrency
+
+    - **Symbol**: Ticker symbol of the cryptocurrency
+
+    - **Market Cap Rank**: Global ranking of the cryptocurrency by market capitalization
+
+    - **Current Price (USD)**: Current price of the cryptocurrency in US Dollars (subject
+    to fluctuations)'
+  data:
+    trending_coins:
+    - name: Berachain
+      symbol: BERA
+      market_cap_rank: 98
+      price_usd: 8.197414369571634
+    - name: Elon4AfD
+      symbol: ELON4AFD
+      market_cap_rank: 527
+      price_usd: 0.08018009637110349
+    - name: Ondo
+      symbol: ONDO
+      market_cap_rank: 33
+      price_usd: 1.3584807688146843
+    - name: Notcoin
+      symbol: NOT
+      market_cap_rank: 247
+      price_usd: 0.002554910218540184
+    - name: Qubic
+      symbol: QUBIC
+      market_cap_rank: 298
+      price_usd: 1.731117735173382e-06
+    - name: Solana
+      symbol: SOL
+      market_cap_rank: 5
+      price_usd: 189.4467417460978
+    - name: Hyperliquid
+      symbol: HYPE
+      market_cap_rank: 23
+      price_usd: 24.152157313520178
+    - name: Sui
+      symbol: SUI
+      market_cap_rank: 17
+      price_usd: 3.1459315300637565
+    - name: XRP
+      symbol: XRP
+      market_cap_rank: 4
+      price_usd: 2.328043937535066
+    - name: Virtuals Protocol
+      symbol: VIRTUAL
+      market_cap_rank: 110
+      price_usd: 1.1672391551917896
