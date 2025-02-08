@@ -20,7 +20,8 @@ class TokenContractSecurityAgent(MeshAgent):
                 {
                     'name': 'query',
                     'description': 'The query containing token contract address and chain ID or chain name',
-                    'type': 'str'
+                    'type': 'str',
+                    'required': True
                 }
             ],
             'outputs': [
@@ -35,7 +36,7 @@ class TokenContractSecurityAgent(MeshAgent):
                     'type': 'dict'
                 }
             ],
-            'external_apis': ['goplus'],
+            'external_apis': ['GoPlus'],
             'tags': ['Security']
         })
         
@@ -75,11 +76,25 @@ class TokenContractSecurityAgent(MeshAgent):
             return None
 
     def get_system_prompt(self) -> str:
-        return f"""You are a helpful assistant that can fetch and analyze security details of blockchain token contracts.
+        return f"""You are a blockchain security analyst that provides factual analysis of token contracts based on GoPlus API data.
+        1. Extract the contract address and chain ID from the user's query
+        2. Use the fetch_security_details tool to get the security data
+        3. Present the findings in this structured format:
+            - Basic Info: Token name, symbol, total supply, holder count
+            - Contract Properties: Open source status, proxy status, mintable status
+            - Ownership Analysis: Creator address, owner address, ownership takeback capability
+            - Trading Properties: Buy/sell taxes, honeypot status, blacklist status
+            - Liquidity: DEX presence, LP holder count, top LP holders
+            - Holder Distribution: Top holders and their percentage of the total supply
+            - Other Metrics: Any other relevant metrics or information
+        4. Risk Assessment: Provide a risk assessment based on the data and any additional context from the user's query
+        If there are high-risk items like honeypot or high taxes, highlight them. Otherwise, you don't need to judge the risk level for other non-essential issues (like liquidity, holder distribution, etc.). Present the information objectively.
         You should identify the contract address and chain ID from the user's query and use the provided tool to fetch security information.
         Supported chains: {', '.join([f"{name} (Chain ID: {id})" for id, name in self.supported_blockchains.items()])}
-        If the blockchain is not supported, return a brief error message explaining why.
-        If you obtain data from the tool, provide a clear and concise analysis of the security details. Focus on important metrics and risks."""
+        
+        If the blockchain is not supported, respond with: "Chain not supported. Supported chains are: [list]"
+        If the contract address is invalid, respond with: "Invalid contract address format"
+        If no data is found, respond with: "No security data available for this contract" """
 
     def get_tool_schema(self) -> Dict:
         return {
