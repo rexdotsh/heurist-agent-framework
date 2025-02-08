@@ -5,6 +5,9 @@ from .mesh_agent import MeshAgent, with_cache, with_retry, monitor_execution
 from core.llm import call_llm_async, call_llm_with_tools_async
 from typing import List, Dict, Any
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class BitquerySolanaTokenInfoAgent(MeshAgent):
     def __init__(self):
@@ -18,9 +21,16 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             'inputs': [
                 {
                     'name': 'query',
-                    'description': 'Natural language query about a Solana token or a request for trending tokens',
+                    'description': 'Natural language query about a Solana token or a request for trending tokens. If you want to query a specific token, you MUST include token address',
                     'type': 'str',
-                    'optional': False
+                    'required': True
+                },
+                {
+                    'name': 'raw_data_only',
+                    'description': 'If true, the agent will only return the raw data and not the full response',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
                 }
             ],
             'outputs': [
@@ -35,18 +45,29 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                     'type': 'dict'
                 }
             ],
-            'external_apis': ['bitquery'],
-            'tags': ['DeFi', 'Market Data', 'Solana']
+            'external_apis': ['Bitquery'],
+            'tags': ['Market Data', 'Solana']
         })
 
     def get_system_prompt(self) -> str:
         return (
-            "You are a helpful assistant that can fetch Solana token trading information from Bitquery and provide trending tokens on the Solana network.\n"
-            "For detailed trading information, provide the Solana token mint address. The data includes:\n"
-            "1. Price information (open, high, low, close)\n"
-            "2. Trading volume\n"
-            "3. Time-series data in 5-minute intervals\n\n"
-            "If you want to see the top trending tokens on Solana, simply request the trending tokens."
+            "You are a specialized assistant that analyzes Solana token trading data from Bitquery. Your responses should be clear, concise, and data-driven.\n\n"
+            "When analyzing specific tokens:\n"
+            "1. Always start with a brief token overview (name, symbol, address)\n"
+            "2. Provide a 1-hour price analysis including:\n"
+            "   - Opening and closing prices\n"
+            "   - High and low prices with timestamps\n"
+            "   - No need to provide detailed time-series data but just summarize the price movement\n"
+            "3. Trade volume\n"
+            "When providing trending tokens:\n"
+            "1. List top 10 tokens by trading activity\n"
+            "2. For each token include:\n"
+            "   - Token name and symbol\n"
+            "   - Smart contract address (Mint Address)\n"
+            "   - Trading volume\n"
+            "   - Number of trades\n"
+            "   - Exchange names\n"
+            "For any token contract address, you MUST use this format [Mint Address](https://solscan.io/token/Mint Address)"
         )
 
     def get_tool_schemas(self) -> List[Dict]:
@@ -140,8 +161,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             tools=self.get_tool_schemas()
         )
 
-        if not response or not response.get('tool_calls'):
+        if not response:
             return {"error": "Failed to process query"}
+
+        if not response.get('tool_calls'):
+            return {"response": response['content'], "data": {}}
 
         tool_call = response['tool_calls']
         function_args = json.loads(tool_call.function.arguments)
@@ -149,9 +173,13 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         if tool_call.function.name == 'get_token_trading_info':
             token_address = function_args['token_address']
             trading_info = await self.get_token_trading_info(token_address)
+            raw_data_only = params.get('raw_data_only', False)
 
             if 'error' in trading_info:
-                return trading_info
+                return { "response": f"Error fetching token trading info: {trading_info['error']}", "data": trading_info }
+
+            if raw_data_only:
+                return { "response": "", "data": trading_info }
 
             explanation = await call_llm_async(
                 base_url=self.heurist_base_url,
@@ -173,7 +201,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         elif tool_call.function.name == 'get_top_trending_tokens':
             trending_results = await self.get_top_trending_tokens()
             if 'error' in trending_results:
-                return trending_results
+                return { "response": f"Error fetching top trending tokens: {trending_results['error']}", "data": trending_results }
+
+            raw_data_only = params.get('raw_data_only', False)
+            if raw_data_only:
+                return { "response": "", "data": trending_results }
 
             explanation = await call_llm_async(
                 base_url=self.heurist_base_url,
