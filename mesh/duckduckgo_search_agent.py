@@ -31,6 +31,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
                         "name": "query",
                         "description": "The search query to analyze",
                         "type": "str",
+                        "required": True
                     }
                 ],
                 "outputs": [
@@ -45,8 +46,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
                         "type": "dict",
                     },
                 ],
-                "external_apis": ["duckduckgo"],
-                "tags": ["Search", "Web", "AI"],
+                "external_apis": ["DuckDuckGo"],
+                "tags": ["Search"],
             }
         )
 

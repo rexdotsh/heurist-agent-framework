@@ -25,7 +25,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     'name': 'query',
                     'description': 'Natural language query about a token',
                     'type': 'str',
-                    'optional': False
+                    'required': True
                 }
             ],
             'outputs': [
@@ -40,8 +40,8 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     'type': 'dict'
                 }
             ],
-            'external_apis': ['coingecko'],
-            'tags': ['DeFi', 'Market Data']
+            'external_apis': ['Coingecko'],
+            'tags': ['Trading', 'Market Data']
         })
 
     def get_system_prompt(self) -> str:

@@ -58,8 +58,8 @@ class ZkIgniteYieldAgent(MeshAgent):
                 }
             ],
             'mcp_tool_name': 'get_zksync_ignite_yield_opportunities',
-            'external_apis': ['merkl'],
-            'tags': ['DeFi', 'ZKsync', 'Data']
+            'external_apis': ['Merkl'],
+            'tags': ['DeFi', 'ZKsync']
         })
         self._api_clients['merkl'] = MerklClient()
 

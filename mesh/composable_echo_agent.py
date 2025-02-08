@@ -28,7 +28,7 @@ class ComposableEchoAgent(MeshAgent):
                     'type': 'str'
                 }
             ],
-            'tags': ['test', 'composable']
+            'tags': ['Test']
         })
         self.mesh_client = MeshClient(self.heurist_base_url)
         if not self.heurist_base_url:

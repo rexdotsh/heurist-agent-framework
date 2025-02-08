@@ -23,7 +23,8 @@ class AlloraPricePredictionAgent(MeshAgent):
                 {
                     'name': 'query',
                     'description': 'The cryptocurrency symbol (only ETH or BTC supported) and the time period (5m or 8h)',
-                    'type': 'str'
+                    'type': 'str',
+                    'required': True
                 }
             ],
             'outputs': [
@@ -33,8 +34,8 @@ class AlloraPricePredictionAgent(MeshAgent):
                     'type': 'str'
                 }
             ],
-            'external_apis': ['allora'],
-            'tags': ['Trading', 'Allora'],
+            'external_apis': ['Allora'],
+            'tags': ['Trading', 'Price Prediction'],
             'mcp_tool_name': 'get_allora_price_prediction'
         })
 

@@ -29,7 +29,7 @@ class EchoAgent(MeshAgent):
                     'type': 'str'
                 }
             ],
-            'tags': ['test']
+            'tags': ['Test']
         })
 
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
