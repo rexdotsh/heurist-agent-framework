@@ -90,77 +90,81 @@ def convert_parameters(parameters: Dict) -> List[Dict[str, Any]]:
 def get_tools() -> List[Dict[str, Any]]:
     """
     Retrieve the public tool definitions for client consumption,
-    formatted to adhere to OpenAI's chat completions tool schema.
-    Each tool includes:
-      - A top-level "type": "function"
-      - The function details nested under the "function" key.
-      - The "agent_id" field set to a sanitized version of the agent's class name.
-      
-    Note:
-      Due to current OpenAI requirements, all properties defined in the function's
-      parameters must be supplied in the "required" field—even if they are intended to be optional.
+    but each agent is represented by a single "function" with the same name
+    as the agent's class. This version simply pulls metadata from each
+    agent's "metadata" dict, rather than looking for get_tool_schemas().
+    
+    Example schema produced for each agent:
+    {
+      "type": "function",
+      "function": {
+          "name": "CoinGeckoTokenInfoAgent",
+          "description": "{{ agent's description }}",
+          "parameters": {
+              "type": "object",
+              "properties": {
+                  "query": {...},
+                  "raw_data_only": {...}
+              },
+              "required": ["query", "raw_data_only"],  # if specified in metadata
+              "additionalProperties": False
+          }
+      },
+      "agent_id": "CoinGeckoTokenInfoAgent"
+    }
     """
     tools = []
-    # Map our shorthand types to valid JSON Schema types.
     type_mapping = {
         "str": "string",
         "bool": "boolean",
         "int": "integer",
         "float": "number"
     }
+    
     for agent_id, agent_cls in agents_dict.items():
         try:
             agent_instance = agent_cls()
-            if hasattr(agent_instance, "get_tool_schemas") and callable(agent_instance.get_tool_schemas):
-                schemas = agent_instance.get_tool_schemas()
-                # Use agent's metadata "inputs" if available.
-                agent_inputs = agent_instance.metadata.get("inputs")
-                for schema in schemas:
-                    # Get inputs from metadata if available, otherwise convert using existing logic.
-                    if agent_inputs is not None:
-                        inputs_schema_list = agent_inputs
-                    else:
-                        inputs_schema_list = convert_parameters(schema["function"].get("parameters", {}))
-    
-                    # Build a JSON schema for the function's parameters.
-                    properties = {}
-                    for inp in inputs_schema_list:
-                        param_type = type_mapping.get(inp["type"], inp["type"])
-                        properties[inp["name"]] = {
-                            "type": param_type,
-                            "description": inp.get("description", "")
-                        }
-                    # Due to OpenAI requirements, include every property as required.
-                    required = list(properties.keys())
-    
-                    # Instead of using metadata name which might have spaces, use the class name.
-                    # This ensures consistency with agents_dict keys.
-                    original_agent_name = agent_cls.__name__
-                    # Sanitize function name if needed (though class names are often already valid)
-                    function_name = "".join(
-                        c if c.isalnum() or c in ["_", "-"] else "_" for c in original_agent_name
-                    )
-    
-                    fn_schema = {
-                        "name": function_name,
-                        "description": schema["function"]["description"],
-                        "parameters": {
-                            "type": "object",
-                            "properties": properties,
-                            "required": required,
-                            "additionalProperties": False
-                        },
-                        "strict": True
-                    }
-    
-                    public_tool = {
-                        "type": "function",
-                        "function": fn_schema,
-                        "agent_id": function_name  # Using the sanitized class name.
-                    }
-                    tools.append(public_tool)
+
+            # Pull basic info from agent metadata
+            function_name = agent_cls.__name__
+            description = agent_instance.metadata.get("description", f"Agent {function_name}")
+            inputs = agent_instance.metadata.get("inputs", [])
+            
+            # Build JSON Schema properties from metadata inputs
+            properties = {}
+            for inp in inputs:
+                param_type = type_mapping.get(inp["type"], "string")
+                properties[inp["name"]] = {
+                    "type": param_type,
+                    "description": inp.get("description", "")
+                }
+
+            # For OpenAI compatibility, if there are any properties,
+            # all of them must be required when strict=true
+            required = list(properties.keys()) if properties else []
+
+            fn_schema = {
+                "name": function_name,
+                "description": description,
+                "parameters": {
+                    "type": "object",
+                    "properties": properties,
+                    "required": required,
+                    "additionalProperties": False
+                }
+                # Removed "strict": True to allow for optional parameters
+            }
+
+            public_tool = {
+                "type": "function",
+                "function": fn_schema,
+                "agent_id": function_name
+            }
+            tools.append(public_tool)
+
         except Exception as e:
-            logger.error(f"Error retrieving tool schemas for agent {agent_id}: {e}")
+            logger.error(f"Error building tool schema for agent {agent_id}: {e}")
+    
     return tools
 
 @app.get("/tools")
