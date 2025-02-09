@@ -19,13 +19,20 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             'version': '1.0.0',
             'author': 'Heurist team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'description': 'Fetches token information and trending coins from CoinGecko',
+            'description': 'This agent can fetch token information and trending coins from CoinGecko',
             'inputs': [
                 {
                     'name': 'query',
-                    'description': 'Natural language query about a token',
+                    'description': 'Natural language query about a token, or a request for trending coins. If querying a specific token, use CoinGecko ID or token name or symbol.',
                     'type': 'str',
                     'required': True
+                },
+                {
+                    'name': 'raw_data_only',
+                    'description': 'If true, the agent will only return the raw data and not the full response',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
                 }
             ],
             'outputs': [
@@ -41,7 +48,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 }
             ],
             'external_apis': ['Coingecko'],
-            'tags': ['Trading', 'Market Data']
+            'tags': ['Trading', 'Data']
         })
 
     def get_system_prompt(self) -> str:
@@ -145,18 +152,25 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             temperature=0.1,
             tools=self.get_tool_schemas()
         )
-
-        if not response or not response.get('tool_calls'):
+        
+        if not response:
             return {"error": "Failed to process query"}
+
+        if not response.get('tool_calls'):
+            return {"response": response['content'], "data": {}}
 
         tool_call = response['tool_calls']
         function_args = json.loads(tool_call.function.arguments)
-        
+
         if tool_call.function.name == 'get_trending_coins':
             trending_results = await self.get_trending_coins()
             if 'error' in trending_results:
-                return trending_results
-                
+                return { "error": f"Error fetching trending coins: {trending_results['error']}" }
+
+            raw_data_only = params.get('raw_data_only', False)
+            if raw_data_only:
+                return {"response": "", "data": trending_results}
+
             explanation = await call_llm_async(
                 base_url=self.heurist_base_url,
                 api_key=self.heurist_api_key,
@@ -178,14 +192,18 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             token_name = function_args['token_name']
             coingecko_id = await self.get_coingecko_id(token_name)
             if isinstance(coingecko_id, dict) and 'error' in coingecko_id:
-                return coingecko_id
+                return { "error": f"Error fetching CoinGecko ID: {coingecko_id['error']}" }
             
             # Get token info using the found coingecko_id
             token_info = await self.get_token_info(coingecko_id)
             if 'error' in token_info:
-                return token_info
+                return { "error": f"Error fetching token info: {token_info['error']}" }
                 
             formatted_data = self.format_token_info(token_info)
+            
+            raw_data_only = params.get('raw_data_only', False)
+            if raw_data_only:
+                return {"response": "", "data": formatted_data}
             
             explanation = await call_llm_async(
                 base_url=self.heurist_base_url,
@@ -209,9 +227,13 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             token_info = await self.get_token_info(coingecko_id)
             
             if 'error' in token_info:
-                return token_info
+                return { "error": f"Error fetching token info: {token_info['error']}" }
                 
             formatted_data = self.format_token_info(token_info)
+            
+            raw_data_only = params.get('raw_data_only', False)
+            if raw_data_only:
+                return {"response": "", "data": formatted_data}
             
             explanation = await call_llm_async(
                 base_url=self.heurist_base_url,

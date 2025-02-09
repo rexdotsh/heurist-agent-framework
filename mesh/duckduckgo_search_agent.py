@@ -21,7 +21,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
                 "description": (
-                    "Fetch and analyze web search results using DuckDuckGo API. "
+                    "This agent can fetch and analyze web search results using DuckDuckGo API. "
                     "Analyze content relevance, source credibility, information completeness, "
                     "and provide intelligent summaries. This agent helps you gather and understand "
                     "information from across the web with AI-powered analysis."
@@ -32,6 +32,20 @@ class DuckDuckGoSearchAgent(MeshAgent):
                         "description": "The search query to analyze",
                         "type": "str",
                         "required": True
+                    },
+                    {
+                        "name": "max_results",
+                        "description": "The maximum number of results to return",
+                        "type": "int",
+                        "required": False,
+                        "default": 5
+                    },
+                    {
+                        "name": "raw_data_only",
+                        "description": "If true, the agent will only return the raw data and not the full response",
+                        "type": "bool",
+                        "required": False,
+                        "default": False
                     }
                 ],
                 "outputs": [
@@ -43,11 +57,11 @@ class DuckDuckGoSearchAgent(MeshAgent):
                     {
                         "name": "data",
                         "description": "The raw search results data from DuckDuckGo API",
-                        "type": "dict",
+                        "type": "list",
                     },
                 ],
                 "external_apis": ["DuckDuckGo"],
-                "tags": ["Search"],
+                "tags": ["Search", "Data"],
             }
         )
 
@@ -113,6 +127,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
             raise ValueError("Query parameter is required")
 
         max_results = params.get("max_results", 5)
+        raw_data_only = params.get("raw_data_only", False)
 
         response = await call_llm_with_tools_async(
             base_url=self.heurist_base_url,
@@ -124,14 +139,23 @@ class DuckDuckGoSearchAgent(MeshAgent):
             tools=[self.get_tool_schema()],
         )
 
-        if not response or not response.get("tool_calls"):
-            return {"response": response.get("content")}
+        if not response:
+            return {"response": "Failed to call LLM"}
+
+        if not response.get("tool_calls"):
+            return {"response": response.get("content"), "data": []}
 
         tool_call = response["tool_calls"]
         function_args = json.loads(tool_call.function.arguments)
         tool_result = await self.fetch_search_results(
             function_args["query"], max_results
         )
+
+        if not tool_result:
+            return {"response": "Failed to fetch search results", "data": []}
+
+        if raw_data_only:
+            return {"response": "", "data": tool_result}
 
         explanation = await call_llm_async(
             base_url=self.heurist_base_url,

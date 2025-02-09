@@ -17,7 +17,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             'version': '1.0.0',
             'author': 'Heurist team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'description': 'Fetches Solana token trading information and trending tokens from Bitquery',
+            'description': 'This agent can fetch Solana token trading data and trending tokens from Bitquery',
             'inputs': [
                 {
                     'name': 'query',
@@ -46,7 +46,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 }
             ],
             'external_apis': ['Bitquery'],
-            'tags': ['Market Data', 'Solana']
+            'tags': ['Data', 'Solana', 'Trading']
         })
 
     def get_system_prompt(self) -> str:
@@ -176,7 +176,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             raw_data_only = params.get('raw_data_only', False)
 
             if 'error' in trading_info:
-                return { "response": f"Error fetching token trading info: {trading_info['error']}", "data": trading_info }
+                return { "error": f"Error fetching token trading info: {trading_info['error']}" }
 
             if raw_data_only:
                 return { "response": "", "data": trading_info }
@@ -201,7 +201,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         elif tool_call.function.name == 'get_top_trending_tokens':
             trending_results = await self.get_top_trending_tokens()
             if 'error' in trending_results:
-                return { "response": f"Error fetching top trending tokens: {trending_results['error']}", "data": trending_results }
+                return { "error": f"Error fetching top trending tokens: {trending_results['error']}" }
 
             raw_data_only = params.get('raw_data_only', False)
             if raw_data_only:

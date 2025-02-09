@@ -18,13 +18,20 @@ class AlloraPricePredictionAgent(MeshAgent):
             'version': '1.0.0',
             'author': 'Heurist Team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'description': 'Get price predictions for ETH/BTC with confidence intervals from Allora price prediction API',
+            'description': 'This agent can fetch price predictions for ETH/BTC with confidence intervals from Allora price prediction API',
             'inputs': [
                 {
                     'name': 'query',
                     'description': 'The cryptocurrency symbol (only ETH or BTC supported) and the time period (5m or 8h)',
                     'type': 'str',
                     'required': True
+                },
+                {
+                    'name': 'raw_data_only',
+                    'description': 'If true, the agent will only return the raw data and not the full response',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
                 }
             ],
             'outputs': [
@@ -35,7 +42,7 @@ class AlloraPricePredictionAgent(MeshAgent):
                 }
             ],
             'external_apis': ['Allora'],
-            'tags': ['Trading', 'Price Prediction'],
+            'tags': ['Trading', 'Price Prediction', 'Data'],
             'mcp_tool_name': 'get_allora_price_prediction'
         })
 
@@ -136,10 +143,11 @@ class AlloraPricePredictionAgent(MeshAgent):
             tools=[self.get_tool_schema()]
         )
 
-        print(response)
+        if not response:
+            return {"error": "Failed to call LLM"}
 
-        if not response or not response.get('tool_calls'):
-            return {"response": response.get('content')}
+        if not response.get('tool_calls'):
+            return {"response": response.get('content'), "data": {}}
 
         tool_call = response['tool_calls']
         function_args = json.loads(tool_call.function.arguments)
@@ -156,6 +164,9 @@ class AlloraPricePredictionAgent(MeshAgent):
             f"Confidence Intervals: {result['confidence_intervals']}\n"
             f"Confidence Interval Values Normalized: {result['confidence_interval_values_normalized']}\n"
         )
+
+        if params.get('raw_data_only', False):
+            return {"response": "", "data": tool_response}
 
         # print('tool_response', tool_response)
         final_response = await call_llm_async(

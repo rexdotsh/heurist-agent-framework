@@ -15,13 +15,20 @@ class TokenContractSecurityAgent(MeshAgent):
             'name': 'Token Contract Security Agent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'Fetch and analyze security details of blockchain token contracts using GoPlus API. Analyze the token holder count, liquidity distribution, admin rights, mintable / pausable status, and other security metrics. This agents helps you understand whether the token is safe to interact with and catch any potential scams or honeypots.',
+            'description': 'This agent can fetch and analyze security details of blockchain token contracts using GoPlus API. Analyze the token holder count, liquidity distribution, admin rights, mintable / pausable status, and other security metrics. This agents helps you understand whether the token is safe to interact with and catch any potential scams or honeypots.',
             'inputs': [
                 {
                     'name': 'query',
                     'description': 'The query containing token contract address and chain ID or chain name',
                     'type': 'str',
                     'required': True
+                },
+                {
+                    'name': 'raw_data_only',
+                    'description': 'If true, the agent will only return the raw data and not the full response',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
                 }
             ],
             'outputs': [
@@ -37,7 +44,7 @@ class TokenContractSecurityAgent(MeshAgent):
                 }
             ],
             'external_apis': ['GoPlus'],
-            'tags': ['Security']
+            'tags': ['Security', 'Data']
         })
         
         self.supported_blockchains = {
@@ -137,8 +144,11 @@ class TokenContractSecurityAgent(MeshAgent):
             tools=[self.get_tool_schema()]
         )
 
-        if not response or not response.get('tool_calls'):
-            return {"response": response.get('content')}
+        if not response:
+            return {"response": "Failed to call LLM"}
+
+        if not response.get('tool_calls'):
+            return {"response": response.get('content'), "data": {}}
 
         tool_call = response['tool_calls']
         function_args = json.loads(tool_call.function.arguments)
@@ -146,6 +156,12 @@ class TokenContractSecurityAgent(MeshAgent):
             function_args['contract_address'],
             function_args.get('chain_id', 1)
         )
+
+        if not tool_result:
+            return {"response": "Failed to fetch security details", "data": {}}
+        
+        if raw_data_only:
+            return {"response": "", "data": tool_result}
 
         explanation = await call_llm_async(
             base_url=self.heurist_base_url,
