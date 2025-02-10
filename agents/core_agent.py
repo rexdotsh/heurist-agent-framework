@@ -68,7 +68,7 @@ class CoreAgent:
         with self._lock:
             self.interfaces[name] = interface
 
-    async def update_knowledge_base(self, json_file_path: str = "data/data.json") -> None:
+    def update_knowledge_base(self, json_file_path: str = "data/data.json") -> None:
         """
         Updates the knowledge base by processing JSON data and storing embeddings.
         Handles any JSON structure by treating each key-value pair as knowledge.
@@ -101,10 +101,13 @@ class CoreAgent:
                         message_parts.append(f"{key}: {json.dumps(value)}")
                 
                 message = "\n\n".join(message_parts)
+
+                # Generate embedding for the message
+                message_embedding = get_embedding(message)
                 
                 # Check if this exact message already exists
                 existing_entries = self.message_store.find_similar_messages(
-                    get_embedding(message),
+                    message_embedding,
                     threshold=0.99  # Very high threshold to match nearly identical content
                 )
                 
@@ -112,10 +115,7 @@ class CoreAgent:
                     logger.info(f"Similar content already exists in knowledge base, skipping...")
                     continue
                 
-                # Generate embedding for the message
                 try:
-                    message_embedding = get_embedding(message)
-                    
                     # Extract potential key topics from the first few keys
                     key_topics = list(item.keys())[:3]  # Use first 3 keys as topics
                     
