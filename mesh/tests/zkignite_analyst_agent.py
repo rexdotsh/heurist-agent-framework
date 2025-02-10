@@ -4,14 +4,16 @@ import yaml
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from mesh.zkignite_yield_agent import ZkIgniteYieldAgent
+from mesh.zkignite_analyst_agent import ZkIgniteAnalystAgent
 import asyncio
 
 async def run_agent():
-    agent = ZkIgniteYieldAgent()
+    agent = ZkIgniteAnalystAgent()
     try:
-        agent_input = {}
-        agent_output = await agent.handle_message({})
+        agent_input = {
+            "query": "I have some ETH and ZK token and I want to farm on zksync. What are the best opportunities?"
+        }
+        agent_output = await agent.handle_message(agent_input)
         
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
