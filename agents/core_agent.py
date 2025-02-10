@@ -67,6 +67,90 @@ class CoreAgent:
     def register_interface(self, name, interface):
         with self._lock:
             self.interfaces[name] = interface
+
+    async def update_knowledge_base(self, json_file_path: str = "data/data.json") -> None:
+        """
+        Updates the knowledge base by processing JSON data and storing embeddings.
+        Handles any JSON structure by treating each key-value pair as knowledge.
+        
+        Args:
+            json_file_path: Path to the JSON file containing the data
+        """
+        logger.info(f"Updating knowledge base from {json_file_path}")
+        
+        try:
+            # Read JSON file
+            with open(json_file_path, 'r') as f:
+                data = json.load(f)
+            
+            # Handle both list and dict formats
+            items = data if isinstance(data, list) else [data]
+            
+            # Process each item
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                    
+                # Create message content by combining all key-value pairs
+                message_parts = []
+                for key, value in item.items():
+                    if isinstance(value, (str, int, float, bool)):
+                        message_parts.append(f"{key}: {value}")
+                    elif isinstance(value, (list, dict)):
+                        # Handle nested structures by converting to string
+                        message_parts.append(f"{key}: {json.dumps(value)}")
+                
+                message = "\n\n".join(message_parts)
+                
+                # Check if this exact message already exists
+                existing_entries = self.message_store.find_similar_messages(
+                    get_embedding(message),
+                    threshold=0.99  # Very high threshold to match nearly identical content
+                )
+                
+                if existing_entries:
+                    logger.info(f"Similar content already exists in knowledge base, skipping...")
+                    continue
+                
+                # Generate embedding for the message
+                try:
+                    message_embedding = get_embedding(message)
+                    
+                    # Extract potential key topics from the first few keys
+                    key_topics = list(item.keys())[:3]  # Use first 3 keys as topics
+                    
+                    # Create MessageData object
+                    message_data = MessageData(
+                        message=message,
+                        embedding=message_embedding,
+                        timestamp=datetime.now().isoformat(),
+                        message_type="knowledge_base",
+                        chat_id=None,
+                        source_interface="knowledge_base",
+                        original_query=None,
+                        original_embedding=None,
+                        tool_call=None,
+                        response_type="FACTUAL",
+                        key_topics=key_topics
+                    )
+                    
+                    # Store in vector database
+                    self.message_store.add_message(message_data)
+                    logger.info(f"Stored knowledge base entry with keys: {', '.join(key_topics)}")
+                    
+                except EmbeddingError as e:
+                    logger.error(f"Failed to generate embedding: {str(e)}")
+                    continue
+            
+            logger.info("Knowledge base update completed successfully")
+            
+        except FileNotFoundError:
+            logger.error(f"JSON file not found: {json_file_path}")
+        except json.JSONDecodeError:
+            logger.error(f"Invalid JSON format in file: {json_file_path}")
+        except Exception as e:
+            logger.error(f"Error updating knowledge base: {str(e)}")
+
     def basic_personality_settings(self) -> str:
         system_prompt = "Use the following settings as part of your personality and voice if applicable in the conversation context: "
         basic_options = random.sample(
