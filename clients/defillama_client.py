@@ -9,8 +9,22 @@ class DefiLlamaClient(BaseAPIClient):
     
     def __init__(self):
         super().__init__("https://api.llama.fi")
+
+    # sync methods
+    def get_protocol_tvl(self, protocol: str) -> Dict:
+        return self._sync_request("get", f"/protocol/{protocol}")
     
-    async def get_protocol_tvl(self, protocol: str) -> Dict:
+    def get_protocols(self) -> List[Dict]:
+        return self._sync_request("get", "/protocols")
+    
+    def get_chain_tvl(self, chain: str) -> Dict:
+        return self._sync_request("get", f"/v2/historicalChainTvl/{chain}")
+    
+    def get_current_tvl_all_chains(self) -> float:
+        return self._sync_request("get", "/v2/chains")
+    
+    # async methods
+    async def get_protocol_tvl_async(self, protocol: str) -> Dict:
         """
         Get TVL data for a specific protocol
         
@@ -26,12 +40,12 @@ class DefiLlamaClient(BaseAPIClient):
             - symbol: Protocol token symbol (if any)
             - gecko_id: CoinGecko API ID (if any)
         """
-        return await self._make_request(
+        return await self._async_request(
             "get",
             f"/protocol/{protocol}"
         )
     
-    async def get_protocols(self) -> List[Dict]:
+    async def get_protocols_async(self) -> List[Dict]:
         """
         Get list of all protocols and their TVL data
         
@@ -45,12 +59,12 @@ class DefiLlamaClient(BaseAPIClient):
             - change_1d: 24 hour TVL change percentage
             - change_7d: 7 day TVL change percentage
         """
-        return await self._make_request(
+        return await self._async_request(
             "get",
             "/protocols"
         )
     
-    async def get_chain_tvl(self, chain: str) -> Dict:
+    async def get_chain_tvl_async(self, chain: str) -> Dict:
         """
         Get historical TVL data for a specific blockchain
         
@@ -67,12 +81,12 @@ class DefiLlamaClient(BaseAPIClient):
                 ...
             ]
         """
-        return await self._make_request(
+        return await self._async_request(
             "get",
             f"/v2/historicalChainTvl/{chain}"
         )
 
-    def get_current_tvl_all_chains(self) -> float:
+    def get_current_tvl_all_chains_async(self) -> float:
         """
         Get current TVL data for all chains
         
@@ -90,4 +104,4 @@ class DefiLlamaClient(BaseAPIClient):
                 ...
             ]
         """
-        return self._make_request("/v2/chains")
+        return self._async_request("/v2/chains")
