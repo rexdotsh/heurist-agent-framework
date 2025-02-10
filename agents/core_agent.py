@@ -537,7 +537,7 @@ class CoreAgent:
                 source_interface=source_interface,
                 chat_id=chat_id,
                 skip_pre_validation=True,
-                skip_conversation_context=False,
+                skip_conversation_context=skip_conversation_context,
                 skip_similar=True,
                 temperature=0.1,
                 skip_tools=False
