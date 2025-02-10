@@ -503,7 +503,12 @@ class CoreAgent:
                     Make sure you analyze what outputs from previous steps you'd need to use in the next step if applicable.
                     IMPORTANT: RETURN THE JSON ONLY.
                     IMPORTANT: DO NOT USE TOOLS.
-                    IMPORTANT: ONLY USE VALID TOOLS."""
+                    IMPORTANT: ONLY USE VALID TOOLS.
+                    IMPORTANT: WHEN STEPS DEPEND ON EACH OTHER, MAKE SURE YOU ANALYZE THE INPUTS SO YOU KNOW WHAT TO PASS TO THE NEXT TOOL CALL. IF NEEDED TAKE A STEP TO MAKE SURE YOU KNOW WHAT TO PASS TO THE NEXT TOOL CALL AND FORMAT THE INPUTS CORRECTLY.
+                    IMPORTANT: FOR NEXT TOOL CALLS MAKE SURE YOU ANALYZE THE INPUTS SO YOU KNOW WHAT TO PASS TO THE NEXT TOOL CALL. IF NEEDED TAKE A STEP TO MAKE SURE YOU KNOW WHAT TO PASS TO THE NEXT TOOL CALL AND FORMAT THE INPUTS CORRECTLY.
+                    IMPORTANT: MAKE SURE YOU RETURN THE JSON ONLY, NO OTHER TEXT OR MARKUP AND A VALID JSON.
+                    DONT ADD ANY COMMENTS OR MARKUP TO THE JSON. Example NO # or /* */ or /* */ or // or any other comments or markup.
+                    """
             
             prompt += """
                     EXAMPLE:
@@ -533,6 +538,8 @@ class CoreAgent:
                 chat_id=chat_id,
                 skip_pre_validation=True,
                 skip_conversation_context=False,
+                skip_similar=True,
+                temperature=0.1,
                 skip_tools=False
             )
 
@@ -596,8 +603,9 @@ class CoreAgent:
                 
             print("steps_responses: ", steps_responses)
             print("image_url_final: ", image_url_final)
-            prompt_final = f""" <REASONING_CONTEXT> {message_data}\n
-                                    ONLY USE THE REASONING CONTEXT IF YOU NEED TO.
+            prompt_final = f""" 
+                            ONLY USE THE REASONING CONTEXT IF YOU NEED TO.
+                                <REASONING_CONTEXT>
                                     <STEPS_RESPONSES> 
                                         {steps_responses}
                                     </STEPS_RESPONSES>
@@ -608,23 +616,27 @@ class CoreAgent:
                 message_info,
                 source_interface=source_interface,
                 chat_id=chat_id,
-                skip_conversation_context=False,
+                skip_conversation_context=skip_conversation_context,
                 skip_pre_validation=True
             )
         try:
             message_final = f"User: {display_name}, Username: {username}, \nMessage: {message_data}"
-            prompt_final += f"Generate the final response for the user. Given the context of your reasoning, and the steps you've taken, generate a final response for the user. {text_response}"
+            final_reasoning_prompt = f"""Generate the final response for the user. 
+            Given the context of your reasoning, and the steps you've taken, generate a final response for the user. 
+            Your final reasoning is: {text_response}
+            You already have the final reasoning, just generate the final response for the user, don't do more steps or request more information.
+            you are responding to the user message: {message_data}"""
             if final_format_prompt:
-                prompt_final += final_format_prompt
+                prompt_final = final_format_prompt + final_reasoning_prompt + prompt_final
             else:
-                prompt_final += self.basic_personality_settings()
+                prompt_final = self.basic_personality_settings() + final_reasoning_prompt + prompt_final
             response, _, _ = await self.handle_message(
-                message=message_final,
+                message=final_reasoning_prompt,
                 system_prompt=prompt_final,
                 source_interface=source_interface,
                 chat_id=chat_id,
                 skip_embedding=False,
-                skip_conversation_context=False,
+                skip_conversation_context=skip_conversation_context,
                 skip_pre_validation=True,
                 skip_tools=True #skip tools as tools should have been called already
             )
