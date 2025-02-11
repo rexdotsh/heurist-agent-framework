@@ -160,7 +160,7 @@ class TokenContractSecurityAgent(MeshAgent):
         if not tool_result:
             return {"response": "Failed to fetch security details", "data": {}}
         
-        if raw_data_only:
+        if params.get("raw_data_only", False):
             return {"response": "", "data": tool_result}
 
         explanation = await call_llm_async(
