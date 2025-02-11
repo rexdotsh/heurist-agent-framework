@@ -43,7 +43,7 @@ async def process_mesh_request(request: MeshRequest):
         agent.set_heurist_api_key(request.heurist_api_key)
     
     try:
-        result = await agent.handle_message(request.input)
+        result = await agent.call_agent(request.input)
         await agent.cleanup()
         return result
     except Exception as e:

@@ -180,15 +180,21 @@ class MeshManager:
     async def process_task(self, agent_id: str, agent_cls: Type[MeshAgent], task_data: Dict) -> Dict:
         """Handle individual task processing logic"""
         task_id = task_data.get("task_id")
-        user_input = task_data["input"]
-        
+
+        # for any sub-tasks, we need to pass the origin_task_id to the agent
+        origin_task_id = task_data.get("origin_task_id")
+        if not origin_task_id:
+            origin_task_id = task_id
+        agent_input = task_data["input"]
+        agent_input["origin_task_id"] = origin_task_id
+
         agent = agent_cls()
         if "heurist_api_key" in task_data:
             agent.set_heurist_api_key(task_data["heurist_api_key"])
             
         inference_start = time.time()
         try:
-            result = await agent.handle_message(user_input)
+            result = await agent.call_agent(agent_input)
             inference_latency = time.time() - inference_start
             logger.info(f"[{agent_id}] Task result: {result}")
             return {

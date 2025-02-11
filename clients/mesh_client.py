@@ -37,7 +37,7 @@ class MeshClient(BaseAPIClient):
         }
 
         try:
-            response = await self._make_request(
+            response = await self._async_request(
                 method="post",
                 endpoint="/mesh_task_create",
                 json=payload
@@ -63,7 +63,7 @@ class MeshClient(BaseAPIClient):
         """
         for attempt in range(max_retries):
             try:
-                response = await self._make_request(
+                response = await self._async_request(
                     method="post",
                     endpoint="/task_result_query",
                     json={"task_id": task_id}
@@ -91,3 +91,68 @@ class MeshClient(BaseAPIClient):
         
         logger.error(f"Task {task_id} polling timed out after {max_retries} attempts")
         return None
+
+    def push_update(self, task_id: str, content: str):
+        """Push an update for a running task. Use this to push reasoning steps, etc.
+        
+        Args:
+            task_id: ID of the task to update
+            content: Update message content
+            
+        Returns:
+            Dict containing server response
+        """
+
+        # FIXME: DEBUG: print the content
+        print(f"Pushing update for task {task_id}: {content}")
+        return
+
+        try:
+            self._sync_request(
+                method="post",
+                endpoint="/mesh_task_update",
+                json={
+                    "task_id": task_id,
+                    "content": content
+                }
+            )
+            
+        except Exception as e:
+            logger.error(f"Failed to push update for task {task_id}: {e}")
+            # Non-critical error, don't raise
+
+    async def mesh_request(
+        self,
+        agent_id: str,
+        input_data: Dict[str, Any],
+        api_key: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Make a direct request to an agent
+        
+        Args:
+            agent_id: ID of the agent to invoke (e.g. 'EchoAgent')
+            input_data: Input parameters for the agent
+            api_key: Optional Heurist API key for authentication
+            
+        Returns:
+            Dict containing the agent's response
+        """
+        payload = {
+            "agent_id": agent_id,
+            "input": input_data
+        }
+        
+        if api_key:
+            payload["heurist_api_key"] = api_key
+
+        try:
+            response = await self._async_request(
+                method="post",
+                endpoint="/mesh_request",
+                json=payload
+            )
+            return response
+            
+        except Exception as e:
+            logger.error(f"Failed to make mesh request to agent {agent_id}: {e}")
+            raise
