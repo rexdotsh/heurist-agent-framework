@@ -180,11 +180,13 @@ We welcome community contributions to develop the Heurist Mesh.
    - Summarize what your agent does and why it’s valuable.  
    - Include any relevant info (e.g., external APIs used, example test output).  
 
-### Coding Style and Practices
+### Coding Style and Best Practices
 
 - Use Python **type hints** (`typing.Dict`, `typing.Any`, etc.) where feasible.  
 - Use **docstrings** for important methods or classes to clarify behavior.  
-- **Modularity** is key: break large tasks into smaller methods, especially if you rely on external services.  
+- **Modularity** is key: break large tasks into smaller methods, especially if you rely on external services. Every agent should focus on a single domain.
+- Add proper [decorators](https://github.com/heurist-network/heurist-agent-framework/blob/main/decorators.py) to functions using external APIs for caching and retry.
+- `query` should be the first parameter of `handle_message`. It should support natural language queries and does not make assumptions on matching an exact format. (for example, your agent should accept both "tell me about "Ethereum" and "analyze ETH" - we don't strictly match the token name or ticker but let LLM do the job)
 
 ### Metadata Requirements
 
@@ -194,9 +196,9 @@ Each agent’s `metadata` dictionary should at least contain:
 - **`author`**: Name or handle of the contributor.  
 - **`author_address`**: Ethereum address (or any relevant address) for potential revenue share.  
 - **`description`**: Short, clear summary of your agent’s purpose.  
-- **`inputs`**: List of inputs with `name`, `description`, and `type`.  
+- **`inputs`**: List of inputs with `name`, `description`, and `type`.
 - **`outputs`**: List of outputs with `name`, `description`, and `type`.  
-- **`external_apis`**: Any external service your agent accesses (e.g., `['defillama']`).  
+- **`external_apis`**: Any external service your agent accesses (e.g., `['DefiLlama']`).  
 - **`tags`**: Keywords or categories to help users discover your agent.  
 - **`mcp_tool_name` (optional)**: If you want your agent interoperable through Claude’s MCP interface, specify a unique tool name.
 
