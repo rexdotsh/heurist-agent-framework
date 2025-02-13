@@ -1,0 +1,687 @@
+search_mentions_test:
+  test_name: Search Mentions
+  description: Fetches mentions of specific keywords within a given timeframe.
+  input:
+    keywords:
+    - Heurist
+    - HEU
+    - gheurist
+    - $HEU
+    - '@heurist_ai'
+    days_ago: 30
+    limit: 20
+  output:
+    success: true
+    data:
+    - id: 624459142
+      twitter_id: '1889742074230317521'
+      twitter_user_id: '1010430329218371584'
+      content: 'This is THE event you don’t want to miss at @EthereumDenver 🔥
+
+
+        Join us alongside special guests: @heurist_ai, @Somnia_Network , @TacBuild,
+        @0xFacet, @BotanixLabs, &amp; more.
+
+
+        🌟 Join us to gain entry to ETH Denver’s VIP Reception &amp; Opening Party!
+
+
+        🎟️ RSVP:  '
+      mentioned_at: '2025-02-12T18:23:14+00:00'
+      type: post
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 0
+        view_count: 0
+    - id: 624420857
+      twitter_id: '1889570383164276958'
+      twitter_user_id: '1481568237624393730'
+      content: .@heurist_ai x @VirtualsNikita = 🔥
+      mentioned_at: '2025-02-12T07:01:00+00:00'
+      type: quote
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 0
+        view_count: 828
+    - id: 624420853
+      twitter_id: '1889422209988596118'
+      twitter_user_id: '1736748346566459392'
+      content: '> Bring Nikita to Life with Heurist Imagine <
+
+
+        We''ve trained a custom Nikita model on Heurist Imagine.
+
+        Create unique artworks and compete for a $200 USDC prize pool.
+
+
+        Share your art on X tagging @heurist_ai & @VirtualsNikita
+
+
+        Complete the quest on Intract 🫱 '
+      mentioned_at: '2025-02-11T21:12:13+00:00'
+      type: post
+      metrics:
+        like_count: 22
+        reply_count: 1
+        repost_count: 8
+        view_count: 2251
+    - id: 623078646
+      twitter_id: '1889356412431618098'
+      twitter_user_id: '1866789219613421568'
+      content: '@ApateAI @01SamurAI_Agent @AIagentQQ @agon_agent @0xJamesXXX @Greta0086
+        @heurist_ai @zksync @S4mmyEth @dcfgod @Argo_workflow factually incorrect.
+        the march 2024 report isn''t out yet and argo''s initial commits are public
+        from 2023. careful with unverified claims anon'
+      mentioned_at: '2025-02-11T16:50:45+00:00'
+      type: reply
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 0
+        view_count: 6334
+    - id: 617232115
+      twitter_id: '1888202625348489609'
+      twitter_user_id: '1807613019784200192'
+      content: 'ZK WORLD IN BRIEF | Edition 30: Resilience.
+
+        - 5 minute weekly updates on the @ZKsync and Elastic Network ecosystem
+
+
+        Lens is about to launch their mainnet—they just changed their handle to @LC.
+        Yes, LC! @ZKcandyHQ is preparing to establish its Foundation. Meanwhile, real-world
+        adoption is accelerating in Argentina, where driver’s licenses are now on-chain
+        via the miBA app, powered by @Quark_ID and @ZKsync. And there’s still more
+        to come...
+
+
+        Markets shift but resilience drives builders forward, expanding the Elastic
+        Network and proving that ZK is the endgame!
+
+
+        ==========
+
+
+        In this edition, we bring you some exciting updates on the ZKsync and Elastic
+        Network ecosystem, such as @LC, @Quark_ID, @ZKsyncIgnite, @AbstractChain,
+        @cronos_chain zkEVM, @symbiosis_fi, @ZKcandyHQ, @heurist_ai, @RFX_exchange,
+        @noon_capital, @sophon, @grvt_io, @XPLA_Official, @SpaceandTimeDB, @Treasure_DAO,
+        and @ZKsync.
+
+
+        Stay synced with #ZK!'
+      mentioned_at: '2025-02-08T12:26:01+00:00'
+      type: post
+      metrics:
+        like_count: 178
+        reply_count: 18
+        repost_count: 25
+        view_count: 20040
+    - id: 615727142
+      twitter_id: '1887511874218156323'
+      twitter_user_id: '2611856134'
+      content: 'RT @nani__ooo: Chat with NANI is now available on @heurist_ai, a decentralized
+        cloud for AI models. Speak freely, '
+      mentioned_at: '2025-02-06T14:41:13+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 9
+        view_count: 0
+    - id: 615727141
+      twitter_id: '1887511612057370959'
+      twitter_user_id: '1643190364600422402'
+      content: 'Chat with NANI is now available on @heurist_ai, a decentralized cloud
+        for AI models. Speak freely, '
+      mentioned_at: '2025-02-06T14:40:11+00:00'
+      type: quote
+      metrics:
+        like_count: 26
+        reply_count: 9
+        repost_count: 9
+        view_count: 1532
+    - id: 615696755
+      twitter_id: '1887274895676989887'
+      twitter_user_id: '859484337850523648'
+      content: 'RT @crypto_rand: The #DePIN Market Cap is down 7,5% at $22 Billion
+        currently.
+
+
+        Some Low Cap DePIN projects on my radar: $NATIX, $HEU, $NET…'
+      mentioned_at: '2025-02-05T22:59:33+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 15
+        view_count: 0
+    - id: 615884001
+      twitter_id: '1887127226191339884'
+      twitter_user_id: '1869597068786081792'
+      content: "\U0001F525  Expands Its Global DAO Ecosystem! \U0001F525\n\n is paving\
+        \ the way for decentralized governance with a truly cross-chain DAO launchpad.\
+        \ Originally built on Base, we’re now stepping into new territory by launching\
+        \ our very first DAO project on Solana – a milestone that signals our commitment\
+        \ to uniting communities and innovating across ecosystems. LFG, welcome to\
+        \  on Solana!\n\n1.  – Your Global DAO Launchpad\n • Cross-Chain Vision:\n\
+        \ is designed to empower DAO projects worldwide. Starting on Base and now\
+        \ expanding to Solana, our platform integrates dynamic pools from @MeteoraAG\
+        \ to ensure deep liquidity and a fee structure that incentivizes long-term\
+        \ growth.\n • Innovative Infrastructure:\nWith cutting-edge financial tools\
+        \ and a commitment to community-driven governance,  is setting a new standard\
+        \ for DAO launchpads across multiple blockchains.\n\n2. HypurrDAO (@HypurrDao)\n\
+        \ • Overview:\nHypurrDAO is an AI-driven, Hyperliquid collective dedicated\
+        \ to growing the Hyperliquid ecosystem. With a special focus on the upcoming\
+        \ HyperEVM launch, this project leverages advanced AI to drive strategic investment\
+        \ decisions.\n • Key Features:\n • Strong Technical Team: Led by @0xkeshav_,\
+        \ @DevRUdata, and @cryptosingh_eth, the team is committed to innovation and\
+        \ excellence.\n • HyperAgent: An AI-based ecosystem analyst that monitors\
+        \ network activity and will evolve into an autonomous trading bot using machine\
+        \ learning and data analytics.\n • HyperFund: A treasury dedicated to funding\
+        \ high-potential, AI-focused initiatives within the Hyperliquid ecosystem.\n\
+        \ • Roadmap Highlights:\n • Launch of the Litepaper and activation of the\
+        \ AI analyst.\n • Formation of the Ecosystem Fund and early supporter whitelist.\n\
+        \ • Integration with Hyperliquid mainnet and progression toward an autonomous\
+        \ trading model.\n • On Solana:\nHypurrDAO’s launch on Solana marks a significant\
+        \ step in connecting innovative DAO strategies with one of the fastest-growing\
+        \ blockchain communities.\n\n3. RWOK Capital (@rwokcapital)\n • Mission &\
+        \ Vision:\nRWOK Capital is on a mission to accumulate pristine Remilia assets\
+        \ while redefining community-first funding. This DAO is committed to ensuring\
+        \ that NFT holders always come first.\n • Funding Details:\n • Raise: 100\
+        \ ETH starting February 6.\n • Airdrop: 10% of the DAO supply will be airdropped\
+        \ to RWOK NFT holders (up from the previous 5%), regardless of participation\
+        \ in the funding round.\n • Whitelist Tiers:\n • Normal: For holders of at\
+        \ least 1 RWOK NFT.\n • VIP: For holders of 10+ RWOK NFTs.\n • Public Round:\
+        \ A potential public funding round at a higher price is being considered to\
+        \ further engage the community.\n • $DWL Burn Mechanism:\nTo secure fairness,\
+        \ 1,000,000 $DWL is burned per guaranteed lowest-tier whitelist spot. (For\
+        \ HypurrDAO on Solana, winners must provide their SOL address.)\n • Community\
+        \ Commitment:\nRWOK Capital is built on transparency and is designed to reward\
+        \ all NFT holders through a weighted airdrop model that ensures sustainable\
+        \ growth.\n\n4. YapTrade ($YT) & @YapTradeDAO\n • Exciting New Deal:\nIf you’ve\
+        \ created any YapTradeDAO art, toys, puzzles, shirts, or anything creative,\
+        \ here’s your chance to get it shipped to Amsterdam, The Netherlands – with\
+        \ the shipping fee on us! Just DM for details.\n • Vote Sale Details:\nA new\
+        \ deal has been locked in for the sale of 1 million votes. Here’s how it works:\n\
+        \ • Selection Criteria:\n • We will only pick participants who are ready to\
+        \ follow the buyer’s accounts and write a short content piece about the buyer’s\
+        \ project.\n • Vote Requirements:\n • A minimum of 5000 votes is required\
+        \ (note: this is votes, not Yaps).\n • Conversion:\n • 1 Yap = 100 votes\n\
+        \ • 1 smart follower = 1 vote\n • For example, if you have 48 Yaps and 200\
+        \ smart followers, you’re in. Even 50 Yaps with 0 smart followers qualifies!\n\
+        \ • Get Involved:\nFill in the form here: \n\n5. HardwAIre DAO (@hardwAIreDAO)\n\
+        \ • One Week In – Recap & What’s Next:\nHardwAIre DAO has been busy in its\
+        \ first week since launch. Here’s a quick recap of what’s been accomplished\
+        \ and what’s on the horizon:\n • Partnerships Secured:\n • @AethirCloud: One\
+        \ of the largest decentralized compute platforms, assisting with growth and\
+        \ upcoming announcements.\n • @Heurist_AI: Specializing in AI model deployment,\
+        \ helping build our first three DAO-native agents:\n • Governance Agent: Analyzes\
+        \ proposals and summarizes key insights.\n • Financial Agent: Tracks treasury\
+        \ flows and provides detailed financial reports.\n • GPU Agent: Monitors infrastructure,\
+        \ uptime, and utilization.\n • Advisor Board Announced:\n • @MRRydon (Co-Founder,\
+        \ Aethir) – Strategy & compute partnerships.\n • @EdC (COO, Sophon) – Operational\
+        \ strategy & execution.\n • @hushky6 (Ionet Foundation) – DAO structure &\
+        \ compute client advisory.\n • Major Developments:\n • GPU Dashboard (v1):\
+        \ Real-time tracking of GPU uptime & usage is now live.\n • Treasury Dashboard:\
+        \ Developed by @foxtroteth for transparent tracking of treasury inflows and\
+        \ expenses.\n • Team Introduction & Vision: Led by @nocliffcapital, @Tokenprofessor,\
+        \ @Dknoller, and @sage_tega.\n • Governance System Live:\nThe Snapshot voting\
+        \ system is set up and includes:\n • Staked $HARD (via DWL pools)\n • Vested\
+        \ tokens\n • Liquid tokens\n • $HARD-$ETH UniV3 LP positions\n • What’s Next\
+        \ for HardwAIre DAO:\n • Finalizing Our Hardware Partner: In the final stages\
+        \ of selecting the right provider – announcement coming soon!\n • Expanding\
+        \ Strategic Partnerships: Locking in additional ecosystem partnerships to\
+        \ cement our status as the first decentralized compute provider.\n • Community\
+        \ & Development Growth: With community co-development led by our lead dev\
+        \ @dknoller, exciting updates are on the way.\nWith these projects,  is not\
+        \ only expanding its global footprint but also redefining the way DAOs engage\
+        \ with their communities. From leveraging AI in HypurrDAO and securing innovative\
+        \ funding models in RWOK Capital to creative community deals with YapTrade\
+        \ and cutting-edge compute solutions with HardwAIre DAO – the future of decentralized\
+        \ governance is here.  \n\nJoin us on this journey as we continue to innovate\
+        \ and drive sustainable, community-driven growth across the blockchain ecosystem!"
+      mentioned_at: '2025-02-05T13:12:46+00:00'
+      type: post
+      metrics:
+        like_count: 64
+        reply_count: 8
+        repost_count: 6
+        view_count: 1781
+    - id: 615502764
+      twitter_id: '1887084502440460658'
+      twitter_user_id: '859484337850523648'
+      content: "The #DePIN Market Cap is down 7,5% at $22 Billion currently.\n\nSome\
+        \ Low Cap DePIN projects on my radar: $NATIX, $HEU, $NET \n\nWhat are you\
+        \ targeting?\n\nI read you \U0001F447"
+      mentioned_at: '2025-02-05T10:23:00+00:00'
+      type: post
+      metrics:
+        like_count: 119
+        reply_count: 14
+        repost_count: 14
+        view_count: 11385
+    - id: 614006437
+      twitter_id: '1886892542870085804'
+      twitter_user_id: '1328036947244298242'
+      content: 'RT @0x_zalo: Allora is now integrated with several top frameworks:
+        @elizaOS , @virtuals_io, @sendaifun, @goat_sdk, @heurist_ai, @OxZerePy,…'
+      mentioned_at: '2025-02-04T21:40:13+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 10
+        view_count: 0
+    - id: 614006436
+      twitter_id: '1886874269079961855'
+      twitter_user_id: '1268110202823475201'
+      content: "Allora is now integrated with several top frameworks: @elizaOS , @virtuals_io,\
+        \ @sendaifun, @goat_sdk, @heurist_ai, @OxZerePy, @CoinbaseDev, @Cod3xOrg \n\
+        \nwe're working on more \U0001F609\n\nsmarter agents are coming"
+      mentioned_at: '2025-02-04T20:27:36+00:00'
+      type: quote
+      metrics:
+        like_count: 33
+        reply_count: 0
+        repost_count: 10
+        view_count: 1535
+    - id: 608339069
+      twitter_id: '1886166911207235631'
+      twitter_user_id: '116652043'
+      content: 'RT @heurist_ai: Excited to see @thinkagents'' modular approach to
+        agent standards! This aligns perfectly with our vision of composable AI ag…'
+      mentioned_at: '2025-02-02T21:36:49+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 26
+        view_count: 0
+    - id: 605317594
+      twitter_id: '1885774260448407565'
+      twitter_user_id: '1390144583946969093'
+      content: "Chung Daily Note - 2025/2/1\n\nHappy Saturday! \n\n\U0001F4A1Integrate\
+        \ @AlloraNetwork powered prediction insights into @heurist_ai Agent Framework\
+        \ to build smarter, automated agents\n\n\U0001F4CA Kaito Top 5 Mindshare in\
+        \ the Last 24 Hours\n\n-Token: $ETH 8.99% &gt; $BTC 8.69% &gt; $SOL 7.33%\
+        \ &gt; $AIXBT 3.19% &gt; "
+      mentioned_at: '2025-02-01T19:36:34+00:00'
+      type: post
+      metrics:
+        like_count: 11
+        reply_count: 3
+        repost_count: 2
+        view_count: 654
+    - id: 601993319
+      twitter_id: '1885344877275234718'
+      twitter_user_id: '1233275818983424000'
+      content: 'RT @AlloraNetwork: AI with foresight: @heurist_ai now leverages Allora’s
+        collective intelligence to power smarter AI agents. ✳️
+
+
+        Agents bui…'
+      mentioned_at: '2025-01-31T15:10:21+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 23
+        view_count: 0
+    - id: 601993318
+      twitter_id: '1885344757699751955'
+      twitter_user_id: '1752421556494438401'
+      content: 'AI with foresight: @heurist_ai now leverages Allora’s collective intelligence
+        to power smarter AI agents. ✳️
+
+
+        Agents built with Heurist Agent Framework can now analyze markets, automate
+        trading, and optimize DeFi strategies—all in real-time and more intelligently. '
+      mentioned_at: '2025-01-31T15:09:52+00:00'
+      type: post
+      metrics:
+        like_count: 87
+        reply_count: 11
+        repost_count: 23
+        view_count: 10327
+    - id: 598681443
+      twitter_id: '1884912438400696579'
+      twitter_user_id: '859484337850523648'
+      content: 'Tracking @heurist_ai closely here. Only launched 09/12/24.
+
+
+        Despite the price being down after launch, it recovered almost immediately
+        after The #Deepseek news on Monday.
+
+
+        $HEU started as a miner-powered GPU cluster &amp; now moving to an intelligent
+        #AI fabric. 👀 '
+      mentioned_at: '2025-01-30T10:31:59+00:00'
+      type: quote
+      metrics:
+        like_count: 137
+        reply_count: 16
+        repost_count: 26
+        view_count: 14392
+    - id: 597067068
+      twitter_id: '1884702483400057247'
+      twitter_user_id: '2623870473'
+      content: 'ai with the strongest bounce
+
+        24 hour green across the board
+
+        meme bounce but still red
+
+        coinbase listing $vvv
+
+
+        buying more base AI:
+
+        virtual, aixbt, vvv, rei, acolyt, aion, &amp; heu'
+      mentioned_at: '2025-01-29T20:37:42+00:00'
+      type: quote
+      metrics:
+        like_count: 7
+        reply_count: 0
+        repost_count: 0
+        view_count: 2655
+    - id: 596802671
+      twitter_id: '1884655031212773799'
+      twitter_user_id: '3208751003'
+      content: 'RT @hardwAIreDAO: 1/ Building HardwAIre DAO’s first agents 🤖
+
+
+        In the first stage of this partnership, Heurist will bring their expertise
+        to…'
+      mentioned_at: '2025-01-29T17:29:09+00:00'
+      type: repost
+      metrics:
+        like_count: 0
+        reply_count: 0
+        repost_count: 1
+        view_count: 0
+    - id: 596802670
+      twitter_id: '1884617996255015187'
+      twitter_user_id: '1873881337288851456'
+      content: "1/ Building HardwAIre DAO’s first agents \U0001F916\n\nIn the first\
+        \ stage of this partnership, Heurist will bring their expertise to support\
+        \ the DAO in the development of its three key in-house agents for the DAO:\n\
+        \n\U0001F5F3️ Governance Agent:\n> Analyzes proposals\n> Provides actionable\
+        \ reports\n> Tracks past governance decisions to support better decision-making.\n\
+        \n\U0001F4BBGPU Agent: \n> Monitors hardware performance in real-time\n> Tracking\
+        \ uptime, usage, and idle capacity\n> Provides optimization suggestions for\
+        \ our GPU infrastructure.\n\n\U0001F4B0Financial Agent:\n> Manages treasury\
+        \ flows\n> tracks income and expenses\n> generates detailed financial reports\n\
+        \nThese agents will help automate critical processes and enhance operational\
+        \ efficiency across the DAO."
+      mentioned_at: '2025-01-29T15:01:59+00:00'
+      type: reply
+      metrics:
+        like_count: 19
+        reply_count: 2
+        repost_count: 1
+        view_count: 805
+    metadata:
+      total: 78
+      cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoAxZMdjdsV2N5TVMzLU9LZkNFOWVWVlBBAAAAAABW4IoWWXBqUmN2eXlUNUdjakhFOGZ5XzZ5ZxZBNTBtYmVEM1RUR2NycUdHUE9GMnN3AAAAAAB1GqsWVERUVURyRHFRZ2VYY1F0cVh1UWloZxZaZGpxTGV6WlFNNkxlNUhfMVotQy1RAAAAAAB4K-QWVGV6RmdEOTNUT2lPN1JwZFROaC11QQ==
+  timestamp: '2025-02-13T07:34:57.164148'
+get_mentions_test:
+  test_name: Get Mentions
+  description: Retrieves recent mentions from the database.
+  input:
+    limit: 100
+    offset: 0
+  output:
+    success: true
+    data: []
+    metadata:
+      total: 0
+      limit: 100
+      offset: 0
+  timestamp: '2025-02-13T07:34:57.527294'
+top_mentions_test:
+  test_name: Top Mentions
+  description: Finds the most discussed mentions for a specific ticker.
+  input:
+    ticker: $HEU
+    time_window: 7d
+    page: 1
+    page_size: 50
+    include_account_details: false
+  output:
+    success: true
+    data:
+      data: []
+      total: 0
+      page: 1
+      pageSize: 50
+  timestamp: '2025-02-13T07:34:57.684516'
+trending_tokens_test:
+  test_name: Trending Tokens
+  description: Lists tokens trending within the last 24 hours based on mentions.
+  input:
+    time_window: 24h
+    page: 1
+    page_size: 50
+    min_mentions: 5
+  output:
+    success: true
+    data:
+      total: 50
+      page: 1
+      pageSize: 50
+      data:
+      - token: btc
+        current_count: 318
+        previous_count: 317
+        change_percent: 0.32
+      - token: eth
+        current_count: 289
+        previous_count: 288
+        change_percent: 0.35
+      - token: bitcoin
+        current_count: 213
+        previous_count: 298
+        change_percent: -28.52
+      - token: '#bitcoin'
+        current_count: 206
+        previous_count: 290
+        change_percent: -28.97
+      - token: sol
+        current_count: 175
+        previous_count: 203
+        change_percent: -13.79
+      - token: flow
+        current_count: 168
+        previous_count: 135
+        change_percent: 24.44
+      - token: bnb
+        current_count: 161
+        previous_count: 79
+        change_percent: 103.8
+      - token: wink
+        current_count: 96
+        previous_count: 11
+        change_percent: 772.73
+      - token: hood
+        current_count: 93
+        previous_count: 20
+        change_percent: 365
+      - token: dog
+        current_count: 84
+        previous_count: 170
+        change_percent: -50.59
+      - token: giga
+        current_count: 74
+        previous_count: 89
+        change_percent: -16.85
+      - token: bera
+        current_count: 66
+        previous_count: 105
+        change_percent: -37.14
+      - token: '#dedeportes'
+        current_count: 64
+        previous_count: 23
+        change_percent: 178.26
+      - token: dedeportes
+        current_count: 64
+        previous_count: 23
+        change_percent: 178.26
+      - token: jailstool
+        current_count: 64
+        previous_count: 120
+        change_percent: -46.67
+      - token: s
+        current_count: 64
+        previous_count: 41
+        change_percent: 56.1
+      - token: usd
+        current_count: 57
+        previous_count: 18
+        change_percent: 216.67
+      - token: '#jailstool'
+        current_count: 55
+        previous_count: 106
+        change_percent: -48.11
+      - token: gfm
+        current_count: 52
+        previous_count: 34
+        change_percent: 52.94
+      - token: xrp
+        current_count: 51
+        previous_count: 67
+        change_percent: -23.88
+      - token: pengu
+        current_count: 48
+        previous_count: 43
+        change_percent: 11.63
+      - token: tsla
+        current_count: 48
+        previous_count: 66
+        change_percent: -27.27
+      - token: tst
+        current_count: 48
+        previous_count: 52
+        change_percent: -7.69
+      - token: spx
+        current_count: 47
+        previous_count: 45
+        change_percent: 4.44
+      - token: '#binance'
+        current_count: 46
+        previous_count: 32
+        change_percent: 43.75
+      - token: binance
+        current_count: 46
+        previous_count: 32
+        change_percent: 43.75
+      - token: usdc
+        current_count: 46
+        previous_count: 56
+        change_percent: -17.86
+      - token: '#diarioelsalvador'
+        current_count: 44
+        previous_count: 33
+        change_percent: 33.33
+      - token: diarioelsalvador
+        current_count: 44
+        previous_count: 33
+        change_percent: 33.33
+      - token: hype
+        current_count: 44
+        previous_count: 57
+        change_percent: -22.81
+      - token: link
+        current_count: 41
+        previous_count: 41
+        change_percent: 0
+      - token: sui
+        current_count: 40
+        previous_count: 27
+        change_percent: 48.15
+      - token: usdt
+        current_count: 40
+        previous_count: 48
+        change_percent: -16.67
+      - token: ket
+        current_count: 39
+        previous_count: 98
+        change_percent: -60.2
+      - token: arc
+        current_count: 38
+        previous_count: 50
+        change_percent: -24
+      - token: tao
+        current_count: 36
+        previous_count: 88
+        change_percent: -59.09
+      - token: trump
+        current_count: 36
+        previous_count: 56
+        change_percent: -35.71
+      - token: ron
+        current_count: 35
+        previous_count: 16
+        change_percent: 118.75
+      - token: '#breaking'
+        current_count: 34
+        previous_count: 25
+        change_percent: 36
+      - token: breaking
+        current_count: 34
+        previous_count: 25
+        change_percent: 36
+      - token: layer
+        current_count: 33
+        previous_count: 139
+        change_percent: -76.26
+      - token: avax
+        current_count: 32
+        previous_count: 37
+        change_percent: -13.51
+      - token: cake
+        current_count: 30
+        previous_count: 7
+        change_percent: 328.57
+      - token: '#ethereum'
+        current_count: 29
+        previous_count: 42
+        change_percent: -30.95
+      - token: ethereum
+        current_count: 29
+        previous_count: 42
+        change_percent: -30.95
+      - token: kween
+        current_count: 29
+        previous_count: 65
+        change_percent: -55.38
+      - token: printr
+        current_count: 29
+        previous_count: 7
+        change_percent: 314.29
+      - token: ape
+        current_count: 27
+        previous_count: 9
+        change_percent: 200
+      - token: captainbnb
+        current_count: 27
+        previous_count: 8
+        change_percent: 237.5
+      - token: '#captainbnb'
+        current_count: 25
+        previous_count: 8
+        change_percent: 212.5
+  timestamp: '2025-02-13T07:34:57.950975'
+account_stats_test:
+  test_name: Account Smart Stats
+  description: Retrieves engagement and analytics for a specific account.
+  input:
+    username: heurist_ai
+  output:
+    success: true
+    data:
+      smartFollowingCount: 470
+      averageEngagement: 14413.555555555555
+      followerEngagementRatio: 0.4278161988529742
+  timestamp: '2025-02-13T07:34:58.263691'
