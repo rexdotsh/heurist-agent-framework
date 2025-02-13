@@ -357,12 +357,14 @@ class ZkIgniteAnalystAgent(MeshAgent):
         logger.info(f"ZkIgnite Analyst Agent initialized. System prompt: {self.agent.system_prompt}")
         
         self.agent.step_callbacks.append(self._step_callback)
+        self.current_message = {}
         
     def _step_callback(self, step_log):
-        # TODO: push this to server
         print("step", step_log)
         if step_log.tool_calls:
-            print(f"Calling function {step_log.tool_calls[0].name} with args {step_log.tool_calls[0].arguments}")
+            msg = f"Calling function {step_log.tool_calls[0].name} with args {step_log.tool_calls[0].arguments}"
+            print(msg)
+            self.push_update(self.current_message, msg)
             
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -371,6 +373,8 @@ class ZkIgniteAnalystAgent(MeshAgent):
         query = params.get('query')
         if not query:
             raise ValueError("Query parameter is required")
+
+        self.current_message = params
             
         try:
             result = self.agent.run(
@@ -391,3 +395,5 @@ Guidelines:
         except Exception as e:
             logger.error(f"Agent execution failed: {str(e)}")
             return {"error": str(e)}
+        finally:
+            self.current_message = {}

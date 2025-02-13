@@ -11,7 +11,8 @@ async def run_agent():
     agent = ZkIgniteAnalystAgent()
     try:
         agent_input = {
-            "query": "I have some ETH and ZK token and I want to farm on zksync. What are the best opportunities?"
+            "query": "I have some ETH and ZK token and I want to farm on zksync. What are the best opportunities?",
+            "task_id": "123"
         }
         agent_output = await agent.handle_message(agent_input)
         

@@ -18,3 +18,4 @@ python-telegram-bot>=20.0
 fastapi==0.115.8
 uvicorn==0.34.0
 pydantic==2.10.6
+loguru==0.7.3
