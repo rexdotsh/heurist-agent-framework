@@ -1,0 +1,47 @@
+creation:
+  input:
+    query_type: creation
+    query: Show me the latest Solana token creations in the last hour
+    parameters:
+      interval: hours
+      offset: 1
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
+metrics:
+  input:
+    query_type: metrics
+    query: Get market cap, liquidity and trade volume for the specified token
+    parameters:
+      token_address: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
+      usdc_address: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
+holders:
+  input:
+    query_type: holders
+    query: Show me the top token holders and their balances
+    parameters:
+      token_address: 2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
+buyers:
+  input:
+    query_type: buyers
+    query: Show me the first 100 buyers of this token
+    parameters:
+      token_address: 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
+holder_status:
+  input:
+    query_type: holder_status
+    query: Check if the first 100 buyers are still holding, sold all, or bought more
+    parameters:
+      token_address: 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump
+      buyer_addresses:
+      - ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n
+      - 9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
+top_traders:
+  input:
+    query_type: top_traders
+    query: Show me the top traders for this token on Pump Fun DEX
+    parameters:
+      token_address: FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93
+  error: '''PumpFunTokenAgent'' object has no attribute ''handle_message'''
