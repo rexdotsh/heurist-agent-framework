@@ -1,10 +1,11 @@
 import os
+import sys
 import time
 import asyncio
 import aiohttp
-import logging
 import json
 import boto3
+from loguru import logger
 from datetime import datetime, UTC
 from typing import Dict, Type, List, Any
 from importlib import import_module
@@ -12,6 +13,14 @@ from pkgutil import iter_modules
 from pathlib import Path
 from dotenv import load_dotenv
 from mesh.mesh_agent import MeshAgent
+
+# Configure loguru
+logger.remove()  # Remove default handler
+logger.add(
+    sys.stderr,
+    level="INFO",
+    format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan> | <level>{message}</level>"
+)
 
 # Configuration
 class Config:
@@ -31,13 +40,6 @@ class Config:
         self.s3_secret_key = os.getenv('SECRET_KEY')
         self.s3_bucket = os.getenv('S3_BUCKET', 'mesh')
         self.s3_region = 'enam'
-
-# Logger setup
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s"
-)
-logger = logging.getLogger("MeshManager")
 
 class AgentLoader:
     """Handles dynamic loading of agent modules and metadata management"""
@@ -87,15 +89,15 @@ class AgentLoader:
             logger.error(f"Failed to upload metadata to S3: {e}")
 
     def load_agents(self) -> Dict[str, Type[MeshAgent]]:
-        """Load agent modules and update metadata"""
         agents_dict = {}
         package_name = "mesh"
+        found_agents = []
+        import_errors = []
         
         try:
             package = import_module(package_name)
             package_path = Path(package.__file__).parent
             
-            # Load agent modules
             for _, module_name, is_pkg in iter_modules([str(package_path)]):
                 if is_pkg:
                     continue
@@ -109,20 +111,28 @@ class AgentLoader:
                             issubclass(attr, MeshAgent) and 
                             attr is not MeshAgent):
                             agents_dict[attr.__name__] = attr
-                            logger.info(f"Found agent: {attr.__name__} in {module_name}")
+                            found_agents.append(f"{attr.__name__} ({module_name})")
                             
+                except ImportError as e:
+                    import_errors.append(f"{module_name}: {str(e)}")
+                    continue
                 except Exception as e:
-                    logger.warning(f"Failed to import module {full_module_name}: {e}")
+                    import_errors.append(f"{module_name}: Unexpected error: {str(e)}")
                     continue
             
-            # Update metadata
+            # Log consolidated messages
+            if found_agents:
+                logger.info(f"Found agents: {', '.join(found_agents)}")
+            if import_errors:
+                logger.warning(f"Import errors: {', '.join(import_errors)}")
+            
             metadata = self._create_metadata(agents_dict)
             self._upload_metadata(metadata)
             
             return agents_dict
             
         except Exception as e:
-            logger.error(f"Failed to load agents: {e}")
+            logger.exception(f"Critical error loading agents: {str(e)}")
             return {}
 
 class MeshManager:
@@ -167,26 +177,23 @@ class MeshManager:
             }]
         }
         
-        logger.debug(f"Polling for tasks (agent_id={agent_id})...")
         async with self.session.post(
             f"{self.config.protocol_v2_url}/mesh_manager_poll",
             json=payload,
             headers=headers
         ) as resp:
             resp_data = await resp.json()
-            logger.debug(f"Poll response (agent_id={agent_id}): {resp_data}")
             return resp_data
 
     async def process_task(self, agent_id: str, agent_cls: Type[MeshAgent], task_data: Dict) -> Dict:
         """Handle individual task processing logic"""
         task_id = task_data.get("task_id")
-
-        # for any sub-tasks, we need to pass the origin_task_id to the agent
-        origin_task_id = task_data.get("origin_task_id")
-        if not origin_task_id:
-            origin_task_id = task_id
         agent_input = task_data["input"]
-        agent_input["origin_task_id"] = origin_task_id
+        
+        # Handle task origin tracking
+        parent_task_id = task_data.get("origin_task_id", task_id)
+        if "origin_task_id" not in agent_input:
+            agent_input["origin_task_id"] = parent_task_id
 
         agent = agent_cls()
         if "heurist_api_key" in task_data:
@@ -196,17 +203,20 @@ class MeshManager:
         try:
             result = await agent.call_agent(agent_input)
             inference_latency = time.time() - inference_start
-            logger.info(f"[{agent_id}] Task result: {result}")
             return {
-                "success": "true",
-                **result,
+                "results": {
+                    "success": "true",
+                    **result
+                },
                 "inference_latency": round(inference_latency, 3)
             }
         except Exception as e:
             logger.error(f"[{agent_id}] Error in handle_message: {e}", exc_info=True)
             return {
-                "success": "false",
-                "error": str(e),
+                "results": {
+                    "success": "false",
+                    "error": str(e)
+                },
                 "inference_latency": 0
             }
         finally:
@@ -222,17 +232,22 @@ class MeshManager:
             "task_id": task_id,
             "agent_id": agent_id,
             "agent_type": self.config.agent_type,
-            "results": result
+            "results": result["results"],
+            "inference_latency": result["inference_latency"]
         }
         
-        async with self.session.post(
-            f"{self.config.protocol_v2_url}/mesh_manager_submit",
-            json=submit_data,
-            headers=headers
-        ) as resp:
-            submit_resp_data = await resp.json()
-            logger.info(f"[{agent_id}] Submitted result for task_id={task_id}: {submit_resp_data}")
-            return submit_resp_data
+        try:
+            async with self.session.post(
+                f"{self.config.protocol_v2_url}/mesh_manager_submit",
+                json=submit_data,
+                headers=headers
+            ) as resp:
+                submit_resp_data = await resp.json()
+                logger.info(f"Result submitted | Agent: {agent_id} | Task: {task_id} | Result: {submit_data}")
+                return submit_resp_data
+        except Exception as e:
+            logger.error(f"Result submission failed | Agent: {agent_id} | Task: {task_id} | Error: {str(e)}")
+            raise
 
     async def run_agent_task_loop(self, agent_id: str, agent_cls: Type[MeshAgent]):
         """Main task loop for each agent - polls for tasks and processes them"""
@@ -247,23 +262,21 @@ class MeshManager:
                 if "input" in resp_data:
                     task_id = resp_data.get("task_id")
                     self.active_tasks[agent_id].add(task_id)
-                    logger.info(f"[{agent_id}] Current active tasks: {len(self.active_tasks[agent_id])}")
                     
                     try:
                         # 3. Process the task
+                        logger.info(f"Task started | Agent: {agent_id} | Task: {task_id}")
                         result = await self.process_task(agent_id, agent_cls, resp_data)
-                        
+
                         # 4. Submit the result
                         await self.submit_result(agent_id, task_id, result)
-                        
+                        logger.info(f"Task completed | Agent: {agent_id} | Task: {task_id}")
+
                     finally:
                         self.active_tasks[agent_id].remove(task_id)
-                        
-                else:
-                    logger.debug(f"[{agent_id}] No tasks found, will poll again...")
                     
             except Exception as e:
-                logger.error(f"Error in task loop for agent {agent_id}: {e}")
+                logger.error(f"Task loop error | Agent: {agent_id} | Error: {str(e)}")
                 
             await asyncio.sleep(self.config.poll_interval)
 
@@ -275,10 +288,13 @@ class MeshManager:
 
         # Create tasks for each agent
         self.tasks = {}  # Reset tasks dict
+        agent_ids = list(self.agents_dict.keys())
+        
         for agent_id, agent_cls in self.agents_dict.items():
             task = asyncio.create_task(self.run_agent_task_loop(agent_id, agent_cls))
             self.tasks[agent_id] = task
-            logger.info(f"Started task loop for agent_id={agent_id}")
+        
+        logger.info(f"Started task loops for agents: {', '.join(agent_ids)}")
 
         try:
             await asyncio.gather(*self.tasks.values())
