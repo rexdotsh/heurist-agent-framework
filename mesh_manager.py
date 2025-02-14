@@ -148,6 +148,7 @@ class MeshManager:
         self.agents_dict = self.agent_loader.load_agents()
         self.active_tasks = {}
         self.tasks = {}  # Tracking poll tasks
+        self.task_channels = {} # agent_id -> asyncio.Queue
 
     async def __aenter__(self):
         self.session = aiohttp.ClientSession()
@@ -177,13 +178,17 @@ class MeshManager:
             }]
         }
         
-        async with self.session.post(
-            f"{self.config.protocol_v2_url}/mesh_manager_poll",
-            json=payload,
-            headers=headers
-        ) as resp:
-            resp_data = await resp.json()
-            return resp_data
+        try:
+            async with self.session.post(
+                f"{self.config.protocol_v2_url}/mesh_manager_poll",
+                json=payload,
+                headers=headers
+            ) as resp:
+                resp_data = await resp.json()
+                return resp_data
+        except Exception as e:
+            logger.error(f"Poll error | Agent: {agent_id} | Error: {str(e)}")
+            return {}
 
     async def process_task(self, agent_id: str, agent_cls: Type[MeshAgent], task_data: Dict) -> Dict:
         """Handle individual task processing logic"""
@@ -252,33 +257,49 @@ class MeshManager:
     async def run_agent_task_loop(self, agent_id: str, agent_cls: Type[MeshAgent]):
         """Main task loop for each agent - polls for tasks and processes them"""
         self.active_tasks[agent_id] = set()
+        self.task_channels[agent_id] = asyncio.Queue()
         
         while True:
             try:
-                # 1. Poll for new tasks
-                resp_data = await self.poll_server(agent_id)
+                # Poll with timeout using asyncio.wait
+                poll_task = asyncio.create_task(self.poll_server(agent_id))
+                channel_task = asyncio.create_task(self.task_channels[agent_id].get())
                 
-                # 2. Process task if available
-                if "input" in resp_data:
-                    task_id = resp_data.get("task_id")
-                    self.active_tasks[agent_id].add(task_id)
-                    
+                done, pending = await asyncio.wait(
+                    [poll_task, channel_task],
+                    return_when=asyncio.FIRST_COMPLETED,
+                    timeout=self.config.poll_interval
+                )
+
+                # Cancel pending tasks
+                for task in pending:
+                    task.cancel()
                     try:
-                        # 3. Process the task
-                        logger.info(f"Task started | Agent: {agent_id} | Task: {task_id}")
-                        result = await self.process_task(agent_id, agent_cls, resp_data)
+                        await task
+                    except asyncio.CancelledError:
+                        pass
 
-                        # 4. Submit the result
-                        await self.submit_result(agent_id, task_id, result)
-                        logger.info(f"Task completed | Agent: {agent_id} | Task: {task_id}")
-
-                    finally:
-                        self.active_tasks[agent_id].remove(task_id)
-                    
+                # Process completed task if any
+                if done:
+                    finished_task = done.pop()
+                    try:
+                        resp_data = await finished_task
+                        if resp_data and "input" in resp_data:
+                            task_id = resp_data.get("task_id")
+                            self.active_tasks[agent_id].add(task_id)
+                            
+                            try:
+                                logger.info(f"Task started | Agent: {agent_id} | Task: {task_id}")
+                                result = await self.process_task(agent_id, agent_cls, resp_data)
+                                await self.submit_result(agent_id, task_id, result)
+                                logger.info(f"Task completed | Agent: {agent_id} | Task: {task_id}")
+                            finally:
+                                self.active_tasks[agent_id].remove(task_id)
+                    except Exception as e:
+                        logger.error(f"Error processing task response | Agent: {agent_id} | Error: {str(e)}")
+                
             except Exception as e:
                 logger.error(f"Task loop error | Agent: {agent_id} | Error: {str(e)}")
-                
-            await asyncio.sleep(self.config.poll_interval)
 
     async def run_forever(self):
         """Creates a polling task for each known agent ID and runs them in parallel."""
