@@ -69,7 +69,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
 
             "1. Core Token Information:\n"
             "   - Base/Quote token names and symbols\n"
-            "   - Contract addresses (formatted: 0x1234...abcd)\n"
+            "   - Contract addresses\n"
             "   - Chain and DEX platform\n\n"
 
             "2. Market Metrics:\n"
