@@ -148,7 +148,6 @@ class MeshManager:
         self.agents_dict = self.agent_loader.load_agents()
         self.active_tasks = {}
         self.tasks = {}  # Tracking poll tasks
-        self.task_channels = {} # agent_id -> asyncio.Queue
 
     async def __aenter__(self):
         self.session = aiohttp.ClientSession()
@@ -257,47 +256,29 @@ class MeshManager:
     async def run_agent_task_loop(self, agent_id: str, agent_cls: Type[MeshAgent]):
         """Main task loop for each agent - polls for tasks and processes them"""
         self.active_tasks[agent_id] = set()
-        self.task_channels[agent_id] = asyncio.Queue()
         
         while True:
             try:
-                # Poll with timeout using asyncio.wait
+                # Just poll with timeout
                 poll_task = asyncio.create_task(self.poll_server(agent_id))
-                channel_task = asyncio.create_task(self.task_channels[agent_id].get())
-                
-                done, pending = await asyncio.wait(
-                    [poll_task, channel_task],
-                    return_when=asyncio.FIRST_COMPLETED,
-                    timeout=self.config.poll_interval
-                )
-
-                # Cancel pending tasks
-                for task in pending:
-                    task.cancel()
-                    try:
-                        await task
-                    except asyncio.CancelledError:
-                        pass
-
-                # Process completed task if any
-                if done:
-                    finished_task = done.pop()
-                    try:
-                        resp_data = await finished_task
-                        if resp_data and "input" in resp_data:
-                            task_id = resp_data.get("task_id")
-                            self.active_tasks[agent_id].add(task_id)
+                try:
+                    resp_data = await asyncio.wait_for(poll_task, timeout=self.config.poll_interval)
+                    
+                    if resp_data and "input" in resp_data:
+                        task_id = resp_data.get("task_id")
+                        self.active_tasks[agent_id].add(task_id)
+                        
+                        try:
+                            logger.info(f"Task started | Agent: {agent_id} | Task: {task_id}")
+                            result = await self.process_task(agent_id, agent_cls, resp_data)
+                            await self.submit_result(agent_id, task_id, result)
+                            logger.info(f"Task completed | Agent: {agent_id} | Task: {task_id}")
+                        finally:
+                            self.active_tasks[agent_id].remove(task_id)
                             
-                            try:
-                                logger.info(f"Task started | Agent: {agent_id} | Task: {task_id}")
-                                result = await self.process_task(agent_id, agent_cls, resp_data)
-                                await self.submit_result(agent_id, task_id, result)
-                                logger.info(f"Task completed | Agent: {agent_id} | Task: {task_id}")
-                            finally:
-                                self.active_tasks[agent_id].remove(task_id)
-                    except Exception as e:
-                        logger.error(f"Error processing task response | Agent: {agent_id} | Error: {str(e)}")
-                
+                except asyncio.TimeoutError:
+                    pass  # No task found within timeout
+                    
             except Exception as e:
                 logger.error(f"Task loop error | Agent: {agent_id} | Error: {str(e)}")
 
