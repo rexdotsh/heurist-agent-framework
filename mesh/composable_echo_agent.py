@@ -28,10 +28,6 @@ class ComposableEchoAgent(MeshAgent):
             ],
             'tags': ['Test']
         })
-        self.mesh_client = MeshClient(self.heurist_base_url)
-        if not self.heurist_base_url:
-            logger.error("HEURIST_BASE_URL environment variable is not set")
-            raise ValueError("HEURIST_BASE_URL environment variable is not set")
 
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         query = params.get("query", "")

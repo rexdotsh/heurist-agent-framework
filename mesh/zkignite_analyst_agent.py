@@ -353,8 +353,6 @@ class ZkIgniteAnalystAgent(MeshAgent):
         self.agent.prompt_templates["system_prompt"] = smolagents_system_prompt()
         self.agent.system_prompt = self.agent.prompt_templates["system_prompt"]
         self.agent.memory.system_prompt = SystemPromptStep(system_prompt=self.agent.system_prompt)
-
-        logger.info(f"ZkIgnite Analyst Agent initialized. System prompt: {self.agent.system_prompt}")
         
         self.agent.step_callbacks.append(self._step_callback)
         self.current_message = {}
