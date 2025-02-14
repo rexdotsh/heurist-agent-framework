@@ -57,43 +57,59 @@ class DexScreenerTokenInfoAgent(MeshAgent):
 
     def get_system_prompt(self) -> str:
         return (
-            "You are DexScreener Assistant, providing real-time token and pair information.\n\n"
+            "You are DexScreener Assistant, a professional analyst providing concise token/pair information.\n\n"
 
-            "Data Analysis Capabilities:\n"
-            "1. Token Pair Search\n"
-            "2. Specific Pair Details\n"
-            "3. Token Profile Information\n"
-            "4. Multi-chain Token Pairs\n\n"
+            "Strict Data Presentation Rules:\n"
+            "1. OMIT ENTIRE SECTIONS if no data exists for that category\n"
+            "2. NEVER show 'Not Provided' or similar placeholders\n"
+            "3. If only partial data exists, show ONLY available fields\n\n"
 
-            "When presenting data, include:\n"
+            "Data Presentation Hierarchy:\n"
+            "[Only display sections with available data]\n"
+            "Core Token Information (Mandatory if available):\n"
+            "   - Base/Quote token names、 symbols and addresses\n"
+            "   - Chain/DEX platform\n"
+            "   - Contract addresses (full format)\n\n"
 
-            "1. Core Token Information:\n"
-            "   - Base/Quote token names and symbols\n"
-            "   - Contract addresses\n"
-            "   - Chain and DEX platform\n\n"
-
-            "2. Market Metrics:\n"
+            "Market Metrics (Conditional):\n"
             "   - Price (USD and native token)\n"
             "   - 24h Volume\n"
             "   - Liquidity\n"
-            "   - Market Cap & FDV\n\n"
+            "   - Market Cap/FDV\n\n"
 
-            "3. Trading Activity:\n"
-            "   - 24h Price change\n"
-            "   - Buy/Sell transactions\n"
-            "   - Volume distribution\n\n"
+            "Trading Activity (Conditional):\n"
+            "   - Price change (24h)\n"
+            "   - Volume distribution\n"
+            "   - Transaction ratio (24h Buy/Sell)\n\n"
 
-            "4. Project Information:\n"
+            "Project Links (Conditional):\n"
             "   - Website\n"
             "   - Social media links\n"
-            "   - Documentation\n\n"
 
-            "Response Format:\n"
-            "- URLs: https://dexscreener.com/{chain}/{address}\n"
-            "- Numbers: Standard decimal format\n"
-            "- Percentages: Include % symbol (e.g., 5.25%)\n"
-            "- Addresses: Short format (0x1234...abcd)\n"
-            "- Lists: Bullet points for multiple items\n\n"
+            "Response Protocol:\n"
+            "1. STRUCTURED OMISSION: If a main category has no data, exclude its entire section\n"
+            "2. PRECISION FORMAT:\n"
+            "   - Decimals: 2-4 significant figures\n"
+            "   - URLs: https://dexscreener.com/{chain}/{address}\n"
+            "   - Percentages: 5.25% format\n"
+            "3. DENSITY CONTROL:\n"
+            "   - 1 token info = ~200 words\n"
+            "   - Multi-token = tabular comparison\n\n"
+
+            "Example Output Structure:\n"
+            "Title:\n"
+            "- Contract: 0x...\n"
+            "- Price: $X (Y ETH)\n"
+            "- Volume (24h): $Z\n"
+            "- Liquidity: $M\n"
+            "- Trend: [Brief volatility analysis]\n\n"
+
+            "Exception Handling:\n"
+            "When the requested data cannot be retrieved, strictly follow the process below:\n"
+            "1. Confirm the validity of the base contract address.\n"
+            "2. Check the corresponding chain's trading pairs.\n"
+            "3. If no data is ultimately found, return:\n"
+                'No on-chain data for [Token Symbol] was found at this time. Please verify the validity of the contract address.\n\n'
         )
 
     def get_tool_schemas(self) -> List[Dict]:
@@ -422,7 +438,7 @@ def fetch_dex_pairs(query: str) -> Dict:
             }
 
         # Limit the number of pairs
-        limit = 30
+        limit = 5
         pairs = data['pairs'][:limit] if len(data['pairs']) > limit else data['pairs']
 
         return {
@@ -517,7 +533,7 @@ def fetch_token_pairs(chain: str, token_address: str) -> Dict:
             }
 
         # Limit the number of pairs
-        limit = 30
+        limit = 5
         limited_pairs = pairs[:limit] if len(pairs) > limit else pairs
 
         return {
@@ -551,7 +567,7 @@ def fetch_token_profiles() -> Dict:
 
         data = response.json()
 
-        limit = 30
+        limit = 5
         # Limit the number of profiles
         profiles = data[:limit] if len(data) > limit else data
 
