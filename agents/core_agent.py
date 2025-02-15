@@ -483,7 +483,16 @@ class CoreAgent:
             logger.error(f"Message handling failed: {str(e)}")
             return "Sorry, something went wrong.", None, None
         
-    async def agent_cot(self, message: str, user: str = "User", display_name: str = None, chat_id: str = "General", source_interface: str = "None", final_format_prompt: str = "") -> str:
+    async def agent_cot(
+                    self, 
+                    message: str, 
+                    user: str = "User", 
+                    display_name: str = None, 
+                    chat_id: str = "General", 
+                    source_interface: str = "None", 
+                    final_format_prompt: str = "",
+                    skip_conversation_context: bool = False
+                    ) -> str:
         message_info = message,
         username = user or "Unknown"
         display_name = display_name or username
