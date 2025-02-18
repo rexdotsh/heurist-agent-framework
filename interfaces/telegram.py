@@ -90,7 +90,7 @@ class TelegramAgent(CoreAgent):
 
     async def message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle incoming messages."""
-        COT = True
+        COT = False
         user = update.effective_user
         username = user.username or "Unknown"
         display_name = user.full_name or username
