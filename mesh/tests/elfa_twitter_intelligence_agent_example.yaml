@@ -3,27 +3,33 @@ input_mentions:
 output_mentions:
   response: "**Mentions Analysis for Heurist, HEU, and heurist_ai (Last 30 days)**\n\
     \n### **Overall Sentiment and Engagement**\n\n* **Sentiment:** Generally Positive\
-    \ (80%) with occasional Neutral (15%) and Positive-Excitement (5%) tones, indicating\
-    \ a strong interest in Heurist's AI and blockchain integration.\n* **Engagement:**\n\
-    \t+ Total Mentions: 18\n\t+ Total Engagement (Likes, Replies, Reposts): 1,243\
-    \ (avg. per mention: ~69)\n\t+ View Count: 244,911 (avg. per mention: ~13,616)\n\
-    \n### **Key Influencers and Their Impact**\n\n1. **@heurist_ai** (Heurist's Official\
-    \ Account)\n\t* Mentions: 5 (direct posts)\n\t* Engagement: 541 interactions (likes,\
-    \ replies, reposts)\n\t* Impact: High, driving the narrative around new features\
-    \ and partnerships.\n2. **@1010430329218371584** (ETHDenver-related Account)\n\
-    \t* Mentions: 2\n\t* Engagement: 309 interactions\n\t* Impact: Moderate to High,\
-    \ highlighting Heurist's involvement in significant events.\n3. **@1357979697016094721**\
-    \ (Active Re-poster)\n\t* Mentions: 3 (all reposts)\n\t* Engagement: 42 interactions\
-    \ (solely from reposts)\n\t* Impact: Low to Moderate, contributing to the spread\
-    \ of Heurist-related content.\n\n### **Notable Trends or Patterns**\n\n1. **Event\
-    \ Participation:** Heurist's involvement in ETHDenver and hosting/sponsoring hackathons\
-    \ (e.g., \"Seeds of Agentic Future\") is a recurring theme, indicating a strong\
-    \ push into the Web3 and AI developer community.\n2. **AI Model Integrations:**\
-    \ Mentions of integrating various AI models (DeepSeek, Hunyuan) onto the Heurist\
-    \ platform suggest a strategic focus on enhancing AI capabilities.\n3. **Token\
-    \ Incentives:** The mention of holding $HEU for free access to certain AI tools\
-    \ (Hunyuan video gen) hints at a token utility strategy to incentivize community\
-    \ engagement and retention."
+    \ (75% of posts have a positive tone, focusing on new features, partnerships,\
+    \ and events)\n* **Engagement:**\n\t+ Total Mentions: 18\n\t+ Total Likes: 1,243\n\
+    \t+ Total Replies: 181\n\t+ Total Reposts: 342\n\t+ Total Views: 143,511 (approx.)\n\
+    \n### **Key Influencers and Their Impact**\n\n1. **@heurist_ai** (Heurist Official\
+    \ Account)\n\t* Mentions: 7\n\t* Engagement: 543 Likes, 63 Replies, 161 Reposts,\
+    \ 33,919 Views\n\t* Impact: Primary source of information, driving engagement\
+    \ with new feature announcements and event participations.\n2. **@artoriatech**\n\
+    \t* Mentions: 1 (with significant impact due to the nature of the content)\n\t\
+    * Engagement: 17 Likes, 4 Replies, 5 Reposts, 1,272 Views\n\t* Impact: Influential\
+    \ in the context of utilizing $HEU for accessing specific AI features.\n3. **@1010430329218371584**\
+    \ (ETHDenver-related account)\n\t* Mentions: 2\n\t* Engagement: 289 Likes, 23\
+    \ Replies, 64 Reposts, 17,616 Views\n\t* Impact: Highlighted Heurist's participation\
+    \ in ETHDenver, contributing to the project's visibility.\n\n### **Notable Trends\
+    \ or Patterns**\n\n1. **Increased Event Participation:** Heurist's involvement\
+    \ in significant events like ETHDenver and the \"Seeds of Agentic Future\" hackathon\
+    \ indicates a strategic push for community engagement and visibility.\n2. **Growing\
+    \ Ecosystem:** Mentions of partnerships (e.g., with Allora for collective intelligence)\
+    \ and new AI models (DeepSeek, Hunyuan) being integrated into the Heurist platform\
+    \ suggest a rapidly expanding ecosystem.\n3. **Token Utility:** Discussions around\
+    \ holding $HEU for accessing premium AI features (e.g., Hunyuan video generation)\
+    \ highlight the token's increasing utility within the Heurist ecosystem.\n\n**Trending\
+    \ Tokens (Implicit from the Data)**\n\n* **HEU (Heurist Token)**\n\t+ Mention\
+    \ Volume: 4 (explicit mentions of token utility or incentives)\n\t+ Engagement\
+    \ Metrics: \n\t\t- Likes: 108 (across relevant mentions)\n\t\t- Replies: 15\n\t\
+    \t- Reposts: 31\n\t\t- Views: 5,153 (approx.)\n\t+ Significant Change/Pattern:\
+    \ Increasing utility within the Heurist ecosystem, incentivizing token holding\
+    \ for premium AI feature access."
   data:
     success: true
     data:
@@ -59,7 +65,7 @@ output_mentions:
         like_count: 10
         reply_count: 1
         repost_count: 1
-        view_count: 2432
+        view_count: 2606
     - id: 624680971
       twitter_id: '1891544832738459666'
       twitter_user_id: '1345102860732788740'
@@ -85,10 +91,10 @@ output_mentions:
       mentioned_at: '2025-02-17T17:46:45+00:00'
       type: post
       metrics:
-        like_count: 377
-        reply_count: 75
-        repost_count: 91
-        view_count: 85123
+        like_count: 382
+        reply_count: 77
+        repost_count: 90
+        view_count: 85992
     - id: 624689797
       twitter_id: '1891512282401669189'
       twitter_user_id: '1010430329218371584'
@@ -153,7 +159,7 @@ output_mentions:
         like_count: 72
         reply_count: 3
         repost_count: 18
-        view_count: 3617
+        view_count: 3624
     - id: 624539587
       twitter_id: '1890332624444383290'
       twitter_user_id: '1360461034377654272'
@@ -351,28 +357,33 @@ output_mentions:
         view_count: 6857
     metadata:
       total: 18
-      cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoBhZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAACwg0WMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAD7wIWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAACwgwWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAD7wQWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAACwgsWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAD7wMWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZw==
+      cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoBhZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAAC8nIWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAEO70WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAAC8nMWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAEO78WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAAC8nEWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAEO74WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZw==
 input_trending:
   query: What are the current trending tokens in the last 24 hours?
 output_trending:
-  response: "**Trending Tokens (Last 24 hours)**\n\n### Top Tokens by Mention Volume\n\
-    \n1. **Libra** \n\t* Mention Count: 553\n\t* Engagement Metrics: \n\t\t+ Change\
-    \ from Previous Count: **+78.96%** (up from 309)\n2. **ETH (Ethereum)** \n\t*\
-    \ Mention Count: 459\n\t* Engagement Metrics: \n\t\t+ Change from Previous Count:\
-    \ **+279.34%** (up from 121)\n3. **SOL (Solana)** \n\t* Mention Count: 286\n\t\
-    * Engagement Metrics: \n\t\t+ Change from Previous Count: **+130.65%** (up from\
-    \ 124)\n\n### Notable Mentions with Significant Engagement\n\n* **BTC (Bitcoin)**:\
-    \ 265 mentions, **+84.03%** change\n* **#Ethereum** and **Ethereum**: Cumulative\
-    \ 82 mentions, **+156.25%** and **+173.33%** changes respectively\n* **USDC**:\
-    \ 44 mentions, **+83.33%** change\n* **PEPE**: 75 mentions, **+240.91%** change,\
-    \ indicating a sudden surge in interest\n\n### Significant Changes or Patterns\n\
-    \n* **Surge in Ethereum Ecosystem**: Significant increases in mentions for ETH,\
-    \ #Ethereum, and Ethereum, suggesting heightened interest or activity within the\
-    \ Ethereum ecosystem.\n* **Bitcoin and Libra Dominance**: High mention counts\
-    \ for Libra and BTC, with substantial percentage increases, indicating ongoing\
-    \ strong interest or discussions around these tokens.\n* **Emergence of PEPE**:\
-    \ A notable percentage increase for PEPE, which may signal the beginning of a\
-    \ trend or a reaction to a specific event related to this token."
+  response: "**Trending Tokens in the Last 24 Hours**\n\n### Top Tokens by Mention\
+    \ Volume\n\n1. **Libra**:\n\t* **Mention Count**: 497\n\t* **Engagement Metrics**:\n\
+    \t\t+ **Previous Count**: 370\n\t\t+ **Change Percent**: +34.32%\n2. **Ethereum\
+    \ (ETH)**:\n\t* **Mention Count**: 458 (includes 39 mentions of \"#ethereum\"\
+    \ and 39 of \"ethereum\")\n\t* **Engagement Metrics**:\n\t\t+ **Previous Count**:\
+    \ 124\n\t\t+ **Change Percent**: +269.35% ( ETH ), +105.26% ( ethereum ), +116.67%\
+    \ ( #ethereum )\n3. **Solana (SOL)**:\n\t* **Mention Count**: 284\n\t* **Engagement\
+    \ Metrics**:\n\t\t+ **Previous Count**: 132\n\t\t+ **Change Percent**: +115.15%\n\
+    \n### Notable Trends or Patterns\n\n* **Surging Interest in Ethereum**: ETH saw\
+    \ a significant spike in mentions, indicating heightened community engagement\
+    \ or interest, possibly due to recent developments or announcements.\n* **Libra\
+    \ Maintains High Visibility**: Despite a more modest increase compared to ETH,\
+    \ Libra's high mention count suggests sustained attention, which could be due\
+    \ to its wide recognition or ongoing discussions about its potential impact.\n\
+    * **Altcoin Mentions**: Tokens like SOL, and mentions of \"#altcoins\" and \"\
+    altcoins\", show substantial percentage increases, hinting at a broader interest\
+    \ in alternative cryptocurrencies beyond the major players.\n\n### Significant\
+    \ Changes or Patterns\n\n* **New Entrants with High Growth**: Tokens like \"usd\"\
+    , \"usdt\", \"relax\", and \"welf\" show extremely high percentage growth, indicating\
+    \ sudden spikes in interest. These could be worth monitoring for emerging trends\
+    \ or news-driven attention.\n* **Decreasing Interest**: Tokens like \"kaito\"\
+    , \"avax\", \"ket\", and \"hype\" saw decreases in mention counts, suggesting\
+    \ waning interest or a shift in community focus away from these tokens."
   data:
     success: true
     data:
@@ -381,170 +392,182 @@ output_trending:
       pageSize: 50
       data:
       - token: libra
-        current_count: 553
-        previous_count: 309
-        change_percent: 78.96
+        current_count: 497
+        previous_count: 370
+        change_percent: 34.32
       - token: eth
-        current_count: 459
-        previous_count: 121
-        change_percent: 279.34
-      - token: sol
-        current_count: 286
+        current_count: 458
         previous_count: 124
-        change_percent: 130.65
+        change_percent: 269.35
+      - token: sol
+        current_count: 284
+        previous_count: 132
+        change_percent: 115.15
       - token: btc
-        current_count: 265
-        previous_count: 144
-        change_percent: 84.03
+        current_count: 261
+        previous_count: 154
+        change_percent: 69.48
       - token: bitcoin
-        current_count: 203
-        previous_count: 126
-        change_percent: 61.11
+        current_count: 200
+        previous_count: 131
+        change_percent: 52.67
       - token: '#bitcoin'
-        current_count: 196
-        previous_count: 122
-        change_percent: 60.66
+        current_count: 193
+        previous_count: 127
+        change_percent: 51.97
       - token: kaito
-        current_count: 125
-        previous_count: 200
-        change_percent: -37.5
+        current_count: 124
+        previous_count: 204
+        change_percent: -39.22
       - token: trump
-        current_count: 99
-        previous_count: 43
-        change_percent: 130.23
-      - token: melania
-        current_count: 82
-        previous_count: 35
-        change_percent: 134.29
+        current_count: 95
+        previous_count: 48
+        change_percent: 97.92
       - token: s
-        current_count: 79
-        previous_count: 35
-        change_percent: 125.71
+        current_count: 81
+        previous_count: 37
+        change_percent: 118.92
       - token: pepe
-        current_count: 75
-        previous_count: 22
-        change_percent: 240.91
+        current_count: 76
+        previous_count: 24
+        change_percent: 216.67
+      - token: melania
+        current_count: 70
+        previous_count: 47
+        change_percent: 48.94
       - token: mlg
-        current_count: 61
-        previous_count: 21
-        change_percent: 190.48
+        current_count: 59
+        previous_count: 22
+        change_percent: 168.18
       - token: spx
-        current_count: 58
-        previous_count: 14
-        change_percent: 314.29
+        current_count: 57
+        previous_count: 15
+        change_percent: 280
+      - token: giga
+        current_count: 56
+        previous_count: 42
+        change_percent: 33.33
       - token: bera
-        current_count: 51
+        current_count: 54
         previous_count: 20
-        change_percent: 155
+        change_percent: 170
       - token: joe
         current_count: 51
-        previous_count: 20
-        change_percent: 155
-      - token: dog
-        current_count: 50
-        previous_count: 22
-        change_percent: 127.27
+        previous_count: 15
+        change_percent: 240
       - token: ron
-        current_count: 48
-        previous_count: 14
-        change_percent: 242.86
-      - token: giga
-        current_count: 44
-        previous_count: 34
-        change_percent: 29.41
+        current_count: 46
+        previous_count: 16
+        change_percent: 187.5
+      - token: dog
+        current_count: 45
+        previous_count: 26
+        change_percent: 73.08
       - token: usdc
-        current_count: 44
-        previous_count: 24
-        change_percent: 83.33
+        current_count: 45
+        previous_count: 28
+        change_percent: 60.71
       - token: bnb
         current_count: 42
-        previous_count: 41
-        change_percent: 2.44
-      - token: '#ethereum'
-        current_count: 41
-        previous_count: 15
-        change_percent: 173.33
-      - token: ethereum
-        current_count: 41
-        previous_count: 16
-        change_percent: 156.25
+        previous_count: 42
+        change_percent: 0
       - token: tao
-        current_count: 40
+        current_count: 41
         previous_count: 24
-        change_percent: 66.67
-      - token: '#altcoins'
-        current_count: 38
-        previous_count: 15
-        change_percent: 153.33
-      - token: altcoins
-        current_count: 38
-        previous_count: 15
-        change_percent: 153.33
+        change_percent: 70.83
+      - token: '#ethereum'
+        current_count: 39
+        previous_count: 18
+        change_percent: 116.67
+      - token: ethereum
+        current_count: 39
+        previous_count: 19
+        change_percent: 105.26
       - token: doge
         current_count: 38
         previous_count: 21
         change_percent: 80.95
-      - token: broccoli
-        current_count: 37
-        previous_count: 21
-        change_percent: 76.19
-      - token: pengu
-        current_count: 36
-        previous_count: 19
-        change_percent: 89.47
+      - token: hype
+        current_count: 38
+        previous_count: 52
+        change_percent: -26.92
       - token: xrp
+        current_count: 38
+        previous_count: 41
+        change_percent: -7.32
+      - token: '#altcoins'
         current_count: 36
-        previous_count: 30
-        change_percent: 20
-      - token: '#consensushk'
-        current_count: 34
+        previous_count: 17
+        change_percent: 111.76
+      - token: altcoins
+        current_count: 36
+        previous_count: 17
+        change_percent: 111.76
+      - token: mog
+        current_count: 35
         previous_count: 11
-        change_percent: 209.09
+        change_percent: 218.18
+      - token: pengu
+        current_count: 35
+        previous_count: 19
+        change_percent: 84.21
       - token: avax
         current_count: 34
-        previous_count: 35
-        change_percent: -2.86
-      - token: consensushk
+        previous_count: 41
+        change_percent: -17.07
+      - token: broccoli
         current_count: 34
-        previous_count: 11
-        change_percent: 209.09
-      - token: hype
+        previous_count: 24
+        change_percent: 41.67
+      - token: '#consensushk'
         current_count: 32
-        previous_count: 52
-        change_percent: -38.46
-      - token: mog
+        previous_count: 10
+        change_percent: 220
+      - token: consensushk
         current_count: 32
-        previous_count: 13
-        change_percent: 146.15
+        previous_count: 10
+        change_percent: 220
       - token: ket
-        current_count: 29
-        previous_count: 38
-        change_percent: -23.68
-      - token: relax
         current_count: 28
-        previous_count: 5
-        change_percent: 460
+        previous_count: 39
+        change_percent: -28.21
       - token: usd
         current_count: 27
         previous_count: 4
         change_percent: 575
+      - token: relax
+        current_count: 26
+        previous_count: 7
+        change_percent: 271.43
+      - token: usdt
+        current_count: 26
+        previous_count: 7
+        change_percent: 271.43
       - token: kween
-        current_count: 26
-        previous_count: 16
-        change_percent: 62.5
+        current_count: 25
+        previous_count: 17
+        change_percent: 47.06
       - token: tst
-        current_count: 26
-        previous_count: 15
-        change_percent: 73.33
+        current_count: 25
+        previous_count: 14
+        change_percent: 78.57
       - token: jup
         current_count: 24
         previous_count: 7
         change_percent: 242.86
-      - token: shell
+      - token: pi
         current_count: 23
-        previous_count: 7
-        change_percent: 228.57
-      - token: usdt
+        previous_count: 8
+        change_percent: 187.5
+      - token: boyz
+        current_count: 22
+        previous_count: 1
+        change_percent: 2100
+      - token: shell
+        current_count: 22
+        previous_count: 8
+        change_percent: 175
+      - token: sui
         current_count: 22
         previous_count: 6
         change_percent: 266.67
@@ -553,37 +576,50 @@ output_trending:
         previous_count: 24
         change_percent: -8.33
       - token: '#broccoli'
-        current_count: 21
-        previous_count: 8
-        change_percent: 162.5
-      - token: link
-        current_count: 21
-        previous_count: 21
-        change_percent: 0
-      - token: sui
-        current_count: 21
-        previous_count: 5
-        change_percent: 320
+        current_count: 20
+        previous_count: 9
+        change_percent: 122.22
       - token: welf
         current_count: 19
         previous_count: 1
         change_percent: 1800
-      - token: '#binance'
+      - token: '#breaking'
         current_count: 18
-        previous_count: 7
-        change_percent: 157.14
-      - token: binance
+        previous_count: 1
+        change_percent: 1700
+      - token: breaking
         current_count: 18
-        previous_count: 7
-        change_percent: 157.14
-      - token: pi
-        current_count: 18
-        previous_count: 7
-        change_percent: 157.14
+        previous_count: 1
+        change_percent: 1700
 input_account:
   query: Analyze the Twitter account @heurist_ai
 output_account:
-  response: '**'
+  response: "**Twitter Account Analysis: @heurist_ai**\n\n### **Engagement Metrics\
+    \ Summary**\n\n* **Smart Following Count**: 471 (indicating a curated or highly\
+    \ engaged follower base)\n* **Average Engagement**: 10,195.14 (exceptionally high,\
+    \ suggesting content resonates strongly with the audience)\n* **Follower Engagement\
+    \ Ratio**: 0.3014 (or approximately 30.14% of followers engage with the content,\
+    \ indicating a highly interactive community)\n\n### **Influential Connections\
+    \ Highlight**\n\n* **Note**: Direct influential connections data is not provided\
+    \ in the given output. However, based on the high engagement metrics:\n\t+ **Inferred\
+    \ Influence**: @heurist_ai likely has significant influence within its niche,\
+    \ given the high engagement rates.\n\t+ **Potential Influencer Connections**:\
+    \ To accurately identify key influencers connected to @heurist_ai, additional\
+    \ data (e.g., mentions, replies, or collaboration history) would be necessary.\n\
+    \n### **Posting Patterns and Impact**\n\n* **Note**: The provided data does not\
+    \ include posting patterns (e.g., frequency, timing, content types). However,\
+    \ based on the engagement metrics:\n\t+ **Inferred Posting Impact**: Content posted\
+    \ by @heurist_ai appears to have a substantial impact on its audience, as evidenced\
+    \ by the exceptionally high average engagement.\n\t+ **Recommended Analysis**:\
+    \ To understand posting patterns and optimize content strategy, analyzing tweet\
+    \ timing, content variety, and engagement rates over time would be beneficial.\n\
+    \n**Recommendations for Further Analysis**:\n\n1. **Content Analysis**: Examine\
+    \ the types of content (e.g., topics, formats) that yield the highest engagement\
+    \ to refine @heurist_ai's content strategy.\n2. **Network Analysis**: Utilize\
+    \ additional ELFA API endpoints to uncover influential connections, collaborations,\
+    \ or mentions that could further amplify @heurist_ai's reach and impact.\n3. **Temporal\
+    \ Engagement Analysis**: Study engagement patterns over time to identify peak\
+    \ engagement periods and optimize posting schedules accordingly."
   data:
     success: true
     data:
