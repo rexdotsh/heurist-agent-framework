@@ -43,6 +43,9 @@ class MeshAgent(ABC):
         self.mesh_client = MeshClient(base_url=os.getenv("PROTOCOL_V2_SERVER_URL", "https://sequencer-v2.heurist.xyz"))
         self._api_clients['mesh'] = self.mesh_client
 
+        self._task_id = None
+        self._origin_task_id = None
+
     @property
     def task_id(self) -> Optional[str]:
         """Access the current task ID"""
