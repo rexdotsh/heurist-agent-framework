@@ -324,7 +324,7 @@ class ZkIgniteAnalystAgent(MeshAgent):
                 'description': 'Analysis results',
                 'type': 'str'
             }],
-            'large_model_id': 'openai/gpt-4o-mini',
+            'large_model_id': 'gpt-4o-mini',
             'external_apis': ['Merkl', 'DefiLlama'],
             'tags': ['DeFi', 'Yield Farming', 'ZKsync', 'Reasoning']
         })
@@ -336,11 +336,10 @@ class ZkIgniteAnalystAgent(MeshAgent):
             get_tvl_overview(self._defillama_client)
         ]
 
-        # Use OpenRouter to access Gemini. Most open source models cannot handle the tool calling format.
+        # Use gpt-4o-mini. Most open source models cannot handle the tool calling efficiently.
         self.model = OpenAIServerModel(
             model_id=self.metadata['large_model_id'],
-            api_base="https://openrouter.ai/api/v1",
-            api_key=os.getenv("OPENROUTER_API_KEY")
+            api_key=os.getenv("OPENAI_API_KEY")
         )
         
         max_steps = 5
