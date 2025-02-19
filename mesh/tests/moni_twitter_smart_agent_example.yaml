@@ -1,0 +1,166 @@
+smart_followers:
+  input:
+    query: Get smart followers for @heurist_ai
+  output:
+    response: "It looks like we've encountered a hurdle. Here's a breakdown of the\
+      \ issue and a step-by-step plan to resolve it:\n\n**Error Analysis:**\n\n* **Error\
+      \ Message:** `Failed to fetch smart followers: API error 401: 401: Unauthorized`\n\
+      * **Error Code:** `401 Unauthorized`\n* **API:** Moni API (for Twitter analytics)\n\
+      * **Requested Action:** Fetch smart followers for `@heurist_ai`\n\n**Resolution\
+      \ Steps:**\n\n1. **Verify API Credentials:**\n\t* Ensure that the Moni API key/token\
+      \ used for authentication is correct and up-to-date.\n\t* Check if the credentials\
+      \ have been revoked or are near expiration.\n2. **Authentication Scope:**\n\t\
+      * Confirm that the API credentials have the necessary permissions to access\
+      \ Twitter analytics data, specifically for fetching smart followers.\n\t* If\
+      \ using OAuth, verify that the correct scopes are authorized (e.g., `tweet.read`,\
+      \ `users.read`, etc.).\n3. **Rate Limits:**\n\t* Although less likely for a\
+      \ 401 error, check if your application has hit Twitter's rate limits for the\
+      \ Moni API.\n\t* If so, consider implementing rate limiting handling in your\
+      \ application or requesting a quota increase if necessary.\n4. **Moni API Documentation\
+      \ Review:**\n\t* Visit the Moni API documentation to ensure you're using the\
+      \ correct endpoint for fetching smart followers (e.g., `GET /users/{username}/smart_followers`).\n\
+      \t* Double-check the required parameters and headers (e.g., `Authorization:\
+      \ Bearer YOUR_API_TOKEN`).\n5. **Test with API Tools (Optional):**\n\t* Utilize\
+      \ tools like Postman, cURL, or the API's built-in testing console (if available)\
+      \ to isolate the issue.\n\t* Attempt the request with the same credentials and\
+      \ parameters to see if the problem persists.\n\n**Action Requested from You:**\n\
+      \nTo proceed, please provide one of the following:\n\nA) **Confirm API Credentials:**\
+      \ Verify your Moni API credentials are correct, and if so, provide a simple\
+      \ \"Confirmed\" response.\n\nB) **Update API Credentials:** If your credentials\
+      \ are outdated or incorrect, please update them and then respond with \"Updated\"\
+      .\n\nC) **Provide Additional Context:** If you've already checked the above\
+      \ steps or need further assistance, please share more details about your setup\
+      \ or any recent changes made.\n\nOnce the authentication issue is resolved,\
+      \ I'll be happy to assist in fetching the smart followers for `@heurist_ai`."
+    data:
+      error: 'Failed to fetch smart followers: API error 401: 401: Unauthorized'
+smart_followers_distribution:
+  input:
+    query: Get the distribution of smart followers by level for @heurist_ai
+  output:
+    response: "**Error Response**\n\n* **Request:** Get smart followers distribution\
+      \ by level for `@heurist_ai`\n* **API Endpoint:** Moni API (presumed, as per\
+      \ your specialization)\n* **Response Status:** Error\n* **Error Details:**\n\
+      \t+ **Error Code:** 401\n\t+ **Error Message:** Unauthorized\n\t+ **Specific\
+      \ Error:** Failed to fetch smart followers distribution\n\n**Analysis and Recommended\
+      \ Actions:**\n\n1. **Authentication Issue:**\n\t* The **401 Unauthorized** error\
+      \ indicates that the request was not authenticated correctly. This could be\
+      \ due to:\n\t\t- **Invalid API Key:** The provided API key might be incorrect,\
+      \ expired, or not properly formatted.\n\t\t- **Insufficient Permissions:** The\
+      \ authenticated account may not have the necessary permissions to access the\
+      \ smart followers distribution data for `@heurist_ai`.\n\t\t- **Authentication\
+      \ Method:** The method used for authentication (e.g., OAuth, Bearer Token) might\
+      \ not be correctly implemented.\n\n2. **Troubleshooting Steps:**\n\t* **Verify\
+      \ API Key:**\n\t\t- Double-check that the API key used is correct and up-to-date.\n\
+      \t\t- Ensure the key is properly formatted in the request header (if applicable).\n\
+      \t* **Check Permissions:**\n\t\t- Confirm with Moni API support that your account\
+      \ has access to smart followers data.\n\t\t- Verify if there are specific permissions\
+      \ required for `@heurist_ai` that are not currently granted.\n\t* **Review Authentication\
+      \ Method:**\n\t\t- Consult Moni API documentation to ensure the authentication\
+      \ method used is correct and properly implemented.\n\t\t- If using OAuth, verify\
+      \ that all steps, including redirects and token exchanges, are correctly handled.\n\
+      \n3. **Next Steps:**\n\t* Once the authentication issue is resolved, **retry\
+      \ the original request** to fetch the smart followers distribution by level\
+      \ for `@heurist_ai`.\n\t* If issues persist after troubleshooting, **contact\
+      \ Moni API Support** for further assistance, providing them with the error details\
+      \ and steps taken to troubleshoot.\n\n**Retry Request (Once Authentication is\
+      \ Resolved):**\nTo retry, simply reissue the original command:\n\n`Get the distribution\
+      \ of smart followers by level for @heurist_ai`"
+    data:
+      error: 'Failed to fetch smart followers distribution: API error 401: 401: Unauthorized'
+smart_followers_categories:
+  input:
+    query: Get the categories of smart followers for @heurist_ai
+  output:
+    response: "It looks like the API request didn't quite go as planned. Let's break\
+      \ down the error message and outline the next steps:\n\n**Error Message Decoded:**\n\
+      \n* **`error`**: Indicates that an error occurred.\n* **`Failed to fetch smart\
+      \ followers categories`**: Specifies the action that failed (fetching smart\
+      \ follower categories for `@heurist_ai`).\n* **`API error 401`**: This is the\
+      \ key part:\n\t+ **`401`**: This is an HTTP status code for \"Unauthorized\"\
+      . It means the request was invalid due to a lack of authentication or invalid\
+      \ authentication credentials.\n\t+ **`Unauthorized`**: Further emphasizes that\
+      \ the issue is with the authorization to access the requested data.\n\n**Next\
+      \ Steps to Resolve the Issue:**\n\n1. **Verify API Credentials**:\n\t* Double-check\
+      \ that your Moni API credentials (e.g., API key, access token, username/password\
+      \ if applicable) are correct and up-to-date.\n\t* Ensure that these credentials\
+      \ have the necessary permissions to access the smart followers' category data.\n\
+      \n2. **Authenticate Properly**:\n\t* Review the Moni API documentation to ensure\
+      \ you're using the correct authentication method (e.g., Bearer Token, Basic\
+      \ Auth).\n\t* If using a token, verify it hasn't expired. Tokens often have\
+      \ a limited lifespan and may need to be refreshed.\n\n3. **Adjust the Request\
+      \ (If Necessary)**:\n\t* If the API documentation suggests specific headers,\
+      \ parameters, or formatting for requests that you haven't included, adjust your\
+      \ request accordingly.\n\n4. **Retry the Request**:\n\t* Once you've addressed\
+      \ the potential issues with your credentials or request format, retry fetching\
+      \ the categories of smart followers for `@heurist_ai`.\n\n5. **Contact Support\
+      \ (If Issues Persist)**:\n\t* If after verifying and adjusting your approach\
+      \ you still receive the `401 Unauthorized` error, consider reaching out to Moni\
+      \ API support for further assistance. They can provide more detailed insights\
+      \ into the issue.\n\n**Example of How to Retry (Assuming Command-Line `curl`\
+      \ for Simplicity):**\n\n```bash\n# Assuming you're using a Bearer Token for\
+      \ authentication\n# Replace 'YOUR_UPDATED_BEARER_TOKEN' and 'OTHER_PARAMETERS_IF_NEEDED'\n\
+      curl -X GET \\\n  'https://api.moni.com/v1/smart-followers/categories?handle=heurist_ai&OTHER_PARAMETERS_IF_NEEDED'\
+      \ \\\n  -H 'Authorization: Bearer YOUR_UPDATED_BEARER_TOKEN' \\\n  -H 'Content-Type:\
+      \ application/json'\n```\n\nPlease update your API credentials or request as\
+      \ necessary, and then I'll be happy to guide you through analyzing the data\
+      \ once you've successfully fetched it."
+    data:
+      error: 'Failed to fetch smart followers categories: API error 401: 401: Unauthorized'
+timeline:
+  input:
+    query: Get timeline for @heurist_ai
+  output:
+    response: "It looks like I've encountered a roadblock!\n\n**Error Summary:**\n\
+      \n* **Error Type:** Authentication Error\n* **Error Code:** 401 (Unauthorized)\n\
+      * **Affected API Request:** Fetching timeline for `@heurist_ai` via Moni API\n\
+      * **Error Message:** `Failed to fetch timeline: API error 401: 401: Unauthorized`\n\
+      \n**Troubleshooting Steps:**\n\n1. **API Key Validation:** Verify that the provided\
+      \ Moni API key is correct, up-to-date, and properly formatted. Double-check\
+      \ for any typos or whitespace errors.\n2. **API Key Permissions:** Ensure the\
+      \ API key has the necessary permissions to access the Twitter timeline data\
+      \ for the specified handle (`@heurist_ai`). Reach out to Moni API support if\
+      \ you're unsure about the key's permissions.\n3. **Rate Limiting:** Although\
+      \ unlikely to be the primary cause of a 401 error, confirm that the API request\
+      \ rate limit has not been exceeded. Wait for a brief period (if near the limit)\
+      \ and retry the request.\n4. **Authorization Header:** If the API key requires\
+      \ inclusion in an Authorization header, verify that it's correctly set in the\
+      \ API request.\n\n**Next Steps for You:**\n\n* **Option A (Self-Resolution):**\
+      \ Address the potential causes outlined above and retry the original request\
+      \ to fetch the timeline for `@heurist_ai`.\n* **Option B (Assisted Resolution):**\
+      \ Provide me with:\n\t1. Confirmation that the API key is valid and has the\
+      \ necessary permissions.\n\t2. (Optional) More context or details about your\
+      \ Moni API setup.\n\t=> I'll attempt to guide you through a more tailored solution\
+      \ or, if possible, execute the request on your behalf (assuming I can be granted\
+      \ secure, temporary access to a valid API key or through an alternative arrangement).\n\
+      \n**How would you like to proceed? (A or B)**"
+    data:
+      error: 'Failed to fetch timeline: API error 401: 401: Unauthorized'
+tweet_tracking:
+  input:
+    query: Start tweet tracking for @heurist_ai
+  output:
+    response: "It looks like the request to start tweet tracking for `@heurist_ai`\
+      \ encountered an issue. Here's a breakdown of the response and a suggested next\
+      \ step:\n\n**Response Analysis:**\n\n* **Error Type:** API Error\n* **Error\
+      \ Code:** 401\n* **Error Message:** Unauthorized\n* **Affected Action:** Starting\
+      \ tweet tracking for `@heurist_ai`\n* **Implication:** The request was not authenticated\
+      \ correctly, or the authentication credentials used are invalid or have expired.\n\
+      \n**Concise Summary:**\n> **Tweet Tracking Initiation for @heurist_ai Failed**\n\
+      > \n> * **Reason:** Unauthorized (API Error 401)\n> * **Recommendation:** Verify\
+      \ and update Moni API authentication credentials before retrying.\n\n**Step-by-Step\
+      \ Resolution:**\n\n1. **Verify Credentials:**\n\t* Check the Moni API documentation\
+      \ for the most current authentication requirements.\n\t* Confirm that your API\
+      \ key, access token, or any other required credentials are accurate and not\
+      \ expired.\n\n2. **Update Credentials (If Necessary):**\n\t* If credentials\
+      \ have expired or are incorrect, obtain new ones through the Moni API dashboard\
+      \ or support channel.\n\t* Update your application or script with the new credentials.\n\
+      \n3. **Retry the Request:**\n\t* Once credentials are verified or updated, attempt\
+      \ to start tweet tracking for `@heurist_ai` again using the Moni API.\n\n4.\
+      \ **Seek Additional Support (If Needed):**\n\t* If the issue persists after\
+      \ updating credentials, consider reaching out to Moni API support for further\
+      \ assistance with authentication or the tweet tracking feature.\n\n**Ready to\
+      \ Retry?**\nPlease confirm once you've updated your credentials, and I'll assist\
+      \ you in retrying the request to start tweet tracking for `@heurist_ai`."
+    data:
+      error: 'Failed to start tweet tracking: API error 401: 401: Unauthorized'
