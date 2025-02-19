@@ -64,14 +64,22 @@ class AgentLoader:
             "last_updated": datetime.now(UTC).isoformat(),
             "agents": {}
         }
-        
+
         for agent_id, agent_cls in agents_dict.items():
             agent = agent_cls()
+
+            # Safely call get_tool_schemas if it exists
+            tools = None
+            if hasattr(agent, "get_tool_schemas") and callable(agent.get_tool_schemas):
+                tools = agent.get_tool_schemas()
+
+            # Compose agent info
             metadata["agents"][agent_id] = {
                 "metadata": agent.metadata,
-                "module": agent_cls.__module__.split('.')[-1]
+                "module": agent_cls.__module__.split('.')[-1],
+                "tools": tools  # <-- Store the agent's tools here
             }
-        
+
         return metadata
     
     def _upload_metadata(self, metadata: Dict) -> None:

@@ -4,17 +4,6 @@ from typing import Dict, Any
 import logging
 from mesh_manager import AgentLoader, Config
 
-# Example call
-# curl -X POST http://localhost:8000/mesh_request \
-#   -H "Content-Type: application/json" \
-#   -d '{
-#     "agent_id": "EchoAgent",
-#     "input": {
-#       "message": "Hello, Echo!"
-#     }
-#   }'
-
-# Logger setup
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s - %(message)s"
@@ -52,12 +41,23 @@ async def process_mesh_request(request: MeshRequest):
 
 @app.get("/agents")
 async def list_agents():
-    """Return list of available agents and their metadata"""
+    """
+    Return a list of available agents and their metadata,
+    including any tools that each agent supports.
+    """
     agents_info = {}
     for agent_id, agent_cls in agents_dict.items():
         agent = agent_cls()
+        # We can optionally re-generate or just rely on the stored metadata from S3.
+        # For a quick approach, re-attach the tools right now.
+        tools = None
+        if hasattr(agent, 'get_tool_schemas') and callable(agent.get_tool_schemas):
+            tools = agent.get_tool_schemas()
+        
         agents_info[agent_id] = {
             "metadata": agent.metadata,
-            "module": agent_cls.__module__.split('.')[-1]
+            "module": agent_cls.__module__.split('.')[-1],
+            "tools": tools
         }
-    return agents_info 
+
+    return agents_info
