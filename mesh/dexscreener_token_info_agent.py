@@ -67,7 +67,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             "Data Presentation Hierarchy:\n"
             "[Only display sections with available data]\n"
             "Core Token Information (Mandatory if available):\n"
-            "   - Base/Quote token names、 symbols and addresses\n"
+            "   - Base/Quote token names,  symbols and addresses\n"
             "   - Chain/DEX platform\n"
             "   - Contract addresses (full format)\n\n"
 
@@ -141,7 +141,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         'properties': {
                             'chain': {
                                 'type': 'string',
-                                'description': 'Chain identifier (e.g., solana、bsc、base、ethereum、pulsechain、ton、avalanche、sui、xrpl、sonic、polygon、hyperliquid、arbitrum、unichain、abstract、moonshot、optimism、algorand、cardano、zksync、apechain、icp、ink、multiversx、mantle、starknet、soneium、injective、dogechain、shibarium、merlinchain、ethereumpow、core、seiv2)'
+                                'description': 'Chain identifier (e.g., solana, bsc, base, ethereum, pulsechain, ton, avalanche, sui, xrpl, sonic, polygon, hyperliquid, arbitrum, unichain, abstract, moonshot, optimism, algorand, cardano, zksync, apechain, icp, ink, multiversx, mantle, starknet, soneium, injective, dogechain, shibarium, merlinchain, ethereumpow, core, seiv2)'
                             },
                             'pair_address': {
                                 'type': 'string',
@@ -162,7 +162,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         'properties': {
                             'chain': {
                                 'type': 'string',
-                                'description': 'Chain identifier (e.g., solana、bsc、base、ethereum、pulsechain、ton、avalanche、sui、xrpl、sonic、polygon、hyperliquid、arbitrum、unichain、abstract、moonshot、optimism、algorand、cardano、zksync、apechain、icp、ink、multiversx、mantle、starknet、soneium、injective、dogechain、shibarium、merlinchain、ethereumpow、core、seiv2)'
+                                'description': 'Chain identifier (e.g., solana, bsc, base, ethereum, pulsechain, ton, avalanche, sui, xrpl, sonic, polygon, hyperliquid, arbitrum, unichain, abstract, moonshot, optimism, algorand, cardano, zksync, apechain, icp, ink, multiversx, mantle, starknet, soneium, injective, dogechain, shibarium, merlinchain, ethereumpow, core, seiv2)'
                             },
                             'token_address': {
                                 'type': 'string',
@@ -457,7 +457,7 @@ def fetch_pair_info(chain: str, pair_address: str) -> Dict:
     Fetches detailed information for a specific trading pair from DexScreener API.
 
     Args:
-        chain (str): Chain identifier (e.g., 'solana、bsc、base、ethereum...')
+        chain (str): Chain identifier (e.g., 'solana, bsc, base, ethereum...')
         pair_address (str): Pair contract address
 
     Returns:
