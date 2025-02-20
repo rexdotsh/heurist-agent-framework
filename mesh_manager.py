@@ -66,19 +66,40 @@ class AgentLoader:
         }
 
         for agent_id, agent_cls in agents_dict.items():
+            logger.info(f"Creating metadata for agent {agent_id}")
             agent = agent_cls()
+            
+            # Get base inputs from agent metadata
+            inputs = agent.metadata.get('inputs', [])
 
-            # Safely call get_tool_schemas if it exists
-            tools = None
+            # Add tool-related inputs if tools exist
             if hasattr(agent, "get_tool_schemas") and callable(agent.get_tool_schemas):
                 tools = agent.get_tool_schemas()
+                if tools:
+                    inputs.extend([
+                        {
+                            'name': 'tool',
+                            'description': f'Directly specify which tool to call: {", ".join(t["function"]["name"] for t in tools)}. Bypasses LLM.',
+                            'type': 'str',
+                            'required': False
+                        },
+                        {
+                            'name': 'tool_arguments',
+                            'description': 'Arguments for the tool call as a dictionary',
+                            'type': 'dict',
+                            'required': False,
+                            'default': {}
+                        }
+                    ])
+                    # Update agent metadata with tool-derived inputs
+                    agent.metadata['inputs'] = inputs
 
-            # Compose agent info
-            metadata["agents"][agent_id] = {
-                "metadata": agent.metadata,
-                "module": agent_cls.__module__.split('.')[-1],
-                "tools": tools  # <-- Store the agent's tools here
-            }
+                    # Compose agent info
+                    metadata["agents"][agent_id] = {
+                        "metadata": agent.metadata,
+                        "module": agent_cls.__module__.split('.')[-1],
+                        "tools": tools
+                    }
 
         return metadata
     

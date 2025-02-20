@@ -28,20 +28,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     'required': False
                 },
                 {
-                    'name': 'tool',
-                    'description': 'Directly specify which tool to call (e.g., "get_trending_coins", '
-                                   '"get_token_info", or "get_coingecko_id"). Bypasses LLM.',
-                    'type': 'str',
-                    'required': False
-                },
-                {
-                    'name': 'tool_arguments',
-                    'description': 'Arguments for the tool call, e.g., {"coingecko_id":"bitcoin"}.',
-                    'type': 'dict',
-                    'required': False,
-                    'default': {}
-                },
-                {
                     'name': 'raw_data_only',
                     'description': 'If true, the agent will only return the raw or base structured data without additional LLM explanation.',
                     'type': 'bool',
