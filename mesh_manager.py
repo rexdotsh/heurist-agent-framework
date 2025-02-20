@@ -5,6 +5,7 @@ import asyncio
 import aiohttp
 import json
 import boto3
+import re
 from loguru import logger
 from datetime import datetime, UTC
 from typing import Dict, Type, List, Any
@@ -66,11 +67,16 @@ class AgentLoader:
         }
 
         for agent_id, agent_cls in agents_dict.items():
+            # Skip EchoAgent
+            if "EchoAgent" in agent_id:
+                continue
+
             logger.info(f"Creating metadata for agent {agent_id}")
             agent = agent_cls()
             
             # Get base inputs from agent metadata
             inputs = agent.metadata.get('inputs', [])
+            tools = []
 
             # Add tool-related inputs if tools exist
             if hasattr(agent, "get_tool_schemas") and callable(agent.get_tool_schemas):
@@ -91,15 +97,16 @@ class AgentLoader:
                             'default': {}
                         }
                     ])
-                    # Update agent metadata with tool-derived inputs
-                    agent.metadata['inputs'] = inputs
 
-                    # Compose agent info
-                    metadata["agents"][agent_id] = {
-                        "metadata": agent.metadata,
-                        "module": agent_cls.__module__.split('.')[-1],
-                        "tools": tools
-                    }
+            # Update agent metadata with tool-derived inputs
+            agent.metadata['inputs'] = inputs
+
+            # Compose agent info
+            metadata["agents"][agent_id] = {
+                "metadata": agent.metadata,
+                "module": agent_cls.__module__.split('.')[-1],
+                "tools": tools
+            }
 
         return metadata
     
@@ -113,6 +120,63 @@ class AgentLoader:
             ContentType='application/json'
         )
         logger.info("Successfully uploaded agents metadata to S3")
+
+    def _generate_agent_table(self, metadata: Dict) -> str:
+        """Generate markdown table from agent metadata"""
+        table_header = """| Agent ID | Description | Available Tools | Source Code | External APIs |
+|----------|-------------|-----------------|-------------|---------------|"""
+        
+        table_rows = []
+        for agent_id, agent_data in metadata["agents"].items():
+            # Get tools if available
+            tools = agent_data.get("tools", [])
+            tool_names = [f"• {tool['function']['name']}" for tool in tools] if tools else []
+            tools_text = "<br>".join(tool_names) if tool_names else "-"
+            
+            # Get external APIs
+            apis = agent_data["metadata"].get("external_apis", [])
+            apis_text = ", ".join(apis) if apis else "-"
+            
+            # Create source code link
+            module_name = agent_data.get("module", "")
+            source_link = f"[Source](./mesh/{module_name}.py)" if module_name else "-"
+            
+            # Create table row
+            description = agent_data["metadata"].get("description", "").replace("\n", " ")
+            row = f"| {agent_id} | {description} | {tools_text} | {source_link} | {apis_text} |"
+            table_rows.append(row)
+        
+        return f"{table_header}\n" + "\n".join(table_rows)
+
+    def _update_readme_with_agents(self, table_content: str) -> None:
+        """Update the README file with new agent table"""
+        readme_path = Path(__file__).parent / "README.md"
+        
+        try:
+            with open(readme_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Find the section
+            section_pattern = r"(### Available Mesh Agents\n)(.*?)(\n###)"
+            if not re.search(section_pattern, content, re.DOTALL):
+                logger.warning("Could not find '### Available Mesh Agents' section in README")
+                return
+            
+            # Replace content between headers
+            updated_content = re.sub(
+                section_pattern,
+                f"### Available Mesh Agents\n\n{table_content}\n\n###",
+                content,
+                flags=re.DOTALL
+            )
+            
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(updated_content)
+            
+            logger.info("Successfully updated README with new agent table")
+            
+        except Exception as e:
+            logger.error(f"Failed to update README: {e}")
 
     def load_agents(self) -> Dict[str, Type[MeshAgent]]:
         agents_dict = {}
@@ -155,6 +219,9 @@ class AgentLoader:
             try:
                 metadata = self._create_metadata(agents_dict)
                 self._upload_metadata(metadata)
+
+                table_content = self._generate_agent_table(metadata)
+                self._update_readme_with_agents(table_content)
             except Exception as e:
                 logger.error(f"Failed to upload metadata to S3: {e}")
             

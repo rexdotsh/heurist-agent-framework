@@ -11,19 +11,14 @@ Grab a Heurist API Key instantly for free by using the code 'agent' while submit
 
 ---
 
-## For Heurist Mesh Contributors
-
-**Heurist Mesh** is our new open network where AI agents can be contributed by the community and used modularly—just like DeFi smart contracts. If you want to **add your own specialized agents**, **please see the [Mesh README](./mesh/README.md)** for detailed guidelines, examples, and best practices.
-
----
-
 ## Overview
 
 The Heurist Agent Framework is built on a modular architecture that allows an AI agent to:
-- Process text messages and generate responses
-- Generate and handle images
-- Process voice messages (transcription and text-to-speech)
+- Process text and voice messages
+- Generate images and videos
 - Interact across multiple platforms with consistent behavior
+- Fetch and store information in a knowledge base (Postgres and SQLite supported)
+- Access external APIs, tools, and a wide range of [Mesh Agents](./mesh/README.md) to compose complex workflows
 
 ## Features
 
@@ -40,6 +35,31 @@ The Heurist Agent Framework is built on a modular architecture that allows an AI
 <div align="center">
 <img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
 </div>
+
+## Heurist Mesh
+
+**Heurist Mesh** is an open network where AI agents can be contributed by the community and used modularly—similar to DeFi smart contracts. Each agent is a specialized unit that can process data, generate reports, or perform actions while collectively forming an intelligent swarm to tackle complex tasks. Each agent is accessible via a unified REST API interface, and can be used in conjunction with any agent framework or application.
+
+Want to contribute your own agent? Check out the [Mesh README](./mesh/README.md) for detailed guidelines, examples, and best practices.
+
+### Available Mesh Agents
+
+| Agent ID | Description | Available Tools | Source Code | External APIs |
+|----------|-------------|-----------------|-------------|---------------|
+| AlloraPricePredictionAgent | This agent can fetch price predictions for ETH/BTC with confidence intervals from Allora price prediction API | - | [Source](./mesh/allora_price_prediction_agent.py) | Allora |
+| BitquerySolanaTokenInfoAgent | This agent can fetch Solana token trading data and trending tokens from Bitquery | • get_token_trading_info<br>• get_top_trending_tokens | [Source](./mesh/bitquery_sol_token_info_agent.py) | Bitquery |
+| CoinGeckoTokenInfoAgent | This agent can fetch token information, market data, and trending coins from CoinGecko.  | • get_coingecko_id<br>• get_token_info<br>• get_trending_coins | [Source](./mesh/coingecko_token_info_agent.py) | Coingecko |
+| DexScreenerTokenInfoAgent | This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API | • search_pairs<br>• get_specific_pair_info<br>• get_token_pairs<br>• get_token_profiles | [Source](./mesh/dexscreener_token_info_agent.py) | DexScreener |
+| DuckDuckGoSearchAgent | This agent can fetch and analyze web search results using DuckDuckGo API. Analyze content relevance, source credibility, information completeness, and provide intelligent summaries. This agent helps you gather and understand information from across the web with AI-powered analysis. | - | [Source](./mesh/duckduckgo_search_agent.py) | DuckDuckGo |
+| ElfaTwitterIntelligenceAgent | This agent analyzes Twitter mentions and trends for crypto tokens using ELFA API | • search_mentions<br>• get_trending_tokens<br>• get_account_stats | [Source](./mesh/elfa_twitter_intelligence_agent.py) | ELFA |
+| FirecrawlSearchAgent | Advanced search agent that uses Firecrawl to perform deep research with intelligent query generation, content analysis, and detailed reporting. Supports recursive search patterns and concurrent processing for thorough topic exploration. | - | [Source](./mesh/firecrawl_search_agent.py) | Firecrawl |
+| TokenContractSecurityAgent | This agent can fetch and analyze security details of blockchain token contracts using GoPlus API. Analyze the token holder count, liquidity distribution, admin rights, mintable / pausable status, and other security metrics. This agents helps you understand whether the token is safe to interact with and catch any potential scams or honeypots. | - | [Source](./mesh/goplus_analysis_agent.py) | GoPlus |
+| PumpFunTokenAgent | Analyzes Solana token creation and metrics using Bitquery API | - | [Source](./mesh/pumpfun_analysis_agent.py) | Bitquery |
+| ZkIgniteAnalystAgent | This agent analyzes zkSync Era DeFi opportunities in the zkIgnite program and has access to real-time yield and TVL data | - | [Source](./mesh/zkignite_analyst_agent.py) | Merkl, DefiLlama |
+
+### Usage
+
+[Read the Mesh documentation](./mesh/README.md)
 
 ## Installation
 
