@@ -6,6 +6,7 @@ import aiohttp
 from dotenv import load_dotenv
 import json
 from datetime import datetime, timezone, timedelta
+from typing import Dict, Type, List, Any
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ class PumpFunTokenAgent(MeshAgent):
             'name': 'PumpFun Token Analysis Agent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'Analyzes Solana token creation and metrics using Bitquery API',
+            'description': 'This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data.',
             'inputs': [
                 {
                     'name': 'query_type',
@@ -57,7 +58,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_creation_query(self, interval: str = 'hours', offset: int = 1) -> Dict:
+    async def query_recent_token_creation(self, interval: str = 'hours', offset: int = 1) -> Dict:
         if interval not in self.VALID_INTERVALS:
             raise ValueError(f"Invalid interval. Must be one of: {', '.join(self.VALID_INTERVALS)}")
         
@@ -129,7 +130,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_metrics_query(self, token_address: str, usdc_address: str) -> Dict:
+    async def query_token_metrics(self, token_address: str, usdc_address: str) -> Dict:
         time_1h_ago = (datetime.now(timezone.utc) - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
         
         query = """
@@ -199,7 +200,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_holders_query(self, token_address: str) -> Dict:
+    async def query_token_holders(self, token_address: str) -> Dict:
         """
         Query top token holders for a specific token.
         
@@ -273,7 +274,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_buyers_query(self, token_address: str) -> Dict:
+    async def query_token_buyers(self, token_address: str) -> Dict:
         """
         Query first 100 buyers of a specific token.
         
@@ -349,7 +350,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_holder_status_query(self, token_address: str, buyer_addresses: list[str]) -> Dict:
+    async def query_holder_status(self, token_address: str, buyer_addresses: list[str]) -> Dict:
       """
       Query holder status for specific addresses for a token.
       
@@ -421,7 +422,7 @@ class PumpFunTokenAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def run_top_traders_query(self, token_address: str) -> Dict:
+    async def query_top_traders(self, token_address: str) -> Dict:
       """
       Query top traders for a specific token on Pump Fun DEX.
       
@@ -550,13 +551,13 @@ class PumpFunTokenAgent(MeshAgent):
         }
         return prompts.get(query_type, prompts['creation'])
 
-    def get_tool_schema(self, query_type: str) -> Dict:
-        schemas = {
-            'creation': {
+    def get_tool_schema(self) -> List[Dict]:
+        return [
+            {
                 'type': 'function',
                 'function': {
-                    'name': 'run_creation_query',
-                    'description': 'Fetch Solana token creation data',
+                    'name': 'query_recent_token_creation',
+                    'description': 'Fetch the data of tokens recently created on Pump.fun',
                     'parameters': {
                         'type': 'object',
                         'properties': {
@@ -575,10 +576,10 @@ class PumpFunTokenAgent(MeshAgent):
                     }
                 }
             },
-            'metrics': {
+            {
                 'type': 'function',
                 'function': {
-                    'name': 'run_metrics_query',
+                    'name': 'query_token_metrics',
                     'description': 'Fetch Solana token metrics data',
                     'parameters': {
                         'type': 'object',
@@ -596,44 +597,44 @@ class PumpFunTokenAgent(MeshAgent):
                     }
                 }
             },
-            'holders': {
-                'type': 'function',
-                'function': {
-                    'name': 'run_holders_query',
-                    'description': 'Fetch top token holders data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
+            {
+              'type': 'function',
+              'function': {
+                  'name': 'query_token_holders',
+                  'description': 'Fetch top token holders data',
+                  'parameters': {
+                      'type': 'object',
+                      'properties': {
+                          'token_address': {
+                              'type': 'string',
+                              'description': 'Token mint address'
+                          }
+                      },
+                      'required': ['token_address']
+                  }
+              }
             },
-        'buyers': {
-                'type': 'function',
-                'function': {
-                    'name': 'run_buyers_query',
-                    'description': 'Fetch first 100 buyers data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
+            {
+              'type': 'function',
+              'function': {
+                  'name': 'query_token_buyers',
+                  'description': 'Fetch first 100 buyers data',
+                  'parameters': {
+                      'type': 'object',
+                      'properties': {
+                          'token_address': {
+                              'type': 'string',
+                              'description': 'Token mint address'
+                          }
+                      },
+                      'required': ['token_address']
+                  }
+              }
             },
-        'holder_status': {
-            'type': 'function',
-            'function': {
-                'name': 'run_holder_status_query',
+            {
+              'type': 'function',
+              'function': {
+                'name': 'query_holder_status',
                 'description': 'Fetch holder status for specific addresses',
                 'parameters': {
                     'type': 'object',
@@ -653,11 +654,11 @@ class PumpFunTokenAgent(MeshAgent):
                     'required': ['token_address', 'buyer_addresses']
                 }
             }
-        },
-        'top_traders': {
-            'type': 'function',
-            'function': {
-                'name': 'run_top_traders_query',
+            },
+            {
+                'type': 'function',
+                'function': {
+                'name': 'query_top_traders',
                 'description': 'Fetch top traders data',
                 'parameters': {
                     'type': 'object',
@@ -670,9 +671,7 @@ class PumpFunTokenAgent(MeshAgent):
                     'required': ['token_address']
                 }
             }
-        }}
-        
-        return schemas.get(query_type, schemas['creation'])
+            }]
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -705,30 +704,30 @@ class PumpFunTokenAgent(MeshAgent):
       
       try:
           if query_type == 'creation':
-              result = await self.run_creation_query(
+              result = await self.query_recent_token_creation(
                   interval=function_args.get('interval', 'hours'),
                   offset=function_args.get('offset', 1)
               )
           elif query_type == 'metrics':
-              result = await self.run_metrics_query(
+              result = await self.query_token_metrics(
                   token_address=function_args.get('token_address'),
                   usdc_address=function_args.get('usdc_address')
               )
           elif query_type == 'buyers':
-              result = await self.run_buyers_query(
+              result = await self.query_token_buyers(
                   token_address=function_args.get('token_address')
               )
           elif query_type == 'holders':
-              result = await self.run_holders_query(
+              result = await self.query_token_holders(
                   token_address=function_args.get('token_address')
               )
           elif query_type == 'holder_status':
-              result = await self.run_holder_status_query(
+              result = await self.query_holder_status(
                   token_address=function_args.get('token_address'),
                   buyer_addresses=function_args.get('buyer_addresses', [])
               )
           elif query_type == 'top_traders':
-              result = await self.run_top_traders_query(
+              result = await self.query_top_traders(
                   token_address=function_args.get('token_address')
               )
           else:

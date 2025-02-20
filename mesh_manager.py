@@ -81,22 +81,25 @@ class AgentLoader:
             # Add tool-related inputs if tools exist
             if hasattr(agent, "get_tool_schemas") and callable(agent.get_tool_schemas):
                 tools = agent.get_tool_schemas()
-                if tools:
-                    inputs.extend([
-                        {
-                            'name': 'tool',
-                            'description': f'Directly specify which tool to call: {", ".join(t["function"]["name"] for t in tools)}. Bypasses LLM.',
-                            'type': 'str',
-                            'required': False
-                        },
-                        {
-                            'name': 'tool_arguments',
-                            'description': 'Arguments for the tool call as a dictionary',
-                            'type': 'dict',
-                            'required': False,
-                            'default': {}
-                        }
-                    ])
+            elif hasattr(agent, "get_tool_schema") and callable(agent.get_tool_schema):
+                tool = agent.get_tool_schema()
+                tools = tool if isinstance(tool, list) else [tool] if tool else []  # Handle both list and single tool
+            if tools:
+                inputs.extend([
+                    {
+                        'name': 'tool',
+                        'description': f'Directly specify which tool to call: {", ".join(t["function"]["name"] for t in tools)}. Bypasses LLM.',
+                        'type': 'str',
+                        'required': False
+                    },
+                    {
+                        'name': 'tool_arguments',
+                        'description': 'Arguments for the tool call as a dictionary',
+                        'type': 'dict',
+                        'required': False,
+                        'default': {}
+                    }
+                ])
 
             # Update agent metadata with tool-derived inputs
             agent.metadata['inputs'] = inputs
