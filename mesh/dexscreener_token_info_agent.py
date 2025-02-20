@@ -67,7 +67,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             "Data Presentation Hierarchy:\n"
             "[Only display sections with available data]\n"
             "Core Token Information (Mandatory if available):\n"
-            "   - Base/Quote token names,  symbols and addresses\n"
+            "   - Base/Quote token names, symbols and addresses\n"
             "   - Chain/DEX platform\n"
             "   - Contract addresses (full format)\n\n"
 
