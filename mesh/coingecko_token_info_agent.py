@@ -16,7 +16,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         # Add required metadata
         self.metadata.update({
             'name': 'CoinGecko Token Info Agent',
-            'version': '1.0.0',
+            'version': '1.0.2',
             'author': 'Heurist team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
             'description': 'This agent can fetch token information, market data, and trending coins from CoinGecko. ',
@@ -58,7 +58,12 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         2. Get current trending coins in the market
         
         For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name.
-        For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies."""
+        For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies.
+        
+        When selecting tokens from search results, apply these criteria in order:
+        1. First priority: Select the token where name or symbol perfectly matches the query
+        2. If multiple matches exist, select the token with the highest market cap rank (lower number = higher rank)
+        3. If market cap ranks are not available, prefer the token with the most complete information"""
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
@@ -109,6 +114,58 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 }
             }
         ]
+
+
+
+    async def select_best_token_match(self, search_results: Dict, query: str) -> str:
+        """
+        Select best matching token using the following criteria:
+        1. Ignore tokens with None market_cap_rank
+        2. Find closest name/symbol match
+        3. Use market cap rank as tiebreaker
+        """
+        if not search_results.get('coins'):
+            return None
+            
+        # Filter out tokens with None market_cap_rank
+        valid_tokens = [
+            token for token in search_results['coins'] 
+            if token.get('market_cap_rank') is not None
+        ]
+        
+        if not valid_tokens:
+            return None
+        
+        # Create prompt for token selection
+        token_selection_prompt = f"""Given the search query "{query}" and these token results:
+        {json.dumps(valid_tokens, indent=2)}
+        
+        Select the most appropriate token based on these criteria in order:
+        1. Find the token where name or symbol most closely matches the query
+        - Exact matches are preferred
+        - For partial matches, consider string similarity and common variations
+        2. If multiple tokens have similar name matches, select the one with the highest market cap rank (lower number = higher rank)
+        
+        Return only the CoinGecko ID of the selected token, nothing else."""
+        
+        selected_token = await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata['small_model_id'],
+            messages=[
+                {"role": "system", "content": "You are a token selection assistant. You only return the CoinGecko ID of the best matching token based on the given criteria."},
+                {"role": "user", "content": token_selection_prompt}
+            ],
+            temperature=0.1
+        )
+        
+        # Clean up response to get just the ID
+        selected_token = selected_token.strip().strip('"').strip("'")
+        
+        # Verify the selected ID exists in filtered results
+        if any(token['id'] == selected_token for token in valid_tokens):
+            return selected_token
+        return None
 
     # ------------------------------------------------------------------------
     #                       SHARED / UTILITY METHODS
@@ -184,8 +241,10 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             if search_results.get('coins'):
                 first_coin = search_results['coins'][0]
                 return first_coin['id']
-            return {"error": "No matching token found on CoinGecko"}
             
+            selected_token_id = await self.select_best_token_match(search_results, token_name)
+            return selected_token_id or None
+        
         except requests.RequestException as e:
             print(f"error: {e}")
             return {"error": f"Failed to search for token: {str(e)}"}
