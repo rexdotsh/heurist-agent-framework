@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import Dict, Any
 import logging
 from mesh_manager import AgentLoader, Config
+import os
+import aiohttp
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +20,7 @@ agents_dict = AgentLoader(config).load_agents()
 class MeshRequest(BaseModel):
     agent_id: str
     input: Dict[str, Any]
+    api_key: str | None = None
     heurist_api_key: str | None = None
 
 @app.post("/mesh_request")
@@ -30,6 +33,41 @@ async def process_mesh_request(request: MeshRequest):
     
     if request.heurist_api_key:
         agent.set_heurist_api_key(request.heurist_api_key)
+    
+    # Handle API credit deduction if enabled
+    credits_api_url = os.getenv('HEURIST_CREDITS_DEDUCTION_API')
+    credits_api_auth = os.getenv('HEURIST_CREDITS_DEDUCTION_AUTH')
+    if credits_api_url:
+        if not request.api_key:
+            raise HTTPException(status_code=401, detail="API key is required")
+        if not credits_api_auth:
+            raise HTTPException(status_code=500, detail="Credits API auth not configured")
+        try:
+            # Parse user_id and api_key, split by first occurrence only
+            if '#' in request.api_key:
+                user_id, api_key = request.api_key.split('#', 1)
+            else:
+                user_id, api_key = request.api_key.split('-', 1)
+            
+            logger.info(f"Deducting credits for agent {request.agent_id} with user_id {user_id} and api_key {api_key}")
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    credits_api_url,
+                    headers={"Authorization": credits_api_auth},
+                    json={
+                        'user_id': user_id,
+                        'api_key': api_key,
+                        'model_type': 'AGENT',
+                        'model_id': request.agent_id
+                    }
+                ) as response:
+                    if response.status != 200:
+                        raise HTTPException(status_code=403, detail="API credit validation failed")
+        except ValueError:
+            raise HTTPException(status_code=401, detail="Invalid API key format")
+        except Exception as e:
+            logger.error(f"Error validating API credits: {e}", exc_info=True)
+            raise HTTPException(status_code=500, detail="Error validating API credits")
     
     try:
         result = await agent.call_agent(request.input)

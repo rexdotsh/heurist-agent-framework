@@ -84,17 +84,14 @@ class AgentLoader:
     
     def _upload_metadata(self, metadata: Dict) -> None:
         """Upload metadata to S3"""
-        try:
-            metadata_json = json.dumps(metadata, indent=2)
-            self.s3_client.put_object(
-                Bucket=self.config.s3_bucket,
-                Key='mesh_agents_metadata.json',
-                Body=metadata_json,
-                ContentType='application/json'
-            )
-            logger.info("Successfully uploaded agents metadata to S3")
-        except Exception as e:
-            logger.error(f"Failed to upload metadata to S3: {e}")
+        metadata_json = json.dumps(metadata, indent=2)
+        self.s3_client.put_object(
+            Bucket=self.config.s3_bucket,
+            Key='mesh_agents_metadata.json',
+            Body=metadata_json,
+            ContentType='application/json'
+        )
+        logger.info("Successfully uploaded agents metadata to S3")
 
     def load_agents(self) -> Dict[str, Type[MeshAgent]]:
         agents_dict = {}
@@ -134,8 +131,11 @@ class AgentLoader:
             if import_errors:
                 logger.warning(f"Import errors: {', '.join(import_errors)}")
             
-            metadata = self._create_metadata(agents_dict)
-            self._upload_metadata(metadata)
+            try:
+                metadata = self._create_metadata(agents_dict)
+                self._upload_metadata(metadata)
+            except Exception as e:
+                logger.error(f"Failed to upload metadata to S3: {e}")
             
             return agents_dict
             
