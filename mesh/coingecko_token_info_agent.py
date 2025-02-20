@@ -256,6 +256,19 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 f"{self.api_url}/coins/{coingecko_id}",
                 headers=self.headers
             )
+
+            # if response fails, try to search for the token and use first result
+            if response.status_code != 200:
+                fallback_id = await self.get_coingecko_id(coingecko_id)
+                if isinstance(fallback_id, str):  # ensure we got a valid id back
+                    response = requests.get(
+                        f"{self.api_url}/coins/{fallback_id}",
+                        headers=self.headers
+                    )
+                    response.raise_for_status()
+                    return response.json()
+                return {"error": "Failed to fetch token info and fallback search failed"}
+
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
