@@ -4,6 +4,9 @@ from .mesh_agent import MeshAgent, with_cache, with_retry, monitor_execution
 from core.llm import call_llm_async, call_llm_with_tools_async
 from typing import List, Dict, Any
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CoinGeckoTokenInfoAgent(MeshAgent):
     def __init__(self):
@@ -57,7 +60,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         1. Search for specific tokens and get their details
         2. Get current trending coins in the market
         
-        For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name.
+        For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name or symbol. Coingecko ID is lowercase string and may contain dashes. If the user doesn't explicity say the input is the CoinGecko ID, you should use get_coingecko_id to search for the token. Do not make up CoinGecko IDs.
         For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies.
         
         When selecting tokens from search results, apply these criteria in order:
@@ -135,6 +138,8 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         
         if not valid_tokens:
             return None
+
+        logger.info(f"valid_tokens: {valid_tokens}")
         
         # Create prompt for token selection
         token_selection_prompt = f"""Given the search query "{query}" and these token results:
@@ -236,14 +241,15 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             )
             response.raise_for_status()
             search_results = response.json()
-            print(f"search_results: {search_results}")
             # Return the first coin id if found
-            if search_results.get('coins'):
+            if search_results.get('coins') and len(search_results['coins']) == 1:
                 first_coin = search_results['coins'][0]
                 return first_coin['id']
-            
-            selected_token_id = await self.select_best_token_match(search_results, token_name)
-            return selected_token_id or None
+            elif (search_results.get('coins') and len(search_results['coins']) == 0) or (search_results.get('coins') is None):
+                return None
+            else:
+                selected_token_id = await self.select_best_token_match(search_results, token_name)
+                return selected_token_id or None
         
         except requests.RequestException as e:
             print(f"error: {e}")
@@ -323,6 +329,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         temp_for_explanation = 0.7 if tool_name != 'get_trending_coins' else 0.3
 
         if tool_name == 'get_trending_coins':
+            logger.info(f"Getting trending coins")
             result = await self.get_trending_coins()
             errors = self._handle_error(result)
             if errors:
@@ -343,6 +350,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             token_name = function_args.get('token_name')
             if not token_name:
                 return {"error": "Missing 'token_name' in tool_arguments"}
+            logger.info(f"Getting coingecko id for {function_args.get('token_name')}")
             
             raw_id_result = await self.get_coingecko_id(token_name)
             if isinstance(raw_id_result, dict) and 'error' in raw_id_result:
@@ -350,45 +358,32 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
             # raw_id_result is presumably just the string id
             coingecko_id = raw_id_result
-            # Optionally, also fetch token info or just return the ID:
-            # We'll just return the ID here:
-            final_data = {"coingecko_id": coingecko_id}
-            
-            if raw_data_only:
-                return {"response": "", "data": final_data}
-
-            explanation = await self._respond_with_llm(
-                query=query,
-                tool_call_id=tool_call_id,
-                data=final_data,
-                temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": final_data}
-
         elif tool_name == 'get_token_info':
             coingecko_id = function_args.get('coingecko_id')
             if not coingecko_id:
                 return {"error": "Missing 'coingecko_id' in tool_arguments"}
+        else:
+            return {"error": f"Unsupported tool '{tool_name}'"}
+
+        logger.info(f"Getting token info by Coingecko ID for {coingecko_id}")
             
-            token_info = await self.get_token_info(coingecko_id)
-            errors = self._handle_error(token_info)
-            if errors:
-                return errors
+        token_info = await self.get_token_info(coingecko_id)
+        errors = self._handle_error(token_info)
+        if errors:
+            return errors
 
-            formatted_data = self.format_token_info(token_info)
-            
-            if raw_data_only:
-                return {"response": "", "data": formatted_data}
+        formatted_data = self.format_token_info(token_info)
+        
+        if raw_data_only:
+            return {"response": "", "data": formatted_data}
 
-            explanation = await self._respond_with_llm(
-                query=query,
-                tool_call_id=tool_call_id,
-                data=formatted_data,
-                temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": formatted_data}
-
-        return {"error": f"Unsupported tool '{tool_name}'"}
+        explanation = await self._respond_with_llm(
+            query=query,
+            tool_call_id=tool_call_id,
+            data=formatted_data,
+            temperature=temp_for_explanation
+        )
+        return {"response": explanation, "data": formatted_data}
 
     @monitor_execution()
     @with_retry(max_retries=3)
