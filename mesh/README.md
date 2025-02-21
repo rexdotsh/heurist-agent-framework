@@ -117,16 +117,65 @@ curl -X POST https://sequencer-v2.heurist.xyz/mesh_task_create \
   }'
 ```
 
+Response format:
+```json
+{
+  "task_id": "RETURNED_TASK_ID",
+  "msg": "Task created successfully"
+}
+```
+
 2. Query task status using the returned task_id:
 
 ```bash
 curl -X POST https://sequencer-v2.heurist.xyz/mesh_task_query \
   -H "Content-Type: application/json" \
   -d '{
-    "task_id": "RETURNED_TASK_ID",
-    "api_key": "YOUR_API_KEY"
+    "task_id": "RETURNED_TASK_ID"
   }'
 ```
+
+The response will vary based on the task's state:
+
+Initial state (waiting):
+```json
+{
+    "status": "waiting",
+    "reasoning_steps": null
+}
+```
+
+Processing state (with thinking steps):
+```json
+{
+    "status": "running",
+    "reasoning_steps": [
+        {
+            "timestamp": 1740097379,
+            "content": "ComposableEchoAgent is thinking...",
+            "is_sent": false
+        },
+        {
+            "timestamp": 1740097379,
+            "content": "EchoAgent is thinking...",
+            "is_sent": false
+        }
+    ]
+}
+```
+
+Completed state:
+```json
+{
+    "status": "finished",
+    "reasoning_steps": null,
+    "result": {
+        "response": "COMPOSABLE: Hello from ComposableEchoAgent!",
+        "success": "true"
+    }
+}
+```
+
 
 ---
 
