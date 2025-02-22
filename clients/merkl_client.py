@@ -13,16 +13,16 @@ class MerklClient(BaseAPIClient):
     # sync methods
     def get_opportunities(self, 
                           name: Optional[str] = None,
-                          chain_id: Optional[str] = None,
+                          chainId: Optional[str] = None,
                           action: Optional[str] = None,
                           tags: Optional[List[str]] = None,
                           test: Optional[bool] = None,
-                          minimum_tvl: Optional[float] = None,
+                          minimumTvl: Optional[float] = None,
                           status: Optional[str] = None,
                           tokens: Optional[List[str]] = None,
                           sort: Optional[str] = None,
                           order: Optional[str] = None,
-                          main_protocol_id: Optional[str] = None,
+                          mainProtocolId: Optional[str] = None,
                           page: Optional[int] = None,
                           items: Optional[int] = None) -> Dict:
         """

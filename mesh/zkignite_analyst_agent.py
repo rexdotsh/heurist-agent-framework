@@ -91,9 +91,9 @@ Args:
         protocol_ids_str = ",".join(protocol_id.strip().lower() for protocol_id in protocol_ids)
         
         responses = client.get_opportunities(
-            chain_id="324",
-            main_protocol_id=protocol_ids_str,
-            items=5*len(protocol_ids),
+            chainId="324",
+            mainProtocolId=protocol_ids_str,
+            items=10*len(protocol_ids),
             status='LIVE'
         )
         
@@ -324,7 +324,7 @@ class ZkIgniteAnalystAgent(MeshAgent):
                 'description': 'Analysis results',
                 'type': 'str'
             }],
-            'large_model_id': 'gpt-4o-mini',
+            'large_model_id': 'anthropic/claude-3.5-haiku',
             'external_apis': ['Merkl', 'DefiLlama'],
             'tags': ['DeFi', 'Yield Farming', 'ZKsync', 'Reasoning']
         })
@@ -336,13 +336,14 @@ class ZkIgniteAnalystAgent(MeshAgent):
             get_tvl_overview(self._defillama_client)
         ]
 
-        # Use gpt-4o-mini. Most open source models cannot handle the tool calling efficiently.
+        # Most open source models cannot handle the tool calling efficiently.
         self.model = OpenAIServerModel(
             model_id=self.metadata['large_model_id'],
-            api_key=os.getenv("OPENAI_API_KEY")
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            api_base="https://openrouter.ai/api/v1"
         )
         
-        max_steps = 5
+        max_steps = 6
         self.agent = ToolCallingAgent(
             tools=tools,
             model=self.model,
