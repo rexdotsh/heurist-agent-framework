@@ -19,7 +19,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         super().__init__()
 
         self.metadata.update({
-            'name': 'DexScreener Token Info Agent',
+            'name': 'DexScreener Token Info Agent', 
             'version': '1.0.0',
             'author': 'dyt9qc',
             'created_at': '2025-02-13 07:43:15',
@@ -28,8 +28,20 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 {
                     'name': 'query',
                     'description': 'Search query for token name, symbol or address',
-                    'type': 'str',
+                    'type': 'str', 
                     'required': True
+                },
+                {
+                    'name': 'tool',
+                    'description': 'Tool name for direct tool calls',
+                    'type': 'str',
+                    'required': False
+                },
+                {
+                    'name': 'tool_arguments',
+                    'description': 'Arguments for direct tool call',
+                    'type': 'dict',
+                    'required': False
                 },
                 {
                     'name': 'raw_data_only',
@@ -58,17 +70,17 @@ class DexScreenerTokenInfoAgent(MeshAgent):
     def get_system_prompt(self) -> str:
         return (
             "You are DexScreener Assistant, a professional analyst providing concise token/pair information.\n\n"
-
+            
             "Strict Data Presentation Rules:\n"
             "1. OMIT ENTIRE SECTIONS if no data exists for that category\n"
             "2. NEVER show 'Not Provided' or similar placeholders\n"
             "3. If only partial data exists, show ONLY available fields\n\n"
-
+            
             "Data Presentation Hierarchy:\n"
             "[Only display sections with available data]\n"
             "Core Token Information (Mandatory if available):\n"
             "   - Base/Quote token names, symbols and addresses\n"
-            "   - Chain/DEX platform\n"
+            "   - Chain/DEX platform\n" 
             "   - Contract addresses (full format)\n\n"
 
             "Market Metrics (Conditional):\n"
@@ -95,15 +107,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             "3. DENSITY CONTROL:\n"
             "   - 1 token info = ~200 words\n"
             "   - Multi-token = tabular comparison\n\n"
-
-            "Example Output Structure:\n"
-            "Title:\n"
-            "- Contract: 0x...\n"
-            "- Price: $X (Y ETH)\n"
-            "- Volume (24h): $Z\n"
-            "- Liquidity: $M\n"
-            "- Trend: [Brief volatility analysis]\n\n"
-
+            
             "Exception Handling:\n"
             "When the requested data cannot be retrieved, strictly follow the process below:\n"
             "1. Confirm the validity of the base contract address.\n"
@@ -141,7 +145,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         'properties': {
                             'chain': {
                                 'type': 'string',
-                                'description': 'Chain identifier (e.g., solana, bsc, base, ethereum, pulsechain, ton, avalanche, sui, xrpl, sonic, polygon, hyperliquid, arbitrum, unichain, abstract, moonshot, optimism, algorand, cardano, zksync, apechain, icp, ink, multiversx, mantle, starknet, soneium, injective, dogechain, shibarium, merlinchain, ethereumpow, core, seiv2)'
+                                'description': 'Chain identifier (e.g., solana, bsc, ethereum)'
                             },
                             'pair_address': {
                                 'type': 'string',
@@ -162,7 +166,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         'properties': {
                             'chain': {
                                 'type': 'string',
-                                'description': 'Chain identifier (e.g., solana, bsc, base, ethereum, pulsechain, ton, avalanche, sui, xrpl, sonic, polygon, hyperliquid, arbitrum, unichain, abstract, moonshot, optimism, algorand, cardano, zksync, apechain, icp, ink, multiversx, mantle, starknet, soneium, injective, dogechain, shibarium, merlinchain, ethereumpow, core, seiv2)'
+                                'description': 'Chain identifier (e.g., solana, bsc, ethereum)'
                             },
                             'token_address': {
                                 'type': 'string',
@@ -182,6 +186,40 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             }
         ]
 
+    # ------------------------------------------------------------------------
+    #                       SHARED / UTILITY METHODS
+    # ------------------------------------------------------------------------
+    async def _respond_with_llm(
+        self, query: str, tool_call_id: str, data: dict, temperature: float
+    ) -> str:
+        """
+        Reusable helper to ask the LLM to generate a user-friendly explanation
+        given a piece of data from a tool call.
+        """
+        return await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata['large_model_id'],
+            messages=[
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id}
+            ],
+            temperature=temperature
+        )
+
+    def _handle_error(self, maybe_error: dict) -> dict:
+        """
+        Small helper to return the error if present in
+        a dictionary with the 'error' key.
+        """
+        if 'error' in maybe_error:
+            return {"error": maybe_error['error']}
+        return {}
+
+    # ------------------------------------------------------------------------
+    #                      API-SPECIFIC METHODS
+    # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     async def search_pairs(self, query: str) -> Dict:
         """
@@ -217,20 +255,19 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 'data': None
             }
 
-    @with_cache(ttl_seconds=300)
+    @with_cache(ttl_seconds=300)  
     async def get_specific_pair_info(self, chain: str, pair_address: str) -> Dict:
         """
         Get detailed information for a specific trading pair.
 
         Args:
-            chain (str): Chain identifier (e.g., solana, bsc, ethereum, etc.)
+            chain (str): Chain identifier (e.g., solana, bsc, ethereum)
             pair_address (str): The pair contract address to look up
 
         Returns:
             Dict: Detailed pair information with status
         """
         try:
-            # Get raw pair data using the fetch_pair_info helper
             result = fetch_pair_info(chain, pair_address)
 
             if result['status'] == 'success':
@@ -248,7 +285,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 }
 
             return {
-                'status': 'error',
+                'status': 'error', 
                 'error': result.get('error', 'Unknown error occurred'),
                 'data': None
             }
@@ -329,84 +366,113 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 'data': None
             }
 
-    @monitor_execution()
-    @with_retry(max_retries=3)
-    async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    # ------------------------------------------------------------------------
+    #                      COMMON HANDLER LOGIC
+    # ------------------------------------------------------------------------
+    async def _handle_tool_logic(
+        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
+    ) -> Dict[str, Any]:
         """
-        Main handler for processing incoming messages/queries.
+        A single method that calls the appropriate function, handles
+        errors/formatting, and optionally calls the LLM to explain the result.
         """
-        query = params.get('query')
-        if not query:
-            raise ValueError("Query parameter is required")
+        temp = 0.3 if tool_name == 'get_token_profiles' else 0.7 
 
-        raw_data_only = params.get('raw_data_only', False)
-
-        response = await call_llm_with_tools_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            system_prompt=self.get_system_prompt(),
-            user_prompt=query,
-            temperature=0.1,
-            tools=self.get_tool_schemas()
-        )
-
-        if not response:
-            return {"error": "Failed to process query"}
-
-        if not response.get('tool_calls'):
-            return {"response": response['content'], "data": {}}
-
-        tool_call = response['tool_calls']
-        function_args = json.loads(tool_call.function.arguments)
-
-        # Handle different tool calls
-        result_data = None
-        if tool_call.function.name == 'search_pairs':
-            result_data = await self.search_pairs(query=function_args['query'])
-
-        elif tool_call.function.name == 'get_specific_pair_info':
+        if tool_name == 'search_pairs':
+            result_data = await self.search_pairs(function_args['query'])
+        elif tool_name == 'get_specific_pair_info':
             result_data = await self.get_specific_pair_info(
-                chain=function_args['chain'],
+                chain=function_args['chain'], 
                 pair_address=function_args['pair_address']
             )
-
-        elif tool_call.function.name == 'get_token_pairs':
+        elif tool_name == 'get_token_pairs':
             result_data = await self.get_token_pairs(
                 chain=function_args['chain'],
                 token_address=function_args['token_address']
             )
-
-        elif tool_call.function.name == 'get_token_profiles':
+        elif tool_name == 'get_token_profiles':
             result_data = await self.get_token_profiles()
+        else:
+            return {"error": f"Unsupported tool: {tool_name}"}
 
-        else :
-            return {"error": "Unsupported operation"}
-
-        if result_data and 'error' in result_data:
-            return {"error": result_data['error']}
+        errors = self._handle_error(result_data)
+        if errors:
+            return errors
 
         if raw_data_only:
             return {"response": "", "data": result_data}
 
-        explanation = await call_llm_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            messages=[
-                {"role": "system", "content": self.get_system_prompt()},
-                {"role": "user", "content": query},
-                {"role": "tool", "content": str(result_data), "tool_call_id": tool_call.id}
-            ],
-            temperature=0.3
+        explanation = await self._respond_with_llm(
+            query=query,
+            tool_call_id=tool_call_id,
+            data=result_data,
+            temperature=temp
         )
 
-        return {
-            "response": explanation,
-            "data": result_data
-        }
+        return {"response": explanation, "data": result_data}
+
+    @monitor_execution()
+    @with_retry(max_retries=3)
+    async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Either 'query' or 'tool' is required in params.
+          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
+          - If 'query' is provided, route via LLM for dynamic tool selection.
+        """
+        query = params.get('query')
+        tool_name = params.get('tool')
+        tool_args = params.get('tool_arguments', {})
+        raw_data_only = params.get('raw_data_only', False)
+
+        # ---------------------
+        # 1) DIRECT TOOL CALL
+        # ---------------------
+        if tool_name:
+            return await self._handle_tool_logic(
+                tool_name=tool_name,
+                function_args=tool_args,
+                query=query or "Direct tool call without LLM.",
+                tool_call_id="direct_tool",
+                raw_data_only=raw_data_only
+            )
+
+        # ---------------------
+        # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
+        # ---------------------
+        if query:
+            response = await call_llm_with_tools_async(
+                base_url=self.heurist_base_url,
+                api_key=self.heurist_api_key,
+                model_id=self.metadata['large_model_id'],
+                system_prompt=self.get_system_prompt(),
+                user_prompt=query,
+                temperature=0.1,
+                tools=self.get_tool_schemas()
+            )
+
+            if not response:
+                return {"error": "Failed to process query"}
+
+            if not response.get('tool_calls'):
+                # No tool calls => the LLM just answered
+                return {"response": response['content'], "data": {}}
+
+            tool_call = response['tool_calls']
+            tool_call_name = tool_call.function.name
+            tool_call_args = json.loads(tool_call.function.arguments)
+
+            return await self._handle_tool_logic(
+                tool_name=tool_call_name,
+                function_args=tool_call_args,
+                query=query,
+                tool_call_id=tool_call.id,
+                raw_data_only=raw_data_only
+            )
+
+        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
 
 # ------------------------- Helper Functions ------------------------- #
+
 def fetch_dex_pairs(query: str) -> Dict:
     """
     Fetches trading pair information from DexScreener API.
@@ -478,7 +544,7 @@ def fetch_pair_info(chain: str, pair_address: str) -> Dict:
         data = response.json()
         pairs = data.get('pairs', [])
 
-        # Get first matching pair
+        # Get first matching pair 
         matching_pair = next(
             (pair for pair in pairs if pair.get('pairAddress', '').lower() == pair_address.lower()),
             None

@@ -15,49 +15,70 @@ load_dotenv()
 async def run_agent():
     agent = DexScreenerTokenInfoAgent()
     try:
-        # Test with a query that mentions a token name, symbol, or address
+        # Test search_pairs tool
         agent_input = {
-            'query': 'Search for trading pairs for token name ETH'
+            'tool': 'search_pairs',
+            'tool_arguments': {
+                'query': 'ETH'
+            },
+            'raw_data_only': False  # Set to True if you only want raw data without LLM analysis
         }
         agent_output = await agent.handle_message(agent_input)
-        print(f"Result of handle_message (search trading pairs by query): {agent_output}")
+        print(f"Result of search_pairs: {agent_output}")
 
-        # Test with a query for specific pair info
+        # Test get_specific_pair_info tool
         agent_input_pair_info = {
-            'query': 'Get specific pair info for chain: solana, pair address: 7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp'
+            'tool': 'get_specific_pair_info',
+            'tool_arguments': {
+                'chain': 'solana',
+                'pair_address': '7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp'
+            }
         }
         agent_output_pair_info = await agent.handle_message(agent_input_pair_info)
-        print(f"Result of handle_message (specific pair info by chain and pair address): {agent_output_pair_info}")
+        print(f"Result of get_specific_pair_info: {agent_output_pair_info}")
 
-        # Test with a query for token pairs
+        # Test get_token_pairs tool
         agent_input_pairs = {
-            'query': 'Get the token pairs for chain: solana, token address: 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump'
+            'tool': 'get_token_pairs',
+            'tool_arguments': {
+                'chain': 'solana',
+                'token_address': '8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump'
+            }
         }
         agent_output_pairs = await agent.handle_message(agent_input_pairs)
-        print(f"Result of handle_message (token pairs by chain and token address): {agent_output_pairs}")
+        print(f"Result of get_token_pairs: {agent_output_pairs}")
 
-        # Test with a query for token profiles
+        # Test get_token_profiles tool
         agent_input_profiles = {
-            'query': 'Get the latest token profiles'
+            'tool': 'get_token_profiles',
+            'tool_arguments': {}  # No arguments needed for this tool
         }
         agent_output_profiles = await agent.handle_message(agent_input_profiles)
-        print(f"Result of handle_message (the latest token profiles): {agent_output_profiles}")
+        print(f"Result of get_token_profiles: {agent_output_profiles}")
 
-        # Save the test inputs and outputs to a YAML file for further inspection
+        # Save the test inputs and outputs to a YAML file
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
         base_filename = f"{current_file}_example"
         output_file = script_dir / f"{base_filename}.yaml"
 
         yaml_content = {
-            'input_by_token_info': agent_input,
-            'output_by_token_info': agent_output,
-            'input_specific_pair_info': agent_input_pair_info,
-            'output_specific_pair_info': agent_output_pair_info,
-            'input_token_pairs': agent_input_pairs,
-            'output_token_pairs': agent_output_pairs,
-            'input_latest_token_profiles': agent_input_profiles,
-            'output_latest_token_profiles': agent_output_profiles,
+            'search_pairs_test': {
+                'input': agent_input,
+                'output': agent_output
+            },
+            'specific_pair_info_test': {
+                'input': agent_input_pair_info,
+                'output': agent_output_pair_info
+            },
+            'token_pairs_test': {
+                'input': agent_input_pairs,
+                'output': agent_output_pairs
+            },
+            'token_profiles_test': {
+                'input': agent_input_profiles,
+                'output': agent_output_profiles
+            }
         }
 
         with open(output_file, 'w', encoding='utf-8') as f:

@@ -3,7 +3,6 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 pyyaml>=6.0.1
 aiohttp>=3.9.1
-
 # Caching and utilities
 cachetools>=5.3.2
 
@@ -22,3 +21,4 @@ pytest-asyncio>=0.23.2
 
 
 openai>=1.40.8
+firecrawl>=1.12.0
