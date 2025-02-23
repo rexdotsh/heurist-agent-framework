@@ -1,184 +1,218 @@
 input_by_id:
   query: Get information about MONA
 output_by_id:
-  response: "It seems you provided two different inputs:\n\n1. A query to **Get information\
-    \ about MONA**\n2. A response with a **CoinGecko ID: 'as-monaco-fan-token'**\n\
-    \nI'll address both:\n\n### For the Query: **Get information about MONA**\n\n\
-    Since you didn't provide a CoinGecko ID directly for \"MONA\", I'll follow the\
-    \ criteria to find the best match:\n\n1. **Perfect Match**: Searching for \"MONA\"\
-    \ on CoinGecko...\n2. **Results**:\n   - **MONA (Monacoin)**: A cryptocurrency\
-    \ with a symbol matching the query. \n   - **Other results** (if any) are less\
-    \ relevant based on the criteria (e.g., lower market cap rank, less complete information).\n\
-    \n**Selected Token:** **MONA (Monacoin)**\n\n**Token Information:**\n\n* **CoinGecko\
-    \ ID:** monacoin\n* **Symbol:** MONA\n* **Name:** Monacoin\n* **Current Price:**\
-    \ *(Please note, for real-time pricing, I'd need to fetch live data. Assuming\
-    \ a hypothetical price for demonstration)* $1.23 USD\n* **Market Cap Rank:** 543\n\
-    * **Market Capitalization:** *(Hypothetical)* $54,321,000 USD\n* **Description:**\
-    \ Monacoin is a decentralized, open-source cryptocurrency launched in December\
-    \ 2013. It uses the Lyra2RE(v2) algorithm and is based on the Bitcoin protocol.\
-    \ Monacoin is known for its strong focus on community and has various tools and\
-    \ services built around it.\n* **Official Website:** https://monacoin.org/\n*\
-    \ **Blockchain Explorer:** https://mona.chainsight.io/\n\n### For the Provided\
-    \ CoinGecko ID: **'as-monaco-fan-token'**\n\nIf you intended to inquire about\
-    \ **'as-monaco-fan-token'**, here's a brief overview:\n\n**Token Information for\
-    \ AS Monaco Fan Token:**\n\n* **CoinGecko ID:** as-monaco-fan-token\n* **Symbol:**\
-    \ ASMT\n* **Name:** AS Monaco Fan Token\n* **Current Price:** *(Again, please\
-    \ note, for real-time pricing, live data fetch is required. Hypothetical price)*\
-    \ $2.50 USD\n* **Market Cap Rank:** *(Available upon live fetch, assuming for\
-    \ demo)* 1245\n* **Market Capitalization:** *(Hypothetical)* $12,456,789 USD\n\
-    * **Description:** AS Monaco Fan Token is a utility token designed for the fans\
-    \ of AS Monaco, a professional football club. It allows holders to influence club\
-    \ decisions, access exclusive experiences, and more.\n* **Official Website:**\
-    \ *(Available upon live data fetch, for demo purposes)* https://www.asmonaco.com/fan-token/\n\
-    * **Blockchain Explorer:** *(Specific explorer might not be widely recognized\
-    \ without live data fetch, assuming for demo)* https://etherscan.io/token/...\
-    \ (Assuming it's an ERC-20 token)\n\n**Please Clarify or Provide Further Instructions:**\n\
-    \n1. Is the information about **MONA (Monacoin)** satisfactory, or would you like\
-    \ more details?\n2. Would you like to delve deeper into **AS Monaco Fan Token**\
-    \ with potentially more accurate, up-to-date information (requiring a live data\
-    \ fetch)?\n3. Do you have a different query or request (e.g., trending coins,\
-    \ another token search)?"
+  response: "**Token Information: MONA (Monavale)**\n\n### **Token Overview**\n\n\
+    * **Name:** Monavale\n* **Symbol:** MONA\n* **Market Cap Rank:** 5,174\n* **Categories:**\n\
+    \t+ NFT\n\t+ Metaverse\n\t+ Polygon Ecosystem\n\t+ Ethereum Ecosystem\n* **Description:**\
+    \ MONA is the native ERC-20 token for the DIGITALAX platform, serving as both\
+    \ a utility token and part of the platform's governance.\n\n### **Market Metrics**\n\
+    \n* **Current Price (USD):** $25.30\n* **Market Cap (USD):** $264,589\n* **Fully\
+    \ Diluted Valuation (USD):** $285,943\n* **Total Volume (USD) (24h):** $177.56\n\
+    \n### **Price Metrics**\n\n* **All-Time High (USD):** $2,843.59\n* **ATH Change\
+    \ Percentage:** -99.10992%\n* **ATH Date:** March 20, 2021, 03:07:37 UTC\n* **24h\
+    \ High (USD):** $26.02\n* **24h Low (USD):** $25.11\n* **24h Price Change:** -$0.27829510519087\n\
+    * **24h Price Change Percentage:** -1.08781%\n\n### **Supply Information**\n\n\
+    * **Total Supply:** 11,300.0\n* **Max Supply:** 11,300.0\n* **Circulating Supply:**\
+    \ 10,456.12756878095\n\n---\n\n**Note:** The data provided is subject to the snapshot\
+    \ in time when the query was executed. Cryptocurrency markets are highly volatile,\
+    \ so prices and rankings may have changed since the last update. For the most\
+    \ current information, please query again or refer to a real-time cryptocurrency\
+    \ data source."
   data:
-    coingecko_id: as-monaco-fan-token
+    token_info:
+      name: Monavale
+      symbol: MONA
+      market_cap_rank: 5174
+      categories:
+      - NFT
+      - Metaverse
+      - Polygon Ecosystem
+      - Ethereum Ecosystem
+      description: 'MONA is the native ERC-20 token for the DIGITALAX platform. It
+        is the platform''s utility token and also serves as part of the platform''s
+        governance. '
+    market_metrics:
+      current_price_usd: 25.3
+      market_cap_usd: 264589
+      fully_diluted_valuation_usd: 285943
+      total_volume_usd: 177.56
+    price_metrics:
+      ath_usd: 2843.59
+      ath_change_percentage: -99.10992
+      ath_date: '2021-03-20T03:07:37.893Z'
+      high_24h_usd: 26.02
+      low_24h_usd: 25.11
+      price_change_24h: -0.27829510519087
+      price_change_percentage_24h: -1.08781
+    supply_info:
+      total_supply: 11300.0
+      max_supply: 11300.0
+      circulating_supply: 10456.12756878095
 input_by_name:
   query: analyze HEU
 output_by_name:
-  response: "It seems like we have a two-part query here. Let's break down the analysis\
-    \ for both:\n\n### 1. Analyze HEU\n\nSince \"HEU\" is provided without a specified\
-    \ CoinGecko ID, I'll first attempt to search for it by name/symbol, applying the\
-    \ selection criteria:\n\n**Search Results for \"HEU\":**\n\nAssuming the search\
-    \ yields the following results (Note: Actual data would be fetched from CoinGecko\
-    \ in a real scenario):\n\n| **Coin Name** | **Symbol** | **Market Cap Rank** |\
-    \ **Info Completeness** |\n|----------------|-------------|---------------------|------------------------|\n\
-    | Helium Utility | HEU        | 1200                | High                   |\n\
-    | HEUR Token    | HEU        | Not Available       | Low                    |\n\
-    | Helix Utility | HEU        | 800                 | High                   |\n\
-    \n**Selected Token Based on Criteria:**\n- **First Priority (Perfect Match):**\
-    \ Both \"Helium Utility\" and \"HEUR Token\" have a symbol match, but since \"\
-    Helix Utility\" also has a symbol match and a better market cap rank, it takes\
-    \ precedence over \"Helium Utility\". \"HEUR Token\" is less preferred due to\
-    \ the lack of market cap rank.\n- **Selected Token:** **Helix Utility**\n  - **CoinGecko\
-    \ ID (if directly available or fetched):** Assuming `helix-utility` (Note: This\
-    \ would be accurately determined via CoinGecko API)\n  - **Key Details (Example,\
-    \ actual data may vary):**\n    - **Price:** $0.50 USD\n    - **Market Cap:**\
-    \ $500 Million USD\n    - **Market Cap Rank:** 800\n    - **High/Low (24h):**\
-    \ $0.55/$0.45\n    - **Price Change (24h):** -5%\n\n### 2. Provided CoinGecko\
-    \ ID - 'morpheusai'\n\n**Directly Fetching Details for CoinGecko ID: morpheusai**\n\
-    \n| **Category** | **Details**                                             |\n\
-    |--------------|---------------------------------------------------------|\n|\
-    \ **ID**       | morpheusai                                              |\n|\
-    \ **Name**     | Morpheus AI                                            |\n| **Symbol**\
-    \   | MORPH                                                   |\n| **Price** \
-    \   | $0.012 USD                                             |\n| **Market Cap**|\
-    \ $1.2 Million USD                                      |\n| **Market Cap Rank**|\
-    \ Not in Top 1000                                  |\n| **High/Low (24h)**| $0.013/$0.011\
-    \                                      |\n| **Price Change (24h)**| -2%      \
-    \                                      |\n\n**Additional Information (if requested\
-    \ or relevant):**\n- **Description:** Brief overview of Morpheus AI, its technology,\
-    \ and use cases.\n- **Website, Blockchain, and Community Links:** For further\
-    \ exploration.\n- **Market Data (More Detailed):** Trading volumes, liquidity,\
-    \ etc., if desired.\n\n**Please Respond with One of the Following for Further\
-    \ Assistance:**\n\n1. **Request More Details** on either analyzed token (e.g.,\
-    \ more market data, developer activity).\n2. **Analyze Another Token** by providing\
-    \ its name or CoinGecko ID.\n3. **Get Current Trending Coins** in the market.\n\
-    4. **Other (Specify Your Query)**."
+  response: "**Token Analysis: Heurist (HEU)**\n\n**Overview**\n\n* **Name:** Heurist\n\
+    * **Symbol:** HEU\n* **Market Cap Rank:** 2,262\n* **Categories:**\n\t1. Artificial\
+    \ Intelligence (AI)\n\t2. Ethereum Ecosystem\n\t3. ZkSync Ecosystem\n\t4. DePIN\n\
+    \t5. Base Ecosystem\n\t6. AI Agents\n\t7. AI Framework\n\n**Description**\nHeurist\
+    \ is a decentralized AI-as-a-Service cloud, providing serverless AI services by\
+    \ aggregating compute resources. It enables cost-efficient, censorship-free AI\
+    \ integration with APIs and is building an AI application ecosystem, including\
+    \ AI image generation, chatbots, and AI-powered search engines.\n\n**Key Metrics**\n\
+    \n### **Market Metrics**\n\n* **Current Price (USD):** $0.03609178\n* **Market\
+    \ Capitalization (USD):** $3,987,555\n* **Fully Diluted Valuation (USD):** $36,091,135\n\
+    * **Total Volume (USD) (24h):** $175,453\n\n### **Price Metrics**\n\n* **All-Time\
+    \ High (USD):** $0.461144\n* **ATH Change Percentage:** -92.16438% (indicating\
+    \ a significant price drop from its peak)\n* **ATH Date:** December 28, 2024,\
+    \ 20:06:24 UTC\n* **24h High (USD):** $0.04019749\n* **24h Low (USD):** $0.03393059\n\
+    * **24h Price Change:** -$0.00280637835387951\n* **24h Price Change Percentage:**\
+    \ -7.21468% (indicating a recent decline)\n\n### **Supply Information**\n\n* **Total\
+    \ Supply:** 1,000,000,000 HEU\n* **Maximum Supply:** 1,000,000,000 HEU (indicating\
+    \ a fixed supply)\n* **Circulating Supply:** 110,485,716 HEU\n\n**Analysis Insights**\n\
+    \n1. **Market Position:** With a market cap rank of 2,262, Heurist is a relatively\
+    \ small player in the cryptocurrency market.\n2. **Price Volatility:** The significant\
+    \ drop from its all-time high (-92.16438%) and the recent 24-hour price decline\
+    \ (-7.21468%) suggest high price volatility.\n3. **Supply Dynamics:** The fixed\
+    \ maximum supply could potentially lead to increased value if demand rises, given\
+    \ the limited amount of HEU in circulation.\n4. **Use Case Strength:** Heurist's\
+    \ focus on decentralized AI services and its ecosystem of AI applications could\
+    \ attract interest from both the AI development community and investors looking\
+    \ for innovative use cases.\n5. **Investment Considerations:**\n\t* **High Risk,\
+    \ High Reward:** The project's innovative nature and potential for growth in the\
+    \ AI sector might appeal to high-risk investors.\n\t* **Market Fluctuations:**\
+    \ Investors should be prepared for significant price swings.\n\t* **Adoption and\
+    \ Development:** The success of Heurist's AI applications and the growth of its\
+    \ ecosystem will be crucial for the token's long-term value appreciation."
   data:
-    coingecko_id: morpheusai
+    token_info:
+      name: Heurist
+      symbol: HEU
+      market_cap_rank: 2262
+      categories:
+      - Artificial Intelligence (AI)
+      - Ethereum Ecosystem
+      - ZkSync Ecosystem
+      - DePIN
+      - Base Ecosystem
+      - AI Agents
+      - AI Framework
+      description: Heurist is a decentralized AI-as-a-Service cloud. Heurist aggregates
+        compute resources from individual GPU owners and data centers to provide serverless
+        AI services. Heurist's API-first infrastructure eliminates the need for developers
+        to manage GPU machines, enabling cost-efficient, censorship-free AI integration
+        with APIs. Heurist is building an AI application ecosystem powered by decentralized
+        compute. The AI products include Heurist Imagine (AI image generator with
+        NFT minting and create-to-earn rewards), Pondera (AI chatbot), and Heurist
+        Search (AI-powered Search Engine)
+    market_metrics:
+      current_price_usd: 0.03609178
+      market_cap_usd: 3987555
+      fully_diluted_valuation_usd: 36091135
+      total_volume_usd: 175453
+    price_metrics:
+      ath_usd: 0.461144
+      ath_change_percentage: -92.16438
+      ath_date: '2024-12-28T20:06:24.301Z'
+      high_24h_usd: 0.04019749
+      low_24h_usd: 0.03393059
+      price_change_24h: -0.00280637835387951
+      price_change_percentage_24h: -7.21468
+    supply_info:
+      total_supply: 1000000000.0
+      max_supply: 1000000000.0
+      circulating_supply: 110485716.0
 input_by_trending:
   query: Get information about trending coins
 output_by_trending:
   response: '**Current Top Trending Cryptocurrencies**
 
 
-    Below is the list of trending coins in the market, fetched from CoinGecko. The
-    information includes the coin''s name, symbol, market capitalization rank, and
-    current price in USD.
+    Below is the list of trending coins fetched from CoinGecko, showcasing their current
+    market standing and price in USD. The list is ordered as received from the trending
+    coins API, but for clarity, I''ve added a **Highlight** section to quickly point
+    out the top 3 trending coins based on their market cap rank.
 
 
     ### Trending Coins List
 
 
-    | **Rank** | **Name** | **Symbol** | **Market Cap Rank** | **Current Price (USD)**
-    |
+    | **Rank** | **Name** | **Symbol** | **Market Cap Rank** | **Price (USD)** |
 
     | --- | --- | --- | --- | --- |
 
-    | 1. | **MANTRA** | OM | 27 | $7.49 |
+    | - | Mantle | MNT | 44 | $0.9292474405077825 |
 
-    | 2. | **Sonic (prev. FTM)** | S | 55 | $0.72 |
+    | - | Story | IP | 92 | $4.481256688918082 |
 
-    | 3. | **Story** | IP | 114 | $3.10 |
+    | - | Berachain | BERA | 112 | $7.3877783925100395 |
 
-    | 4. | **Berachain** | BERA | 109 | $7.36 |
+    | - | Sonic (prev. FTM) | S | 50 | $0.8673339552616107 |
 
-    | 5. | **Bittensor** | TAO | 40 | $449.22 |
+    | - | KAITO | KAITO | 189 | $1.7154017989968495 |
 
-    | 6. | **MEOW** | MEOW | 139 | $0.0066 |
+    | - | Ethena | ENA | 74 | $0.44751643482993336 |
 
-    | 7. | **Shadow** | SHADOW | 930 | $140.01 |
+    | - | Jupiter | JUP | 59 | $0.7990055236218381 |
 
-    | 8. | **Virtuals Protocol** | VIRTUAL | 127 | $1.00 |
+    | - | **Solana** | **SOL** | **6** | **$171.95617232608515** |
 
-    | 9. | **Aptos** | APT | 35 | $6.80 |
+    | - | Shadow | SHADOW | 859 | $160.33721168563136 |
 
-    | 10. | **Sei** | SEI | 90 | $0.247 |
-
-
-    **Key Highlights:**
+    | - | Ondo | ONDO | 38 | $1.1560569776296947 |
 
 
-    - **Highest Priced:** Bittensor (TAO) at $449.22 USD
-
-    - **Lowest Priced:** MEOW (MEOW) at $0.0066 USD
-
-    - **Highest Market Cap Rank in List:** MANTRA (OM) at rank 27
-
-    - ** Lowest Market Cap Rank in List:** Shadow (SHADOW) at rank 930
+    ### **Highlight: Top 3 by Market Cap Rank**
 
 
-    **Note:** Market capitalization ranks and prices are subject to rapid fluctuations
-    in the cryptocurrency market. The information provided is a snapshot at the time
-    of the query. For the most up-to-date information, please query again or check
-    directly on CoinGecko.'
+    1. **Solana (SOL)** - Market Cap Rank: **6** - Price: **$171.95617232608515**
+
+    2. **Ondo (ONDO)** - Market Cap Rank: **38** - Price: **$1.1560569776296947**
+
+    3. **Mantle (MNT)** - Market Cap Rank: **44** - Price: **$0.9292474405077825**
+
+
+    **Note:** Market trends and prices are subject to rapid change. The information
+    provided is a snapshot at the time of the query. For the most current data, please
+    query again or check directly on CoinGecko.'
   data:
     trending_coins:
-    - name: MANTRA
-      symbol: OM
-      market_cap_rank: 27
-      price_usd: 7.492122489850358
-    - name: Sonic (prev. FTM)
-      symbol: S
-      market_cap_rank: 55
-      price_usd: 0.7244607706983394
+    - name: Mantle
+      symbol: MNT
+      market_cap_rank: 44
+      price_usd: 0.9292474405077825
     - name: Story
       symbol: IP
-      market_cap_rank: 114
-      price_usd: 3.1004661871731742
+      market_cap_rank: 92
+      price_usd: 4.481256688918082
     - name: Berachain
       symbol: BERA
-      market_cap_rank: 109
-      price_usd: 7.362413032219079
-    - name: Bittensor
-      symbol: TAO
-      market_cap_rank: 40
-      price_usd: 449.21930101846294
-    - name: MEOW
-      symbol: MEOW
-      market_cap_rank: 139
-      price_usd: 0.006632320916536126
+      market_cap_rank: 112
+      price_usd: 7.3877783925100395
+    - name: Sonic (prev. FTM)
+      symbol: S
+      market_cap_rank: 50
+      price_usd: 0.8673339552616107
+    - name: KAITO
+      symbol: KAITO
+      market_cap_rank: 189
+      price_usd: 1.7154017989968495
+    - name: Ethena
+      symbol: ENA
+      market_cap_rank: 74
+      price_usd: 0.44751643482993336
+    - name: Jupiter
+      symbol: JUP
+      market_cap_rank: 59
+      price_usd: 0.7990055236218381
+    - name: Solana
+      symbol: SOL
+      market_cap_rank: 6
+      price_usd: 171.95617232608515
     - name: Shadow
       symbol: SHADOW
-      market_cap_rank: 930
-      price_usd: 140.01334344119005
-    - name: Virtuals Protocol
-      symbol: VIRTUAL
-      market_cap_rank: 127
-      price_usd: 1.002248192284676
-    - name: Aptos
-      symbol: APT
-      market_cap_rank: 35
-      price_usd: 6.800830625351862
-    - name: Sei
-      symbol: SEI
-      market_cap_rank: 90
-      price_usd: 0.24680001712718277
+      market_cap_rank: 859
+      price_usd: 160.33721168563136
+    - name: Ondo
+      symbol: ONDO
+      market_cap_rank: 38
+      price_usd: 1.1560569776296947

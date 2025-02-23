@@ -2,43 +2,65 @@ input:
   query: Fetch the security details of contract address 0xEF22cb48B8483dF6152e1423b19dF5553BbD818b
     on Base chain
 output:
-  response: "Based on the provided data, here is the security analysis of the contract\
-    \ address 0xEF22cb48B8483dF6152e1423b19dF5553BbD818b on the Base chain:\n\n###\
-    \ Basic Info\n- Token Name: Heurist\n- Token Symbol: HEU\n- Total Supply: 111,450,558.627030450437942488\n\
-    - Holder Count: 26,930\n\n### Contract Properties\n- Open Source Status: Yes (is_open_source:\
-    \ 1)\n- Proxy Status: No (is_proxy: 0)\n- Mintable Status: Yes (is_mintable: 1)\n\
-    \n### Ownership Analysis\n- Creator Address: 0xFb93Bee230a72a241534F70d85B76E07F35Cd33F\n\
-    - Owner Address: 0x4200000000000000000000000000000000000010\n- Ownership Takeback\
-    \ Capability: No (can_take_back_ownership: 0)\n\n### Trading Properties\n- Buy\
-    \ Tax: 0\n- Sell Tax: 0\n- Honeypot Status: No (is_honeypot: 0)\n- Blacklist Status:\
-    \ No (is_blacklisted: 0)\n\n### Liquidity\n- DEX Presence: Yes (is_in_dex: 1)\n\
-    - LP Holder Count: 9\n- Top LP Holders:\n  1. 0xe7b13370abc53904fb5b65efd4771c700cf5f4f0\
-    \ - 74.10% of LP\n  2. 0x091b76f437a4de41457b4d89545ea34c16cabeb8 - 11.43% of\
-    \ LP\n  3. 0xdb7cc6edcad37adbe3149948b17bf4b492a16a38 - 6.53% of LP\n\n### Holder\
-    \ Distribution\n- Top Holders and their Percentage of Total Supply:\n  1. 0xCf84821b828Fb21F531A02Dd5f30Fb029757E30C\
-    \ - 16.01%\n  2. 0xF314Fa643D4819021D7A3C3B2F9F8B6386761Ce5 - 13.20%\n  3. 0xF930E1342Fc23C5C7BcAeE58CbBC776Eeb4CfB87\
-    \ - 9.45%\n\n### Other Metrics\n- Anti-Whale Modifiable: No (anti_whale_modifiable:\
-    \ 0)\n- Personal Slippage Modifiable: No (personal_slippage_modifiable: 0)\n-\
-    \ Slippage Modifiable: No (slippage_modifiable: 0)\n- Self-Destruct: No (selfdestruct:\
-    \ 0)\n- Transfer Pausable: No (transfer_pausable: 0)\n\n### Risk Assessment\n\
-    The contract does not have high-risk items such as honeypot or high taxes. The\
-    \ contract is open source, which is a positive sign. However, it is mintable,\
-    \ which could pose a risk if not properly managed. The ownership and trading properties\
-    \ do not indicate any immediate red flags. The liquidity and holder distribution\
-    \ suggest a relatively healthy market presence. Overall, the contract appears\
-    \ to have a low to moderate risk profile based on the provided data."
+  response: "**Security Details Report for Heurist (HEU) on Base Chain**\n\n**Basic\
+    \ Info**\n\n* **Token Name:** Heurist\n* **Symbol:** HEU\n* **Total Supply:**\
+    \ 111,493,804.51 HEU\n* **Holder Count:** 26,833\n\n**Contract Properties**\n\n\
+    * **Open Source Status:** **Verified** (Open Source)\n* **Proxy Status:** **Not\
+    \ a Proxy Contract**\n* **Mintable Status:** **Mintable** (Token supply can be\
+    \ increased)\n\n**Ownership Analysis**\n\n* **Creator Address:** 0xfb93bee230a72a241534f70d85b76e07f35cd33f\n\
+    * **Owner Address:** 0x4200000000000000000000000000000000000010 (Note: This appears\
+    \ to be a generic address, potentially indicating a decentralized ownership structure\
+    \ or a misidentification. Further investigation may be necessary.)\n* **Ownership\
+    \ Takeback Capability:** **No** (The contract does not have the capability to\
+    \ take back ownership once transferred.)\n\n**Trading Properties**\n\n* **Buy\
+    \ Tax:** **0%**\n* **Sell Tax:** **0.01%**\n* **Honeypot Status:** **Not a Honeypot**\n\
+    * **Blacklist Status:** **Not Blacklisted**\n\n**Liquidity**\n\n* **DEX Presence:**\
+    \ **Yes**, listed on UniswapV3\n* **Liquidity Pool (LP) Holder Count:** 9\n* **Top\
+    \ LP Holders:** Not explicitly listed in the provided data, but top token holders\
+    \ are detailed below.\n\n**Holder Distribution**\n\n* **Top Holders and Percentage\
+    \ of Total Supply:**\n\t1. **0xcf84821b828fb21f531a02dd5f30fb029757e30c**\n\t\t\
+    - **Balance:** 17,844,262.14 HEU\n\t\t- **Percentage:** 16.0047%\n\t\t- **Is Contract:**\
+    \ Yes\n\t\t- **Locked:** No\n\t2. **0xf314fa643d4819021d7a3c3b2f9f8b6386761ce5**\n\
+    \t\t- **Balance:** 14,707,419.50 HEU\n\t\t- **Percentage:** 13.1912%\n\t\t- **Is\
+    \ Contract:** Yes\n\t\t- **Locked:** No\n\t3. **0x4e3ae00e8323558fa5cac04b152238924aa31b60**\n\
+    \t\t- **Balance:** 6,910,656.71 HEU\n\t\t- **Percentage:** 6.1982%\n\t\t- **Is\
+    \ Contract:** No\n\t\t- **Locked:** No\n\n**Other Metrics**\n\n* **UniswapV3 Liquidity:**\
+    \ 332.85 (Exact denomination not specified in the provided data)\n\n**Risk Assessment:**\n\
+    \nBased on the provided security details, here's a risk assessment for the Heurist\
+    \ (HEU) token:\n\n* **Liquidity Risk:** **Moderate** - Listed on UniswapV3, indicating\
+    \ some level of liquidity, but the amount (332.85 units, denomination unspecified)\
+    \ seems relatively low compared to the total supply.\n* **Ownership Risk:** **Unclear**\
+    \ - The owner address appears generic, which could indicate a decentralized structure\
+    \ or a potential issue with the data. This warrants further investigation.\n*\
+    \ **Market Manipulation Risk:** **Low to Moderate** - With a small sell tax (0.01%)\
+    \ and no buy tax, the environment seems conducive to trading. However, the concentration\
+    \ of tokens among top holders (especially the first two, which are contracts)\
+    \ could potentially lead to market manipulation if not properly managed.\n* **Security\
+    \ Risk:** **Low** - Being open source and not identified as a honeypot or blacklisted\
+    \ are positive indicators of the token's security posture.\n* **Overall Risk:**\
+    \ **Moderate** - Primarily due to the unclear ownership situation and the potential\
+    \ for market manipulation based on the holder distribution. The liquidity, while\
+    \ present, is on the lower side, which could also impact the token's volatility.\n\
+    \n**Recommendations:**\n\n1. **Investigate Ownership Structure:** Clarify the\
+    \ ownership address to understand the project's governance better.\n2. **Monitor\
+    \ Holder Activity:** Keep a close eye on the top holders, especially the contract\
+    \ addresses, for any signs of market manipulation.\n3. **Liquidity Enhancement:**\
+    \ Consider strategies to increase liquidity on UniswapV3 or expand to other DEXs\
+    \ to reduce volatility.\n4. **Community Engagement:** Foster a transparent community\
+    \ to build trust and potentially attract more holders, thus diluting concentration\
+    \ risks."
   data:
     token_info:
       name: Heurist
       symbol: HEU
-      total_supply: '111450558.627030450437942488'
-      holder_count: '26930'
+      total_supply: '111493804.510038773916998032'
+      holder_count: '26833'
     security_metrics:
       is_honeypot: false
       is_blacklisted: false
       is_open_source: true
       buy_tax: '0'
-      sell_tax: '0'
+      sell_tax: '0.0001'
       can_take_back_ownership: false
       is_proxy: false
       is_mintable: true
@@ -47,7 +69,7 @@ output:
       dex:
       - liquidity_type: UniV3
         name: UniswapV3
-        liquidity: '183.63414561769138724474'
+        liquidity: '332.84604506538041289525'
         pair: '0xb655dc66ecead581d1f1a5759c2c37c2dbef2275'
       lp_holder_count: '9'
     ownership:
@@ -58,17 +80,17 @@ output:
         tag: ''
         is_contract: 1
         balance: '17844262.14009693458337276'
-        percent: '0.160109221164272479'
+        percent: '0.160047118479038516'
         is_locked: 0
       - address: '0xf314fa643d4819021d7a3c3b2f9f8b6386761ce5'
         tag: ''
         is_contract: 1
         balance: '14707419.5'
-        percent: '0.131963622983877658'
+        percent: '0.131912437328979664'
         is_locked: 0
-      - address: '0xf930e1342fc23c5c7bceae58cbbc776eeb4cfb87'
+      - address: '0x4e3ae00e8323558fa5cac04b152238924aa31b60'
         tag: ''
-        is_contract: 1
-        balance: '10535159.919408699986376771'
-        percent: '0.094527654676587461'
+        is_contract: 0
+        balance: '6910656.712029509509415309'
+        percent: '0.061982428013812031'
         is_locked: 0

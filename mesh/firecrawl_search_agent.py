@@ -1,22 +1,17 @@
 import json
-from typing import Any, Dict, Optional, List
-from dataclasses import dataclass
-
+from typing import Any, Dict, List
+import asyncio
+import os
 from dotenv import load_dotenv
 from firecrawl import FirecrawlApp
-import os
+import logging
+
 from core.llm import call_llm_async, call_llm_with_tools_async
 from core.utils.text_splitter import trim_prompt
-
 from .mesh_agent import MeshAgent, monitor_execution, with_cache, with_retry
-import asyncio
 
 load_dotenv()
-
-@dataclass
-class SearchQuery:
-    query: str
-    research_goal: str
+logger = logging.getLogger(__name__)
 
 class FirecrawlSearchAgent(MeshAgent):
     def __init__(self):
@@ -26,36 +21,17 @@ class FirecrawlSearchAgent(MeshAgent):
             "version": "1.0.0",
             "author": "Heurist Team",
             "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-            "description": (
-                "Advanced search agent that uses Firecrawl to perform deep research "
-                "with intelligent query generation, content analysis, and detailed reporting. "
-                "Supports recursive search patterns and concurrent processing for thorough "
-                "topic exploration."
-            ),
+            "description": "Advanced search agent that uses Firecrawl to perform research with intelligent query generation and content analysis.",
             "inputs": [
                 {
                     "name": "query",
-                    "description": "The main research query or topic to analyze",
+                    "description": "Natural language research query to analyze",
                     "type": "str",
-                    "required": True
-                },
-                {
-                    "name": "depth",
-                    "description": "How many levels deep to research (1-3)",
-                    "type": "int",
-                    "required": False,
-                    "default": 1
-                },
-                {
-                    "name": "breadth",
-                    "description": "Number of parallel searches per level (1-5)",
-                    "type": "int",
-                    "required": False,
-                    "default": 3
+                    "required": False
                 },
                 {
                     "name": "raw_data_only",
-                    "description": "If true, returns only raw search data without analysis",
+                    "description": "If true, returns only raw data without analysis",
                     "type": "bool",
                     "required": False,
                     "default": False
@@ -64,44 +40,124 @@ class FirecrawlSearchAgent(MeshAgent):
             "outputs": [
                 {
                     "name": "response",
-                    "description": "Detailed analysis and research findings",
-                    "type": "str",
+                    "description": "Natural language analysis of search results",
+                    "type": "str"
                 },
                 {
                     "name": "data",
-                    "description": "Raw search results and metadata",
-                    "type": "dict",
+                    "description": "Structured search results and metadata",
+                    "type": "dict"
                 }
             ],
             "external_apis": ["Firecrawl"],
-            "tags": ["Search", "Research", "Analysis"],
+            "tags": ["Search", "Research", "Analysis"]
         })
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))
-        self._last_request_time = 0
 
     def get_system_prompt(self) -> str:
         return """You are an expert research analyst that processes web search results.
-        Analyze the content and provide insights about:
-        1. Key findings and main themes
-        2. Source credibility and diversity
-        3. Information completeness and gaps
-        4. Emerging patterns and trends
-        5. Potential biases or conflicting information
         
-        Be thorough and detailed in your analysis. Focus on extracting concrete facts,
-        statistics, and verifiable information. Highlight any uncertainties or areas
-        needing further research.
+        Your capabilities:
+        1. Execute targeted web searches on specific topics
+        2. Generate multiple related search queries for comprehensive research
+        3. Analyze search results for key findings and patterns
         
-        Return your analysis in a clear, structured format with sections for key findings,
-        detailed analysis, and recommendations for further research."""
+        When analyzing results, focus on:
+        - Key findings and main themes
+        - Source credibility and diversity
+        - Information completeness
+        - Emerging patterns and trends
+        - Potential biases or conflicts
+        
+        For search results:
+        1. First analyze the content quality and relevance
+        2. Extract key facts and statistics
+        3. Identify primary themes and patterns
+        4. Note any gaps or areas needing more research
+        
+        For query generation:
+        1. Break down complex topics into focused sub-queries
+        2. Consider different aspects and perspectives
+        3. Prioritize specific, targeted questions
+        
+        Return analyses in clear, structured formats with concrete findings and specific examples."""
 
-    @monitor_execution()
+    def get_tool_schemas(self) -> List[Dict]:
+        return [
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'execute_search',
+                    'description': 'Execute a web search query',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'query': {
+                                'type': 'string',
+                                'description': 'The search query to execute'
+                            }
+                        },
+                        'required': ['query'],
+                    },
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'generate_queries',
+                    'description': 'Generate related search queries for a topic',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'topic': {
+                                'type': 'string',
+                                'description': 'The main topic to research'
+                            },
+                            'num_queries': {
+                                'type': 'integer',
+                                'description': 'Number of queries to generate',
+                                'default': 3
+                            }
+                        },
+                        'required': ['topic'],
+                    },
+                }
+            }
+        ]
+
+    # ------------------------------------------------------------------------
+    #                       SHARED / UTILITY METHODS
+    # ------------------------------------------------------------------------
+    async def _respond_with_llm(
+        self, query: str, tool_call_id: str, data: dict, temperature: float
+    ) -> str:
+        """Generate a natural language response using the LLM"""
+        return await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata['large_model_id'],
+            messages=[
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id}
+            ],
+            temperature=temperature
+        )
+
+    def _handle_error(self, maybe_error: dict) -> dict:
+        """Check for and return any errors in the response"""
+        if isinstance(maybe_error, dict) and 'error' in maybe_error:
+            return {"error": maybe_error['error']}
+        return {}
+
+    # ------------------------------------------------------------------------
+    #                      FIRECRAWL-SPECIFIC METHODS
+    # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def search(self, query: str, limit: int = 5) -> Dict:
-        """Execute search with rate limiting and error handling"""
+    async def execute_search(self, query: str) -> Dict:
+        """Execute a search with error handling"""
         try:
-            # Run the synchronous SDK call in a thread pool
             response = await asyncio.get_event_loop().run_in_executor(
                 None,
                 lambda: self.app.search(
@@ -110,21 +166,16 @@ class FirecrawlSearchAgent(MeshAgent):
                 )
             )
             
-            # Handle the response format from the SDK
             if isinstance(response, dict) and "data" in response:
-                # Response is already in the right format
                 return response
             elif isinstance(response, dict) and "success" in response:
-                # Response is in the documented format
                 return {"data": response.get("data", [])}
             elif isinstance(response, list):
-                # Response is a list of results
                 formatted_data = []
                 for item in response:
                     if isinstance(item, dict):
                         formatted_data.append(item)
                     else:
-                        # Handle non-dict items (like objects)
                         formatted_data.append({
                             "url": getattr(item, "url", ""),
                             "markdown": getattr(item, "markdown", "") or getattr(item, "content", ""),
@@ -132,188 +183,147 @@ class FirecrawlSearchAgent(MeshAgent):
                         })
                 return {"data": formatted_data}
             else:
-                print(f"Unexpected response format from Firecrawl: {type(response)}")
                 return {"data": []}
             
         except Exception as e:
-            print(f"Search error: {e}")
-            print(f"Response type: {type(response) if 'response' in locals() else 'N/A'}")
-            return {"data": []}
+            logger.error(f"Search error: {e}")
+            return {"error": f"Failed to execute search: {str(e)}"}
 
-    async def generate_search_queries(self, query: str, num_queries: int = 3) -> List[SearchQuery]:
-        """Generate intelligent search queries based on the input topic"""
-        prompt = f"Generate {num_queries} specific search queries to investigate this topic: {query}"
-        
-        tools = [{
-            "type": "function",
-            "function": {
-                "name": "generate_queries",
-                "description": "Generate search queries for a topic",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "queries": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "query": {"type": "string"},
-                                    "research_goal": {"type": "string"}
-                                },
-                                "required": ["query", "research_goal"]
-                            }
-                        }
-                    },
-                    "required": ["queries"]
-                }
-            }
-        }]
+    @with_cache(ttl_seconds=3600)
+    async def generate_queries(self, topic: str, num_queries: int = 3) -> Dict:
+        """Generate multiple search queries for comprehensive research"""
+        try:
+            prompt = f"""Generate {num_queries} specific search queries to research this topic thoroughly: {topic}
+            
+            Format each query with:
+            1. The actual search query
+            2. The specific research goal it addresses
+            
+            Return as JSON array of objects with 'query' and 'research_goal' fields."""
+            
+            response = await call_llm_async(
+                base_url=self.heurist_base_url,
+                api_key=self.heurist_api_key,
+                model_id=self.metadata['small_model_id'],
+                messages=[
+                    {"role": "system", "content": "You are a research query generator. Generate specific, targeted search queries for comprehensive topic research."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7
+            )
 
-        response = await call_llm_with_tools_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            messages=[
-                {"role": "system", "content": self.get_system_prompt()},
-                {"role": "user", "content": prompt}
-            ],
-            tools=tools,
-            tool_choice={"type": "function", "function": {"name": "generate_queries"}},
+            try:
+                queries = json.loads(response)
+                return {"queries": queries[:num_queries]}
+            except json.JSONDecodeError:
+                return {"queries": [{"query": topic, "research_goal": "Main topic research"}]}
+
+        except Exception as e:
+            logger.error(f"Query generation error: {e}")
+            return {"error": f"Failed to generate queries: {str(e)}"}
+
+    # ------------------------------------------------------------------------
+    #                      COMMON HANDLER LOGIC
+    # ------------------------------------------------------------------------
+    async def _handle_tool_logic(
+        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
+    ) -> Dict[str, Any]:
+        """Handle execution of specific tools and format responses"""
+
+        if tool_name == 'execute_search':
+            search_query = function_args.get('query')
+            if not search_query:
+                return {"error": "Missing 'query' in tool_arguments"}
+            
+            result = await self.execute_search(search_query)
+            
+        elif tool_name == 'generate_queries':
+            topic = function_args.get('topic')
+            num_queries = function_args.get('num_queries', 3)
+            
+            if not topic:
+                return {"error": "Missing 'topic' in tool_arguments"}
+                
+            result = await self.generate_queries(topic, num_queries)
+            
+        else:
+            return {"error": f"Unsupported tool: {tool_name}"}
+
+        errors = self._handle_error(result)
+        if errors:
+            return errors
+
+        if raw_data_only:
+            return {"response": "", "data": result}
+
+        explanation = await self._respond_with_llm(
+            query=query,
+            tool_call_id=tool_call_id,
+            data=result,
             temperature=0.7
         )
-        #print("response: ", response)
-        try:
-            # Extract the arguments from tool_calls
-            if isinstance(response, dict) and 'tool_calls' in response:
-                tool_call = response['tool_calls']
-                #print("tool_call: ", tool_call)
-                if hasattr(tool_call, 'function'):
-                    arguments = tool_call.function.arguments
-                    #print("arguments: ", arguments)
-                    if isinstance(arguments, str):
-                        result = json.loads(arguments)
-                        print("result: ", result)
-                        queries = result.get("queries", [])
-                        return [SearchQuery(**q) for q in queries][:num_queries]
-        except Exception as e:
-            print(f"Error generating queries: {e}")
-            print(f"Raw response: {response}")
-            return [SearchQuery(query=query, research_goal="Main topic research")]
-
-    async def analyze_results(self, query: str, search_results: Dict) -> Dict[str, Any]:
-        """Analyze search results and generate insights"""
-        contents = [
-            trim_prompt(item.get("markdown", ""), 25000)
-            for item in search_results.get("data", [])
-            if item.get("markdown")
-        ]
-
-        if not contents:
-            return {
-                "analysis": "No search results found to analyze.",
-                "key_findings": [],
-                "recommendations": []
-            }
-
-        prompt = (
-            f"Analyze these search results for the query: {query}\n\n"
-            f"Content:\n{' '.join(contents)}\n\n"
-            f"Provide a detailed analysis including key findings, main themes, "
-            f"and recommendations for further research. Return as JSON with "
-            f"'analysis', 'key_findings', and 'recommendations' fields."
-        )
-        prompt_example = """
-        IMPORTANT: MAKE SURE YOU RETURN THE JSON ONLY, NO OTHER TEXT OR MARKUP AND A VALID JSON.
-        DONT ADD ANY COMMENTS OR MARKUP TO THE JSON. Example NO # or /* */ or /* */ or // or any other comments or markup.
-        MAKE SURE YOU RETURN THE JSON ONLY, JSON SHOULD BE PERFECTLY FORMATTED. ALL KEYS SHOULD BE OPENED AND CLOSED.
-        {
-            "analysis": "Analysis of the search results",
-            "key_findings": ["Key finding 1", "Key finding 2"],
-            "recommendations": ["Recommendation 1", "Recommendation 2"]
-        }
-        """
-        prompt = prompt + prompt_example
-        response = await call_llm_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            messages=[
-                {"role": "system", "content": self.get_system_prompt()},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.3
-        )
-        #print("response: ", response)
-        try:
-            return json.loads(response)
-        except Exception as e:
-            print(f"Error analyzing results: {e}")
-            return {
-                "analysis": "Error processing search results.",
-                "key_findings": [],
-                "recommendations": []
-            }
+        
+        return {"response": explanation, "data": result}
 
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+        
+        Either 'query' or 'tool' is required in params.
+          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
+          - If 'query' is provided, route via LLM for dynamic tool selection.
+        """
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
-
-        depth = min(max(params.get("depth", 1), 1), 3)
-        breadth = min(max(params.get("breadth", 3), 1), 5)
+        tool_name = params.get("tool")
+        tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
 
-        # Generate initial search queries
-        search_queries = await self.generate_search_queries(query, breadth)
-        
-        all_results = []
-        all_analyses = []
+        # ---------------------
+        # 1) DIRECT TOOL CALL
+        # ---------------------
+        if tool_name:
+            return await self._handle_tool_logic(
+                tool_name=tool_name,
+                function_args=tool_args,
+                query=query or "Direct tool call without LLM.",
+                tool_call_id="direct_tool",
+                raw_data_only=raw_data_only
+            )
 
-        # Execute searches concurrently
-        for search_query in search_queries:
-            results = await self.search(search_query.query)
-            if results.get("data"):
-                all_results.extend(results["data"])
-                
-                if not raw_data_only:
-                    analysis = await self.analyze_results(search_query.query, results)
-                    all_analyses.append(analysis)
+        # ---------------------
+        # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
+        # ---------------------
+        if query:
+            response = await call_llm_with_tools_async(
+                base_url=self.heurist_base_url,
+                api_key=self.heurist_api_key,
+                model_id=self.metadata['large_model_id'],
+                system_prompt=self.get_system_prompt(),
+                user_prompt=query,
+                temperature=0.1,
+                tools=self.get_tool_schemas()
+            )
+            
+            if not response:
+                return {"error": "Failed to process query"}
+            if not response.get('tool_calls'):
+                return {"response": response['content'], "data": {}}
 
-        # Prepare response
-        if raw_data_only:
-            return {
-                "response": "",
-                "data": {
-                    "query_info": {"query": query, "result_count": len(all_results)},
-                    "results": all_results
-                }
-            }
+            tool_call = response['tool_calls']
+            tool_call_name = tool_call.function.name
+            tool_call_args = json.loads(tool_call.function.arguments)
 
-        # Combine analyses into final response
-        final_analysis = {
-            "key_findings": [],
-            "recommendations": []
-        }
+            return await self._handle_tool_logic(
+                tool_name=tool_call_name,
+                function_args=tool_call_args,
+                query=query,
+                tool_call_id=tool_call.id,
+                raw_data_only=raw_data_only
+            )
 
-        for analysis in all_analyses:
-            final_analysis["key_findings"].extend(analysis.get("key_findings", []))
-            final_analysis["recommendations"].extend(analysis.get("recommendations", []))
-
-        return {
-            "response": json.dumps(final_analysis, indent=2),
-            "data": {
-                "query_info": {
-                    "query": query,
-                    "depth": depth,
-                    "breadth": breadth,
-                    "result_count": len(all_results)
-                },
-                "results": [{
-                    **{k: v for k, v in result.items() if k not in ['markdown', 'metadata']},
-                    'content_length': len(result.get('markdown', ''))
-                } for result in all_results],
-                "analyses": all_analyses
-            }
-        }
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
+        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}

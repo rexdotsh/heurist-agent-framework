@@ -1,91 +1,74 @@
 import json
-from typing import Any, Dict, Optional
-
+from typing import Any, Dict, Optional, List
 from dotenv import load_dotenv
-from duckduckgo_search import DDGS  # pip install duckduckgo_search
-
+from duckduckgo_search import DDGS
 from core.llm import call_llm_async, call_llm_with_tools_async
-
 from .mesh_agent import MeshAgent, monitor_execution, with_cache, with_retry
 
 load_dotenv()
 
-
 class DuckDuckGoSearchAgent(MeshAgent):
     def __init__(self):
         super().__init__()
-        self.metadata.update(
-            {
-                "name": "DuckDuckGo Search Agent",
-                "version": "1.0.0",
-                "author": "Heurist Team",
-                "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": (
-                    "This agent can fetch and analyze web search results using DuckDuckGo API. "
-                    "Analyze content relevance, source credibility, information completeness, "
-                    "and provide intelligent summaries. This agent helps you gather and understand "
-                    "information from across the web with AI-powered analysis."
-                ),
-                "inputs": [
-                    {
-                        "name": "query",
-                        "description": "The search query to analyze",
-                        "type": "str",
-                        "required": True
-                    },
-                    {
-                        "name": "max_results",
-                        "description": "The maximum number of results to return",
-                        "type": "int",
-                        "required": False,
-                        "default": 5
-                    },
-                    {
-                        "name": "raw_data_only",
-                        "description": "If true, the agent will only return the raw data and not the full response",
-                        "type": "bool",
-                        "required": False,
-                        "default": False
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "response",
-                        "description": "Analysis and explanation of search results",
-                        "type": "str",
-                    },
-                    {
-                        "name": "data",
-                        "description": "The raw search results data from DuckDuckGo API",
-                        "type": "list",
-                    },
-                ],
-                "external_apis": ["DuckDuckGo"],
-                "tags": ["Search", "Data"],
-            }
-        )
-
-    @monitor_execution()
-    @with_cache(ttl_seconds=300)
-    @with_retry(max_retries=3)
-    async def fetch_search_results(
-        self, query: str, max_results: int = 5
-    ) -> Optional[Dict]:
-        """
-        Fetch search results from DuckDuckGo API with retry and caching
-        """
-        try:
-            with DDGS() as ddgs:
-                results = []
-                for r in ddgs.text(query, max_results=max_results):
-                    results.append(
-                        {"title": r["title"], "link": r["href"], "snippet": r["body"]}
-                    )
-                return {"results": results}
-
-        except Exception as e:
-            print(f"Error fetching search results: {e}")
-            return None
+        self.metadata.update({
+            'name': 'DuckDuckGo Search Agent',
+            'version': '1.0.0',
+            'author': 'Heurist Team',
+            'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
+            'description': (
+                'This agent can fetch and analyze web search results using DuckDuckGo API. '
+                'Analyze content relevance, source credibility, information completeness, '
+                'and provide intelligent summaries.'
+            ),
+            'inputs': [
+                {
+                    'name': 'query',
+                    'description': 'The search query to analyze',
+                    'type': 'str',
+                    'required': True
+                },
+                {
+                    'name': 'tool',
+                    'description': 'Tool name for direct tool calls',
+                    'type': 'str',
+                    'required': False
+                },
+                {
+                    'name': 'tool_arguments',
+                    'description': 'Arguments for direct tool call',
+                    'type': 'dict',
+                    'required': False
+                },
+                {
+                    'name': 'max_results',
+                    'description': 'The maximum number of results to return',
+                    'type': 'int',
+                    'required': False,
+                    'default': 5
+                },
+                {
+                    'name': 'raw_data_only',
+                    'description': 'If true, return only raw data without natural language response',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
+                }
+            ],
+            'outputs': [
+                {
+                    'name': 'response',
+                    'description': 'Analysis and explanation of search results',
+                    'type': 'str'
+                },
+                {
+                    'name': 'data',
+                    'description': 'The raw search results data',
+                    'type': 'dict'
+                }
+            ],
+            'external_apis': ['DuckDuckGo'],
+            'tags': ['Search', 'Data']
+        })
 
     def get_system_prompt(self) -> str:
         return """You are an AI assistant that analyzes web search results.
@@ -98,64 +81,94 @@ class DuckDuckGoSearchAgent(MeshAgent):
         If the results are insufficient or irrelevant, explain why.
         Provide a clear and concise analysis focusing on the most important insights."""
 
-    def get_tool_schema(self) -> Dict:
-        return {
-            "type": "function",
-            "function": {
-                "name": "fetch_search_results",
-                "description": "Fetch web search results",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "query": {"type": "string", "description": "The search query"},
-                        "max_results": {
-                            "type": "integer",
-                            "description": "Maximum number of results",
-                            "default": 5,
+    def get_tool_schemas(self) -> List[Dict]:
+        return [
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'search_web',
+                    'description': 'Search the web using DuckDuckGo Search API',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'query': {
+                                'type': 'string',
+                                'description': 'The search query to look up'
+                            },
+                            'max_results': {
+                                'type': 'integer',
+                                'description': 'Maximum number of results to return (default: 5)',
+                                'minimum': 1,
+                                'maximum': 10
+                            }
                         },
-                    },
-                    "required": ["query"],
-                },
-            },
-        }
+                        'required': ['query']
+                    }
+                }
+            }
+        ]
 
-    @monitor_execution()
-    @with_retry(max_retries=3)
-    async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
+    # ------------------------------------------------------------------------
+    #                       SHARED / UTILITY METHODS
+    # ------------------------------------------------------------------------
+    def _handle_error(self, maybe_error: dict) -> dict:
+        """Small helper to return the error if present"""
+        if 'error' in maybe_error:
+            return {"error": maybe_error['error']}
+        return {}
 
-        max_results = params.get("max_results", 5)
-        raw_data_only = params.get("raw_data_only", False)
+    # ------------------------------------------------------------------------
+    #                      API-SPECIFIC METHODS
+    # ------------------------------------------------------------------------
+    @with_cache(ttl_seconds=300)
+    async def search_web(self, query: str, max_results: int = 5) -> Dict:
+        """Search the web using DuckDuckGo"""
+        try:
+            with DDGS() as ddgs:
+                results = []
+                for r in ddgs.text(query, max_results=max_results):
+                    results.append({
+                        "title": r["title"],
+                        "link": r["href"],
+                        "snippet": r["body"]
+                    })
 
-        response = await call_llm_with_tools_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            system_prompt=self.get_system_prompt(),
-            user_prompt=query,
-            temperature=0.1,
-            tools=[self.get_tool_schema()],
-        )
+                return {
+                    'status': 'success',
+                    'data': {
+                        'query': query,
+                        'results': results
+                    }
+                }
 
-        if not response:
-            return {"response": "Failed to call LLM"}
+        except Exception as e:
+            return {
+                'status': 'error',
+                'error': f'Failed to fetch search results: {str(e)}',
+                'data': None
+            }
 
-        if not response.get("tool_calls"):
-            return {"response": response.get("content"), "data": []}
+    # ------------------------------------------------------------------------
+    #                      COMMON HANDLER LOGIC
+    # ------------------------------------------------------------------------
+    async def _handle_tool_logic(
+        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
+    ) -> Dict[str, Any]:
+        """Handle tool execution and optional LLM explanation"""
+        if tool_name == 'search_web':
+            result = await self.search_web(
+                query=function_args['query'],
+                max_results=function_args.get('max_results', 5)
+            )
+        else:
+            return {"error": f"Unsupported tool: {tool_name}"}
 
-        tool_call = response["tool_calls"]
-        function_args = json.loads(tool_call.function.arguments)
-        tool_result = await self.fetch_search_results(
-            function_args["query"], max_results
-        )
-
-        if not tool_result:
-            return {"response": "Failed to fetch search results", "data": []}
+        errors = self._handle_error(result)
+        if errors:
+            return errors
 
         if raw_data_only:
-            return {"response": "", "data": tool_result}
+            return {"response": "", "data": result}
 
         explanation = await call_llm_async(
             base_url=self.heurist_base_url,
@@ -164,20 +177,80 @@ class DuckDuckGoSearchAgent(MeshAgent):
             messages=[
                 {"role": "system", "content": self.get_system_prompt()},
                 {"role": "user", "content": query},
-                {
-                    "role": "tool",
-                    "content": str(tool_result),
-                    "tool_call_id": tool_call.id,
-                },
+                {"role": "tool", "content": str(result), "tool_call_id": tool_call_id}
             ],
-            temperature=0.7,
+            temperature=0.7
         )
 
-        search_data = tool_result.get("results", []) if tool_result else []
+        return {"response": explanation, "data": result}
 
-        essential_search_info = {
-            "query_info": {"query": query, "result_count": len(search_data)},
-            "results": search_data,
-        }
+    @monitor_execution()
+    @with_retry(max_retries=3)
+    async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle both direct tool calls and natural language queries"""
+        query = params.get('query')
+        if not query:
+            raise ValueError("Query parameter is required")
 
-        return {"response": explanation, "data": essential_search_info}
+        tool_name = params.get('tool')
+        tool_args = params.get('tool_arguments', {})
+        raw_data_only = params.get('raw_data_only', False)
+        max_results = params.get('max_results', 5)
+
+        # ---------------------
+        # 1) DIRECT TOOL CALL
+        # ---------------------
+        if tool_name:
+            if 'max_results' not in tool_args:
+                tool_args['max_results'] = max_results
+            
+            return await self._handle_tool_logic(
+                tool_name=tool_name,
+                function_args=tool_args,
+                query=query or "Direct tool call without LLM.",
+                tool_call_id="direct_tool",
+                raw_data_only=raw_data_only
+            )
+
+        # ---------------------
+        # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
+        # ---------------------
+        response = await call_llm_with_tools_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata['large_model_id'],
+            system_prompt=self.get_system_prompt(),
+            user_prompt=query,
+            temperature=0.1,
+            tools=self.get_tool_schemas()
+        )
+
+        if not response:
+            return {"error": "Failed to process query"}
+
+        tool_calls = response.get('tool_calls', [])
+        if not tool_calls:
+            return {"response": response.get('content', ''), "data": {}}
+
+        # Get the first tool call
+        tool_call = tool_calls[0] if isinstance(tool_calls, list) else tool_calls
+        
+        # Handle both function call formats
+        if hasattr(tool_call, 'function'):
+            tool_call_name = tool_call.function.name
+            try:
+                tool_call_args = json.loads(tool_call.function.arguments)
+            except:
+                # Fallback for string format
+                tool_call_args = {"query": query, "max_results": max_results}
+
+        if 'max_results' not in tool_call_args:
+            tool_call_args['max_results'] = max_results
+
+        return await self._handle_tool_logic(
+            tool_name=tool_call_name,
+            function_args=tool_call_args,
+            query=query,
+            tool_call_id=tool_call.id,
+            raw_data_only=raw_data_only
+        )

@@ -4,284 +4,2174 @@ input:
   breadth: 3
   raw_data_only: false
 output:
-  response: "{\n  \"key_findings\": [\n    \"Zero-Knowledge Proofs (ZKPs) enable one\
-    \ party to prove to another that a statement is true without revealing any information\
-    \ beyond the validity of the statement itself.\",\n    \"ZKPs enhance privacy\
-    \ and security in blockchain technology, with various use cases across different\
-    \ industries.\",\n    \"The technology faces challenges, including complexity,\
-    \ performance overhead, integration issues, regulatory concerns, and limited adoption.\"\
-    ,\n    \"Despite challenges, ZKPs have a promising future, with ongoing research\
-    \ and development aimed at improving efficiency, scalability, and usability.\"\
-    ,\n    \"The market for ZKPs is expected to grow, with a projected value of $\\\
-    \\mathfrak{s}\\\\i0$ billion by 2030 and a potential to exceed $\\\\mathfrak{s\
-    \ o}.2\\\\uparrow$ in revenue by 2030.\",\n    \"Zero-knowledge proofs (ZKPs)\
-    \ are a cryptographic method that enables a party to prove a statement is true\
-    \ without revealing any information except for whether it is indeed true or not.\"\
-    ,\n    \"ZKPs have two main benefits: privacy (the prover does not need to reveal\
-    \ any additional information) and efficiency (verifying a ZKP needs significantly\
-    \ less resources than reexecuting the computation).\",\n    \"There are various\
-    \ types of ZKPs, including zk-SNARKs, zk-STARKs, PLONK, and Bulletproofs, each\
-    \ with different characteristics in terms of proof times, verification times,\
-    \ and the size of the proof.\",\n    \"ZKPs have numerous use cases, including\
-    \ private transactions, decentralized identity/authentication, verifiable computations,\
-    \ and scalability solutions (e.g., zk-rollups, validiums, and volitions).\",\n\
-    \    \"The current state of ZKP technology faces limitations, primarily related\
-    \ to hardware requirements (e.g., GPUs with parallel processing capability) and\
-    \ complexity from a development point-of-view.\",\n    \"Despite these limitations,\
-    \ ZKP technology is expected to evolve significantly, driven by investments in\
-    \ cryptocurrencies and their infrastructure, leading to more efficient and secure\
-    \ blockchain applications.\",\n    \"Zero-Knowledge Proofs (ZKPs) are a powerful\
-    \ tool for privacy preservation and security in various applications, including\
-    \ blockchain, education, and cryptography.\",\n    \"ZKPs can be used to enhance\
-    \ scalability and security in blockchain applications, such as Layer 1 blockchains\
-    \ and Layer 2 scaling solutions.\",\n    \"The application of ZKPs in education\
-    \ can support disability inclusion by providing a secure and private way for students\
-    \ to disclose their disability status and receive necessary accommodations.\"\
-    ,\n    \"ZKPs can be used to improve the security and efficiency of cryptographic\
-    \ protocols, such as zero-knowledge arguments and witness encryption.\",\n   \
-    \ \"Several research papers and articles provide insights into the latest advancements\
-    \ and applications of ZKPs in various fields.\"\n  ],\n  \"recommendations\":\
-    \ [\n    \"Further research is recommended to explore the practical applications\
-    \ of ZKPs in various industries, including finance, healthcare, and supply chain\
-    \ management.\",\n    \"Investigating the challenges and limitations of ZKPs,\
-    \ such as complexity and scalability, is crucial for widespread adoption.\",\n\
-    \    \"Developing more user-friendly ZKP systems that can support widespread adoption\
-    \ across different industries is essential.\",\n    \"Examining the potential\
-    \ of ZKPs in emerging technologies, such as decentralized artificial intelligence\
-    \ (AI) and quantum computing, can lead to innovative breakthroughs.\",\n    \"\
-    Standardization efforts, like the ZKProof Community, are necessary to enhance\
-    \ compatibility and facilitate the broader utilization of ZKPs.\",\n    \"Further\
-    \ research should focus on developing more efficient algorithms and abstraction\
-    \ layers to complement advancements in ZKP technology, facilitating wider adoption.\"\
-    ,\n    \"Investigations into the application of ZKPs in various industries (e.g.,\
-    \ finance, healthcare, and supply chain management) could uncover new use cases\
-    \ and benefits, enhancing the technology's impact.\",\n    \"Collaborations between\
-    \ researchers, developers, and industry stakeholders are crucial for overcoming\
-    \ the current limitations of ZKP technology and ensuring its seamless integration\
-    \ into existing and emerging blockchain platforms.\",\n    \"Educational initiatives\
-    \ and resources should be developed to make ZKP technology more accessible and\
-    \ understandable to a broader audience, including those without a computer science\
-    \ or mathematics background.\",\n    \"Exploring the potential of ZKPs in conjunction\
-    \ with other cryptographic techniques (e.g., homomorphic encryption, secure multi-party\
-    \ computation) could lead to the development of even more secure and efficient\
-    \ blockchain solutions.\",\n    \"Further research is recommended to explore the\
-    \ practical applications of ZKPs in different domains, including education, healthcare,\
-    \ and finance.\",\n    \"Investigating the potential of ZKPs in enhancing security\
-    \ and privacy in emerging technologies, such as artificial intelligence and the\
-    \ Internet of Things (IoT), is suggested.\",\n    \"Developing more efficient\
-    \ and scalable ZKP protocols and algorithms is crucial for widespread adoption\
-    \ in various applications.\",\n    \"Collaboration between academia and industry\
-    \ is essential for advancing the development and deployment of ZKP-based solutions.\"\
-    ,\n    \"Continued research on the intersection of ZKPs and other cryptographic\
-    \ techniques, such as homomorphic encryption and secure multi-party computation,\
-    \ is recommended to uncover new applications and improvements.\"\n  ]\n}"
+  response: '**Analysis of Search Results for "Latest Developments in Zero Knowledge
+    Proofs"**
+
+
+    **Key Findings and Main Themes:**
+
+
+    1. **Advancements in Zero-Knowledge Proofs (ZKPs):** Recent developments have
+    improved the efficiency, scalability, and security of ZKPs, enabling their practical
+    application in various fields.
+
+    2. **Increased Adoption:** ZKPs are being integrated into blockchain networks,
+    cryptocurrencies, and other industries to enhance privacy, security, and scalability.
+
+    3. **Technical Breakthroughs:** Research has solved open problems in ZKP construction,
+    enabling more secure and efficient protocols.
+
+    4. **Real-World Applications:** ZKPs are being used for identity verification,
+    financial transactions, supply chain management, and voting systems, among other
+    use cases.
+
+    5. **Challenges and Future Directions:** Despite progress, challenges remain,
+    including computational power requirements, expertise shortages, and interoperability
+    issues. Future developments will focus on overcoming these hurdles.
+
+
+    **Source Credibility and Diversity:**
+
+
+    1. **Fujitsu Blog:** A reputable source from a well-established technology company,
+    providing insights into the applications and future of ZKPs.
+
+    2. **Forbes:** A trusted media outlet featuring expert opinions on the potential
+    of ZKPs in safeguarding data privacy.
+
+    3. **NTT Corporation:** A prominent technology company sharing breakthroughs in
+    ZKP research, highlighting the significance of their findings.
+
+    4. **Crypto.News:** A specialized news platform covering the latest developments
+    in ZKPs within the cryptocurrency and blockchain space.
+
+
+    **Information Completeness:**
+
+
+    1. **Technical Depth:** The sources provide a good balance of technical explanations
+    and accessible overviews, catering to both experts and non-experts.
+
+    2. **Application Coverage:** Various use cases are discussed, giving a comprehensive
+    view of ZKP applications across different industries.
+
+    3. **Future Outlook:** Insights into challenges and future directions are provided,
+    offering a forward-looking perspective.
+
+
+    **Emerging Patterns and Trends:**
+
+
+    1. **Growing Interest in ZKPs:** Increasing attention from both the tech industry
+    and media outlets indicates rising interest in ZKP technology.
+
+    2. **Convergence of ZKPs with Other Technologies:** The integration of ZKPs with
+    emerging technologies like AI, blockchain, and decentralized systems is a notable
+    trend.
+
+    3. **Enhanced Focus on Privacy and Security:** The emphasis on using ZKPs to address
+    privacy and security concerns reflects a broader shift towards prioritizing these
+    aspects in tech development.
+
+
+    **Potential Biases or Conflicts:**
+
+
+    1. **Corporate Interests:** Sources from companies like Fujitsu and NTT may have
+    inherent biases towards promoting their own research and applications.
+
+    2. **Expert Opinions:** While expert insights are valuable, they may reflect individual
+    perspectives rather than universally accepted views.
+
+    3. **Media Sensationalism:** Crypto.News, as a media outlet, might sensationalize
+    certain aspects of ZKP developments to attract readers, although this is not overtly
+    evident in the provided content.'
   data:
-    query_info:
-      query: What are the latest developments in zero knowledge proofs?
-      depth: 2
-      breadth: 3
-      result_count: 15
-    results:
-    - title: Top 10 Blockchain Zero-Knowledge Proof Use Cases in 2024
-      description: ZKPs can be applied in various scenarios, including identity verification
-        and secure voting systems, as seen in blockchain zero knowledge proof implementations.
-      url: https://www.rapidinnovation.io/post/top-10-blockchain-use-cases-of-zero-knowledge-proof
-      content_length: 67415
-    - title: Top Zero-Knowledge (ZK) Proof Crypto Projects of 2024 - KuCoin
-      description: Recent advancements include the integration of Hermez into Polygon's
-        ... new block, continuously compressing the blockchain's history into a small
-        ...
-      url: https://www.kucoin.com/learn/crypto/top-zero-knowledge-zk-proof-crypto-projects
-      content_length: 33616
+    success: true
+    data:
     - title: Understanding Zero-Knowledge Proofs and their impact on privacy
-      description: Zero-knowledge proofs are revolutionizing online privacy and security
-        – allowing something to be proven without revealing a secret or detailed personal
-        ...
+      description: ZKPs are being developed to resist potential attacks from future
+        quantum computers, ensuring long-term information security. Think of it as
+        a ...
       url: https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/
-      content_length: 14261
-    - title: '[PDF] Future of ZK Proofs - Protocol Labs'
-      description: Experts say zk proofs have the potential to revolutionize various
-        industries, from finance and healthcare to luxury fashion and decentralized
-        systems like ...
-      url: https://www.protocol.ai/protocol-labs-the-future-of-zk-proofs.pdf
-      content_length: 46819
+      markdown: '1. [Home](https://corporate-blog.global.fujitsu.com/fgb)
+
+        2. [Digital Shifts](https://corporate-blog.global.fujitsu.com/fgb/uvance/?tags=Digital%20Shifts)
+
+        3. Understanding Zero-Knowledge Proofs and their impact on privacy: A simple
+        guide
+
+
+        # Understanding Zero-Knowledge Proofs and their impact on privacy: A simple
+        guide
+
+
+        Fujitsu / November 12, 2024
+
+
+        [Digital Shifts](https://corporate-blog.global.fujitsu.com/fgb/uvance?tags=Digital%20Shifts)
+        [Data Driven](https://corporate-blog.global.fujitsu.com/fgb/Services?tags=Data%20Driven)
+        [Data and Security](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Data%20and%20Security)
+        [Digital Transformation](https://corporate-blog.global.fujitsu.com/fgb/Issues?tags=Digital%20Transformation)
+
+
+        Zero-knowledge proof (ZKP) technology is rapidly evolving, and its impact
+        is being felt across various industries. This technology is crucial for enhancing
+        privacy, scalability, and security in numerous applications, particularly
+        those built on blockchain that handle personal or sensitive data, such as
+        in healthcare, pharmaceuticals, and finance.
+
+
+        ## Contents
+
+
+        - [What are Zero-Knowledge Proofs (ZKPs)?](https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/#a1)
+
+        - [Challenges Facing ZKP Technology](https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/#a2)
+
+        - [Future Trends](https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/#a3)
+
+        - [Conclusion](https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/#a4)
+
+
+        ## What are Zero-Knowledge Proofs (ZKPs)?
+
+
+        Imagine you have a secret and want to prove to someone that you know it without
+        revealing it. Zero-knowledge proofs allow just that: proving something is
+        true without sharing the details. For example, you could attend a football
+        game without revealing your membership card''s personal details or verify
+        you have sufficient funds without disclosing your exact bank balance. ZKPs
+        enable privacy while providing proof of validity.
+
+
+        Technically, ZKPs are cryptographic tools that allow verification of information''s
+        truthfulness without revealing the information itself. This is incredibly
+        useful in blockchain networks, where extensive information is typically shared
+        to confirm transactions. With ZKPs, that information can remain private.
+
+
+        Blockchain is evolving from traceability and full transparency to privacy
+        with proof of truth. The key distinction is \*proof of validity\*. This marks
+        a revolution in blockchain''s original concept and operating model—what some
+        call Blockchain 2.0.
+
+
+        This technological enhancement impacts the following:
+
+
+        Scalability in Blockchain: ZKP technology improves speed and reduces costs.
+        Instead of processing each transaction individually, multiple transactions
+        are grouped and verified simultaneously. This is achieved through zero-knowledge
+        rollups, enabling efficient off-chain verifications, with only compact results
+        updating the main chain. This reduces congestion and transaction costs.
+
+
+        Security in Supply Chains: Companies in sectors like logistics need to ensure
+        product authenticity and quality without revealing sensitive information.
+        ZKPs allow verification of critical supply chain data, such as a product''s
+        origin or status, without exposing confidential details. For example, a company
+        can prove a food item complies with regulations without sharing its entire
+        production process, improving transparency and trust without compromising
+        security or revealing proprietary details.
+
+
+        Biometrics: In biometric security, protecting personal data is paramount.
+        ZKP technology allows authentication using biometric data without storing
+        the original information. Systems can generate cryptographic keys from facial
+        features, enabling identity verification without risking data theft or misuse.
+
+
+        Digital Identity and Verification: In identification systems, verifying a
+        digital user''s identity is crucial. ZKPs allow verification that a vote is
+        valid without revealing who cast it or their choice, protecting voter confidentiality
+        while ensuring integrity. It’s like depositing a vote in a transparent ballot
+        box that correctly counts the votes without showing how the ballot sheet was
+        marked.
+
+
+        Digital Finance: ZKPs enable secure and confidential financial transactions
+        while reducing costs, crucial in a heavily regulated ecosystem.
+
+
+        ## Challenges Facing ZKP Technology
+
+
+        ZKPs faces several challenges hindering widespread adoption: First, generating
+        and verifying proofs requires substantial computing power—it''s like your
+        computer constantly solving very complex puzzles, which can be slow and expensive.
+        Second, many are unaware of the technology and its potential benefits—it’s
+        like having a very useful tool hidden in a drawer because no one knows what
+        it''s for. Finally, interoperability between different blockchains is challenging
+        due to varying specifications and protocols, making it difficult to integrate
+        ZKP solutions uniformly.
+
+
+        ## Future Trends
+
+
+        ZKP technology is poised to integrate with other emerging technologies:
+
+
+        Integration with Decentralized Artificial Intelligence (AI): Combining ZKPs
+        with decentralized Artificial Intelligence (AI) could create privacy-respecting
+        intelligent systems. Imagine a health app providing personalized advice without
+        accessing your specific medical data—only whether you''re within certain ranges
+        or conditions.
+
+
+        Security Against Quantum Computers: Quantum computers are extremely powerful
+        machines that, in the future, could crack many of the security systems we
+        use today. ZKPs are being developed to resist potential attacks from future
+        quantum computers, ensuring long-term information security. Think of it as
+        a super-advanced lock that even the most sophisticated tools cannot open.
+        This ensures that your information will remain secure, even when technology
+        advances significantly.
+
+
+        Mobile Devices with Web3 Technology: Mobile phones that use Web3 and ZKP technology
+        will enable more private and secure applications. Imagine using a banking
+        app on your phone that conducts transactions without sharing your personal
+        data. Thanks to ZKP, these apps can operate securely on blockchain networks,
+        protecting your information and making it inaccessible to unauthorized third
+        parties.
+
+
+        ## Conclusion
+
+
+        Zero-Knowledge Proofs are revolutionizing online privacy and security – allowing
+        something to be proven without revealing a secret or detailed personal information.
+        This is a game changer particularly in regulated industries where breaches
+        can result in significant fines and compensation.
+
+
+        While challenges remain, advancements are making ZKPs more practical. This
+        technology promises more secure and private systems for everyone, regardless
+        of technical expertise.
+
+
+        Learn more about how Fujitsu can support your journey, visit our [Track and
+        Trust](https://www.fujitsu.com/global/services/business-services/track-and-trust/)
+        Solutions. Join us in shaping a secure and thriving future for all.
+
+
+        ![](https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2024-11-12/01/profile.jpg?h=318&iar=0&w=318&rev=afd7b83d152c4ec69be2e01e38df53ab)
+
+
+        Marcos Carrera
+
+
+        Head of Blockchain & Web3 Iberia, Fujitsu
+
+
+        Marcos Carrera has been an entrepreneur and director in the blockchain & crypto
+        ecosystem since 2016. Graduated in industrial engineering and with an MBA
+        in IE Business school, he has been improving his skills through several executive
+        programs on technology, leadership and sustainability. With his strategic
+        consulting mindset, Marcos has been helping companies to use blockchain as
+        a competitive advantage and adding value to their clients.
+
+
+        Connect with me on LinkedIn today
+
+
+        [Marcos Carrera \| LinkedIn](https://www.linkedin.com/in/mcarrerah/)
+
+
+        ### Related information
+
+
+        - [Track and Trust DLT Supply Chain Solutions : Fujitsu Global](https://www.fujitsu.com/global/services/business-services/track-and-trust/)
+
+        - [Digital Shifts - Fujitsu Uvance \| Fujitsu (activate.fujitsu)](https://activate.fujitsu/en/uvance/digital-shifts)
+
+
+        ### You May Like
+
+
+        Previous
+
+
+        [![](https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2025-02-13/01/RS85159_shutterstock_2136788049.jpg?rev=4f58b1ca919d4fe8b5dce6d43097d26d&hash=EED2327B24C49F9EC50E3FF4E1C08818)\\
+
+        \\
+
+        Transforming GDPR Compliance in Decentralized Systems with ZK, FHE, and Quantum
+        Technologies\\
+
+        \\
+
+        Fujitsu February 6, 2025\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2025-02-06/02)
+
+
+        [![Robotic arm in automated assembly line in factory](https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2025-02-04/01/tmb.png?rev=2d9d2e450e40479c995985acdb76c780&hash=1EFB7A57D4BC6F26DADC2AD9143563B9)\\
+
+        \\
+
+        Unlocking the future of digital supply chains: A focus on manufacturing and
+        utilities\\
+
+        \\
+
+        Fujitsu February 4, 2025\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2025-02-04/01)
+
+
+        [![A man and a woman, both wearing company ID badges, collaborate in a server
+        room. They are reviewing data on a tablet computer, surrounded by racks of
+        network equipment and cables. ](https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2025-01-10/01/RS86985_shutterstock_2351071991.jpg?rev=c255bc66acc145e2bd691c61e279df8b&hash=33FD87167FB43D00CA3F7FBF56D6402B)\\
+
+        \\
+
+        Transform Your Data: Fuel Innovation & Growth\\
+
+        \\
+
+        Fujitsu January 10, 2025\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2025-01-10/01)
+
+
+        [![](https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2024-10-07/01/tmb.jpg?rev=59e0817e3e4945be91f048d07bad5e8c&hash=65475428BC9BE4EC851E426164770B4F)\\
+
+        \\
+
+        Growing water for India from fruit and vegetables: Fujitsu''s blockchain helps
+        startup tackle water crisis\\
+
+        \\
+
+        Fujitsu October 7, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-10-07/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        Bridging the Gap: ESG Reporting Driving Impactful Business Model\\
+
+        \\
+
+        Fujitsu April 25, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-04-25/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        Fujitsu eyes Celonis’ process mining a key tool for data-driven management\\
+
+        \\
+
+        Fujitsu March 11, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-03-11/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        Why the path to sustainability transformation is built on data and AI \\
+
+        \\
+
+        Fujitsu March 7, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-03-07/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        Beyond Numbers: ESG Reporting as the Key to Agile and Sustainable Enterprises\\
+
+        \\
+
+        Fujitsu February 22, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-02-22/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        2024 Unveiled: The Transformative Year of Enterprise Blockchain - A Journey
+        Through Emerging Trends and Strategic Insights\\
+
+        \\
+
+        Fujitsu January 24, 2024\\
+
+        \\
+
+        Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-01-24/01)
+
+
+        Next
+
+
+        - 1
+
+        - 2
+
+        - 3
+
+
+        ## Editor''s Picks
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        AI Transformation: Do your people have the AI skills they need?](https://corporate-blog.global.fujitsu.com/fgb/2025-01-06/01)
+
+
+        AI is no longer a niche technology it has rapidly become key to transforming
+        both organizations and…
+
+
+        Fujitsu / January 6, 2025
+
+
+        [AI](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=AI)
+        [Computing](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Computing)
+        [Converging technologies](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Converging%20technologies)
+        [Digital Transformation](https://corporate-blog.global.fujitsu.com/fgb/Issues?tags=Digital%20Transformation)
+
+
+        [Read more](https://corporate-blog.global.fujitsu.com/fgb/2025-01-06/01)
+
+
+        [![](<Base64-Image-Removed>)\\
+
+        \\
+
+        Sustainable AI - At the core of the Energy Revolution](https://corporate-blog.global.fujitsu.com/fgb/2024-12-19/01)
+
+
+        Transform your business for a sustainable energy revolution. Let us show you
+        how Sustainable AI can…
+
+
+        Fujitsu / December 19, 2024
+
+
+        [Fujitsu Uvance](https://corporate-blog.global.fujitsu.com/fgb/uvance?tags=Fujitsu%20Uvance)
+        [Technology Outlook](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Technology%20Outlook)
+        [Computing](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Computing)
+        [AI](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=AI)
+
+
+        [Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-12-19/01)
+
+
+        [![A happy family of four — a mother, father, son, and daughter — sitting
+        together on a gray couch in their living room, all looking at a laptop computer
+        that rests on the father''s lap.](<Base64-Image-Removed>)\\
+
+        \\
+
+        AI-enhanced public services: A strategic blueprint](https://corporate-blog.global.fujitsu.com/fgb/2024-12-19/02)
+
+
+        Public services are under pressure to do more with less faced by aging populations,
+        higher healthca…
+
+
+        Fujitsu / December 19, 2024
+
+
+        [AI](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=AI)
+        [Computing](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Computing)
+        [Converging technologies](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Converging%20technologies)
+        [Digital Transformation](https://corporate-blog.global.fujitsu.com/fgb/Issues?tags=Digital%20Transformation)
+
+
+        [Read more](https://corporate-blog.global.fujitsu.com/fgb/2024-12-19/02)
+
+
+        [Fujitsu Uvance](https://corporate-blog.global.fujitsu.com/fgb/uvance?tags=Fujitsu%20Uvance)
+        [Manufacturing](https://corporate-blog.global.fujitsu.com/fgb/Industries?tags=Manufacturing)
+        [Retail](https://corporate-blog.global.fujitsu.com/fgb/Industries?tags=Retail)
+        [Financial Services](https://corporate-blog.global.fujitsu.com/fgb/Industries?tags=Financial%20Services)
+        [Healthcare](https://corporate-blog.global.fujitsu.com/fgb/Industries?tags=Healthcare)
+        [Public Sector](https://corporate-blog.global.fujitsu.com/fgb/Industries?tags=Public%20Sector)
+        [AI](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=AI)
+        [Data and Security](https://corporate-blog.global.fujitsu.com/fgb/key-technology?tags=Data%20and%20Security)
+        [Digital Transformation](https://corporate-blog.global.fujitsu.com/fgb/Issues?tags=Digital%20Transformation)'
+      metadata:
+        position:
+        - '1'
+        - '2'
+        - '3'
+        description: Zero-knowledge proof (ZKP) technology is rapidly evolving, and
+          its impact is being felt across various industries. This technology is crucial
+          for enhancing privacy, scalability, and security in numerous applications,
+          particularly those built on blockchain that handle personal or sensitive
+          data, such as in healthcare, pharmaceuticals, and finance.
+        ogDescription: Zero-knowledge proof (ZKP) technology is rapidly evolving,
+          and its impact is being felt across various industries. This technology
+          is crucial for enhancing privacy, scalability, and security in numerous
+          applications, particularly those built on blockchain that handle personal
+          or sensitive data, such as in healthcare, pharmaceuticals, and finance.
+        og:image: https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2024-11-12/01/banner-image.jpg?rev=b4eb4650865f4f57b0589056f83c7d0c
+        twitter:description: Zero-knowledge proof (ZKP) technology is rapidly evolving,
+          and its impact is being felt across various industries. This technology
+          is crucial for enhancing privacy, scalability, and security in numerous
+          applications, particularly those built on blockchain that handle personal
+          or sensitive data, such as in healthcare, pharmaceuticals, and finance.
+        ogTitle: 'Understanding Zero-Knowledge Proofs and their impact on privacy:
+          A simple guide'
+        language: en
+        ogUrl: https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/
+        ogImage: https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2024-11-12/01/banner-image.jpg?rev=b4eb4650865f4f57b0589056f83c7d0c
+        ogSiteName: Fujitsu Blog - Global
+        title: 'Understanding Zero-Knowledge Proofs and their impact on privacy: A
+          simple guide : FUJITSU BLOG - Global'
+        og:type: article
+        favicon: https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/assets/img/favicon.ico?rev=0c172c6995c04572a6f9dcd64eb81af2
+        viewport: width=device-width, initial-scale=1
+        twitter:card: summary_large_image
+        og:url: https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/
+        og:title: 'Understanding Zero-Knowledge Proofs and their impact on privacy:
+          A simple guide'
+        og:description: Zero-knowledge proof (ZKP) technology is rapidly evolving,
+          and its impact is being felt across various industries. This technology
+          is crucial for enhancing privacy, scalability, and security in numerous
+          applications, particularly those built on blockchain that handle personal
+          or sensitive data, such as in healthcare, pharmaceuticals, and finance.
+        og:site_name: Fujitsu Blog - Global
+        twitter:image: https://corporate-blog.global.fujitsu.com/-/media/Project/Fujitsu/Fujitsu-Blog/people/img/2024-11-12/01/banner-image.jpg?rev=b4eb4650865f4f57b0589056f83c7d0c
+        twitter:title: 'Understanding Zero-Knowledge Proofs and their impact on privacy:
+          A simple guide'
+        scrapeId: f2d7bd34-9b37-4ede-b6d8-04e00c5c9b85
+        sourceURL: https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/
+        url: https://corporate-blog.global.fujitsu.com/fgb/2024-11-12/01/
+        statusCode: 200
+    - title: Why Zero-Knowledge Proofs Will Shape The Future Of Data Privacy
+      description: Zero-knowledge proofs have enormous potential to improve data privacy
+        protocols in ways that benefit both organizations and individuals.
+      url: https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+      markdown: '[forbes-f](https://www.forbes.com/)
+
+
+        Why Zero-Knowledge Proofs Will Shape The Future Of Data Privacy
+
+
+        By [Oluwaseun Dania](https://www.forbes.com/councils/forbesbusinesscouncil/people/oluwaseundania/)
+
+
+        for[Forbes Business Council](https://www.forbes.com/councils/forbesbusinesscouncil/)
+
+
+        COUNCIL POST\| Membership (fee-based)
+
+
+        Save Article
+
+
+        [Small Business](https://www.forbes.com/small-business/)
+
+
+        # Why Zero-Knowledge Proofs Will Shape The Future Of Data Privacy
+
+
+        By [Oluwaseun Dania](https://www.forbes.com/councils/forbesbusinesscouncil/people/oluwaseundania/),
+        Forbes Councils Member.
+
+
+        for[Forbes Business Council](https://www.forbes.com/councils/forbesbusinesscouncil/)
+
+
+        COUNCIL POST
+
+        Expertise from Forbes Councils members, operated under license. Opinions expressed
+        are those of the author.
+
+        \| Membership (fee-based)
+
+
+        Oct 31, 2024, 09:00am EDT
+
+
+        Save Article
+
+
+        _Oluwaseun Dania is the managing director of_ [_Alpha-Geek Technologies_](https://www.alphageekng.com/
+        "https://www.alphageekng.com/") _._
+
+
+        ![ ](https://imageio.forbes.com/specials-images/imageserve/64e77faa5776a24d8bd8ae25//960x0.jpg?format=jpg&width=1440)
+
+
+        getty
+
+
+        Our personal data is a new and valuable form of currency. We’ve become progressively
+        more comfortable sharing our data with third parties, yet we don’t ask often
+        enough what privacy and protection policies they have in place.
+
+
+        When you book a hotel room, you hand over your passport for the front desk
+        agent to scan and copy. When you file a health insurance claim, you submit
+        detailed medical records that may reveal sensitive information unrelated to
+        the specific claim. Each exchange exposes your personal data to an unknown
+        number of people in these organizations. If your information is stored and
+        saved, it is vulnerable to theft or data breaches, which are becoming alarmingly
+        common.
+
+
+        PROMOTED
+
+
+        According to the Identity Theft Resource Center''s [2023 Annual Data Breach
+        Report](https://www.idtheftcenter.org/post/2023-annual-data-breach-report-reveals-record-number-of-compromises-72-percent-increase-over-previous-high/
+        "https://www.idtheftcenter.org/post/2023-annual-data-breach-report-reveals-record-number-of-compromises-72-percent-increase-over-previous-high/"),
+        there was a 78% surge in data compromises from 2022 to 2023. Healthcare, financial
+        services and transportation organizations reported a twofold increase in compromises
+        compared to the previous year. In [a 2023 International Association of Privacy
+        Professionals report](https://iapp.org/media/pdf/resource_center/privacy_and_consumer_trust_report_summary.pdf
+        "https://iapp.org/media/pdf/resource_center/privacy_and_consumer_trust_report_summary.pdf"),
+        almost 68% of global consumers said "they are either somewhat or very concerned
+        about their online privacy," which "affects how much they trust companies,
+        organizations and governments to collect, hold and use their personal data."
+        More than 80% of people affected by a data breach said they are inclined to
+        end their business relationship with a company after the cyberattack.
+
+
+        ## The Potential Of Zero-Knowledge Proofs
+
+
+        A zero-knowledge proof (ZKP) is a cryptographic technique that [dates back
+        to the 1980s](https://finance.yahoo.com/news/brief-history-zero-knowledge-proofs-100000129.html
+        "https://finance.yahoo.com/news/brief-history-zero-knowledge-proofs-100000129.html")
+        and now offers immense promise in a wide range of practical applications.
+        In simple terms, a zero-knowledge proof allows one party to confirm the validity
+        of a piece of information with another party without revealing the information
+        itself.
+
+
+        For example, a ZKP can give you a secure key or certificate to prove to a
+        bartender that you are of legal drinking age without showing your ID. It can
+        also enable a credit card company to verify your creditworthiness without
+        divulging your financial history. Zero-knowledge proofs have enormous potential
+        to improve data privacy protocols in ways that benefit both organizations
+        and individuals. They relieve organizations of the burden of safely gathering,
+        storing and sharing people’s data—and managing the damaging repercussions
+        if a breach occurs. And they give individuals enhanced identity and transaction
+        verification capabilities that won’t put their personal data at risk.
+
+
+        Real-world use cases of ZKPs include:
+
+
+        **• Identity Verification:** Businesses can confirm a customer’s name, age,
+        driver’s license or passport number, or other personally identifiable information
+        (PII) without copying or storing it.
+
+
+        **• Financial Services:** Banks and other financial institutions can assess
+        a customer’s financial health or enable secure, private transactions without
+        revealing sensitive information.
+
+
+        **• Healthcare:** Providers can validate a patient''s insurance information,
+        medical history or eligibility for specific treatments without disclosing
+        PII.
+
+
+        • **Voting Systems:** Voters can prove that they are eligible to vote and
+        that their vote was counted while maintaining the privacy of their choices.
+
+
+        • **Supply Chain Management:** Companies can authenticate products without
+        revealing proprietary information.
+
+
+        ## Overcoming Challenges In Implementing Zero-Knowledge Proofs
+
+
+        While consumers and business leaders alike are showing a growing interest
+        in tools that offer increased data privacy protections, implementing zero-knowledge
+        proofs will require overcoming key hurdles. ZKP technology requires substantial
+        computational power, which can be costly and resource-intensive for organizations
+        to implement. There is a shortage of expertise in this emerging field of cryptography,
+        making it challenging for businesses to find skilled professionals to develop
+        and implement zero-knowledge proof systems. Integrating and scaling ZKP technology
+        within organizations’ existing infrastructure and processes may also pose
+        technical challenges that slow widespread adoption.
+
+
+        I believe that in the next few years, we will begin to see a significant shift
+        in our collective mindset about divulging our personal information. As zero-knowledge
+        proof technology continues to advance and become more affordable, we will
+        see a rapid uptake in adoption. In five or ten years'' time, we could see
+        changes such as the emergence of tokenized identities, eliminating the need
+        to share actual ID numbers or documents, and a significant decrease in identity
+        theft as sensitive data becomes less vulnerable to breaches.
+
+
+        But we have to start changing our outlook and our actions now to prepare for
+        this future. I recommend the following actions:
+
+
+        ### 1\. Advocate For Government Implementation
+
+
+        Government agencies are responsible for issuing and verifying valid identification
+        documents, so making change at the governmental level is an important starting
+        point. Push for agencies to invest in zero-knowledge proof systems that will
+        drive broader adoption and standardization.
+
+
+        ### 2\. Start With High-Value, Low-Complexity Use Cases
+
+
+        For business applications, begin implementing ZKPs in areas that offer clear
+        benefits and have manageable complexity, such as identity verification or
+        regulatory compliance. Experiment with small projects, and learn and iterate
+        as you expand into larger initiatives.
+
+
+        ### 3\. Leverage Open-Source Frameworks
+
+
+        Technology can advance far more quickly in an environment of collaboration.
+        Utilize existing open-source zero-knowledge proof frameworks to accelerate
+        development, reduce costs, share lessons learned and benefit from community-tested
+        solutions.
+
+
+        ### 4\. Invest In Education And Training
+
+
+        A few years ago, "prompt engineer" was not a common job title. Now, with the
+        explosion of generative AI, it''s an important role for many companies. Be
+        proactive about investing in educating and training your team in the skills
+        of the future, including in cryptography and zero-knowledge proof technology.
+
+
+        Zero-knowledge proofs offer a powerful tool for safeguarding data privacy
+        in a digital world. As the technology continues to advance, it will likely
+        play a crucial role in guaranteeing permissions across various business use
+        cases and protecting individuals'' privacy rights. If you understand the value
+        of this technology and explore opportunities to leverage it effectively, your
+        business will be ideally positioned to improve its security posture and build
+        trust with your customers.
+
+
+        * * *
+
+
+        [Forbes Business Council](https://councils.forbes.com/forbesbusinesscouncil?utm_source=forbes.com&utm_medium=referral&utm_campaign=forbes-links&utm_content=in-article-ad-links
+        "https://councils.forbes.com/forbesbusinesscouncil?utm_source=forbes.com&utm_medium=referral&utm_campaign=forbes-links&utm_content=in-article-ad-links")
+        is the foremost growth and networking organization for business owners and
+        leaders. [Do I qualify?](https://councils.forbes.com/qualify?utm_source=forbes.com&utm_medium=referral&utm_campaign=forbes-links&utm_term=fbc&utm_content=in-article-ad-links
+        "https://councils.forbes.com/qualify?utm_source=forbes.com&utm_medium=referral&utm_campaign=forbes-links&utm_term=fbc&utm_content=in-article-ad-links")
+
+
+        * * *
+
+
+        Follow me on [Twitter](https://www.twitter.com/seundania) or [LinkedIn](https://www.linkedin.com/in/seundania/). Check
+        out my [website](https://www.alphageekng.com/).
+
+
+        [Editorial Standards](https://www.forbes.com/sites/forbesstaff/article/forbes-editorial-values-and-standards/)
+        [Forbes Accolades](https://www.parsintl.com/publications/forbes/)
+
+
+        [![Oluwaseun Dania](https://specials-images.forbesimg.com/imageserve/6696d5442f8de72c61696e97/400x0.jpg?cropX1=0&cropX2=300&cropY1=0&cropY2=300)](https://www.forbes.com/councils/forbesbusinesscouncil/people/oluwaseundania/)
+
+
+        By [Oluwaseun Dania](https://www.forbes.com/councils/forbesbusinesscouncil/people/oluwaseundania/)
+
+
+        COUNCIL POST \| Membership (fee-based)
+
+
+        Oluwaseun Dania is the managing director of [Alpha-Geek Technologies](https://www.alphageekng.com/).
+        Read Oluwaseun Dania''s full executive profile [here](https://councils.forbes.com/u/0a0dc4a4-2e9f-4351-8605-fc98ee7a4a68).
+
+
+        [Share on Linkedin](https://www.linkedin.com/in/seundania/ "Share on Linkedin")[Share
+        on Globe](https://www.alphageekng.com/ "Share on Globe")
+
+
+        LOADING VIDEO PLAYER...
+
+
+        FORBES’ FEATURED Video
+
+
+        render-sign-in
+
+
+        auto
+
+        PREMIUM
+
+
+        Want to save more articles? Subscribe today.
+
+
+        You''ve reached your limit of articles you can save without a subscription.
+        Subscribe now to save as many articles as you want.
+
+
+        Premium Journalism, deeply reported stories and breaking news
+
+
+        Members-only events
+
+
+        [Subscribe](https://account.forbes.com/membership?eventSource=saveArticle)
+
+
+        Subscriptions renew automatically. You may cancel your subscription at any
+        time.'
+      metadata:
+        ogDescription: 'Zero-knowledge proofs offer a powerful tool for safeguarding
+          data privacy in a digital world. '
+        apple-itunes-app: app-id=588647136
+        twitter:title: 'Council Post: Why Zero-Knowledge Proofs Will Shape The Future
+          Of Data Privacy'
+        ogUrl: https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+        description: 'Zero-knowledge proofs offer a powerful tool for safeguarding
+          data privacy in a digital world. '
+        article:published: '2024-10-31'
+        language: en
+        twitter:creator: '@seundania'
+        keywords: Oluwaseun Dania
+        twitter:card: summary_large_image
+        next-head-count: '47'
+        viewport: width=device-width,initial-scale=1,maximum-scale=5,minimum-scale=1,user-scalable=yes
+        og:site_name: Forbes
+        og:description: 'Zero-knowledge proofs offer a powerful tool for safeguarding
+          data privacy in a digital world. '
+        article:author: Oluwaseun Dania
+        twitter:image: https://imageio.forbes.com/specials-images/imageserve/64e77faa5776a24d8bd8ae25/0x0.jpg?format=jpg&height=600&width=1200&fit=bounds
+        twitter:description: 'Zero-knowledge proofs offer a powerful tool for safeguarding
+          data privacy in a digital world. '
+        article:section: Small Business
+        article:section_url: https://www.forbes.com/small-business/
+        og:type: article
+        title: 'Council Post: Why Zero-Knowledge Proofs Will Shape The Future Of Data
+          Privacy'
+        image: https://imageio.forbes.com/specials-images/imageserve/64e77faa5776a24d8bd8ae25/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds
+        fb:app_id: '123694841080850'
+        Googlebot-News: noindex, nofollow
+        og:url: https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+        article:id: blogAndPostId/blog/post/7141-67229845706c02170c0b37f5
+        news_keywords: Oluwaseun Dania
+        robots: max-image-preview:large
+        referrer: no-referrer-when-downgrade
+        article:channel: Small Business
+        ogTitle: 'Council Post: Why Zero-Knowledge Proofs Will Shape The Future Of
+          Data Privacy'
+        og:image:type: image/jpeg
+        og:updated_time: '2024-10-31T09:00:00.000-04:00'
+        favicon: https://i.forbesimg.com/48X48-F.png
+        ogImage: https://imageio.forbes.com/specials-images/imageserve/64e77faa5776a24d8bd8ae25/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds
+        og:title: 'Council Post: Why Zero-Knowledge Proofs Will Shape The Future Of
+          Data Privacy'
+        article:modified: '2024-10-31'
+        author: Oluwaseun Dania
+        ogSiteName: Forbes
+        twitter:site: '@forbes'
+        scrapeId: 14429f03-d542-4fff-a2ae-3fd9db5af2cb
+        sourceURL: https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+        url: https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+        statusCode: 200
+    - title: Solving An Open Problem in Zero-Knowledge Proofs Established an ...
+      description: Zero-knowledge proof is a cryptographic protocol that proves the
+        validity of a statement without disclosing any additional information. For
+        ...
+      url: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
+      markdown: 'Microsoft ends support for Internet Explorer on June 16, 2022.
+
+
+        We recommend using one of the browsers listed below.
+
+
+        - Microsoft Edge（Latest version）
+
+        - Mozilla Firefox（Latest version）
+
+        - Google Chrome（Latest version）
+
+        - Apple Safari（Latest version）
+
+
+        Please contact your browser provider for download and installation instructions.
+
+
+        - [TOP](https://group.ntt/en/)
+
+        - [Press Release](https://group.ntt/en/newsrelease/)
+
+        - Solving An Open Problem in Zero-Knowledge Proofs Established an approach
+        for zero-knowledge arguments that do not leak secret information even if randomness
+        is reused during proof generation
+
+
+        September 19, 2024
+
+
+        NTT Corporation
+
+
+        # Solving An Open Problem in Zero-Knowledge Proofs   Established an approach
+        for zero-knowledge arguments that do not leak secret information even if randomness
+        is reused during proof generation
+
+
+        News Highlights:
+
+
+        1. ◆For the first time in the world, we have proved that the use of witness
+        encryption1 is indispensable for the construction of highly secure zero-knowledge
+        proofs2 called the resettable statistical zero-knowledge argument3,4.
+
+        2. ◆This achievement contributes to the practical application of zero-knowledge
+        proof, which is expected to be used in various fields such as finance, medical
+        care, and healthcare, as one of the IOWN PETs5 aiming for "a world without
+        plaintext."
+
+
+        TOKYO - September 19, 2024 - NTT Corporation (Headquarters: Chiyoda Ward,
+        Tokyo; Representative Member of the Board and President: Akira Shimada; hereinafter
+        "NTT") has proved for the first time in the world that the use of witness
+        encryption is essentially indispensable for the construction of the resettable
+        statistical zero-knowledge argument, which is a zero-knowledge proof with
+        high security. Zero-knowledge proof is a cryptographic protocol that proves
+        the validity of a statement without revealing additional information to the
+        other party. As an example, this revolutionary technology can prove the knowledge
+        of the correct password without disclosing the password. This achievement
+        established a construction approach for the resettable statistical zero-knowledge
+        argument, thereby greatly contributing to the practical application of zero-knowledge
+        proofs, which are expected to be used in various fields such as finance, medical
+        care, and healthcare in the future. This achievement was presented at the
+        44th Annual International Cryptology Conference (Crypto 2024), the premier
+        international conference on cryptology.
+
+
+        ### 1\. Background
+
+
+        Zero-knowledge proof is a cryptographic protocol that proves the validity
+        of a statement without disclosing any additional information. For example,
+        it can be used as an authentication technology to prove the knowledge of the
+        correct password without disclosing the password. It is also a revolutionary
+        technology from the viewpoint of privacy protection because it enables age
+        verification without presenting personal information to the other party (Figure
+        1). In recent years, it has attracted attention because it has also been used
+        in cryptocurrencies to prove that transactions were executed correctly while
+        keeping the contents of transactions secret.
+
+
+        Resettable statistical zero-knowledge arguments are highly secure zero-knowledge
+        proofs and known to be constructed using a cryptographic primitive called
+        witness encryption. However, it has been an open question whether resettable
+        statistical zero-knowledge arguments can be constructed without witness encryption.
+
+
+        ![Figure 1 Example of Age Verification with Zero-Knowledge Proof](https://group.ntt/en/newsrelease/2024/09/19/img/240919aa.jpg)Figure
+        1 Example of Age Verification with Zero-Knowledge Proof
+
+
+        ### 2\. Results and technical points of this research
+
+
+        This time, we solved the open problem by proving that it is impossible to
+        construct a resettable statistical zero-knowledge argument without using witness
+        encryption. Specifically, we have shown that witness encryption can be constructed
+        by using a resettable statistical zero-knowledge argument, thereby showing
+        that constructing a resettable statistical zero-knowledge argument is equivalent
+        to constructing witness encryption (Figure 2).
+
+
+        As a technical point, in this research, instead of directly using the security
+        of the resettable statistical zero-knowledge argument to construct witness
+        encryption, we used it indirectly and constructed witness encryption from
+        the resettable statistical zero-knowledge argument by the following two steps.
+
+
+        1. First, we show that a resettable statistical zero-knowledge argument always
+        satisfies certain properties because of its high security.
+
+        2. Next, we show that witness encryption can be realized by using this property.
+
+
+        Specifically, we first focus on the fact that the high security of the resettable
+        statistical zero-knowledge argument places significant constraints on the
+        messages sent by the prover, and show that in certain cases the messages sent
+        by the prover must be determined only by the randomness used by the prover,
+        independent of the secret information held by the prover. Next, we focus on
+        the fact that this property can be used to realize witness encryption relatively
+        easily, thereby constructing witness encryption from a resettable statistical
+        zero-knowledge argument (Figure 3).
+
+
+        ![Figure 2 Results of this Research](https://group.ntt/en/newsrelease/2024/09/19/img/240919ab.jpg)Figure
+        2 Results of this Research
+
+
+        ![Figure 3 Technical Points of this Study](https://group.ntt/en/newsrelease/2024/09/19/img/240919ac.jpg)Figure
+        3 Technical Points of this Study
+
+
+        ### 3．Outlook
+
+
+        We will continue to promote the R&D of zero-knowledge proofs as a technology
+        of IOWN PETs, with the aim of achieving the goal of the "world without plaintext,"
+        where safe data distribution is enabled by the technical guarantee that data
+        will be used only within the scope of the data owner''s policy during the
+        entire period from creation to destruction. In the future, we aim to utilize
+        this technology for our LLM tsuzumi''s secure learning and to put it into
+        practical use for IOWN PETs.
+
+
+        ### \[Glossary\]
+
+
+        1.Witness encryption
+
+
+        Witness encryption is an encryption scheme proposed as a generalization of
+        public-key encryption. In normal public-key encryption, encryption is performed
+        with a public key and decryption is performed with the corresponding private
+        key, but in witness encryption, encryption is performed with an arbitrary
+        NP instance (e.g., mathematical theorems) and decryption is performed with
+        the corresponding witness (e.g., proof of a theorem).
+
+
+        2.Zero-knowledge proof
+
+
+        Zero-knowledge proof is a cryptographic protocol between two parties called
+        a prover and a verifier. Broadly speaking, in a zero-knowledge proof, the
+        prover tries to convince the verifier of the correctness of a statement in
+        the following way: At the start of a proof, both the prover and the verifier
+        have the statement to be proved as public information, and the prover has
+        the evidence that the statement holds as secret information. (The evidence
+        is called "witness.") Then, the prover proves that the statement is true by
+        conducting a question-and-answer type interaction in which the prover answers
+        the question by the verifier, and the verifier verifies the proof by checking
+        the content of the response by the prover. Zero-knowledge proofs provide three
+        security guarantees: completeness (a prover with appropriate evidence can
+        prove a true statement), soundness (a malicious prover cannot prove a false
+        statement), and zero-knowledge (a malicious verifier cannot learn information
+        on the evidence beyond the validity of the statement).
+
+
+        3.Statistical zero-knowledge argument
+
+
+        Zero-knowledge proofs are classified into computational and statistical depending
+        on what kind of computing power an adversary has in the definition of zero-knowledge,
+        and also into proof and argument depending on what kind of computing power
+        an adversary has in the definition of soundness. In the case of statistical
+        zero-knowledge arguments, zero-knowledge is guaranteed against an adversary
+        with unbounded computing power while soundness is guaranteed only against
+        an adversary with realistically bounded computing power (specifically, what
+        is called a polynomial-time adversary).
+
+
+        4.Resettable statistical zero-knowledge argument
+
+
+        The resettable statistical zero-knowledge argument is a statistical zero-knowledge
+        argument that guarantees zero-knowledge even when multiple proofs are generated
+        using the same randomness. Using randomness is essential for many cryptographic
+        primitives, including zero-knowledge proofs. However, the generation of randomness
+        (especially that having sufficiently high quality required for cryptographic
+        primitives) requires high-cost operations such as the use of physical phenomena.
+        An advantage of the resettable statistical zero-knowledge argument is that
+        randomness generation is no longer necessary during proof generation. In particular,
+        it guarantees zero-knowledge even if randomness is generated in advance and
+        subsequently reused in every proof generation. Because of this advantage,
+        the resettable statistical zero-knowledge argument can be used even in environments
+        where it is difficult to generate randomness because of cost restrictions.
+
+
+        5.IOWN PETs: [https://www.rd.ntt/e/sil/project/iown-pets/iown-pets.html![Open
+        other window](https://group.ntt/common/img/icon_external_link.svg)](https://www.rd.ntt/e/sil/project/iown-pets/iown-pets.html)
+
+
+        ### About NTT
+
+
+        NTT contributes to a sustainable society through the power of innovation.
+        We are a leading global technology company providing services to consumers
+        and businesses as a mobile operator, infrastructure, networks, applications,
+        and consulting provider. Our offerings include digital business consulting,
+        managed application services, workplace and cloud solutions, data center and
+        edge computing, all supported by our deep global industry expertise. We are
+        over $97B in revenue and 330,000 employees, with $3.6B in annual R&D investments.
+        Our operations span across 80+ countries and regions, allowing us to serve
+        clients in over 190 of them. We serve over 75% of Fortune Global 100 companies,
+        thousands of other enterprise and government clients and millions of consumers.
+
+
+        Media contact
+
+
+        NTT Service Innovation Laboratory Group
+
+
+        Public Relations
+
+
+        nttrd-pr@ml.ntt.com
+
+
+        Information is current as of the date of issue of the individual press release.
+
+
+        Please be advised that information may be outdated after that point.
+
+
+        [Back to Press Release](https://group.ntt/en/newsrelease/)
+
+
+        ## NTT STORY
+
+
+        WEB media that thinks about the future with NTT
+
+
+        - [![](https://group.ntt/en/magazine/blog/change_your_voice/img/kv.jpg?2025)](https://group.ntt/en/magazine/blog/change_your_voice/)
+
+
+        [February 19, 2025\\
+
+        \\
+
+        Change Your Voice. Change Your Accent. Speak With Confidence!](https://group.ntt/en/magazine/blog/change_your_voice/)
+
+
+        - [Technology](https://group.ntt/en/magazine/blog/keyword/technology/)
+
+
+        - [![](https://group.ntt/en/magazine/blog/spooky_computers/img/kv.jpg)](https://group.ntt/en/magazine/blog/spooky_computers/)
+
+
+        [February 12, 2025\\
+
+        \\
+
+        Spooky Computers](https://group.ntt/en/magazine/blog/spooky_computers/)
+
+
+        - [Technology](https://group.ntt/en/magazine/blog/keyword/technology/)
+
+
+        - [![](https://group.ntt/en/magazine/blog/aerial_imaging_system/img/kv.jpg)](https://group.ntt/en/magazine/blog/aerial_imaging_system/)
+
+
+        [January 31, 2025\\
+
+        \\
+
+        Did Mozart Just Walk Out of That Mirror?](https://group.ntt/en/magazine/blog/aerial_imaging_system/)
+
+
+        - [Technology](https://group.ntt/en/magazine/blog/keyword/technology/)
+
+
+        - [![](https://group.ntt/common/img/bnr_rd.jpg)\\
+
+        \\
+
+        NTT R&D Website](https://group.ntt/en/rd/)
+
+        - [![](https://group.ntt/en/img/bnr_nttjrlo.jpg)\\
+
+        \\
+
+        NTT Japan Rugby League One](https://group.ntt/en/magazine_s/nttjrlo/index.html)
+
+        - [![](https://group.ntt/en/img/bnr_expo2025.jpg)\\
+
+        \\
+
+        EXPO2025](https://group.ntt/en/expo2025/)
+
+        - [![](https://group.ntt/common/img/bnr_global-business.jpg)\\
+
+        \\
+
+        Global Business](https://www.global.ntt/)
+
+
+        ## ![NTT Group](https://group.ntt/common/img/logo_nttgroup_en.svg)
+
+
+        - [![](https://group.ntt/common/img/logo_nttdocomo.svg)![](https://group.ntt/common/img/logo_nttdocomo.svg)\\
+
+        \\
+
+        NTT DOCOMO](https://www.nttdocomo.co.jp/english/ "NTT DOCOMO")
+
+        - [![](https://group.ntt/common/img/logo_ntt-communications_pc.png)![](https://group.ntt/common/img/logo_ntt-communications_sp.png)\\
+
+        \\
+
+        NTT Communications](https://www.ntt.com/en/ "NTT Communications")
+
+        - [![](https://group.ntt/common/img/logo_ntt-east_en_a.svg)![](https://group.ntt/common/img/logo_ntt-east_en_a.svg)\\
+
+        \\
+
+        NTT EAST](https://www.ntt-east.co.jp/en/ "NTT EAST")
+
+        - [![](https://group.ntt/common/img/logo_ntt-west_en.svg)![](https://group.ntt/common/img/logo_ntt-west_en.svg)\\
+
+        \\
+
+        NTT WEST](https://www.ntt-west.co.jp/english/ "NTT WEST")
+
+        - [![](https://group.ntt/common/img/logo_ntt-data-group.svg)![](https://group.ntt/common/img/logo_ntt-data-group.svg)\\
+
+        \\
+
+        NTT DATA](https://www.nttdata.com/global/en/ "NTT DATA")
+
+
+        [Group Companies](https://group.ntt/en/group/gnavi/)
+
+
+        - [TOP](https://group.ntt/en/)
+
+        - [Press Release](https://group.ntt/en/newsrelease/)
+
+        - Solving An Open Problem in Zero-Knowledge Proofs Established an approach
+        for zero-knowledge arguments that do not leak secret information even if randomness
+        is reused during proof generation'
+      metadata:
+        title: Solving An Open Problem in Zero-Knowledge Proofs Established an approach
+          for zero-knowledge arguments that do not leak secret information even if
+          randomness is reused during proof generation | Press Release | NTT
+        favicon: https://group.ntt/favicon.png
+        format-detection: telephone=no
+        description: 'News Highlights:     ◆For the first time in the world, we have
+          proved that the u...'
+        og:site_name: NTT | Nippon Telegraph and Telephone Corporation
+        ogSiteName: NTT | Nippon Telegraph and Telephone Corporation
+        og:title: Solving An Open Problem in Zero-Knowledge Proofs Established an
+          approach for zero-knowledge arguments that do not leak secret information
+          even if randomness is reused during proof generation | Press Release | NTT
+        og:locale: en_US
+        ogLocale: en_US
+        ogUrl: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
+        og:url: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
+        twitter:card: summary_large_image
+        language: en
+        ogTitle: Solving An Open Problem in Zero-Knowledge Proofs Established an approach
+          for zero-knowledge arguments that do not leak secret information even if
+          randomness is reused during proof generation | Press Release | NTT
+        og:description: 'News Highlights:     ◆For the first time in the world, we
+          have proved that the u...'
+        ogDescription: 'News Highlights:     ◆For the first time in the world, we
+          have proved that the u...'
+        og:type: article
+        ogImage: https://group.ntt/common/img/ogp.jpg
+        og:image: https://group.ntt/common/img/ogp.jpg
+        scrapeId: 622e730a-766f-4aa1-94e6-9c4258fe6a34
+        sourceURL: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
+        url: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
+        statusCode: 200
     - title: What is Zero-Knowledge Proof - a hot technology bringing ...
       description: In recent years, zero-knowledge proofs have begun to be used to
-        improve blockchain privacy.
+        improve blockchain privacy. For example, in the case of cryptocurrencies,
+        methods known ...
       url: https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof
-      content_length: 16123
-    - title: Zero-Knowledge Proof (ZKP) — Explained - Chainlink
-      description: Zero-knowledge proofs (ZKPs) are a cryptographic method used to
-        prove knowledge about a piece of data, without revealing the data itself.
-      url: https://chain.link/education/zero-knowledge-proof-zkp
-      content_length: 23767
-    - title: Overview Of Zero-Knowledge Blockchain Projects - Chainlink
-      description: Zero-knowledge proof blockchain projects help developers build
-        advanced dApps that scale the Web3 ecosystem while protecting users' privacy.
-      url: https://chain.link/education-hub/zero-knowledge-proof-projects
-      content_length: 25617
-    - title: 3 Real World Applications of Zero Knowledge Proofs - Coin Bureau
-      description: We take a look at 3 of the top use cases for Zero-Knowledge Proofs
-        that can help secure your privacy. From the voting box to the blockchain.
-      url: https://coinbureau.com/adoption/applications-zero-knowledge-proofs/
-      content_length: 26782
-    - title: An Introduction to Zero-Knowledge Proofs in Blockchains and ...
-      description: With a zero-knowledge proof (ZKP), a party can prove that a statement
-        is true without revealing any information except for whether it is indeed
-        true or not.
-      url: https://www.stlouisfed.org/publications/review/2023/05/12/an-introduction-to-zero-knowledge-proofs-in-blockchains-and-economics
-      content_length: 6696
-    - title: Zero-Knowledge Proofs and Their Role within the Blockchain
-      description: Zero-knowledge proofs are a rapidly growing technology that is
-        used to ensure transactional privacy and integrity on the blockchain. This
-        is key ...
-      url: https://cacm.acm.org/article/zero-knowledge-proofs-and-their-role-within-the-blockchain/
-      content_length: 49255
-    - title: A Survey on the Applications of Zero-Knowledge Proofs - arXiv
-      description: This survey starts with a high-level overview of the technical
-        workings of ZKPs with a focus on an increasingly relevant subset of ZKPs called
-        zk-SNARKS.
-      url: https://arxiv.org/html/2408.00243v1
-      content_length: 188929
-    - title: 'Zero-knowledge proofs in education: a pathway to disability ...'
-      description: This paper explores the innovative application of blockchain-powered
-        Zero-Knowledge Proofs (ZKPs) technology in education, with a particular focus
-        on ...
-      url: https://slejournal.springeropen.com/articles/10.1186/s40561-024-00294-w
-      content_length: 80741
-    - title: Zero-Knowledge Proof Research | Berkeley RDI
-      description: In this paper, we present Orion, a new zero-knowledge argument
-        system that achieves O ( N ) O(N) O(N) prover time of field operations and
-        hash functions and ...
-      url: https://rdi.berkeley.edu/zkp/
-      content_length: 10985
-    - title: 'Academic research: Findings from our zero-knowledge research'
-      description: This research paper presents a lightweight technique for detecting
-        vulnerabilities in zero-knowledge proof circuits, focusing on those ...
-      url: https://veridise.medium.com/academic-research-findings-from-our-zero-knowledge-research-0efe1d9a364d
-      content_length: 31349
-    - title: Solving An Open Problem in Zero-Knowledge Proofs Established an ...
-      description: We solved the open problem by proving that it is impossible to
-        construct a resettable statistical zero-knowledge argument without using witness
-        encryption.
-      url: https://group.ntt/en/newsrelease/2024/09/19/240919a.html
-      content_length: 13358
-    analyses:
-    - analysis: The search results provide an in-depth analysis of Zero-Knowledge
-        Proofs (ZKPs) in blockchain technology. The content covers the definition,
-        benefits, and various use cases of ZKPs, including privacy-preserving cryptocurrency
-        transactions, decentralized identity verification, scalable blockchain solutions,
-        secure voting systems, confidential smart contracts, supply chain traceability,
-        private decentralized finance (DeFi) transactions, secure multiparty computation
-        in enterprise blockchain, intellectual property protection, and anonymous
-        credentials and access control. The results also discuss the challenges and
-        limitations of ZKPs, future prospects, and emerging applications in blockchain.
-        Additionally, the content includes FAQs about ZKPs, providing a comprehensive
-        understanding of the technology. The search results are from reputable sources,
-        including Rapid Innovation, KuCoin, Fujitsu, and Protocol Labs, ensuring the
-        accuracy and reliability of the information.
-      key_findings:
-      - Zero-Knowledge Proofs (ZKPs) enable one party to prove to another that a statement
-        is true without revealing any information beyond the validity of the statement
-        itself.
-      - ZKPs enhance privacy and security in blockchain technology, with various use
-        cases across different industries.
-      - The technology faces challenges, including complexity, performance overhead,
-        integration issues, regulatory concerns, and limited adoption.
-      - Despite challenges, ZKPs have a promising future, with ongoing research and
-        development aimed at improving efficiency, scalability, and usability.
-      - The market for ZKPs is expected to grow, with a projected value of $\mathfrak{s}\i0$
-        billion by 2030 and a potential to exceed $\mathfrak{s o}.2\uparrow$ in revenue
-        by 2030.
-      recommendations:
-      - Further research is recommended to explore the practical applications of ZKPs
-        in various industries, including finance, healthcare, and supply chain management.
-      - Investigating the challenges and limitations of ZKPs, such as complexity and
-        scalability, is crucial for widespread adoption.
-      - Developing more user-friendly ZKP systems that can support widespread adoption
-        across different industries is essential.
-      - Examining the potential of ZKPs in emerging technologies, such as decentralized
-        artificial intelligence (AI) and quantum computing, can lead to innovative
-        breakthroughs.
-      - Standardization efforts, like the ZKProof Community, are necessary to enhance
-        compatibility and facilitate the broader utilization of ZKPs.
-    - analysis: The search results provide a comprehensive overview of zero-knowledge
-        proofs (ZKPs) and their applications in blockchain technology. The main themes
-        that emerge from the analysis are the definition and explanation of ZKPs,
-        their types (zk-SNARKs, zk-STARKs, PLONK, and Bulletproofs), benefits (privacy,
-        security, and efficiency), and various use cases (private transactions, decentralized
-        identity/authentication, verifiable computations, and scalability solutions).
-        The results also highlight the current state of ZKP technology, its limitations,
-        and future developments. Additionally, the importance of ZKPs in maintaining
-        transactional privacy and integrity on the blockchain is emphasized, making
-        them a crucial component for institutions and businesses to interact with
-        public blockchain networks while keeping datasets private.
-      key_findings:
-      - Zero-knowledge proofs (ZKPs) are a cryptographic method that enables a party
-        to prove a statement is true without revealing any information except for
-        whether it is indeed true or not.
-      - 'ZKPs have two main benefits: privacy (the prover does not need to reveal
-        any additional information) and efficiency (verifying a ZKP needs significantly
-        less resources than reexecuting the computation).'
-      - There are various types of ZKPs, including zk-SNARKs, zk-STARKs, PLONK, and
-        Bulletproofs, each with different characteristics in terms of proof times,
-        verification times, and the size of the proof.
-      - ZKPs have numerous use cases, including private transactions, decentralized
-        identity/authentication, verifiable computations, and scalability solutions
-        (e.g., zk-rollups, validiums, and volitions).
-      - The current state of ZKP technology faces limitations, primarily related to
-        hardware requirements (e.g., GPUs with parallel processing capability) and
-        complexity from a development point-of-view.
-      - Despite these limitations, ZKP technology is expected to evolve significantly,
-        driven by investments in cryptocurrencies and their infrastructure, leading
-        to more efficient and secure blockchain applications.
-      recommendations:
-      - Further research should focus on developing more efficient algorithms and
-        abstraction layers to complement advancements in ZKP technology, facilitating
-        wider adoption.
-      - Investigations into the application of ZKPs in various industries (e.g., finance,
-        healthcare, and supply chain management) could uncover new use cases and benefits,
-        enhancing the technology's impact.
-      - Collaborations between researchers, developers, and industry stakeholders
-        are crucial for overcoming the current limitations of ZKP technology and ensuring
-        its seamless integration into existing and emerging blockchain platforms.
-      - Educational initiatives and resources should be developed to make ZKP technology
-        more accessible and understandable to a broader audience, including those
-        without a computer science or mathematics background.
-      - Exploring the potential of ZKPs in conjunction with other cryptographic techniques
-        (e.g., homomorphic encryption, secure multi-party computation) could lead
-        to the development of even more secure and efficient blockchain solutions.
-    - analysis: The provided search results contain a comprehensive survey on the
-        applications of Zero-Knowledge Proofs (ZKPs), a research paper on the application
-        of ZKPs in education for disability inclusion, and several research papers
-        and articles on ZKP-related topics. The main themes include the use of ZKPs
-        for privacy preservation, scalability, and security in various applications,
-        including blockchain, education, and cryptography. The results highlight the
-        potential of ZKPs in enhancing privacy, security, and efficiency in different
-        domains.
-      key_findings:
-      - Zero-Knowledge Proofs (ZKPs) are a powerful tool for privacy preservation
-        and security in various applications, including blockchain, education, and
-        cryptography.
-      - ZKPs can be used to enhance scalability and security in blockchain applications,
-        such as Layer 1 blockchains and Layer 2 scaling solutions.
-      - The application of ZKPs in education can support disability inclusion by providing
-        a secure and private way for students to disclose their disability status
-        and receive necessary accommodations.
-      - ZKPs can be used to improve the security and efficiency of cryptographic protocols,
-        such as zero-knowledge arguments and witness encryption.
-      - Several research papers and articles provide insights into the latest advancements
-        and applications of ZKPs in various fields.
-      recommendations:
-      - Further research is recommended to explore the practical applications of ZKPs
-        in different domains, including education, healthcare, and finance.
-      - Investigating the potential of ZKPs in enhancing security and privacy in emerging
-        technologies, such as artificial intelligence and the Internet of Things (IoT),
-        is suggested.
-      - Developing more efficient and scalable ZKP protocols and algorithms is crucial
-        for widespread adoption in various applications.
-      - Collaboration between academia and industry is essential for advancing the
-        development and deployment of ZKP-based solutions.
-      - Continued research on the intersection of ZKPs and other cryptographic techniques,
-        such as homomorphic encryption and secure multi-party computation, is recommended
-        to uncover new applications and improvements.
+      markdown: '![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/kv.jpg?h=1280&iar=0&w=2732&rev=fa79a6352a734a3bb844ecdb47218200)
+
+
+        - ShareNot displayedFacebookLinkedInX
+
+
+        - [Home](https://www.nttdata.com/global/en)
+
+        - [Insights](https://www.nttdata.com/global/en/insights)
+
+        - [NTT DATA Focus](https://www.nttdata.com/global/en/insights/focus)
+
+
+        # What is Zero-Knowledge Proof - a hot technology bringing trustworthiness
+        to Web3 privacy?
+
+
+        Recently, "zero-knowledge proof" is attracting attention. In 2019, the World
+        Economic Forum announced zero-knowledge proof as one of the five privacy-enhancing
+        technologies that bring new value to the financial sector (\*1). Why is this
+        idea, invented in the 1980s, receiving attention now? This article gives an
+        overview of the technology, examples of its application, and looks into its
+        future.
+
+
+        - (\*1) [World Economic Forum, "The Next Generation of Data-Sharing in Financial
+        Services: Using Privacy Enhancing Techniques to Unlock New Value," September
+        2019.](https://www.weforum.org/whitepapers/the-next-generation-of-data-sharing-in-financial-services-using-privacy-enhancing-techniques-to-unlock-new-value/)
+
+
+        Index
+
+
+
+        - [What is Zero-Knowledge Proof?](https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof#section01)
+
+        - [Intuitive understanding of Zero-Knowledge Proofs](https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof#section02)
+
+        - [Social Application Examples](https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof#section03)
+
+        - [Prospect](https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof#section04)
+
+
+        ## What is Zero-Knowledge Proof?
+
+
+        Zero-knowledge proof; ZKP is a technology in which a person who wants to prove
+        something (Prover; hereafter referred to as P) proves the fact that he knows
+        the knowledge without giving any other knowledge to the person who wants to
+        verify it (Verifier; hereafter referred to as V).
+
+
+        As a result, V can only verify the fact that P knows the knowledge without
+        obtaining any other knowledge (Figure 1).
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img01.png?h=378&iar=0&w=800&rev=6d7d71ac7c564b25984a2df33508640b)
+
+
+        Figure 1: Concept of Zero-Knowledge Proof
+
+
+
+        In the real world, when you want to assert that you hold certain credentials,
+        it is common to present evidence to convince the other person that you hold
+        the credentials.
+
+
+        However, when you do so, the other person may be presented with too much information
+        about what you want to prove, such as your address or age in the evidence.
+        If you cannot trust the other person, you may feel uncomfortable giving them
+        too much information. However, if you don''t show them the evidence, they
+        are unlikely to trust your claim. How can you convince someone that you hold
+        the qualification without giving them extra information?
+
+
+        The technology to achieve this is zero-knowledge proof. The idea of zero-knowledge
+        proof originated in cryptography research in the 1980s (\*2).
+
+
+        - (\*2) [Goldwasser, S., Micali, S., Rackoff, C.: "The knowledge complexity
+        of interactive proof-systems," STOC 1985.](https://dl.acm.org/doi/10.1145/22145.22178)
+
+
+
+        The claims that can be proven with zero-knowledge proof are knowledge about
+        propositions. A proposition is a verbal expression of a judgment that is clearly
+        true or false (\*3).
+
+
+        - (\*3)
+
+        For example, "2023 is equal to 7×17×17" is a proposition, and it is a true
+        fact. "I know the prime factorization of 2023" is knowledge related to the
+        stated proposition and is an example of a claim that can be used for zero-knowledge
+        proof. On the other hand, "2023 is a large number" is subjective and not a
+        proposition. Therefore, the claim that "I know 2023 is a big number" is not
+        a subject of zero-knowledge proof.
+
+
+
+        In general, a zero-knowledge proof must satisfy three properties: completeness,
+        soundness, and zero-knowledge (Table 1).
+
+
+        | Nature | Overview |
+
+        | --- | --- |
+
+        | Completeness | If the prover is correct, it will be determined to be correct
+        by the verifier |
+
+        | Soundness | If the prover is incorrect, it must be determined to be incorrect
+        by the verifier with a high probability |
+
+        | Zero-Knowledge | The verifier cannot obtain any knowledge other than the
+        fact that the prover wants to prove |
+
+
+        Table 1: Requirements for a zero-knowledge proof
+
+
+        ## Intuitive understanding of Zero-Knowledge Proofs
+
+
+        Here are two examples to help you understand zero-knowledge proofs intuitively.
+
+
+        ### 1\. The cave problem
+
+
+        This explanation was introduced in the paper "How to explain zero-knowledge
+        protocols to your children" (\*4).
+
+
+        - (\*4) [Jean-Jacques Quisquater et al., "How to Explain Zero-Knowledge Protocols
+        to Your Children," CRYPTO 1989. (PDF: 227KB)](https://pages.cs.wisc.edu/~mkowalcz/628.pdf)
+
+
+        Inside the cave is a magic door that opens when you say the password. The
+        prover P knows the password and gives it in exchange for money. The door is
+        at the far end of the cave shown in Figure 2. There are two paths to the door,
+        A and B. The person who knows the password can open the door and move from
+        A to B or vice versa.
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img02.jpg?h=453&iar=0&w=800&rev=cf4c7228935441d3b38f0fd9442af117)
+
+
+        Figure 2: The Cave Problem
+
+
+
+        V, the verifier, wants to buy the password, but he doubts whether P really
+        knows the password and cannot start a transaction. If P can convince V that
+        P knows the secret password without telling V the secret password itself,
+        V can start a transaction. So, here''s what they are trying to do.
+
+
+        First, V waits outside the cave. Then P enters the cave, randomly chooses
+        either path A or B, and goes to the door (Figure 3).
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img03.jpg?h=533&iar=0&w=800&rev=0918e3fa17984bbe8d735ff3c9df3166)
+
+
+        Figure 3: Prover P''s Random Selection
+
+
+
+        Next, V enters the cave, goes to the branching point of the paths, randomly
+        chooses A or B in their head, and shouts to P to come out from the chosen
+        path (Figure 4).
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img04.jpg?h=401&iar=0&w=800&rev=945bfc0651e54daea0b604e2edd6f2a4)
+
+
+        Figure 4: Verifier V''s Random Selection
+
+
+
+        If P knows the password:
+
+
+        P can use the password to open the door and come out of the designated path,
+        whichever way V tells him to go (Figure 5). This means completeness.
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img05.jpg?h=466&iar=0&w=800&rev=6088ed6bec1c4fd3a3ac05b15c69a53a)
+
+
+        Figure 5: The Case that Prover P Knows the Password
+
+
+
+        If P does not know the password:
+
+
+        P can only come out of the path he entered, so the probability of coming out
+        of the path chosen by V is 50%. If they repeat this process over and over
+        again, it''s almost impossible for P to fool V every time (Figure 6). For
+        example, if they try 30 times, the probability that P can fool V is about
+        0.0000001%. This means soundness.
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img06.jpg?h=421&iar=0&w=800&rev=db7f0b94506a47679157cddc1b1a33bf)
+
+
+        Figure 6: The Case that Prover P Does Not Know the Password
+
+
+
+        So, if P succeeds on all his attempts, V must be convinced that P knows the
+        password. If V tries even more, he can get his chance of being cheated as
+        close to 0% as V wants. At this time, V will not gain any knowledge about
+        the password. This means zero-knowledge.
+
+
+        Literally, what P wants to prove has been proved to V with zero-knowledge.
+
+
+        ### 2\. The Problem of Finding a Seabird
+
+
+        Professor Amit Sahai of the University of California, Los Angeles (UCLA) explains
+        the concept of zero-knowledge proof on YouTube to children, teenagers, college
+        students, graduate students, and experts in five different difficulty levels
+        (\*5). Here is a child-friendly explanations that will help you get a sense
+        of the main points.
+
+
+        - (\*5) [Computer Scientist Explains One Concept in 5 Levels of Difficulty,
+        WIRED](https://www.youtube.com/watch?v=fOGdb1CTu5c)
+
+
+        The professor shows the child a picture. The picture shows a crowd of hundreds
+        of penguins. He says, "There is one puffin (a penguin-like seabird), and I
+        know where it is, but I don''t want to tell you. Do you believe me? I''m going
+        to prove it without revealing its location."
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img07.jpg?h=505&iar=0&w=800&rev=3f05fc0c1f934735a75fbbae8353800f)
+
+
+        Figure 7: The Problem of Finding a Seabird
+
+
+
+        The professor pulls out a piece of black paper several times larger than the
+        photo. The paper has a small hole, and the photo is pasted on the back of
+        the paper so that the hole matches the position of the puffin. The child looks
+        into the hole and says, "I see a puffin". But the child can''t see the position
+        of the photo on the back of the paper, so she can''t tell where the puffin
+        is in the original photo. "This is an example of a zero-knowledge proof,"
+        the professor explains (Figure 8).
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/img08.jpg?h=370&iar=0&w=800&rev=46de5598e3f64c609c0c7fd1a156c661)
+
+
+        Figure 8: Zero-Knowledge Proof for the Problem of Finding a Seabird
+
+
+
+        This exchange satisfies completeness because a professor who knows the location
+        of the puffin can always prove it.
+
+
+        Furthermore, it satisfies soundness because if the professor does not know
+        the location of the puffin, the cheating will be exposed with a high probability
+        if the child looks into the hole and confirms it.
+
+
+        Furthermore, it satisfies zero-knowledge because the child cannot obtain any
+        knowledge other than the fact that the professor knows the location of the
+        puffin.
+
+
+        ## Social Application Examples
+
+
+        This paper introduces an application example of zero-knowledge proof to society
+        and considers prospects.
+
+
+        ### 1\. Blockchain Privacy Enhancement
+
+
+        Blockchain is widely used in society, a representative example being virtual
+        currencies. Its transparency is maintained by decentralized management of
+        its ledger by all participants in the blockchain. However, due to its high
+        transparency, securing user privacy may be a challenge.
+
+
+        In recent years, zero-knowledge proofs have begun to be used to improve blockchain
+        privacy. For example, in the case of cryptocurrencies, methods known collectively
+        as zk-SNARK (\*6) and zk-STARK (\*7) have begun to be introduced as zero-knowledge
+        proofs to show that the transaction operation was indeed performed, without
+        disclosing the transaction contents such as the sender, recipient, and remittance
+        amount.
+
+
+        In addition, zero-knowledge proofs have attracted even more attention because
+        they can contribute to speeding up blockchain processing.
+
+
+        - (\*6)
+
+        zk-SNARK: Zero-Knowledge Succinct Non-Interactive Argument of Knowledge
+
+
+        - (\*7)
+
+        zk-STARK: Zero-Knowledge Scalable Transparent Argument of Knowledge
+
+
+
+        ### 2\. Proof of Income Range
+
+
+        In November 2017, ING, a major Dutch bank, developed zero-knowledge range
+        proofs (ZKRP) (\*8). ZKRP is an application of zero-knowledge proofs. ZKRP
+        can prove that a numerical value, such as an amount of money, is within a
+        certain range without showing the numerical value to the other party. For
+        example, mortgage applicants can prove that their income is within a certain
+        range required by loan screening without telling the income itself.
+
+
+        - (\*8)[ING launches Zero-Knowledge Range Proof solution, a major addition
+        to blockchain technology](https://www.ingwb.com/en/insights/distributed-ledger-technology/ing-launches-major-addition-to-blockchain-technology)
+
+
+        ### 3\. Selective Disclosure of Attribute Information
+
+
+        The W3C, which standardizes Web technologies, has standardized a data model
+        for the concept of verifiable credentials (VC) (\*9). It introduces zero-knowledge
+        proof, in which you select your attribute information and prove only that
+        the attribute satisfies certain conditions.
+
+
+        For example, it shows a use case in which you select and prove only the information
+        that a university graduate received a degree without revealing his or her
+        identity or other unnecessary personal information.
+
+
+        - (\*9) [W3C Recommendation, Verifiable Credentials Data Model v1.1, 2022.](https://www.w3.org/TR/vc-data-model/#zero-knowledge-proofs)
+
+
+
+        VC is currently being discussed in the "Trusted Web" initiative led by the
+        Cabinet Secretariat of Japan. It shows the expectation of zero-knowledge proof
+        as a method to realize selective disclosure of data(\*10).
+
+
+        - (\*10) [Secretariat of the Headquarters for Digital Market Competition,
+        the Cabinet Secretariat of Japan, "Trusted Web White Paper Ver 2.0, Overview"
+        August 2022 (PDF: 1.7MB)](https://www.kantei.go.jp/jp/singi/digitalmarket/pdf_e/Trusted_Web_White_Paper_ver2.0_Overview.pdf)
+
+
+        ### 4\. User Authentication
+
+
+        Currently, ID and password authentication is mainly used for websites of various
+        services. However, since the string length of a password is limited to a range
+        that can be remembered or managed by the human brain, it is vulnerable to
+        brute-force and password-list-type attacks.
+
+
+        Furthermore, if an attacker takes over the server, not only the password itself,
+        but also information useful for guessing the password is leaked, which becomes
+        a hint for the attacker, and the password may be leaked in the future. If
+        user authentication is implemented with zero-knowledge proof, the server can
+        be more secure because no information related to the password exists from
+        the beginning.
+
+
+        As a zero-knowledge proof that can be applied to user authentication, there
+        is the Schnorr protocol (\*11). In this method, knowledge about the solution
+        of a mathematically difficult problem called the discrete logarithm problem
+        is assumed to be information that only the user can know and is authenticated
+        with zero-knowledge proof. Compared with the ID and password method, this
+        method has not been adopted in the world for many years due to its disadvantages
+        such as high communication volume, slow processing speed, and "The size of
+        the data to be kept secret is too large for humans to remember."
+
+
+        - (\*11) [IETF, RFC 8235, Schnorr Non-interactive Zero-Knowledge Proof, September
+        2017](https://www.rfc-editor.org/info/rfc8235)
+
+
+        In recent years, however, with the spread of technologies such as "faster
+        communication networks," "faster processing speeds of servers and terminals,"
+        and "memory areas that can be securely stored in smart cards and smartphones,"
+        conventional disadvantages are going to be no longer disadvantages.
+
+
+        ## Prospect
+
+
+        In recent years, the term "Web3" has attracted attention, and although there
+        are various interpretations, its constituent concepts are said to be centered
+        on "blockchain," "decentralization" and "decentralized ID." Application cases
+        (1) and (2) mentioned above are measures to improve the privacy of blockchain,
+        and (3) and (4) are related to decentralization and decentralized ID. Therefore,
+        zero-knowledge proof can be said to be "a technology that brings trustworthiness
+        to the privacy of Web3."
+
+
+        In the future, zero-knowledge proof will become an essential technology for
+        safe and secure future societies that require a high level of privacy.
+
+
+        NTT DATA will continue to keep up with the latest trends and accumulate and
+        disclose know-hows.
+
+
+        ![](https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/hiroaki-oguro.jpg?rev=470b7539b1bb46cf86cfef3e0f138a2d)
+
+
+        Hiroaki Oguro
+
+
+        NTT DATA Japan Corporation
+
+
+        He engages in R&D, in-house applications, and business applications in cryptography,
+        Web application security, and software engineering. CISSP. Senior member of
+        the Information Processing Society of Japan (IPSJ). Expert committee member
+        of the Special Interest Groups (SIG) of the Computer Security (CSEC) in IPSJ.'
+      metadata:
+        og:site_name: NTT DATA
+        twitter:card: summary
+        language: en
+        ogUrl: https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof
+        og:type: article
+        og:title: What is Zero-Knowledge Proof - a hot technology bringing trustworthiness
+          to Web3 privacy?
+        viewport: width=device-width, initial-scale=1
+        ogDescription: 'Recently, "zero-knowledge proof" is attracting attention.
+          In 2019, the World Economic Forum announced zero-knowledge proof as one
+          of the five privacy-enhancing technologies that bring new value to the financial
+          sector. '
+        ogTitle: What is Zero-Knowledge Proof - a hot technology bringing trustworthiness
+          to Web3 privacy?
+        format-detection: telephone=no, address=no, email=no
+        description: 'Recently, "zero-knowledge proof" is attracting attention. In
+          2019, the World Economic Forum announced zero-knowledge proof as one of
+          the five privacy-enhancing technologies that bring new value to the financial
+          sector. '
+        og:image: https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/index-list.jpg?rev=ff34be8828a9426e9e8278ff1bd1f1a0
+        og:description: 'Recently, "zero-knowledge proof" is attracting attention.
+          In 2019, the World Economic Forum announced zero-knowledge proof as one
+          of the five privacy-enhancing technologies that bring new value to the financial
+          sector. '
+        favicon: https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef
+        ogImage: https://www.nttdata.com/global/en/-/media/nttdataglobal/1_images/insights/focus/what-is-zero-knowledge-proof/index-list.jpg?rev=ff34be8828a9426e9e8278ff1bd1f1a0
+        og:url: https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof
+        title: What is Zero-Knowledge Proof - a hot technology bringing trustworthiness
+          to Web3 privacy? | NTT DATA Group
+        ogSiteName: NTT DATA
+        scrapeId: fba2d92b-8128-452c-88c7-f21e4914240e
+        sourceURL: https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof
+        url: https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof
+        statusCode: 200
+    - title: Zero-Knowledge Proofs Latest News - Crypto News
+      description: Zero-knowledge proofs platform NEBRA has launched its Universal
+        Proof Aggregation solution, bringing the benefits of ZKP verification to the
+        crypto industry.
+      url: https://crypto.news/tag/zero-knowledge-proofs/
+      markdown: "[Skip to content](https://crypto.news/tag/zero-knowledge-proofs/#content)\n\
+        \n[TR](https://tr.crypto.news/)\n\n![btc](https://crypto.news/images/icons/bitcoin.svg)\n\
+        \nBitcoin (BTC)\n\n$96,119.00 -0.5%\n\n[Bitcoin price](https://crypto.news/price/bitcoin/)\n\
+        \n![eth](https://crypto.news/images/icons/ethereum.svg)\n\nEthereum (ETH)\n\
+        \n$2,797.30 2.28%\n\n[Ethereum price](https://crypto.news/price/ethereum/)\n\
+        \n![bnb](https://crypto.news/images/icons/binancecoin.svg)\n\nBNB (BNB)\n\n\
+        $660.10 0.6%\n\n[BNB price](https://crypto.news/price/bnb/)\n\n![sol](https://crypto.news/images/icons/solana.svg)\n\
+        \nSolana (SOL)\n\n$169.83 -2.22%\n\n[Solana price](https://crypto.news/price/solana/)\n\
+        \n![xrp](https://crypto.news/images/icons/ripple.svg)\n\nXRP (XRP)\n\n$2.57\
+        \ -0.74%\n\n[XRP price](https://crypto.news/price/xrp/)\n\n![shib](https://crypto.news/images/icons/shiba-inu.svg)\n\
+        \nShiba Inu (SHIB)\n\n$0.0000156 0.97%\n\n[Shiba Inu price](https://crypto.news/price/shiba-inu/)\n\
+        \n![pepe](https://crypto.news/images/icons/pepe.svg)\n\nPepe (PEPE)\n\n$0.0000095\
+        \ -0.79%\n\n[Pepe price](https://crypto.news/price/pepe/)\n\n![bonk](https://coin-images.coingecko.com/coins/images/28600/large/bonk.jpg?1696527587)\n\
+        \nBonk (BONK)\n\n$0.0000159 -0.23%\n\n[Bonk price](https://crypto.news/price/bonk/)\n\
+        \n![wif](https://coin-images.coingecko.com/coins/images/33566/large/dogwifhat.jpg?1702499428)\n\
+        \ndogwifhat (WIF)\n\n$0.67 -1.71%\n\n[dogwifhat price](https://crypto.news/price/dogwifhat/)\n\
+        \n![popcat](https://coin-images.coingecko.com/coins/images/33760/large/image.jpg?1702964227)\n\
+        \nPopcat (POPCAT)\n\n$0.25 -4%\n\n[Popcat price](https://crypto.news/price/popcat/)\n\
+        \n![btc](https://crypto.news/images/icons/bitcoin.svg)\n\nBitcoin (BTC)\n\n\
+        $96,119.00 -0.5%\n\n[Bitcoin price](https://crypto.news/price/bitcoin/)\n\n\
+        ![eth](https://crypto.news/images/icons/ethereum.svg)\n\nEthereum (ETH)\n\n\
+        $2,797.30 2.28%\n\n[Ethereum price](https://crypto.news/price/ethereum/)\n\
+        \n![bnb](https://crypto.news/images/icons/binancecoin.svg)\n\nBNB (BNB)\n\n\
+        $660.10 0.6%\n\n[BNB price](https://crypto.news/price/bnb/)\n\n![sol](https://crypto.news/images/icons/solana.svg)\n\
+        \nSolana (SOL)\n\n$169.83 -2.22%\n\n[Solana price](https://crypto.news/price/solana/)\n\
+        \n![xrp](https://crypto.news/images/icons/ripple.svg)\n\nXRP (XRP)\n\n$2.57\
+        \ -0.74%\n\n[XRP price](https://crypto.news/price/xrp/)\n\n![shib](https://crypto.news/images/icons/shiba-inu.svg)\n\
+        \nShiba Inu (SHIB)\n\n$0.0000156 0.97%\n\n[Shiba Inu price](https://crypto.news/price/shiba-inu/)\n\
+        \n![pepe](https://crypto.news/images/icons/pepe.svg)\n\nPepe (PEPE)\n\n$0.0000095\
+        \ -0.79%\n\n[Pepe price](https://crypto.news/price/pepe/)\n\n![bonk](https://coin-images.coingecko.com/coins/images/28600/large/bonk.jpg?1696527587)\n\
+        \nBonk (BONK)\n\n$0.0000159 -0.23%\n\n[Bonk price](https://crypto.news/price/bonk/)\n\
+        \n![wif](https://coin-images.coingecko.com/coins/images/33566/large/dogwifhat.jpg?1702499428)\n\
+        \ndogwifhat (WIF)\n\n$0.67 -1.71%\n\n[dogwifhat price](https://crypto.news/price/dogwifhat/)\n\
+        \n![popcat](https://coin-images.coingecko.com/coins/images/33760/large/image.jpg?1702964227)\n\
+        \nPopcat (POPCAT)\n\n$0.25 -4%\n\n[Popcat price](https://crypto.news/price/popcat/)\n\
+        \n![btc](https://crypto.news/images/icons/bitcoin.svg)\n\nBitcoin (BTC)\n\n\
+        $96,119.00 -0.5%\n\n[Bitcoin price](https://crypto.news/price/bitcoin/)\n\n\
+        ![eth](https://crypto.news/images/icons/ethereum.svg)\n\nEthereum (ETH)\n\n\
+        $2,797.30 2.28%\n\n[Ethereum price](https://crypto.news/price/ethereum/)\n\
+        \n![bnb](https://crypto.news/images/icons/binancecoin.svg)\n\nBNB (BNB)\n\n\
+        $660.10 0.6%\n\n[BNB price](https://crypto.news/price/bnb/)\n\n![sol](https://crypto.news/images/icons/solana.svg)\n\
+        \nSolana (SOL)\n\n$169.83 -2.22%\n\n[Solana price](https://crypto.news/price/solana/)\n\
+        \n![xrp](https://crypto.news/images/icons/ripple.svg)\n\nXRP (XRP)\n\n$2.57\
+        \ -0.74%\n\n[XRP price](https://crypto.news/price/xrp/)\n\n![shib](https://crypto.news/images/icons/shiba-inu.svg)\n\
+        \nShiba Inu (SHIB)\n\n$0.0000156 0.97%\n\n[Shiba Inu price](https://crypto.news/price/shiba-inu/)\n\
+        \n![pepe](https://crypto.news/images/icons/pepe.svg)\n\nPepe (PEPE)\n\n$0.0000095\
+        \ -0.79%\n\n[Pepe price](https://crypto.news/price/pepe/)\n\n![bonk](https://coin-images.coingecko.com/coins/images/28600/large/bonk.jpg?1696527587)\n\
+        \nBonk (BONK)\n\n$0.0000159 -0.23%\n\n[Bonk price](https://crypto.news/price/bonk/)\n\
+        \n![wif](https://coin-images.coingecko.com/coins/images/33566/large/dogwifhat.jpg?1702499428)\n\
+        \ndogwifhat (WIF)\n\n$0.67 -1.71%\n\n[dogwifhat price](https://crypto.news/price/dogwifhat/)\n\
+        \n![popcat](https://coin-images.coingecko.com/coins/images/33760/large/image.jpg?1702964227)\n\
+        \nPopcat (POPCAT)\n\n$0.25 -4%\n\n[Popcat price](https://crypto.news/price/popcat/)\n\
+        \n## Top Zero-Knowledge Proofs Stories\n\n![Polyhedra Network launches Proof\
+        \ Cloud in open beta](https://crypto.news/app/uploads/2024/05/IMG_0044-880x525.webp)\n\
+        \nTop Stories\n\n![Scroll employs Cysic’s ZK computing power to scale Ethereum\
+        \ faster](https://crypto.news/app/uploads/2024/09/crypto-news-Ethereum-trading-chart-880x523.webp)\n\
+        \nTop Stories\n\n![Zero-knowledge modularity can help to scale web3 | Opinion](https://crypto.news/app/uploads/2024/07/crypto-news-Zero-knowledge-modularity-can-help-to-scale-web3-option02-880x523.webp)\n\
+        \nTop Stories\n\n![Nubit and Succinct launch Nuport to connect blockchain\
+        \ ecosystems](https://crypto.news/app/uploads/2024/07/crypto-news-blockchain-01-880x525.webp)\n\
+        \nTop Stories\n\n![NEBRA launches its zero-knowledge proof aggregator on Ethereum](https://crypto.news/app/uploads/2024/07/crypto-news-Zero-knowledge-modularity-can-help-to-scale-web3-option02-880x523.webp)\n\
+        \nTop Stories\n\n## Latest Zero-Knowledge Proofs News\n\n![BitcoinOS unveils\
+        \ Grail Bridge testnet app](https://crypto.news/app/uploads/2024/12/crypto-news-woman-Bitcoin-option01-880x523.webp)\n\
+        \nNews\n\n[Read more - BitcoinOS unveils Grail Bridge testnet app](https://crypto.news/bitcoinos-unveils-grail-bridge-testnet-app/)\n\
+        \n[BitcoinOS unveils Grail Bridge testnet app](https://crypto.news/bitcoinos-unveils-grail-bridge-testnet-app/)\n\
+        \nBitcoinOS, a rollups protocol for Bitcoin, has announced the testnet launch\
+        \ of its cross-chain Bitcoin bridge solution, Grail Bridge. The solution enables\
+        \ users to securely and trustlessly transfer Bitcoin (BTC) to Ethereum Virtual\
+        \ Machine-compatible chains, the BitcoinOS team said in…\n\n![Bitcoin](https://crypto.news/images/icons/bitcoin.svg)\n\
+        BTC [Bitcoin](https://crypto.news/price/bitcoin/)![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)\n\n5 days ago\n\n![Exclusive:\
+        \ Arbitrum integrates zkVerify for 91% cheaper proof verification](https://crypto.news/app/uploads/2022/03/Arbitrum-880x525.jpg)\n\
+        \nExclusive\n\n[Read more - Exclusive: Arbitrum integrates zkVerify for 91%\
+        \ cheaper proof verification](https://crypto.news/exclusive-arbitrum-integrates-zkverify-for-91-cheaper-proof-verification/)\n\
+        \n[Exclusive: Arbitrum integrates zkVerify for 91% cheaper proof verification](https://crypto.news/exclusive-arbitrum-integrates-zkverify-for-91-cheaper-proof-verification/)\n\
+        \nArbitrum has teamed up with modular layer-1 network zkVerify to make zero-knowledge\
+        \ proof verification faster for blockchain developers. Proof verification\
+        \ on Arbitrum (ARB) is about to become more efficient and cost-effective as\
+        \ zkVerify has integrated with the layer-2 solution, reducing…\n\n![Arbitrum](https://coin-images.coingecko.com/coins/images/16547/large/arb.jpg?1721358242)\n\
+        ARB [Arbitrum](https://crypto.news/price/arbitrum/)\n\nJan 30, 2025 at 03:30\
+        \ AM HAST\n\n![Chainlink’s Data Streams go live on Scroll mainnet](https://crypto.news/app/uploads/2023/07/MarketAcross-and-Chainlink-Labs-Establish-Channel-Partnership-To-Support-Chainlink-BUILD-Members01-880x525.jpg)\n\
+        \nNews\n\n[Read more - Chainlink’s Data Streams go live on Scroll mainnet](https://crypto.news/chainlinks-data-streams-go-live-on-scroll-mainnet/)\n\
+        \n[Chainlink’s Data Streams go live on Scroll mainnet](https://crypto.news/chainlinks-data-streams-go-live-on-scroll-mainnet/)\n\
+        \nChainlink’s standard for verifiable data has officially launched on Scroll,\
+        \ a zero-knowledge-proof-powered scaling solution on Ethereum. The decentralized\
+        \ oracle platform announced the integratio on Jan. 29, noting Data Streams\
+        \ were now live on Scroll (SCR) mainnet. Chainlink (LINK) now provides…\n\n\
+        ![Chainlink](https://coin-images.coingecko.com/coins/images/877/large/chainlink-new-logo.png?1696502009)\n\
+        LINK [Chainlink](https://crypto.news/price/chainlink/)![Scroll](https://coin-images.coingecko.com/coins/images/50571/large/scroll.jpg?1728376125)\n\
+        SCR [Scroll](https://crypto.news/price/scroll/)\n\nJan 29, 2025 at 09:13 AM\
+        \ HAST\n\n![Nokia patents technology for encrypting digital assets](https://crypto.news/app/uploads/2024/12/crypto-news-Nokia-option01-880x523.webp)\n\
+        \nNews\n\n[Read more - Nokia patents technology for encrypting digital assets](https://crypto.news/nokia-patents-technology-for-encrypting-digital-assets/)\n\
+        \n[Nokia patents technology for encrypting digital assets](https://crypto.news/nokia-patents-technology-for-encrypting-digital-assets/)\n\
+        \nNokia takes a major step toward securing cryptocurrencies with a new encryption\
+        \ patent. Nokia Technologies Co., Ltd. reportedly filed for a patent on Dec.\
+        \ 23, 2024, under the title “Device method and computer program” to improve\
+        \ the encryption of digital…\n\nDec 22, 2024 at 11:29 PM HAST\n\n![Do androids\
+        \ dream of zero-knowledge? | Opinion](https://crypto.news/app/uploads/2024/10/crypto-news-Do-androids-dream-of-zero-knowledge-proofs-option01-880x523.webp)\n\
+        \nOpinion\n\n[Read more - Do androids dream of zero-knowledge? \\| Opinion](https://crypto.news/do-androids-dream-of-zero-knowledge-opinion/)\n\
+        \n[Do androids dream of zero-knowledge? \\| Opinion](https://crypto.news/do-androids-dream-of-zero-knowledge-opinion/)\n\
+        \nWe need zero-knowledge proofs to verify machine learning models at scale.\n\
+        \nOct 23, 2024 at 01:58 AM HADT\n\n![Buenos Aires adds blockchain-based IDs\
+        \ to city app for privacy purposes](https://crypto.news/app/uploads/2024/02/crypto-news-Argentina-option03-880x525.webp)\n\
+        \nNews\n\n[Read more - Buenos Aires adds blockchain-based IDs to city app\
+        \ for privacy purposes](https://crypto.news/buenos-aires-adds-blockchain-based-ids-to-city-app-for-privacy-purposes/)\n\
+        \n[Buenos Aires adds blockchain-based IDs to city app for privacy purposes](https://crypto.news/buenos-aires-adds-blockchain-based-ids-to-city-app-for-privacy-purposes/)\n\
+        \nBuenos Aires has introduced a new digital identity system that prioritizes\
+        \ privacy using zero-knowledge technology. The Argentinian government has\
+        \ integrated QuarkID, a blockchain-based identity solution, into its miBA\
+        \ app, which offers services and documents to over 3.6 million residents,\
+        \ according…\n\nOct 22, 2024 at 08:12 AM HADT\n\n![Scroll employs Cysic’s\
+        \ ZK computing power to scale Ethereum faster](https://crypto.news/app/uploads/2024/09/crypto-news-Ethereum-trading-chart-880x523.webp)\n\
+        \nNews\n\n[Read more - Scroll employs Cysic’s ZK computing power to scale\
+        \ Ethereum faster](https://crypto.news/scroll-employs-cysics-zk-computing-power-to-scale-ethereum-faster/)\n\
+        \n[Scroll employs Cysic’s ZK computing power to scale Ethereum faster](https://crypto.news/scroll-employs-cysics-zk-computing-power-to-scale-ethereum-faster/)\n\
+        \nEthereum layer 2 blockchain, Scroll, has partnered with Cysic Network to\
+        \ integrate zero-knowledge computing power into the blockchain to accelerate\
+        \ Ethereum scaling. Scroll, an emerging Ethereum(ETH) layer-2 blockchain,\
+        \ has paired up with zero-knowledge proof layer Cysic Network in order to…\n\
+        \n![Ethereum](https://crypto.news/images/icons/ethereum.svg)\nETH [Ethereum](https://crypto.news/price/ethereum/)\n\
+        \nOct 14, 2024 at 10:37 PM HADT\n\n![ZKSync integrates Chainlink’s CCIP for\
+        \ cross-chain interoperability](https://crypto.news/app/uploads/2023/12/crypto-news-ZKFair-will-launch01-880x525.webp)\n\
+        \nNews\n\n[Read more - ZKSync integrates Chainlink’s CCIP for cross-chain\
+        \ interoperability](https://crypto.news/zksync-integrates-chainlinks-ccip-for-cross-chain-interoperability/)\n\
+        \n[ZKSync integrates Chainlink’s CCIP for cross-chain interoperability](https://crypto.news/zksync-integrates-chainlinks-ccip-for-cross-chain-interoperability/)\n\
+        \nDecentralized oracle network Chainlink has expanded its cross-chain interoperability\
+        \ protocol to zero-knowledge proofs platform ZKsync. Chainlink (LINK) announced\
+        \ on Sept. 16 that blockchain protocol Chainlink CCIP was live on the ZKsync\
+        \ (ZK) Era mainnet, with the integration aimed at enhancing…\n\n![Chainlink](https://coin-images.coingecko.com/coins/images/877/large/chainlink-new-logo.png?1696502009)\n\
+        LINK [Chainlink](https://crypto.news/price/chainlink/)![ZKsync](https://coin-images.coingecko.com/coins/images/38043/large/ZKTokenBlack.png?1718614502)\n\
+        ZK [ZKsync](https://crypto.news/price/zksync/)![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)\n\nSep 16, 2024 at 06:27\
+        \ AM HADT\n\n![Can Ethereum provide a settlement layer for financial markets?\
+        \ | Opinion](https://crypto.news/app/uploads/2024/09/crypto-news-Can-Ethereum-provide-a-settlement-layer-for-financial-markets-option04-880x523.webp)\n\
+        \nOpinion\n\n[Read more - Can Ethereum provide a settlement layer for financial\
+        \ markets? \\| Opinion](https://crypto.news/can-ethereum-provide-a-settlement-layer-for-financial-markets-opinion/)\n\
+        \n[Can Ethereum provide a settlement layer for financial markets? \\| Opinion](https://crypto.news/can-ethereum-provide-a-settlement-layer-for-financial-markets-opinion/)\n\
+        \nEthereum’s success as a tool in financial markets will depend on institutions’\
+        \ ability to understand and monitor Ethereum’s concentration risks.\n\nSep\
+        \ 8, 2024 at 02:04 AM HADT\n\n![Flare integrates Polyhedra’s zkBridge for\
+        \ enhanced cross-chain security](https://crypto.news/app/uploads/2023/12/crypto-news-Flare-Partners-with-Kinetic-to-Introduce-Lending-and-Borrowing-to-Flare-Ecosystem02-880x525.webp)\n\
+        \nNews\n\n[Read more - Flare integrates Polyhedra’s zkBridge for enhanced\
+        \ cross-chain security](https://crypto.news/flare-integrates-polyhedras-zkbridge-for-enhanced-cross-chain-security/)\n\
+        \n[Flare integrates Polyhedra’s zkBridge for enhanced cross-chain security](https://crypto.news/flare-integrates-polyhedras-zkbridge-for-enhanced-cross-chain-security/)\n\
+        \nPolyhedra Network has integrated its cross-chain interoperability protocol\
+        \ zkBridge with Flare. According to an announcement on Aug. 27, the integration\
+        \ of Polyhedra will help developers on Flare (FLR), the blockchain for data\
+        \ platform, tap into cross-chain security with zero-knowledge proofs.…\n\n\
+        ![LayerZero](https://coin-images.coingecko.com/coins/images/28206/large/ftxG9_TJ_400x400.jpeg?1696527208)\n\
+        ZRO [LayerZero](https://crypto.news/price/layerzero/)![Flare](https://coin-images.coingecko.com/coins/images/28624/large/FLR-icon200x200.png?1696527609)\n\
+        FLR [Flare](https://crypto.news/price/flare/)\n\nAug 27, 2024 at 05:32 AM\
+        \ HADT\n\n![Status partners with Linea to launch layer-2 rollup solution](https://crypto.news/app/uploads/2023/10/crypto-news-Astar-Network-Launches-Its-Ethereum-Layer02-880x525.webp)\n\
+        \nNews\n\n[Read more - Status partners with Linea to launch layer-2 rollup\
+        \ solution](https://crypto.news/status-partners-with-linea-to-launch-layer-2-rollup-solution/)\n\
+        \n[Status partners with Linea to launch layer-2 rollup solution](https://crypto.news/status-partners-with-linea-to-launch-layer-2-rollup-solution/)\n\
+        \nDecentralized messaging platform Status and zero-knowledge-powered layer-2\
+        \ blockchain Linea are collaborating to develop a new rollup solution, named\
+        \ Status Network. Status, an Ethereum (ETH)-based platform that raised $100\
+        \ million in its initial coin offering in 2017, announced this collaboration\
+        \ on…\n\n![Ethereum](https://crypto.news/images/icons/ethereum.svg)\nETH [Ethereum](https://crypto.news/price/ethereum/)\n\
+        \nAug 20, 2024 at 05:06 AM HADT\n\n![NEBRA launches its zero-knowledge proof\
+        \ aggregator on Ethereum](https://crypto.news/app/uploads/2024/07/crypto-news-Zero-knowledge-modularity-can-help-to-scale-web3-option02-880x523.webp)\n\
+        \nNews\n\n[Read more - NEBRA launches its zero-knowledge proof aggregator\
+        \ on Ethereum](https://crypto.news/nebra-launches-its-zero-knowledge-proof-aggregator-on-ethereum/)\n\
+        \n[NEBRA launches its zero-knowledge proof aggregator on Ethereum](https://crypto.news/nebra-launches-its-zero-knowledge-proof-aggregator-on-ethereum/)\n\
+        \nZero-knowledge proofs platform NEBRA has launched its Universal Proof Aggregation\
+        \ solution, bringing the benefits of ZKP verification to the crypto industry.\
+        \ NEBRA UPA, which went live on Ethereum (ETH), is a protocol that combines\
+        \ zero-knowledge proofs into a single proof…\n\n![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)![Worldcoin](https://coin-images.coingecko.com/coins/images/31069/large/worldcoin.jpeg?1696529903)\n\
+        WLD [Worldcoin](https://crypto.news/price/worldcoin/)\n\nAug 15, 2024 at 09:54\
+        \ AM HADT\n\n![Nubit and Succinct launch Nuport to connect blockchain ecosystems](https://crypto.news/app/uploads/2024/07/crypto-news-blockchain-01-880x525.webp)\n\
+        \nNews\n\n[Read more - Nubit and Succinct launch Nuport to connect blockchain\
+        \ ecosystems](https://crypto.news/nubit-and-succinct-launch-nuport-to-connect-blockchain-ecosystems/)\n\
+        \n[Nubit and Succinct launch Nuport to connect blockchain ecosystems](https://crypto.news/nubit-and-succinct-launch-nuport-to-connect-blockchain-ecosystems/)\n\
+        \nPolychain-backed modular blockchain platform Nubit and Web3 firm Succinct\
+        \ have launched Nuport, a new interface leveraging Nubit’s data availability\
+        \ layer to connect various blockchains. In its announcement on Aug. 6, Nubit\
+        \ said Nuport would allow the modular blockchain to bridge…\n\n![Bitcoin](https://crypto.news/images/icons/bitcoin.svg)\n\
+        BTC [Bitcoin](https://crypto.news/price/bitcoin/)![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)![Solana](https://crypto.news/images/icons/solana.svg)\n\
+        SOL [Solana](https://crypto.news/price/solana/)\n\nAug 6, 2024 at 09:10 AM\
+        \ HADT\n\n![Zero-knowledge modularity can help to scale web3 | Opinion](https://crypto.news/app/uploads/2024/07/crypto-news-Zero-knowledge-modularity-can-help-to-scale-web3-option02-880x523.webp)\n\
+        \nOpinion\n\n[Read more - Zero-knowledge modularity can help to scale web3\
+        \ \\| Opinion](https://crypto.news/zero-knowledge-modularity-can-help-to-scale-web3-opinion/)\n\
+        \n[Zero-knowledge modularity can help to scale web3 \\| Opinion](https://crypto.news/zero-knowledge-modularity-can-help-to-scale-web3-opinion/)\n\
+        \nModular proof verification will unlock new frontiers of innovation in web3,\
+        \ including new ZK-apps, Bitcoin ZK-rollups, proving systems, and more.\n\n\
+        ![Ethereum](https://crypto.news/images/icons/ethereum.svg)\nETH [Ethereum](https://crypto.news/price/ethereum/)\n\
+        \nAug 2, 2024 at 04:13 AM HADT\n\n![Polyhedra Network launches Proof Cloud\
+        \ in open beta](https://crypto.news/app/uploads/2024/05/IMG_0044-880x525.webp)\n\
+        \nNews\n\n[Read more - Polyhedra Network launches Proof Cloud in open beta](https://crypto.news/polyhedra-network-launches-proof-cloud-in-open-beta/)\n\
+        \n[Polyhedra Network launches Proof Cloud in open beta](https://crypto.news/polyhedra-network-launches-proof-cloud-in-open-beta/)\n\
+        \nPolyhedra Network has announced the open beta launch of its Proof Cloud\
+        \ at the Google ZK Summit.  Proof Cloud is designed to make ZK proofs more\
+        \ accessible in both web2 and web3 environments. Supported by Google Cloud,\
+        \ Polygon (MATIC), Linea,…\n\n![Polygon](https://coin-images.coingecko.com/coins/images/4713/large/polygon.png?1698233745)\n\
+        MATIC [Polygon](https://crypto.news/price/polygon/)\n\nJul 31, 2024 at 10:02\
+        \ AM HADT\n\n![Exclusive: experts on zero-knowledge proofs as the future of\
+        \ blockchain scalability](https://crypto.news/app/uploads/2024/06/crypto-news-Account-abstraction-is-key-to-improving-blockchain-UX-option03-880x523.webp)\n\
+        \nNews\n\n[Read more - Exclusive: experts on zero-knowledge proofs as the\
+        \ future of blockchain scalability](https://crypto.news/exclusive-experts-on-zero-knowledge-proofs-as-the-future-of-blockchain-scalability/)\n\
+        \n[Exclusive: experts on zero-knowledge proofs as the future of blockchain\
+        \ scalability](https://crypto.news/exclusive-experts-on-zero-knowledge-proofs-as-the-future-of-blockchain-scalability/)\n\
+        \nAs the focus turns toward web3, scalability is becoming a challenge for\
+        \ blockchain networks, preventing them from matching traditional financial\
+        \ systems.  Advanced cryptographic techniques, such as zero-knowledge proofs\
+        \ (ZKPs) and scaling solutions like ZK rollups, are emerging as key solutions. …\n\
+        \nJul 8, 2024 at 01:24 AM HADT\n\n![Decentralized AI: leveraging blockchain\
+        \ for a more equitable future | Opinion](https://crypto.news/app/uploads/2024/06/crypto-news-Decentralized-AI-option03-880x523.webp)\n\
+        \nOpinion\n\n[Read more - Decentralized AI: leveraging blockchain for a more\
+        \ equitable future \\| Opinion](https://crypto.news/decentralized-ai-leveraging-blockchain-for-a-more-equitable-future-opinion/)\n\
+        \n[Decentralized AI: leveraging blockchain for a more equitable future \\\
+        | Opinion](https://crypto.news/decentralized-ai-leveraging-blockchain-for-a-more-equitable-future-opinion/)\n\
+        \nDecentralized AI could shift the balance away from large, opaque, centralized\
+        \ institutions and provide individuals and enterprises with an entirely new\
+        \ economic system.\n\nJun 16, 2024 at 12:05 AM HADT\n\n![NEAR Foundation’s\
+        \ spin-off Nuffle Labs raises $13 million](https://crypto.news/app/uploads/2023/08/crytpo-news-decentralized-blockchain-system-front-side-view-hologram-dollars-background-v5.2-880x525.png)\n\
+        \nNews\n\n[Read more - NEAR Foundation’s spin-off Nuffle Labs raises $13 million](https://crypto.news/near-foundations-spin-off-nuffle-labs-raises-13-million/)\n\
+        \n[NEAR Foundation’s spin-off Nuffle Labs raises $13 million](https://crypto.news/near-foundations-spin-off-nuffle-labs-raises-13-million/)\n\
+        \nThe NEAR Foundation has announced that new spin-off platform Nuffle Labs,\
+        \ formerly NEAR Modular, has secured $13 million in funding. Nuffle Labs is\
+        \ spinning out from NEAR Foundation and Pagoda, with the new venture set to\
+        \ focus on improving NEAR’s...\n\n![NEAR Protocol](https://coin-images.coingecko.com/coins/images/10365/large/near.jpg?1696510367)\n\
+        NEAR [NEAR Protocol](https://crypto.news/price/near-protocol/)\n\nJun 13,\
+        \ 2024 at 06:08 AM HADT\n\n![Manta Foundation launches $50m ecosystem fund](https://crypto.news/app/uploads/2024/01/crypto-news-Manta-Network-option02-880x525.webp)\n\
+        \nNews\n\n[Read more - Manta Foundation launches $50m ecosystem fund](https://crypto.news/manta-foundation-launches-50-million-ecosystem-fund/)\n\
+        \n[Manta Foundation launches $50m ecosystem fund](https://crypto.news/manta-foundation-launches-50-million-ecosystem-fund/)\n\
+        \nThe Manta Foundation has launched its $50 million ecosystem fund, providing\
+        \ funding opportunities for projects looking to explore the Manta Network’s\
+        \ growing Web3 space. Manta Network is a modular layer-2 network that supports\
+        \ zero-knowledge (ZK) applications.  The project aims to...\n\nJun 13, 2024\
+        \ at 04:50 AM HADT\n\n![Space and Time debuts sub-second ZK prover](https://crypto.news/app/uploads/2024/05/IMG_0044-880x525.webp)\n\
+        \nNews\n\n[Read more - Space and Time debuts sub-second ZK prover](https://crypto.news/space-and-time-debuts-sub-second-zk-prover/)\n\
+        \n[Space and Time debuts sub-second ZK prover](https://crypto.news/space-and-time-debuts-sub-second-zk-prover/)\n\
+        \nCalifornia-based crypto startup Space and Time has released a new high-performance\
+        \ ZK prover to improve on-chain transactions and defi growth.\n\nJun 12, 2024\
+        \ at 08:27 AM HADT\n\n![Matter Labs withdraws ‘ZK’ trademark plans following\
+        \ community outcry](https://crypto.news/app/uploads/2024/05/IMG_0044-880x525.webp)\n\
+        \nNews\n\n[Read more - Matter Labs withdraws ‘ZK’ trademark plans following\
+        \ community outcry](https://crypto.news/matter-labs-withdraws-zk-trademark-plans-following-community-outcry/)\n\
+        \n[Matter Labs withdraws ‘ZK’ trademark plans following community outcry](https://crypto.news/matter-labs-withdraws-zk-trademark-plans-following-community-outcry/)\n\
+        \nMatter Labs, the team behind Ethereum’s layer-2 scaling solution zkSync,\
+        \ has decided to abandon its efforts to trademark the term “ZK” — short for\
+        \ “zero knowledge” proofs. The firm’s decision came three days after many\
+        \ senior ZK researchers blasted the...\n\n![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)\n\nJun 3, 2024 at 12:33\
+        \ AM HADT\n\n![Modularity is transforming the crypto landscape | Opinion](https://crypto.news/app/uploads/2024/05/crypto-news-Modularity-is-transforming-the-crypto-landscape-option01-880x525.webp)\n\
+        \nOpinion\n\n[Read more - Modularity is transforming the crypto landscape\
+        \ \\| Opinion](https://crypto.news/modularity-is-transforming-the-crypto-landscape-opinion/)\n\
+        \n[Modularity is transforming the crypto landscape \\| Opinion](https://crypto.news/modularity-is-transforming-the-crypto-landscape-opinion/)\n\
+        \nToday, modular protocols are gaining traction, and with the widespread adoption\
+        \ of decentralization, they will likely become the standard for building in\
+        \ web3.\n\nMay 19, 2024 at 03:13 AM HADT\n\n![zkSync hints at June token airdrop](https://crypto.news/app/uploads/2023/12/crypto-news-crypto-airdrops-option02-880x525.webp)\n\
+        \nNews\n\n[Read more - zkSync hints at June token airdrop](https://crypto.news/zksync-hints-at-june-token-airdrop/)\n\
+        \n[zkSync hints at June token airdrop](https://crypto.news/zksync-hints-at-june-token-airdrop/)\n\
+        \nzkSync tweeted about plans to hand over governance to the community next\
+        \ month, suggesting that a token airdrop is imminent.\n\nMay 17, 2024 at 08:49\
+        \ AM HADT\n\n![What is zero knowledge proof and how does it protect your data?](https://crypto.news/app/uploads/2024/05/IMG_0044-880x525.webp)\n\
+        \nLearn\n\n[Read more - What is zero knowledge proof and how does it protect\
+        \ your data?](https://crypto.news/what-is-zero-knowledge-proof-how-it-works/)\n\
+        \n[What is zero knowledge proof and how does it protect your data?](https://crypto.news/what-is-zero-knowledge-proof-how-it-works/)\n\
+        \nWhat is zero knowledge proof, and how does it ensure privacy online? Learn\
+        \ what it is and why it’s important. Imagine you hold a secret, and someone\
+        \ wants to verify that you know it, but you don’t want to reveal...\n\nMay\
+        \ 16, 2024 at 06:12 AM HADT\n\n![Don’t expect quick gains solely because of\
+        \ spot Bitcoin ETFs | Opinion](https://crypto.news/app/uploads/2024/05/crypto-news-Dont-expect-quick-gains-solely-because-of-spot-Bitcoin-ETFs-option02-880x525.webp)\n\
+        \nOpinion\n\n[Read more - Don’t expect quick gains solely because of spot\
+        \ Bitcoin ETFs \\| Opinion](https://crypto.news/dont-expect-quick-gains-solely-because-of-spot-bitcoin-etfs-opinion/)\n\
+        \n[Don’t expect quick gains solely because of spot Bitcoin ETFs \\| Opinion](https://crypto.news/dont-expect-quick-gains-solely-because-of-spot-bitcoin-etfs-opinion/)\n\
+        \nThe Bitcoin ETFs play a dual role in both bringing attention and funds to\
+        \ BTC itself and also sharing the spotlight with other sectors of the industry.\n\
+        \nMay 11, 2024 at 03:05 AM HADT\n\n![Crypto’s future hinges on solving the\
+        \ privacy-transparency conundrum | Opinion](https://crypto.news/app/uploads/2024/05/crypto-news-Cryptos-future-hinges-on-solving-the-privacy-transparency-conundrum-option02-880x525.webp)\n\
+        \nOpinion\n\n[Read more - Crypto’s future hinges on solving the privacy-transparency\
+        \ conundrum \\| Opinion](https://crypto.news/cryptos-future-hinges-on-solving-the-privacy-transparency-conundrum-opinion/)\n\
+        \n[Crypto’s future hinges on solving the privacy-transparency conundrum \\\
+        | Opinion](https://crypto.news/cryptos-future-hinges-on-solving-the-privacy-transparency-conundrum-opinion/)\n\
+        \nAdvancements in privacy-oriented blockchain protocols and applications highlight\
+        \ the ingenuity and evolution of blockchain, but the focus should be on web3.\n\
+        \nMay 11, 2024 at 01:15 AM HADT\n\n![OP_CAT’s BIP-420 proposes to revive Bitcoin\
+        \ covenants](https://crypto.news/app/uploads/2024/04/crypto-news-bitcoin-option54-880x525.webp)\n\
+        \nNews\n\n[Read more - OP\\_CAT’s BIP-420 proposes to revive Bitcoin covenants](https://crypto.news/op_cats-bip-420-proposes-to-revive-bitcoin-covenants/)\n\
+        \n[OP\\_CAT’s BIP-420 proposes to revive Bitcoin covenants](https://crypto.news/op_cats-bip-420-proposes-to-revive-bitcoin-covenants/)\n\
+        \nOP\\_CAT recently unveiled its BIP-420 proposal amid the ongoing discourse\
+        \ surrounding covenants within the Bitcoin community.\n\n![Bitcoin](https://crypto.news/images/icons/bitcoin.svg)\n\
+        BTC [Bitcoin](https://crypto.news/price/bitcoin/)\n\nApr 23, 2024 at 08:14\
+        \ AM HADT\n\n![Galxe launches Identity Protocol to boost user control, privacy](https://crypto.news/app/uploads/2023/09/crytpo-news-Unlocking-the-Future-with-Entropy-Mainnet04-880x525.png)\n\
+        \nNews\n\n[Read more - Galxe launches Identity Protocol to boost user control,\
+        \ privacy](https://crypto.news/galxe-launches-identity-protocol/)\n\n[Galxe\
+        \ launches Identity Protocol to boost user control, privacy](https://crypto.news/galxe-launches-identity-protocol/)\n\
+        \nGalxe announces the launch of Identity Protocol, introducing an identity\
+        \ infrastructure that focuses on user privacy, security, and sovereignty\n\
+        \nApr 11, 2024 at 06:51 AM HADT\n\n![The art of flexibility: unpacking the\
+        \ power of programmable cryptography | Opinion](https://crypto.news/app/uploads/2024/04/crypto-news-The-art-of-flexibility-unpacking-the-power-of-programmable-cryptography-option01-880x525.webp)\n\
+        \nOpinion\n\n[Read more - The art of flexibility: unpacking the power of programmable\
+        \ cryptography \\| Opinion](https://crypto.news/the-art-of-flexibility-unpacking-the-power-of-programmable-cryptography-opinion/)\n\
+        \n[The art of flexibility: unpacking the power of programmable cryptography\
+        \ \\| Opinion](https://crypto.news/the-art-of-flexibility-unpacking-the-power-of-programmable-cryptography-opinion/)\n\
+        \nProgrammable cryptography offers the opportunity to break down barriers\
+        \ and usher in a new era of modern encryption that’s more accessible and ripe\
+        \ for future development\n\nApr 7, 2024 at 01:50 AM HADT\n\n![Namada aims\
+        \ to pioneer new era of asset privacy on blockchain](https://crypto.news/app/uploads/2024/01/crypto-news-Namada-is-Pioneering-a-New-Era04-880x525.webp)\n\
+        \nNews\n\n[Read more - Namada aims to pioneer new era of asset privacy on\
+        \ blockchain](https://crypto.news/namada-aims-to-pioneer-new-era-of-asset-privacy-on-blockchain/)\n\
+        \n[Namada aims to pioneer new era of asset privacy on blockchain](https://crypto.news/namada-aims-to-pioneer-new-era-of-asset-privacy-on-blockchain/)\n\
+        \nNamada is preparing for its Q1 2024 mainnet launch. It is a Cosmos-based\
+        \ layer-1 strives to redefine asset privacy by using ZK cryptography\n\nJan\
+        \ 30, 2024 at 03:00 AM HAST\n\n![Axiom secures $20m for Ethereum data access](https://crypto.news/app/uploads/2024/01/crypto-news-Ethereum-option11-880x525.webp)\n\
+        \nNews\n\n[Read more - Axiom secures $20m for Ethereum data access](https://crypto.news/axiom-secures-20m-for-ethereum-data-access/)\n\
+        \n[Axiom secures $20m for Ethereum data access](https://crypto.news/axiom-secures-20m-for-ethereum-data-access/)\n\
+        \nAxiom, an emerging Ethereum data protocol, has secured $20 million in Series\
+        \ A funding for zero-knowledge proofs.\n\n![Ethereum](https://crypto.news/images/icons/ethereum.svg)\n\
+        ETH [Ethereum](https://crypto.news/price/ethereum/)\n\nJan 25, 2024 at 07:47\
+        \ AM HAST\n\n![ZKFair aims to reshape zero knowledge layer-2 with community\
+        \ ownership and innovation](https://crypto.news/app/uploads/2023/12/crypto-news-ZKFair-will-launch03-880x525.webp)\n\
+        \nNews\n\n[Read more - ZKFair aims to reshape zero knowledge layer-2 with\
+        \ community ownership and innovation](https://crypto.news/zkfair-aims-to-reshape-zero-knowledge-layer-2-with-community-ownership-and-innovation/)\n\
+        \n[ZKFair aims to reshape zero knowledge layer-2 with community ownership\
+        \ and innovation](https://crypto.news/zkfair-aims-to-reshape-zero-knowledge-layer-2-with-community-ownership-and-innovation/)\n\
+        \nZKFair is set to release a zero-knowledge (ZK) community-driven layer-2\
+        \ network and airdrop 100% of tokens\n\nDec 20, 2023 at 07:00 AM HAST\n\n\
+        Show More\n\nSign up for crypto news and market insights\n\nGet crypto market\
+        \ analysis and curated news delivered right to your inbox every week.\n\n\
+        Email\nSubscribe\n\nYou have successfully joined our subscriber list.\n\n\
+        Search\nSearch\n\n- [News](https://crypto.news/)\n  - [All](https://crypto.news/)\n\
+        \  - [Bitcoin](https://crypto.news/tag/bitcoin/)\n  - [Blockchain](https://crypto.news/tag/blockchain/)\n\
+        \  - [Ethereum](https://crypto.news/tag/ethereum/)\n  - [DeFi](https://crypto.news/tag/defi/)\n\
+        \  - [Altcoin](https://crypto.news/tag/altcoin/)\n  - [Regulation](https://crypto.news/tag/regulation/)\n\
+        \  - [Solana](https://crypto.news/tag/solana/)\n  - [Shiba Inu](https://crypto.news/tag/shiba-inu/)\n\
+        - [Feature](https://crypto.news/feature/)\n- [Opinion](https://crypto.news/opinion/)\n\
+        - [Follow-up](https://crypto.news/follow-up/)\n- [Markets](https://crypto.news/markets/)\n\
+        - [Prices](https://crypto.news/market-cap/)\n- [Learn](https://crypto.news/learn/)\n\
+        - [Free Bitcoins](https://crypto.news/free-bitcoins/)\n- [Buy Crypto](https://crypto.news/buy-crypto/)\n\
+        - [Events](https://crypto.news/events/)\n- [Meme Coins](https://crypto.news/meme-coins/)\n\
+        - [Tap-to-earn](https://crypto.news/tap-to-earn-games/)\n- [Newsletters](https://crypto.news/newsletters/)\n\
+        \n[Advertise](https://crypto.news/advertise/)\n\nInfo\n\nTerms\n\n[X](https://x.com/crypto_dot_news)[Telegram](https://t.me/crypto_dot_news)[LinkedIn](https://linkedin.com/company/cryptodotnews)\n\
+        \nOur site uses cookies and similar technologies. By using our site you consent\
+        \ to the use of cookies. Find additional information on how we use cookies\
+        \ in our [Cookie Policy](https://crypto.news/cookie-policy/).\n\nI accept\
+        \ cookies\n\nSign up for our free newsletters\n\nSubscribe\n\n[iframe](https://td.doubleclick.net/td/ga/rul?tid=G-EYKKTH3Z4Z&gacid=1234397946.1740311961&gtm=45je52k0v9179442195z8858212174za200zb858212174&dma=0&gcd=13l3l3l3l1l1&npa=0&pscdl=noapi&aip=1&fledge=1&frm=0&tag_exp=101732279~101732281~102067808~102482433~102539968~102558064~102587591~102605417~102640600~102658453&z=1381942049)[iframe](https://td.doubleclick.net/td/ga/rul?tid=G-D9ESG7NFLS&gacid=1234397946.1740311961&gtm=45je52k0v892101153z8858212174za200zb858212174&dma=0&gcd=13l3l3l3l1l1&npa=0&pscdl=noapi&aip=1&fledge=1&frm=0&tag_exp=101732279~101732281~102015666~102067808~102482433~102539968~102558064~102587591~102605417~102640600~102658453&z=681594572)"
+      metadata:
+        twitter:data1: '43'
+        description: Stay up-to-date with the latest Zero-Knowledge Proofs news, analysis,
+          and in-depth articles. Expert opinions, breaking news, and real-time updates
+          on Zero-Knowledge Proofs news page.
+        generator: WP Rocket 3.17.3.1
+        ogLocale: en_US
+        language: en-US
+        og:site_name: crypto.news
+        favicon: https://crypto.news/app/uploads/2024/11/cryptonews-icon-150x150.png
+        ogTitle: Zero-Knowledge Proofs Latest News | crypto news
+        title: Zero-Knowledge Proofs Latest News | crypto news
+        og:image:width: '1200'
+        twitter:label1: Posts
+        og:description: Stay up-to-date with the latest Zero-Knowledge Proofs news,
+          analysis, and in-depth articles. Expert opinions, breaking news, and real-time
+          updates on Zero-Knowledge Proofs news page.
+        msapplication-TileImage: https://crypto.news/app/uploads/2024/11/cryptonews-icon-300x300.png
+        og:image: https://crypto.news/app/uploads/2023/04/og-image-default.png
+        twitter:description: Stay up-to-date with the latest Zero-Knowledge Proofs
+          news, analysis, and in-depth articles. Expert opinions, breaking news, and
+          real-time updates on Zero-Knowledge Proofs news page.
+        twitter:image: https://crypto.news/app/uploads/2023/04/og-image-default.png
+        og:title: Zero-Knowledge Proofs Latest News | crypto news
+        ogSiteName: crypto.news
+        robots: follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large
+        onesignal: wordpress-plugin
+        ogUrl: https://crypto.news/tag/zero-knowledge-proofs/
+        ogImage: https://crypto.news/app/uploads/2023/04/og-image-default.png
+        twitter:site: '@cryptodotnew'
+        twitter:title: Zero-Knowledge Proofs Latest News | crypto news
+        twitter:card: summary_large_image
+        og:image:type: image/png
+        ogDescription: Stay up-to-date with the latest Zero-Knowledge Proofs news,
+          analysis, and in-depth articles. Expert opinions, breaking news, and real-time
+          updates on Zero-Knowledge Proofs news page.
+        viewport: width=device-width, initial-scale=1, maximum-scale=2
+        og:type: article
+        theme-color: '#0080c8'
+        og:image:secure_url: https://crypto.news/app/uploads/2023/04/og-image-default.png
+        og:image:height: '630'
+        og:url: https://crypto.news/tag/zero-knowledge-proofs/
+        article:publisher: https://facebook.com/cryptonews/
+        og:locale: en_US
+        scrapeId: 86516fbc-101f-4c32-af3a-2d20cd59b8a3
+        sourceURL: https://crypto.news/tag/zero-knowledge-proofs/
+        url: https://crypto.news/tag/zero-knowledge-proofs/
+        statusCode: 200
