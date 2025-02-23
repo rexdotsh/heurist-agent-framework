@@ -17,7 +17,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             'version': '1.0.0',
             'author': 'Heurist team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'description': 'This agent can fetch Solana token trading data and trending tokens from Bitquery',
+            'description': 'This agent can fetch Solana token trading data and trending tokens from Bitquery.',
             'inputs': [
                 {
                     'name': 'query',
@@ -52,22 +52,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
     def get_system_prompt(self) -> str:
         return (
             "You are a specialized assistant that analyzes Solana token trading data from Bitquery. Your responses should be clear, concise, and data-driven.\n\n"
-            "When analyzing specific tokens:\n"
-            "1. Always start with a brief token overview (name, symbol, address)\n"
-            "2. Provide a 1-hour price analysis including:\n"
-            "   - Opening and closing prices\n"
-            "   - High and low prices with timestamps\n"
-            "   - No need to provide detailed time-series data but just summarize the price movement\n"
-            "3. Trade volume\n"
-            "When providing trending tokens:\n"
-            "1. List top 10 tokens by trading activity\n"
-            "2. For each token include:\n"
-            "   - Token name and symbol\n"
-            "   - Smart contract address (Mint Address)\n"
-            "   - Trading volume\n"
-            "   - Number of trades\n"
-            "   - Exchange names\n"
+            "If some data is missing, you don't need to mention it in your report unless it's critical to answer the user's question."
+            "Don't be verbose. Present the essential information. You are not a repeater of the raw data but you want to capture the essence and present insights."
             "For any token contract address, you MUST use this format [Mint Address](https://solscan.io/token/Mint_Address)"
+            "Use natural language to write your response. You don't need to include how you got or derived the data."
+            "Answer user's question based on the provided data. If you don't have enough information, just say you don't know."
         )
 
     def get_tool_schemas(self) -> List[Dict]:
