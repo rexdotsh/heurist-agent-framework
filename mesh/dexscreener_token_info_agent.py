@@ -22,6 +22,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             'name': 'DexScreener Token Info Agent', 
             'version': '1.0.0',
             'author': 'dyt9qc',
+            'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
             'created_at': '2025-02-13 07:43:15',
             'description': 'This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API',
             'inputs': [
@@ -30,18 +31,6 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     'description': 'Search query for token name, symbol or address',
                     'type': 'str', 
                     'required': True
-                },
-                {
-                    'name': 'tool',
-                    'description': 'Tool name for direct tool calls',
-                    'type': 'str',
-                    'required': False
-                },
-                {
-                    'name': 'tool_arguments',
-                    'description': 'Arguments for direct tool call',
-                    'type': 'dict',
-                    'required': False
                 },
                 {
                     'name': 'raw_data_only',

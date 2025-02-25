@@ -28,18 +28,6 @@ class DuckDuckGoSearchAgent(MeshAgent):
                     'required': True
                 },
                 {
-                    'name': 'tool',
-                    'description': 'Tool name for direct tool calls',
-                    'type': 'str',
-                    'required': False
-                },
-                {
-                    'name': 'tool_arguments',
-                    'description': 'Arguments for direct tool call',
-                    'type': 'dict',
-                    'required': False
-                },
-                {
                     'name': 'max_results',
                     'description': 'The maximum number of results to return',
                     'type': 'int',
