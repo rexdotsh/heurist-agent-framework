@@ -11,6 +11,7 @@ class ComposableEchoAgent(MeshAgent):
             'name': 'ComposableEchoAgent',
             'version': '1.0.0',
             'author': 'Heurist Team',
+            'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
             'description': 'An agent that calls EchoAgent and prefixes its response. This agent is for testing only.',
             'inputs': [
                 {
