@@ -98,4 +98,6 @@ async def list_agents():
             "tools": tools
         }
 
+        logger.info(f"Agent {agent_id} has tools: {tools}")
+        
     return agents_info
