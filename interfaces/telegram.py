@@ -117,7 +117,7 @@ class TelegramAgent(CoreAgent):
             
         if image_url:
             await update.message.reply_photo(photo=image_url)
-        if text_response:
+        elif text_response:
             await update.message.reply_text(text_response)
 
     async def send_message(self, chat_id: int, message: str, image_url: str = None) -> None:

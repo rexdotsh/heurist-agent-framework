@@ -6,8 +6,9 @@ import os
 from loguru import logger
 from dotenv import load_dotenv
 from clients.mesh_client import MeshClient
-
-load_dotenv()
+import dotenv
+os.environ.clear()
+dotenv.load_dotenv()
 
 # By default, large and small models are the same
 DEFAULT_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct"
