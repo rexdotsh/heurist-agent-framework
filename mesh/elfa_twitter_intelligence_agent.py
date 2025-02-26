@@ -43,19 +43,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                     'description': 'Natural language query about token mentions, trends, or account analysis',
                     'type': 'str',
                     'required': True
-                },
-                {
-                    'name': 'tool',
-                    'description': 'Tool name for direct tool calls',
-                    'type': 'str',
-                    'required': False
-                },
-                {
-                    'name': 'tool_arguments',
-                    'description': 'Arguments for direct tool call',
-                    'type': 'dict',
-                    'required': False
-                },
+                },                
                 {
                     'name': 'raw_data_only',
                     'description': 'If true, return only raw data without natural language response',

@@ -24,19 +24,7 @@ class TokenContractSecurityAgent(MeshAgent):
                     'description': 'The query containing token contract address and chain ID or chain name',
                     'type': 'str',
                     'required': False
-                },
-                {
-                    'name': 'tool',
-                    'description': 'Direct tool name to call',
-                    'type': 'str',
-                    'required': False
-                },
-                {
-                    'name': 'tool_arguments',
-                    'description': 'Arguments for direct tool call',
-                    'type': 'dict',
-                    'required': False
-                },
+                },                
                 {
                     'name': 'raw_data_only',
                     'description': 'If true, returns only raw data without analysis',
