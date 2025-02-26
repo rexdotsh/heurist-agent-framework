@@ -8,27 +8,40 @@ import json
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Type, List, Any
 
-load_dotenv()
-
 class PumpFunTokenAgent(MeshAgent):
     def __init__(self):
         super().__init__()
+        # Reload environment variables when agent starts
+        load_dotenv(override=True)
+        
         self.session = None
         self.metadata.update({
             'name': 'PumpFun Token Analysis Agent',
             'version': '1.0.0',
             'author': 'Heurist Team',
-            'description': 'This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data.',
+            'description': 'This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data. Supports analysis across multiple trading pairs (USDC, SOL).',
             'inputs': [
                 {
                     'name': 'query_type',
-                    'description': 'Type of query to execute',
+                    'description': 'Type of token analysis to execute. Valid options are: \n'
+                                 '- "creation": Analyze new token creation events\n'
+                                 '- "metrics": Analyze market cap, liquidity, and volume\n'
+                                 '- "holders": Analyze token holder distribution\n'
+                                 '- "buyers": Analyze first 100 token buyers\n'
+                                 '- "holder_status": Analyze current status of early buyers\n'
+                                 '- "top_traders": Analyze most active traders',
                     'type': 'str',
                     'required': True
                 },
                 {
                     'name': 'parameters',
-                    'description': 'Query-specific parameters',
+                    'description': 'Query-specific parameters object. Required fields per query type:\n'
+                                 '- creation: {interval: "hours"|"days", offset: 1-99}\n'
+                                 '- metrics: {token_address: str, side_tokens: string[]}\n'
+                                 '- holders: {token_address: str}\n'
+                                 '- buyers: {token_address: str}\n'
+                                 '- holder_status: {token_address: str, buyer_addresses: string[]}\n'
+                                 '- top_traders: {token_address: str}',
                     'type': 'dict',
                     'required': False
                 }
@@ -497,6 +510,8 @@ class PumpFunTokenAgent(MeshAgent):
         if not self.session:
             self.session = aiohttp.ClientSession()
 
+        print("BITQUERY_API_KEY", os.getenv("BITQUERY_API_KEY"))
+
         url = 'https://streaming.bitquery.io/eap'
         headers = {
             'Content-Type': 'application/json',
@@ -680,8 +695,8 @@ class PumpFunTokenAgent(MeshAgent):
       query = params.get('query')
       parameters = params.get('parameters', {})
 
-      if not query:
-          raise ValueError("Query parameter is required")
+      # if not query:
+      #     raise ValueError("Query parameter is required")
 
       response = await call_llm_with_tools_async(
           base_url=self.heurist_base_url,
@@ -690,7 +705,7 @@ class PumpFunTokenAgent(MeshAgent):
           system_prompt=self.get_system_prompt(query_type),
           user_prompt=query,
           temperature=0.1,
-          tools=[self.get_tool_schema(query_type)]
+          tools=self.get_tool_schema()
       )
 
       if not response:
