@@ -13,6 +13,7 @@ from mesh.pumpfun_analysis_agent import PumpFunTokenAgent
 
 load_dotenv()
 
+
 QUERIES = {
     'creation': {
         'query_type': 'creation',
@@ -22,12 +23,28 @@ QUERIES = {
             'offset': 1
         }
     },
-    'metrics': {
+    'metrics_usdc': {
         'query_type': 'metrics',
-        'query': 'Get market cap, liquidity and trade volume for the specified token',
+        'query': 'Get market cap, liquidity and trade volume for the specified token using USDC pair',
         'parameters': {
             'token_address': '98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump',
-            'usdc_address': 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
+            'quote_token': 'usdc'
+        }
+    },
+    'metrics_sol': {
+        'query_type': 'metrics',
+        'query': 'Get market cap, liquidity and trade volume for the specified token using SOL pair',
+        'parameters': {
+            'token_address': '98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump',
+            'quote_token': 'sol'
+        }
+    },
+    'metrics_virtual': {
+        'query_type': 'metrics',
+        'query': 'Get market cap, liquidity and trade volume for the specified token using Virtual pair',
+        'parameters': {
+            'token_address': '2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump',
+            'quote_token': 'virtual'
         }
     },
     'holders': {
@@ -41,7 +58,8 @@ QUERIES = {
         'query_type': 'buyers',
         'query': 'Show me the first 100 buyers of this token',
         'parameters': {
-            'token_address': '2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump'
+            'token_address': '2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump',
+            'limit': 100
         }
     },
     'holder_status': {
@@ -59,7 +77,8 @@ QUERIES = {
         'query_type': 'top_traders',
         'query': 'Show me the top traders for this token on Pump Fun DEX',
         'parameters': {
-            'token_address': 'FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93'
+            'token_address': 'FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93',
+            'limit': 100
         }
     }
 }
@@ -99,10 +118,12 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
                 {
                     'address': holder['address'],
                     'holding': holder['holding'],
+                    'percentage_of_supply': holder.get('percentage_of_supply', 0),
                     'token_info': holder['token_info']
                 }
                 for holder in agent_output.get('data', {}).get('holders', [])[:10]
-            ]
+            ],
+            'total_supply': agent_output.get('data', {}).get('total_supply', 0)
         }
     elif query_name == 'buyers':
         base_result['output']['data'] = {
@@ -110,20 +131,26 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
                 {
                     'owner': buyer['owner'],
                     'amount': buyer['amount'],
-                    'time': buyer['time']
+                    'amount_usd': buyer.get('amount_usd', 0),
+                    'time': buyer['time'],
+                    'currency_pair': buyer.get('currency_pair', '')
                 }
                 for buyer in agent_output.get('data', {}).get('buyers', [])[:100]
-            ]
+            ],
+            'unique_buyer_count': agent_output.get('data', {}).get('unique_buyer_count', 0)
         }
     elif query_name == 'holder_status':
         base_result['output']['data'] = {
             'holder_statuses': [
                 {
                     'owner': status['owner'],
-                    'current_balance': status['current_balance']
+                    'current_balance': status['current_balance'],
+                    'initial_balance': status.get('initial_balance', 0),
+                    'status': status.get('status', 'unknown')
                 }
                 for status in agent_output.get('data', {}).get('holder_statuses', [])
-            ]
+            ],
+            'summary': agent_output.get('data', {}).get('summary', {})
         }
     elif query_name == 'top_traders':
         base_result['output']['data'] = {
@@ -132,14 +159,21 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
                     'owner': trader['owner'],
                     'bought': trader['bought'],
                     'sold': trader['sold'],
+                    'buy_sell_ratio': trader.get('buy_sell_ratio', 0),
                     'total_volume': trader['total_volume'],
-                    'volume_usd': trader['volume_usd']
+                    'volume_usd': trader['volume_usd'],
+                    'transaction_count': trader.get('transaction_count', 0)
                 }
                 for trader in agent_output.get('data', {}).get('traders', [])[:100]
-            ]
+            ],
+            'markets': agent_output.get('data', {}).get('markets', [])
         }
-    else:  # metrics query
+    elif query_name.startswith('metrics'):
+        # Handle all metrics query types
         base_result['output']['data'] = agent_output.get('data', {})
+        # Check if fallback was used
+        if 'fallback_used' in agent_output.get('data', {}):
+            base_result['output']['fallback_used'] = agent_output['data']['fallback_used']
 
     return base_result
 
@@ -163,39 +197,53 @@ async def save_results(results: Dict[str, Any], output_file: Path):
     except Exception as e:
         print(f"Error saving results: {str(e)}")
 
-async def run_queries(query_type: str = 'all'):
-    """Run queries based on the specified type."""
+async def run_queries(query_type: str = 'all', query_params: Dict = None):
+    """Run queries based on the specified type with optional custom parameters."""
     results = {}
     script_dir = Path(__file__).parent
     current_file = Path(__file__).stem
     base_filename = f"{current_file}_example"
     output_file = script_dir / f"{base_filename}.yaml"
+    
+    query_params = query_params or {}
 
     async with PumpFunTokenAgent() as agent:
         try:
             if query_type.lower() == 'all':
                 for query_name in QUERIES.keys():
+                    print(f"Running query: {query_name}")
+                    if query_name in query_params:
+                        QUERIES[query_name]['parameters'].update(query_params[query_name])
                     results[query_name] = await run_single_query(agent, query_name)
             elif query_type in QUERIES:
+                if query_type in query_params:
+                    QUERIES[query_type]['parameters'].update(query_params[query_type])
                 results[query_type] = await run_single_query(agent, query_type)
             else:
                 raise ValueError(f"Invalid query type. Must be one of: {', '.join(QUERIES.keys())} or 'all'")
 
             await save_results(results, output_file)
+            print(f"Results saved to {output_file}")
 
         except Exception as e:
             print(f"Error executing queries: {str(e)}")
 
 def main():
     """Main entry point for the script."""
-    parser = argparse.ArgumentParser(description='Run PumpFun token analysis queries')
-    parser.add_argument('--query-type', type=str, default='all',
-                      help='Type of query to run. Options: creation, metrics, holders, buyers, holder_status, top_traders, all')
-    
-    args = parser.parse_args()
-    
-    asyncio.run(run_queries(args.query_type))
+    agent_query = "all"
+    # Available agent_query options:
+    # - creation (interval=hours|days, offset=1-99)
+    # - metrics_usdc (token_address=address, quote_token=usdc)
+    # - metrics_sol (token_address=address, quote_token=sol)
+    # - metrics_virtual (token_address=address, quote_token=virtual)
+    # - holders (token_address=address)
+    # - buyers (token_address=address, limit=1-100)
+    # - holder_status (token_address=address, buyer_addresses=[addr1,addr2,...])
+    # - top_traders (token_address=address, limit=1-100)
+    # - all (runs all queries with default parameters)
+    # 
+    print(f"Running query type: {agent_query}")
+    asyncio.run(run_queries(agent_query))
 
 if __name__ == "__main__":
-    import argparse
     main()
