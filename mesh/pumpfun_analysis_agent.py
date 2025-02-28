@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, List
 from .mesh_agent import MeshAgent, monitor_execution, with_retry, with_cache
 from core.llm import call_llm_with_tools_async, call_llm_async
 import os
@@ -6,7 +6,9 @@ import aiohttp
 from dotenv import load_dotenv
 import json
 from datetime import datetime, timezone, timedelta
-from typing import Dict, Type, List, Any
+import logging
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -33,23 +35,29 @@ class PumpFunTokenAgent(MeshAgent):
             'description': 'This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data.',
             'inputs': [
                 {
-                    'name': 'query_type',
-                    'description': 'Type of query to execute',
+                    'name': 'query',
+                    'description': 'Natural language query about a token, or a request for trending coins. ',
                     'type': 'str',
-                    'required': True
+                    'required': False
                 },
                 {
-                    'name': 'parameters',
-                    'description': 'Query-specific parameters',
-                    'type': 'dict',
-                    'required': False
+                    'name': 'raw_data_only',
+                    'description': 'If true, the agent will only return the raw or base structured data without additional LLM explanation.',
+                    'type': 'bool',
+                    'required': False,
+                    'default': False
                 }
             ],
             'outputs': [
                 {
                     'name': 'response',
-                    'description': 'Token analysis results',
+                    'description': 'Natural language explanation of the token information (empty if a direct tool call).',
                     'type': 'str'
+                },
+                {
+                    'name': 'data',
+                    'description': 'Structured token analysis data.',
+                    'type': 'dict'
                 }
             ],
             'external_apis': ['Bitquery'],
@@ -66,6 +74,173 @@ class PumpFunTokenAgent(MeshAgent):
         if self.session:
             await self.session.close()
             self.session = None
+
+    def get_system_prompt(self) -> str:
+        return """
+IDENTITY:
+You are a Solana blockchain analyst specializing in Pump.fun token data analysis.
+
+CAPABILITIES:
+- Retrieve recent token creations on Pump.fun
+- Analyze token metrics including market cap, liquidity, and volume
+- Identify token holder distributions and wallet patterns
+- Track buyer activity and trading patterns
+
+RESPONSE GUIDELINES:
+- Keep responses focused on what was specifically asked
+- Format numbers in a human-readable way (e.g., "150.4M SOL")
+- Provide only relevant metrics for the query context
+- Use bullet points for complex metrics when appropriate
+
+DOMAIN-SPECIFIC RULES:
+For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
+- Token addresses on Solana are base58-encoded strings typically ending with 'pump'
+- For token metrics, use USDC as the default quote token unless specified otherwise
+- When analyzing token holders, focus on concentration patterns and whale activity
+- For trading analysis, highlight unusual volume patterns and top trader behaviors
+
+IMPORTANT:
+- Never invent token addresses or data
+- Keep responses concise and relevant
+- Focus on on-chain data rather than speculation
+- When information is incomplete, clearly state limitations
+"""
+
+    def get_tool_schemas(self) -> List[Dict]:
+        return [
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_recent_token_creation',
+                    'description': 'Fetch data of tokens recently created on Pump.fun',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'interval': {
+                                'type': 'string',
+                                'enum': list(self.VALID_INTERVALS),
+                                'default': 'hours',
+                                'description': 'Time interval (hours/days)'
+                            },
+                            'offset': {
+                                'type': 'integer',
+                                'minimum': 1,
+                                'maximum': 99,
+                                'default': 1,
+                                'description': 'Time offset for interval'
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_token_metrics',
+                    'description': 'Fetch token metrics including market cap, liquidity, and volume',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'token_address': {
+                                'type': 'string',
+                                'description': 'Token mint address on Solana'
+                            },
+                            'quote_token': {
+                                'type': 'string',
+                                'description': 'Quote token to use (usdc, sol, virtual, or direct address)',
+                                'default': 'usdc'
+                            }
+                        },
+                        'required': ['token_address']
+                    }
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_token_holders',
+                    'description': 'Fetch top token holders data and distribution',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'token_address': {
+                                'type': 'string',
+                                'description': 'Token mint address on Solana'
+                            }
+                        },
+                        'required': ['token_address']
+                    }
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_token_buyers',
+                    'description': 'Fetch first buyers of a token',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'token_address': {
+                                'type': 'string',
+                                'description': 'Token mint address on Solana'
+                            },
+                            'limit': {
+                                'type': 'integer',
+                                'description': 'Number of buyers to fetch',
+                                'default': 100
+                            }
+                        },
+                        'required': ['token_address']
+                    }
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_holder_status',
+                    'description': 'Check if buyers are still holding, sold, or bought more',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'token_address': {
+                                'type': 'string',
+                                'description': 'Token mint address on Solana'
+                            },
+                            'buyer_addresses': {
+                                'type': 'array',
+                                'items': {
+                                    'type': 'string'
+                                },
+                                'description': 'List of buyer wallet addresses to check'
+                            }
+                        },
+                        'required': ['token_address', 'buyer_addresses']
+                    }
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
+                    'name': 'query_top_traders',
+                    'description': 'Fetch top traders for a specific token',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'token_address': {
+                                'type': 'string',
+                                'description': 'Token mint address on Solana'
+                            },
+                            'limit': {
+                                'type': 'integer',
+                                'description': 'Number of traders to fetch',
+                                'default': 100
+                            }
+                        },
+                        'required': ['token_address']
+                    }
+                }
+            }
+        ]
 
     @monitor_execution()
     @with_cache(ttl_seconds=300)
@@ -742,8 +917,6 @@ class PumpFunTokenAgent(MeshAgent):
         
         return {'traders': [], 'markets': []}
 
-
-
     async def _execute_query(self, query: str, variables: Dict = None) -> Dict:
         """
         Execute a GraphQL query against the Bitquery API with improved error handling.
@@ -794,277 +967,240 @@ class PumpFunTokenAgent(MeshAgent):
             # Any other unexpected errors
             raise Exception(f"Unexpected error during query execution: {str(e)}")
 
-    def get_system_prompt(self, query_type: str) -> str:
-        prompts = {
-            'creation': """You are a Solana token analyst. Analyze new token creation events with these points:
-                1. Basic token info (name, symbol, mint address)
-                2. Initial supply
-                3. Creator details
-                Present findings concisely in 2-3 sentences max.""",
-            'metrics': """You are a Solana token analyst. Analyze token metrics with these points:
-                1. Market cap
-                2. Liquidity
-                3. Trade volume (including buy/sell ratio)
-                4. Current price
-                Present the analysis in a clear, concise manner focusing on key metrics.""",
-            'holders': """You are a Solana token analyst. Analyze token holder distribution with these points:
-                1. Token information
-                2. Top holder addresses and percentages
-                3. Distribution patterns and concentration
-                Present a concise summary of the token's holder distribution focusing on concentration and notable patterns.""",
-            'buyers': """You are a Solana token analyst. Analyze the first buyers of a token with these points:
-                1. Number of unique buyers
-                2. Total purchase amounts
-                3. Currency pairs used
-                4. Notable patterns in buying behavior
-                Present a concise summary of the token's early buyer activity.""",
-            'holder_status': """You are a Solana token analyst. Analyze the current status of early token buyers with these points:
-                1. Number of holders still holding
-                2. Number of complete sellers
-                3. Number of buyers who increased their position
-                4. Number of partial sellers
-                Present a concise summary of how early buyers have managed their positions.""",
-            'top_traders': """You are a Solana token analyst. Analyze the top traders of a token with these points:
-                1. Trading volume patterns
-                2. Buy/sell ratios
-                3. Notable trading behaviors
-                4. Active market pairs
-                Present a concise summary of the token's most active traders."""
-        }
-        return prompts.get(query_type, prompts['creation'])
+    def _handle_error(self, maybe_error: dict) -> dict:
+        """
+        Helper to return the error if present in a dictionary with the 'error' key.
+        """
+        if 'error' in maybe_error:
+            return {"error": maybe_error['error']}
+        return {}
 
-    def get_tool_schema(self, query_type: str = None) -> List[Dict]:
+    async def _respond_with_llm(
+        self, query: str, tool_call_id: str, data: dict, temperature: float
+    ) -> str:
         """
-        Get the tool schema based on query type.
-        
-        Args:
-            query_type (str, optional): Type of query to get schema for. Defaults to None.
+        Reusable helper to ask the LLM to generate a user-friendly explanation
+        given a piece of data from a tool call.
+        """
+        return await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata['large_model_id'],
+            messages=[
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id}
+            ],
+            temperature=temperature
+        )
+
+    async def _handle_tool_logic(
+        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
+    ) -> Dict[str, Any]:
+        """
+        Process tool calls, handle errors/formatting, and optionally call the LLM to explain the result.
+        """
+        # Set temperature for explanation
+        temp_for_explanation = 0.7
+
+        if tool_name == 'query_recent_token_creation':
+            interval = function_args.get('interval', 'hours')
+            offset = function_args.get('offset', 1)
             
-        Returns:
-            List[Dict]: List of tool schemas
-        """
-        return [
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_recent_token_creation',
-                    'description': 'Fetch the data of tokens recently created on Pump.fun',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'interval': {
-                                'type': 'string',
-                                'enum': list(self.VALID_INTERVALS),
-                                'default': 'hours'
-                            },
-                            'offset': {
-                                'type': 'integer',
-                                'minimum': 1,
-                                'maximum': 99,
-                                'default': 1
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_token_metrics',
-                    'description': 'Fetch Solana token metrics data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            },
-                            'quote_token': {
-                                'type': 'string',
-                                'description': 'Quote token to use (usdc, sol, virtual, or direct address)',
-                                'default': 'usdc'
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_token_holders',
-                    'description': 'Fetch top token holders data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_token_buyers',
-                    'description': 'Fetch first buyers data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            },
-                            'limit': {
-                                'type': 'integer',
-                                'description': 'Number of buyers to fetch',
-                                'default': 100
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_holder_status',
-                    'description': 'Fetch holder status for specific addresses',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            },
-                            'buyer_addresses': {
-                                'type': 'array',
-                                'items': {
-                                    'type': 'string'
-                                },
-                                'description': 'List of buyer addresses to check'
-                            }
-                        },
-                        'required': ['token_address', 'buyer_addresses']
-                    }
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'query_top_traders',
-                    'description': 'Fetch top traders data',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'Token mint address'
-                            },
-                            'limit': {
-                                'type': 'integer',
-                                'description': 'Number of traders to fetch',
-                                'default': 100
-                            }
-                        },
-                        'required': ['token_address']
-                    }
-                }
-            }
-        ]
+            result = await self.query_recent_token_creation(interval=interval, offset=offset)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == 'query_token_metrics':
+            token_address = function_args.get('token_address')
+            quote_token = function_args.get('quote_token', 'usdc')
+            
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            
+            result = await self.query_token_metrics(token_address=token_address, quote_token=quote_token)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == 'query_token_holders':
+            token_address = function_args.get('token_address')
+            
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            
+            result = await self.query_token_holders(token_address=token_address)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == 'query_token_buyers':
+            token_address = function_args.get('token_address')
+            limit = function_args.get('limit', 100)
+            
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            
+            result = await self.query_token_buyers(token_address=token_address, limit=limit)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == 'query_holder_status':
+            token_address = function_args.get('token_address')
+            buyer_addresses = function_args.get('buyer_addresses', [])
+            
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            if not buyer_addresses:
+                return {"error": "Missing 'buyer_addresses' in tool_arguments"}
+            
+            result = await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == 'query_top_traders':
+            token_address = function_args.get('token_address')
+            limit = function_args.get('limit', 100)
+            
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            
+            result = await self.query_top_traders(token_address=token_address, limit=limit)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query,
+                tool_call_id=tool_call_id,
+                data=result,
+                temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        else:
+            return {"error": f"Unsupported tool '{tool_name}'"}
 
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        query_type = params.get('query_type', 'creation')
+        """
+        Either 'query' or 'tool' is required in params.
+          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
+          - If 'query' is provided, route via LLM for dynamic tool selection.
+        """
         query = params.get('query')
-        parameters = params.get('parameters', {})
+        tool_name = params.get('tool')
+        tool_args = params.get('tool_arguments', {})
+        raw_data_only = params.get('raw_data_only', False)
 
-        if not query:
-            raise ValueError("Query parameter is required")
+        # ---------------------
+        # 1) DIRECT TOOL CALL
+        # ---------------------
+        if tool_name:
+            return await self._handle_tool_logic(
+                tool_name=tool_name,
+                function_args=tool_args,
+                query=query or "Direct tool call without LLM.",
+                tool_call_id="direct_tool",
+                raw_data_only=raw_data_only
+            )
 
-        # System prompt might vary based on query type and parameters
-        system_prompt = self.get_system_prompt(query_type)
-        
-        # Add specific information about quote token if relevant
-        if query_type == 'metrics' and 'quote_token' in parameters:
-            quote_token = parameters.get('quote_token')
-            system_prompt += f"\nYou are analyzing metrics using {quote_token.upper()} as the quote token."
-
-        response = await call_llm_with_tools_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
-            system_prompt=system_prompt,
-            user_prompt=query,
-            temperature=0.1,
-            tools=self.get_tool_schema(query_type)
-        )
-
-        if not response:
-            return {"error": "Failed to call LLM"}
-
-        if not response.get('tool_calls'):
-            return {"response": response.get('content')}
-
-        tool_call = response['tool_calls']
-        function_args = json.loads(tool_call.function.arguments)
-        
-        try:
-            if query_type == 'creation':
-                result = await self.query_recent_token_creation(
-                    interval=function_args.get('interval', parameters.get('interval', 'hours')),
-                    offset=function_args.get('offset', parameters.get('offset', 1))
-                )
-            elif query_type == 'metrics':
-                result = await self.query_token_metrics(
-                    token_address=function_args.get('token_address', parameters.get('token_address')),
-                    quote_token=function_args.get('quote_token', parameters.get('quote_token', 'usdc'))
-                )
-            elif query_type == 'buyers':
-                result = await self.query_token_buyers(
-                    token_address=function_args.get('token_address', parameters.get('token_address')),
-                    limit=function_args.get('limit', parameters.get('limit', 100))
-                )
-            elif query_type == 'holders':
-                result = await self.query_token_holders(
-                    token_address=function_args.get('token_address', parameters.get('token_address'))
-                )
-            elif query_type == 'holder_status':
-                result = await self.query_holder_status(
-                    token_address=function_args.get('token_address', parameters.get('token_address')),
-                    buyer_addresses=function_args.get('buyer_addresses', parameters.get('buyer_addresses', []))
-                )
-            elif query_type == 'top_traders':
-                result = await self.query_top_traders(
-                    token_address=function_args.get('token_address', parameters.get('token_address')),
-                    limit=function_args.get('limit', parameters.get('limit', 100))
-                )
-            else:
-                return {"error": f"Invalid query type: {query_type}"}
-                
-            # Include quote token info in the result for metrics queries
-            if query_type == 'metrics' and 'quote_token' in parameters:
-                result['quote_token'] = parameters.get('quote_token')
-                
-            analysis = await call_llm_async(
+        # ---------------------
+        # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
+        # ---------------------
+        if query:
+            response = await call_llm_with_tools_async(
                 base_url=self.heurist_base_url,
                 api_key=self.heurist_api_key,
                 model_id=self.metadata['large_model_id'],
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": query},
-                    {"role": "tool", "content": json.dumps(result, indent=2), "tool_call_id": tool_call.id}
-                ],
-                temperature=0.7
+                system_prompt=self.get_system_prompt(),
+                user_prompt=query,
+                temperature=0.1,
+                tools=self.get_tool_schemas()
+            )
+            
+            if not response:
+                return {"error": "Failed to process query"}
+            if not response.get('tool_calls'):
+                # No tool calls => the LLM just answered
+                return {"response": response['content'], "data": {}}
+
+            # LLM provided a tool call
+            tool_call = response['tool_calls']
+            tool_call_name = tool_call.function.name
+            tool_call_args = json.loads(tool_call.function.arguments)
+
+            return await self._handle_tool_logic(
+                tool_name=tool_call_name,
+                function_args=tool_call_args,
+                query=query,
+                tool_call_id=tool_call.id,
+                raw_data_only=raw_data_only
             )
 
-            return {
-                "response": analysis,
-                "data": result
-            }
-        except Exception as e:
-            return {"error": str(e)}
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
+        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
