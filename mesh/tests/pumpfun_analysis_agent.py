@@ -16,70 +16,28 @@ load_dotenv()
 
 QUERIES = {
     'creation': {
-        'query_type': 'creation',
-        'query': 'Show me the latest Solana token creations in the last hour',
-        'parameters': {
-            'interval': 'hours',
-            'offset': 1
-        }
+        'query': 'Show me the latest Solana token creations in the last hour'
     },
     'metrics_usdc': {
-        'query_type': 'metrics',
-        'query': 'Get market cap, liquidity and trade volume for the specified token using USDC pair',
-        'parameters': {
-            'token_address': '98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump',
-            'quote_token': 'usdc'
-        }
+        'query': 'Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump using USDC pair'
     },
     'metrics_sol': {
-        'query_type': 'metrics',
-        'query': 'Get market cap, liquidity and trade volume for the specified token using SOL pair',
-        'parameters': {
-            'token_address': '98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump',
-            'quote_token': 'sol'
-        }
+        'query': 'Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump using SOL pair'
     },
     'metrics_virtual': {
-        'query_type': 'metrics',
-        'query': 'Get market cap, liquidity and trade volume for the specified token using Virtual pair',
-        'parameters': {
-            'token_address': '2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump',
-            'quote_token': 'virtual'
-        }
+        'query': 'Get market cap, liquidity and trade volume for 2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump using Virtual pair'
     },
     'holders': {
-        'query_type': 'holders',
-        'query': 'Show me the top token holders and their balances',
-        'parameters': {
-            'token_address': '2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump'
-        }
+        'query': 'Show me the top token holders of 2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump'
     },
     'buyers': {
-        'query_type': 'buyers',
-        'query': 'Show me the first 100 buyers of this token',
-        'parameters': {
-            'token_address': '2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump',
-            'limit': 100
-        }
+        'query': 'Show me the first 100 buyers of 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump'
     },
     'holder_status': {
-        'query_type': 'holder_status',
-        'query': 'Check if the first 100 buyers are still holding, sold all, or bought more',
-        'parameters': {
-            'token_address': '2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump',
-            'buyer_addresses': [
-                "ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n",
-                "9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6"
-            ]
-        }
+        'query': 'Check if these addresses are still holding 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump: ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n and 9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6'
     },
     'top_traders': {
-        'query_type': 'top_traders',
-        'query': 'Show me the top traders for this token on Pump Fun DEX',
-        'parameters': {
-            'token_address': 'FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93',
-            'limit': 100
-        }
+        'query': 'Show me the top traders for FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93 on Pump Fun DEX'
     }
 }
 
@@ -213,11 +171,15 @@ async def run_queries(query_type: str = 'all', query_params: Dict = None):
                 for query_name in QUERIES.keys():
                     print(f"Running query: {query_name}")
                     if query_name in query_params:
-                        QUERIES[query_name]['parameters'].update(query_params[query_name])
+                        # Update query if needed
+                        if 'query' in query_params[query_name]:
+                            QUERIES[query_name]['query'] = query_params[query_name]['query']
                     results[query_name] = await run_single_query(agent, query_name)
             elif query_type in QUERIES:
                 if query_type in query_params:
-                    QUERIES[query_type]['parameters'].update(query_params[query_type])
+                    # Update query if needed
+                    if 'query' in query_params[query_type]:
+                        QUERIES[query_type]['query'] = query_params[query_type]['query']
                 results[query_type] = await run_single_query(agent, query_type)
             else:
                 raise ValueError(f"Invalid query type. Must be one of: {', '.join(QUERIES.keys())} or 'all'")
@@ -232,15 +194,15 @@ def main():
     """Main entry point for the script."""
     agent_query = "all"
     # Available agent_query options:
-    # - creation (interval=hours|days, offset=1-99)
-    # - metrics_usdc (token_address=address, quote_token=usdc)
-    # - metrics_sol (token_address=address, quote_token=sol)
-    # - metrics_virtual (token_address=address, quote_token=virtual)
-    # - holders (token_address=address)
-    # - buyers (token_address=address, limit=1-100)
-    # - holder_status (token_address=address, buyer_addresses=[addr1,addr2,...])
-    # - top_traders (token_address=address, limit=1-100)
-    # - all (runs all queries with default parameters)
+    # - creation (recent token creations)
+    # - metrics_usdc (market metrics with USDC pair)
+    # - metrics_sol (market metrics with SOL pair)
+    # - metrics_virtual (market metrics with Virtual pair)
+    # - holders (token holders analysis)
+    # - buyers (first buyers analysis)
+    # - holder_status (check if buyers are still holding)
+    # - top_traders (top traders analysis)
+    # - all (runs all queries)
     # 
     print(f"Running query type: {agent_query}")
     asyncio.run(run_queries(agent_query))
