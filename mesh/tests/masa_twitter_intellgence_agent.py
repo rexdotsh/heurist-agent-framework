@@ -3,8 +3,8 @@ from pathlib import Path
 import yaml
 import os
 import asyncio
+import subprocess
 from dotenv import load_dotenv
-from threading import Thread
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
@@ -17,30 +17,15 @@ load_dotenv()
 # Set DEBUG=False to execute processing in the background and exit early to avoid long wait times.
 DEBUG = False
 
-def run_in_background(coro):
-    """
-    Runs an asyncio coroutine in a separate thread.
-    This is used when DEBUG is set to False to ensure the script does not block execution
-    while processing continues in the background.
-    """
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(coro)
-
 def save_results(output_file, yaml_content):
-    """
-    Saves the results to a YAML file.
-    If DEBUG is False, this function is executed in the background to allow the script to exit early.
-    """
     with open(output_file, 'w', encoding='utf-8') as f:
         yaml.dump(yaml_content, f, allow_unicode=True, sort_keys=False)
-    print(f"Results saved to {output_file}")
+    if DEBUG:
+        print(f"Results saved to {output_file}")
+    else:
+        print(f"Result will be stored to {output_file}")
 
 async def run_agent():
-    """
-    Runs the MasaTwitterSearchAgent to fetch data and store results.
-    If DEBUG is False, file writing is executed in the background to avoid blocking script execution.
-    """
     agent = MasaTwitterSearchAgent()
     try:
         agent_input = {'query': '@heurist_ai', 'max_results': 100}
@@ -69,16 +54,23 @@ async def run_agent():
             'input_direct': agent_input_direct,
             'output_direct': agent_output_direct
         }
-        
-        if DEBUG:
-            save_results(output_file, yaml_content)
-        else:
-            thread = Thread(target=run_in_background, args=(save_results(output_file, yaml_content),))
-            thread.start()
-            print("Processing in background... Exiting early!")
-    
+
+        save_results(output_file, yaml_content)
     finally:
         await agent.cleanup()
 
 if __name__ == "__main__":
-    asyncio.run(run_agent())
+    if "--background" in sys.argv:
+        asyncio.run(run_agent())
+    else:
+        if DEBUG:
+            asyncio.run(run_agent())
+        else:
+            subprocess.Popen(
+                [sys.executable, __file__, "--background"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                close_fds=True
+            )
+            print("Result will be stored")
+            sys.exit(0)
