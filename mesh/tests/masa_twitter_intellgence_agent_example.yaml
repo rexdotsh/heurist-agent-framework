@@ -1,0 +1,137 @@
+input_basic:
+  query: '@heurist_ai'
+  max_results: 100
+output_basic:
+  response: "**Twitter Search Analysis for `@heurist_ai`**\n\n**Search Context:**\n\
+    * **Query:** `@heurist_ai`\n* **Total Results:** 1 tweet\n* **Time Frame:** Most\
+    \ recent tweet found is from March 3, 2025 (given the provided data, the exact\
+    \ time frame of the search isn't specified, but this tweet represents the latest\
+    \ mention within the returned results)\n* **Language:** English\n\n**Key Insights:**\n\
+    \n1. **Volume and Engagement:**\n\t* **Mentions:** 1 tweet mentioning `@heurist_ai`\
+    \ was found.\n\t* **Engagement Metrics:** The tweet has 0 likes, retweets, replies,\
+    \ quotes, and bookmarks, indicating no engagement on this specific mention.\n\n\
+    2. **Common Themes/Topics:**\n\t* Due to the singular result, no broader themes\
+    \ or topics beyond the direct mention can be accurately identified.\n\n3. **Notable\
+    \ Users/Accounts:**\n\t* **Author ID:** `1829042940242522112` (No public profile\
+    \ information is provided in the search results; respecting privacy guidelines,\
+    \ no further identification is attempted.)\n\t* **Mentioned Account:** `@heurist_ai`\
+    \ (The subject of the search query)\n\n4. **Sentiment Trends:**\n\t* **Sentiment:**\
+    \ Neutral (The provided tweet content, \"Sample tweet mention @heurist_ai\", does\
+    \ not express a clear positive, negative, or emotional sentiment towards `@heurist_ai`.)\n\
+    \n**Conclusion:**\nThe search for `@heurist_ai` yielded a single, recent English-language\
+    \ tweet with no engagement. The tweet's content is neutral, providing no clear\
+    \ sentiment towards `@heurist_ai`. Given the limited scope of the results, broader\
+    \ themes or trends cannot be conclusively identified."
+  data:
+    search_stats:
+      total_results: 1
+      has_results: true
+    tweets:
+    - id: '1896550195095326755'
+      content: Sample tweet mention @heurist_ai
+      created_at: '2025-03-03T13:16:17Z'
+      language: en
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1829042940242522112'
+      conversation_id: '1896550195095326755'
+input_specific:
+  query: $HEU
+  max_results: 100
+output_specific:
+  response: "**Search Query Analysis: $HEU**\n\n**Search Stats:**\n* **Total Results:**\
+    \ 4\n* **Has Results:** True\n* **Time Frame:** Recent (all tweets from `2025-03-03`,\
+    \ within a few minutes of each other)\n* **Languages:** Primarily Catalan (`ca`)\
+    \ and French (`fr`)\n\n**Insights and Notable Patterns:**\n\n1. **Volume and Engagement:**\n\
+    \t* Low to moderate engagement across all tweets, with one outlier.\n\t* **Highest\
+    \ Engagement:** A tweet from `@BasquetManresa` (a basketball team) addressing\
+    \ `@vueling` (an airline) about lost luggage, garnered **343 retweets**.\n2. **Common\
+    \ Themes or Topics:**\n\t* **Lost Luggage (Travel Issue):** 1 tweet (`@BasquetManresa`\
+    \ to `@vueling`)\n\t* **European Politics/War Concerns:** 2 tweets (both retweets\
+    \ of `@GaccioB`, discussing Putin and Europe)\n\t* **Cinema (Classic Film Reference):**\
+    \ 1 tweet (`@CinesCCastellet`, mentioning Luis Buñuel's \"Un perro andaluz\")\n\
+    3. **Notable Users or Accounts:**\n\t* **@BasquetManresa:** For its high engagement\
+    \ rate regarding a customer service issue.\n\t* **@GaccioB:** As the original\
+    \ author of the widely retweeted political commentary.\n4. **Sentiment Trends:**\n\
+    \t* **Concern/Frustration:** Evident in both the political commentary (fear of\
+    \ invasion) and the travel issue (lost luggage).\n\t* **Neutral/Cultural:** The\
+    \ tweet about the classic film, which doesn't convey a strong emotional tone.\n\
+    \n**Observation:** The search query `$HEU` does not directly relate to the content\
+    \ of the tweets provided, suggesting the query might be a stock ticker symbol\
+    \ or an abbreviation without clear context in these Twitter conversations. The\
+    \ tweets themselves cover disparate topics, indicating the query's relevance might\
+    \ be indirect or non-existent in the provided dataset."
+  data:
+    search_stats:
+      total_results: 4
+      has_results: true
+    tweets:
+    - id: '1896550471537656255'
+      content: 'RT @CinesCCastellet: ''Un perro andaluz'' de Luis Buñuel és d''aquells
+        clàssics que tots coneixem, però que potser no heu vist mai... veritat?…'
+      created_at: '2025-03-03T13:17:23Z'
+      language: ca
+      metrics:
+        likes: 0
+        retweets: 1
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1075065774866341888'
+      conversation_id: '1896550471537656255'
+    - id: '1896550377295851954'
+      content: "RT @GaccioB: heu, donc aucun doute: c acquis Poutine veut envahir\
+        \ toute l'Europe. \nEst-ce qu'on pourrait avoir qql éléments + probants que…"
+      created_at: '2025-03-03T13:17:00Z'
+      language: fr
+      metrics:
+        likes: 0
+        retweets: 47
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1119498439572762624'
+      conversation_id: '1896550377295851954'
+    - id: '1896550347063373881'
+      content: "RT @GaccioB: heu, donc aucun doute: c acquis Poutine veut envahir\
+        \ toute l'Europe. \nEst-ce qu'on pourrait avoir qql éléments + probants que…"
+      created_at: '2025-03-03T13:16:53Z'
+      language: fr
+      metrics:
+        likes: 0
+        retweets: 47
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1358404486130196480'
+      conversation_id: '1896550347063373881'
+    - id: '1896550281242161525'
+      content: 'RT @BasquetManresa: 👋 Hola, @vueling! Ens heu perdut les maletes amb
+        material que necessitem demà per jugar el partit a Màlaga contra l''Uni…'
+      created_at: '2025-03-03T13:16:37Z'
+      language: ca
+      metrics:
+        likes: 0
+        retweets: 343
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1662043462563233792'
+      conversation_id: '1896550281242161525'
+input_direct:
+  tool: search_twitter
+  tool_arguments:
+    query: Heurist crypto
+    max_results: 30
+  raw_data_only: true
+output_direct:
+  response: ''
+  data:
+    search_stats:
+      total_results: 0
+      has_results: false
+    tweets: []
