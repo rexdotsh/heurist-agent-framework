@@ -9,7 +9,7 @@ from typing import Dict, Any
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from mesh.pumpfun_analysis_agent import PumpFunTokenAgent
+from mesh.pumpfun_token_agent import PumpFunTokenAgent
 
 load_dotenv()
 
