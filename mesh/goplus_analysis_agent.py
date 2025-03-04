@@ -10,11 +10,11 @@ import logging
 logger = logging.getLogger(__name__)
 load_dotenv()
 
-class TokenContractSecurityAgent(MeshAgent):
+class GoplusAnalysisAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.metadata.update({
-            'name': 'Token Contract Security Agent',
+            'name': 'Goplus Analysis Agent',
             'version': '1.0.0',
             'author': 'Heurist Team',
             'description': 'This agent can fetch and analyze security details of blockchain token contracts using GoPlus API.',

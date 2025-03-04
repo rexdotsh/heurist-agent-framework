@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from mesh.masa_twitter_intellgence_agent import MasaTwitterSearchAgent
+from mesh.masa_twitter_search_agent import MasaTwitterSearchAgent
 
 load_dotenv()
 
