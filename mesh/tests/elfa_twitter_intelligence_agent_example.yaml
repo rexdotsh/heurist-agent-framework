@@ -3,35 +3,376 @@ input_mentions:
 output_mentions:
   response: "**Mentions Analysis for Heurist, HEU, and heurist_ai (Last 30 days)**\n\
     \n### **Overall Sentiment and Engagement**\n\n* **Sentiment Distribution:**\n\t\
-    + Positive: 57.1% (20/35)\n\t+ Neutral: 40% (14/35)\n\t+ Negative: 2.9% (1/35)\n\
-    * **Total Engagement Metrics:**\n\t+ Likes: 1,541\n\t+ Replies: 230\n\t+ Reposts:\
-    \ 441\n\t+ Views: 244,111\n\n### **Key Influencers and Their Impact**\n\n1. **@1010430329218371584**\
-    \ (2 posts, 324 likes, 29 replies, 74 reposts, 20,623 views)\n\t* Impact: High\
-    \ engagement, positive sentiment, promoting events with Heurist's involvement.\n\
-    2. **@1736748346566459392** (2 posts, 66 likes, 6 replies, 22 reposts, 5,299 views)\n\
-    \t* Impact: Moderate engagement, positive/neutral sentiment, discussing Heurist's\
-    \ AI models and collaborations.\n3. **@heurist_ai** (mentioned in various posts,\
-    \ indicating the official account's influence)\n\t* Impact: Significant, as the\
-    \ central figure in all discussions, with a generally positive sentiment around\
-    \ its AI solutions and event participations.\n\n### **Notable Trends or Patterns**\n\
-    \n1. **Event Promotions:** Heurist's involvement in various Web3 and AI-focused\
-    \ events (e.g., ETHDenver) is a significant trend, indicating its active role\
-    \ in the community.\n2. **AI Model Discussions:** The mention of specific AI models\
-    \ (e.g., DeepSeek) and their applications highlights Heurist's focus on innovative\
-    \ AI solutions.\n3. **Collaborations and Sponsorships:** Heurist's collaborations\
-    \ with other projects (e.g., @zksync, @carv_official) and its role as a sponsor\
-    \ for events (e.g., DeAl Day) underscore its commitment to community development.\n\
-    \n**Mentions by Token/Term (if applicable, though primarily focused on Heurist/heurist_ai):**\n\
-    \n* **Heurist/heurist_ai:** 35 mentions\n* **HEU:** 1 mention (within a broader\
-    \ list of projects, without specific focus)\n\n**Note:** The provided data does\
-    \ not include direct engagement metrics for the term \"HEU\" alone, as the primary\
-    \ focus was on \"Heurist\" and \"heurist_ai\". If more detailed analysis for \"\
-    HEU\" is required, additional data might be necessary."
+    + Neutral: 85% (majority of mentions are informational or promotional)\n\t+ Positive:\
+    \ 12% (excitement around AI, DeFi, and Heurist's launches/events)\n\t+ No Negative\
+    \ sentiments detected\n* **Total Engagement Metrics:**\n\t+ Likes: 1,433\n\t+\
+    \ Replies: 141\n\t+ Reposts: 251\n\t+ Views: 73,119\n\n### **Key Influencers and\
+    \ Their Impact**\n\n1. **@heurist_ai** (Heurist's Official Account)\n\t* Mentions:\
+    \ 14\n\t* Average Engagement (per mention): 143 Likes, 7 Replies, 10 Reposts,\
+    \ 3,415 Views\n\t* Impact: Primary source of information for Heurist-related news\
+    \ and updates\n2. **@marouen19** (Host for AI x DeFi Event)\n\t* Mentions: 2\n\
+    \t* Average Engagement (per mention): 265 Likes, 20 Replies, 79 Reposts, 7,015\
+    \ Views\n\t* Impact: Significant engagement boost due to hosting a notable event\
+    \ featuring Heurist\n3. **@AltcoinGordon** (KOL & Influencer)\n\t* Mentions: 1\n\
+    \t* Average Engagement (per mention): 71 Likes, 32 Replies, 26 Reposts, 15,390\
+    \ Views\n\t* Impact: Contributed to increased visibility and engagement for Heurist\
+    \ within the crypto community\n\n### **Notable Trends or Patterns**\n\n1. **Growing\
+    \ Interest in AI and DeFi Integration**: Increased discussions and events focused\
+    \ on the intersection of AI and DeFi, with Heurist positioned as a key player.\n\
+    2. **Launch of $HEU Staking**: Generated positive sentiment and moderate engagement,\
+    \ indicating interest in Heurist's financial incentives.\n3. **Partnerships and\
+    \ Collaborations**: Heurist's involvement with various projects (e.g., @zksync,\
+    \ @AlloraNetwork) suggests a strategy of building a robust ecosystem, which is\
+    \ positively received by the community.\n4. **Decentralized Compute and AI Solutions**:\
+    \ Mentions highlight Heurist's technological capabilities, appealing to those\
+    \ interested in innovative"
   data:
     status: success
     data:
       success: true
       data:
+      - id: 625184259
+        twitter_id: '1895175213769466338'
+        twitter_user_id: '1745966015652265984'
+        content: "\U0001F916 AI x DeFi on Friday at 3pm UTC \U0001F916 \n\nSpeakers:\
+          \ @condzxyz @0xBebis_ @afiprotocol_ai @CryptoWithLeo @bertugoymak @heurist_ai\
+          \ @explorersofai, @mishrakanika3 @nomyclub \n\n\U0001F3A4 Hosted by: @marouen19\
+          \ &amp; @nonfungibleyash\U0001F399️⚡\n\n"
+        mentioned_at: '2025-02-27T18:12:36+00:00'
+        type: post
+        metrics:
+          like_count: 261
+          reply_count: 20
+          repost_count: 79
+          view_count: 7015
+        sentiment: netural
+      - id: 625184259
+        twitter_id: '1895175213769466338'
+        twitter_user_id: '1745966015652265984'
+        content: "\U0001F916 AI x DeFi on Friday at 3pm UTC \U0001F916 \n\nSpeakers:\
+          \ @condzxyz @0xBebis_ @afiprotocol_ai @CryptoWithLeo @bertugoymak @heurist_ai\
+          \ @explorersofai, @mishrakanika3 @nomyclub \n\n\U0001F3A4 Hosted by: @marouen19\
+          \ &amp; @nonfungibleyash\U0001F399️⚡\n\n"
+        mentioned_at: '2025-02-27T18:12:36+00:00'
+        type: post
+        metrics:
+          like_count: 270
+          reply_count: 20
+          repost_count: 82
+          view_count: 7410
+        sentiment: netural
+      - id: 625162947
+        twitter_id: '1895074400245784587'
+        twitter_user_id: '859484337850523648'
+        content: 'Just finished the @MessariCrypto report on the state of #DePIN,
+          fully recommended!
+
+
+          The more I dig into it the more excited I am about its massive potential.
+
+
+          On my radar for 2025: $ATH, $NATIX, $SPON, $SUI, $PEAQ, $HEU  👀
+
+
+          '
+        mentioned_at: '2025-02-27T11:32:00+00:00'
+        type: post
+        metrics:
+          like_count: 120
+          reply_count: 13
+          repost_count: 23
+          view_count: 11809
+        sentiment: positive
+      - id: 625157434
+        twitter_id: '1895018696378302896'
+        twitter_user_id: '1523351345427664898'
+        content: welcome @heurist_ai @artoriatech to the elfa gang
+        mentioned_at: '2025-02-27T07:50:39+00:00'
+        type: quote
+        metrics:
+          like_count: 10
+          reply_count: 1
+          repost_count: 0
+          view_count: 516
+        sentiment: netural
+      - id: 625157434
+        twitter_id: '1895018696378302896'
+        twitter_user_id: '1523351345427664898'
+        content: welcome @heurist_ai @artoriatech to the elfa gang
+        mentioned_at: '2025-02-27T07:50:39+00:00'
+        type: quote
+        metrics:
+          like_count: 10
+          reply_count: 1
+          repost_count: 0
+          view_count: 521
+        sentiment: netural
+      - id: 625157321
+        twitter_id: '1895012660565152173'
+        twitter_user_id: '1432959640975806465'
+        content: 'Learn more about @heurist_ai  here👇🏻
+
+
+          1️⃣ Multi-Interface Support
+
+          AI agents can operate across Telegram, Discord, Twitter, Farcaster, REST
+          API, and more.
+
+
+          2️⃣ Modular AI Agents
+
+          Supports text/voice processing, image generation, and external API integrations.
+
+
+          3️⃣ Heurist Mesh
+
+          A decentralized network where AI agents share capabilities, similar to composable
+          DeFi smart contracts.
+
+
+          4️⃣ Mesh Agents Integration
+
+          Connects with top data sources like CoinGecko, Elfa AI, Allora, and GoPlus
+          Security.
+
+
+          5️⃣ Open Source
+
+          Anyone can contribute new agents and expand the Mesh ecosystem.
+
+
+          '
+        mentioned_at: '2025-02-27T07:26:40+00:00'
+        type: reply
+        metrics:
+          like_count: 9
+          reply_count: 0
+          repost_count: 0
+          view_count: 520
+        sentiment: netural
+      - id: 625127452
+        twitter_id: '1894839643436138593'
+        twitter_user_id: '1372196901936848901'
+        content: 'Great little thread by @heurist_ai on the impact Hearist Mesh can
+          have on Crypto AI.
+
+
+          Their Mesh aims to create an intelligent liquidity layer where agents share
+          capabilities instead of tokens. This would make one agent''s power everyone''s
+          advantage!
+
+
+          Read more below👇!'
+        mentioned_at: '2025-02-26T19:59:10+00:00'
+        type: quote
+        metrics:
+          like_count: 644
+          reply_count: 12
+          repost_count: 12
+          view_count: 19123
+        sentiment: netural
+      - id: 625127451
+        twitter_id: '1894828742650011815'
+        twitter_user_id: '1736748346566459392'
+        content: 'Crypto AI needs its DeFi moment.
+
+
+          Today, agents are isolated islands – each rebuilding tools, repeating computations,
+          and reinventing what''s been done. The potential of collective intelligence
+          remains untapped.
+
+
+          Until now.
+
+
+          Introducing Heurist Mesh 🧩'
+        mentioned_at: '2025-02-26T19:15:51+00:00'
+        type: post
+        metrics:
+          like_count: 42
+          reply_count: 7
+          repost_count: 5
+          view_count: 8148
+        sentiment: netural
+      - id: 625108480
+        twitter_id: '1894767324311261350'
+        twitter_user_id: '59393368'
+        content: 'RT @laurnorman: So the long and the short of it -- #Iran is now
+          producing a nuclear weapon''s worth of 60% enriched uranium per month. HEU
+          s…'
+        mentioned_at: '2025-02-26T15:11:47+00:00'
+        type: repost
+        metrics:
+          like_count: 0
+          reply_count: 0
+          repost_count: 19
+          view_count: 0
+        sentiment: netural
+      - id: 625108479
+        twitter_id: '1894767059201876116'
+        twitter_user_id: '142696927'
+        content: 'So the long and the short of it -- #Iran is now producing a nuclear
+          weapon''s worth of 60% enriched uranium per month. HEU stockpile rose 50%
+          in the 15 weeks to Feb. 8. Now stands at 275 kg. Six nukes worth, once converted
+          to weapons grade 90%.'
+        mentioned_at: '2025-02-26T15:10:44+00:00'
+        type: post
+        metrics:
+          like_count: 45
+          reply_count: 3
+          repost_count: 19
+          view_count: 13179
+        sentiment: netural
+      - id: 625094006
+        twitter_id: '1894651112697012515'
+        twitter_user_id: '1742658965727526912'
+        content: "\U0001F680 ANITA AI PRESENTS: THE AI REVOLUTION ON X! \U0001F680\
+          \nJoin ANITA AI for an exciting X Space!\n\U0001F4C5 Date: February 26,\
+          \ 2025 \n⏰ Time: 5 PM UTC\n\n\U0001F399 Host: ANITA AI\n\U0001F916 Guest\
+          \ AI Projects:\n\U0001F539 @ACTICOMMUNITY \n\U0001F539 @KittenHaimer \n\U0001F539\
+          \ @heurist_ai \n\U0001F31FKOLs &amp; Influencers:\n\U0001F525 @AltcoinGordon\
+          \ \n\U0001F525 "
+        mentioned_at: '2025-02-26T07:30:00+00:00'
+        type: post
+        metrics:
+          like_count: 71
+          reply_count: 32
+          repost_count: 26
+          view_count: 15390
+        sentiment: netural
+      - id: 625094006
+        twitter_id: '1894651112697012515'
+        twitter_user_id: '1742658965727526912'
+        content: "\U0001F680 ANITA AI PRESENTS: THE AI REVOLUTION ON X! \U0001F680\
+          \nJoin ANITA AI for an exciting X Space!\n\U0001F4C5 Date: February 26,\
+          \ 2025 \n⏰ Time: 5 PM UTC\n\n\U0001F399 Host: ANITA AI\n\U0001F916 Guest\
+          \ AI Projects:\n\U0001F539 @ACTICOMMUNITY \n\U0001F539 @KittenHaimer \n\U0001F539\
+          \ @heurist_ai \n\U0001F31FKOLs &amp; Influencers:\n\U0001F525 @AltcoinGordon\
+          \ \n\U0001F525 "
+        mentioned_at: '2025-02-26T07:30:00+00:00'
+        type: post
+        metrics:
+          like_count: 68
+          reply_count: 32
+          repost_count: 26
+          view_count: 15549
+        sentiment: netural
+      - id: 625066372
+        twitter_id: '1894471681625780252'
+        twitter_user_id: '1010430329218371584'
+        content: "\U0001F525 Pumped for BLUEPRINT @EthereumDenver tomorrow! \n\n@AlloraNetwork\
+          \ @BotanixLabs @DIAdata_org @elizaOS @0xFacet @fraxfinance @0G_labs @heurist_ai\
+          \ @nubilanetwork @Somnia_Network @Stacks @TacBuild @0xzerebro \n\nRegistration\
+          \ is closing \U0001F51C:  "
+        mentioned_at: '2025-02-25T19:37:01+00:00'
+        type: post
+        metrics:
+          like_count: 93
+          reply_count: 6
+          repost_count: 20
+          view_count: 10991
+        sentiment: neutral
+      - id: 625066372
+        twitter_id: '1894471681625780252'
+        twitter_user_id: '1010430329218371584'
+        content: "\U0001F525 Pumped for BLUEPRINT @EthereumDenver tomorrow! \n\n@AlloraNetwork\
+          \ @BotanixLabs @DIAdata_org @elizaOS @0xFacet @fraxfinance @0G_labs @heurist_ai\
+          \ @nubilanetwork @Somnia_Network @Stacks @TacBuild @0xzerebro \n\nRegistration\
+          \ is closing \U0001F51C:  "
+        mentioned_at: '2025-02-25T19:37:01+00:00'
+        type: post
+        metrics:
+          like_count: 94
+          reply_count: 6
+          repost_count: 20
+          view_count: 11214
+        sentiment: neutral
+      - id: 625066278
+        twitter_id: '1894471479552577573'
+        twitter_user_id: '1372196901936848901'
+        content: 'RT @heurist_ai: 🚨 $HEU $HEU $HEU $HEU 🚨
+
+
+          Finally the day has come - we''re launching $HEU Staking!
+
+          👉 50% Base APR
+
+          👉 Earn revenue share from…'
+        mentioned_at: '2025-02-25T19:36:12+00:00'
+        type: repost
+        metrics:
+          like_count: 0
+          reply_count: 0
+          repost_count: 19
+          view_count: 0
+        sentiment: positive
+      - id: 625066277
+        twitter_id: '1894438428420513939'
+        twitter_user_id: '1736748346566459392'
+        content: '🚨 $HEU $HEU $HEU $HEU 🚨
+
+
+          Finally the day has come - we''re launching $HEU Staking!
+
+          👉 50% Base APR
+
+          👉 Earn revenue share from API credits payment
+
+
+          STAKE NOW:  '
+        mentioned_at: '2025-02-25T17:24:52+00:00'
+        type: post
+        metrics:
+          like_count: 58
+          reply_count: 15
+          repost_count: 19
+          view_count: 4267
+        sentiment: netural
+      - id: 624950844
+        twitter_id: '1893564672378286549'
+        twitter_user_id: '988856471986364416'
+        content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+          \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+          \ by @heurist_ai imaginaries using their decentralized compute. I love both!\
+          \ \n\nSo sweet that AI keeps adorning me either "
+        mentioned_at: '2025-02-23T07:32:53+00:00'
+        type: post
+        metrics:
+          like_count: 14
+          reply_count: 2
+          repost_count: 0
+          view_count: 627
+        sentiment: positive
+      - id: 624950844
+        twitter_id: '1893564672378286549'
+        twitter_user_id: '988856471986364416'
+        content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+          \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+          \ by @heurist_ai imaginaries using their decentralized compute. I love both!\
+          \ \n\nSo sweet that AI keeps adorning me either "
+        mentioned_at: '2025-02-23T07:32:53+00:00'
+        type: post
+        metrics:
+          like_count: 15
+          reply_count: 3
+          repost_count: 0
+          view_count: 896
+        sentiment: positive
+      - id: 624950844
+        twitter_id: '1893564672378286549'
+        twitter_user_id: '988856471986364416'
+        content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+          \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+          \ by @heurist_ai imaginaries using their decentralized compute. I love both!\
+          \ \n\nSo sweet that AI keeps adorning me either "
+        mentioned_at: '2025-02-23T07:32:53+00:00'
+        type: post
+        metrics:
+          like_count: 15
+          reply_count: 3
+          repost_count: 0
+          view_count: 906
+        sentiment: positive
       - id: 624905602
         twitter_id: '1893113211622174992'
         twitter_user_id: '167801813'
@@ -42,386 +383,519 @@ output_mentions:
         metrics:
           like_count: 0
           reply_count: 0
-          repost_count: 8
-          view_count: 0
-        sentiment: netural
-      - id: 624844705
-        twitter_id: '1892728944811716624'
-        twitter_user_id: '859484337850523648'
-        content: "The #DePIN Market Cap is projected to grow to $3 Trillion by 2030.\
-          \ \n\nSome mid &amp; low cap DePIN projects on my radar: $LMWR, $HEU, $NET,\
-          \ $NATIX \U0001F440\n\nWhat are you targeting?"
-        mentioned_at: '2025-02-21T00:12:00+00:00'
-        type: post
-        metrics:
-          like_count: 151
-          reply_count: 18
-          repost_count: 16
-          view_count: 17014
-        sentiment: positive
-      - id: 624687473
-        twitter_id: '1891550010984235349'
-        twitter_user_id: '1715242220591456256'
-        content: 'Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
-
-
-          7007 protocol proud to be part of the sponsors, come build with verifiable
-          AI generated token standard!
-
-
-          February 24th
-
-
-          🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
-
-          🔹$50,000+ in prizes across 4 tracks
-
-
-          Applications open until March 5th. Build the future of AI agents!
-
-
-
-          A huge thank you to our sponsors:
-
-          @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc @Lab7007
-          @MoemateAI @saakuru_labs'
-        mentioned_at: '2025-02-17T18:07:20+00:00'
-        type: quote
-        metrics:
-          like_count: 11
-          reply_count: 1
-          repost_count: 1
-          view_count: 3116
-        sentiment: positive
-      - id: 624680971
-        twitter_id: '1891544832738459666'
-        twitter_user_id: '1345102860732788740'
-        content: '🌱Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
-
-
-          February 24th
-
-
-          🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
-
-          🔹$50,000+ in prizes across 4 tracks
-
-
-          Applications open until March 5th. Build the future of AI agents!
-
-
-
-          A huge thank you to our sponsors:
-
-          @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc @Lab7007
-          @MoemateAI @saakuru_labs'
-        mentioned_at: '2025-02-17T17:46:45+00:00'
-        type: post
-        metrics:
-          like_count: 644
-          reply_count: 120
-          repost_count: 155
-          view_count: 170325
-        sentiment: positive
-      - id: 624689797
-        twitter_id: '1891512282401669189'
-        twitter_user_id: '1010430329218371584'
-        content: 'We’re breaking down how AI agents and decentralized infra collide
-          at @ETHDenver with @artoriatech, @heurist_ai founder &amp; other giga brains
-          of Web3 🧠
-
-
-          Stay tuned as we spotlight more panelists—space is limited, so sign up now:  '
-        mentioned_at: '2025-02-17T15:37:25+00:00'
-        type: post
-        metrics:
-          like_count: 136
-          reply_count: 9
-          repost_count: 32
-          view_count: 6122
-        sentiment: netural
-      - id: 624661175
-        twitter_id: '1891399684339491106'
-        twitter_user_id: '2611856134'
-        content: 'RT @heurist_ai: If an AI model decides what’s “safe” for you, you
-          better decide where your money goes.
-
-
-          Fully unlocked DeepSeek; live on He…'
-        mentioned_at: '2025-02-17T08:09:59+00:00'
-        type: repost
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 14
-          view_count: 0
-        sentiment: neutral
-      - id: 624661174
-        twitter_id: '1891002846482510332'
-        twitter_user_id: '1736748346566459392'
-        content: 'If an AI model decides what’s “safe” for you, you better decide
-          where your money goes.
-
-
-          Fully unlocked DeepSeek; live on Heurist.'
-        mentioned_at: '2025-02-16T05:53:06+00:00'
-        type: quote
-        metrics:
-          like_count: 44
-          reply_count: 5
-          repost_count: 14
-          view_count: 3048
-        sentiment: positive
-      - id: 624571373
-        twitter_id: '1890522775556596134'
-        twitter_user_id: '1374934393140117506'
-        content: 'Thanks to Heurist (@heurist_ai) for being a gold sponsor of DeAl
-          Day: Dawn of the Agents on Feb 26 at ETHDenver!
-
-
-          Heurist enables an open-source, permissionless, community-owned AI cloud
-          powered by decentralized compute.
-
-
-          We really appreciate their support. '
-        mentioned_at: '2025-02-14T22:05:28+00:00'
-        type: post
-        metrics:
-          like_count: 67
-          reply_count: 3
-          repost_count: 16
-          view_count: 3388
-        sentiment: netural
-      - id: 624571373
-        twitter_id: '1890522775556596134'
-        twitter_user_id: '1374934393140117506'
-        content: 'Thanks to Heurist (@heurist_ai) for being a gold sponsor of DeAl
-          Day: Dawn of the Agents on Feb 26 at ETHDenver!
-
-
-          Heurist enables an open-source, permissionless, community-owned AI cloud
-          powered by decentralized compute.
-
-
-          We really appreciate their support. '
-        mentioned_at: '2025-02-14T22:05:28+00:00'
-        type: post
-        metrics:
-          like_count: 72
-          reply_count: 3
-          repost_count: 17
-          view_count: 3884
-        sentiment: netural
-      - id: 624539587
-        twitter_id: '1890332624444383290'
-        twitter_user_id: '1360461034377654272'
-        content: "Which AI framework is your favorite? \n\n@PlaygroundsAI, @ai16zdao,\
-          \ @GAME_Virtuals, @zentients_, @heurist_ai, or maybe one that’s not even\
-          \ on this list?\n\nPick your favorite, build your AI agent, and join our\
-          \ bounty!"
-        mentioned_at: '2025-02-14T09:29:53+00:00'
-        type: quote
-        metrics:
-          like_count: 22
-          reply_count: 0
-          repost_count: 1
-          view_count: 1381
-        sentiment: netural
-      - id: 624539587
-        twitter_id: '1890332624444383290'
-        twitter_user_id: '1360461034377654272'
-        content: "Which AI framework is your favorite? \n\n@PlaygroundsAI, @ai16zdao,\
-          \ @GAME_Virtuals, @zentients_, @heurist_ai, or maybe one that’s not even\
-          \ on this list?\n\nPick your favorite, build your AI agent, and join our\
-          \ bounty!"
-        mentioned_at: '2025-02-14T09:29:53+00:00'
-        type: quote
-        metrics:
-          like_count: 25
-          reply_count: 0
-          repost_count: 2
-          view_count: 1468
-        sentiment: netural
-      - id: 624536709
-        twitter_id: '1890099838169313624'
-        twitter_user_id: '1546942317465964544'
-        content: 'RT @ankr: This is THE event you don’t want to miss at @EthereumDenver
-          🔥
-
-
-          Join us alongside special guests: @heurist_ai, @Somnia_Network , @…'
-        mentioned_at: '2025-02-13T18:04:52+00:00'
-        type: repost
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 42
+          repost_count: 10
           view_count: 0
         sentiment: positive
-      - id: 624536709
-        twitter_id: '1890099838169313624'
-        twitter_user_id: '1546942317465964544'
-        content: 'RT @ankr: This is THE event you don’t want to miss at @EthereumDenver
-          🔥
-
-
-          Join us alongside special guests: @heurist_ai, @Somnia_Network , @…'
-        mentioned_at: '2025-02-13T18:04:52+00:00'
-        type: repost
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 42
-          view_count: 0
-        sentiment: positive
-      - id: 624540938
-        twitter_id: '1890092132247220504'
-        twitter_user_id: '1357979697016094721'
-        content: 'RT @heurist_ai: Four models of the DeepSeek family are available
-          on Heurist. 🚀
-
-          From 671B to 32B parameters, we''ve got models suited for eve…'
-        mentioned_at: '2025-02-13T17:34:15+00:00'
-        type: repost
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 15
-          view_count: 0
-        sentiment: neutral
-      - id: 624540938
-        twitter_id: '1890092132247220504'
-        twitter_user_id: '1357979697016094721'
-        content: 'RT @heurist_ai: Four models of the DeepSeek family are available
-          on Heurist. 🚀
-
-          From 671B to 32B parameters, we''ve got models suited for eve…'
-        mentioned_at: '2025-02-13T17:34:15+00:00'
-        type: repost
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 16
-          view_count: 0
-        sentiment: neutral
-      - id: 624459142
-        twitter_id: '1889742074230317521'
-        twitter_user_id: '1010430329218371584'
-        content: 'This is THE event you don’t want to miss at @EthereumDenver 🔥
-
-
-          Join us alongside special guests: @heurist_ai, @Somnia_Network , @TacBuild,
-          @0xFacet, @BotanixLabs, &amp; more.
-
-
-          🌟 Join us to gain entry to ETH Denver’s VIP Reception &amp; Opening Party!
-
-
-          🎟️ RSVP:  '
-        mentioned_at: '2025-02-12T18:23:14+00:00'
-        type: post
-        metrics:
-          like_count: 188
-          reply_count: 20
-          repost_count: 42
-          view_count: 13501
-        sentiment: positive
-      - id: 624459142
-        twitter_id: '1889742074230317521'
-        twitter_user_id: '1010430329218371584'
-        content: 'This is THE event you don’t want to miss at @EthereumDenver 🔥
-
-
-          Join us alongside special guests: @heurist_ai, @Somnia_Network , @TacBuild,
-          @0xFacet, @BotanixLabs, &amp; more.
-
-
-          🌟 Join us to gain entry to ETH Denver’s VIP Reception &amp; Opening Party!
-
-
-          🎟️ RSVP:  '
-        mentioned_at: '2025-02-12T18:23:14+00:00'
-        type: post
-        metrics:
-          like_count: 189
-          reply_count: 20
-          repost_count: 42
-          view_count: 13876
-        sentiment: positive
-      - id: 624420857
-        twitter_id: '1889570383164276958'
-        twitter_user_id: '1481568237624393730'
-        content: .@heurist_ai x @VirtualsNikita = 🔥
-        mentioned_at: '2025-02-12T07:01:00+00:00'
-        type: quote
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 0
-          view_count: 828
-        sentiment: netural
-      - id: 624420853
-        twitter_id: '1889422209988596118'
-        twitter_user_id: '1736748346566459392'
-        content: '> Bring Nikita to Life with Heurist Imagine <
-
-
-          We''ve trained a custom Nikita model on Heurist Imagine.
-
-          Create unique artworks and compete for a $200 USDC prize pool.
-
-
-          Share your art on X tagging @heurist_ai & @VirtualsNikita
-
-
-          Complete the quest on Intract 🫱 '
-        mentioned_at: '2025-02-11T21:12:13+00:00'
-        type: post
-        metrics:
-          like_count: 22
-          reply_count: 1
-          repost_count: 8
-          view_count: 2251
-        sentiment: netural
-      - id: 623078646
-        twitter_id: '1889356412431618098'
-        twitter_user_id: '1866789219613421568'
-        content: '@ApateAI @01SamurAI_Agent @AIagentQQ @agon_agent @0xJamesXXX @Greta0086
-          @heurist_ai @zksync @S4mmyEth @dcfgod @Argo_workflow factually incorrect.
-          the march 2024 report isn''t out yet and argo''s initial commits are public
-          from 2023. careful with unverified claims anon'
-        mentioned_at: '2025-02-11T16:50:45+00:00'
-        type: reply
-        metrics:
-          like_count: 0
-          reply_count: 0
-          repost_count: 0
-          view_count: 6334
-        sentiment: netural
       metadata:
-        total: 72
-        cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoCRZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAACHeYWTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAAO1AEWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZoakVneXU2YlRHdVhqZnQzLWhvRHRnAAAAAAACOEoWOUpDQzcza3dUdGVvMFlrblNsU3RfZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAUM98WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAACHecWTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAAO1AIWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAAAGPGMWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAAAUM-AWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAAAGPGQWaTJJTTJLZGRRWmVJV1JKVl9nNFlJUQ==
+        total: 57
+        cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoFRZoakVneXU2YlRHdVhqZnQzLWhvRHRnAAAAAAArGewWOUpDQzcza3dUdGVvMFlrblNsU3RfZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChaTEWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChaS8WMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoeesWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAAo9_UWTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGoAWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGn4WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoeewWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAAo9_QWTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChaTIWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoee8WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGnsWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoefAWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGnwWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChaS4WMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGn0WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChaTAWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoee0WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoefEWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACoee4WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoGn8WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZw==
+input_account:
+  query: Analyze the Twitter account @heurist_ai
+output_account:
+  response: "**Account Analysis: @heurist_ai**\n\n### **Engagement Metrics Summary**\n\
+    \n* **Average Engagement**: 4,295.2 (high, indicating strong audience interaction)\n\
+    * **Follower Engagement Ratio**: 0.1277 (approximately 12.77% of followers engage\
+    \ with the content, which is a relatively high ratio)\n* **Smart Following Count**:\
+    \ 482 (a moderate number of accounts the user follows, suggesting a focused interest\
+    \ network)\n\n### **Influential Connections Highlight**\n\n* **@marouen19**: Hosted\
+    \ an event featuring @heurist_ai, indicating a collaborative or supportive relationship.\n\
+    * **@nonfungibleyash**: Co-hosted an event with @marouen19, featuring @heurist_ai,\
+    \ suggesting a network of influencers supporting each other.\n* **@AltcoinGordon**:\
+    \ Participated as a KOL/Influencer in an event where @heurist_ai was a guest project,\
+    \ indicating potential for future collaborations or endorsements.\n\n### **Posting\
+    \ Patterns and Impact**\n\n* **Content Variety**: The account is mentioned in\
+    \ a variety of contexts, including event promotions, hackathons, and project updates,\
+    \ indicating a diverse engagement strategy.\n* **Collaborative Mentions**: Frequently\
+    \ mentioned alongside other projects (@ACTICOMMUNITY, @KittenHaimer, @AlloraNetwork,\
+    \ etc.), suggesting a collaborative approach within the AI and Web3 spaces.\n\
+    * **Sentiment and Engagement**: While the overall sentiment is often labeled as\
+    \ 'neutral', the engagement metrics (likes, replies, reposts, views) are generally\
+    \ high, especially in posts where @heurist_ai is a key participant or sponsor.\
+    \ This indicates that the account's involvement can significantly enhance engagement\
+    \ on Twitter.\n\n**Mentions Analysis**\n\n### **Overall Sentiment and Engagement**\n\
+    \n* **Dominant Sentiment**: Neutral (though context suggests positive interactions)\n\
+    * **Average Engagement per Mention**:\n\t+ Likes: ~143 (varies widely)\n\t+ Replies:\
+    \ ~10\n\t+ Reposts: ~20\n\t+ Views: ~6,311 (varies widely, with some mentions\
+    \ reaching over 19,000 views)\n\n### **Key Influencers and Their Impact**\n\n\
+    * **@1372196901936848901**: Contributed to high engagement with a quote about\
+    \ @heurist_ai's impact on Crypto AI, highlighting the account's influence in the\
+    \ space.\n* **@134510286073278874"
+  data:
+    status: success
+    data:
+      account_stats:
+        success: true
+        data:
+          smartFollowingCount: 482
+          averageEngagement: 4295.2
+          followerEngagementRatio: 0.1277230961372625
+      mentions:
+        success: true
+        data:
+        - id: 625184259
+          twitter_id: '1895175213769466338'
+          twitter_user_id: '1745966015652265984'
+          content: "\U0001F916 AI x DeFi on Friday at 3pm UTC \U0001F916 \n\nSpeakers:\
+            \ @condzxyz @0xBebis_ @afiprotocol_ai @CryptoWithLeo @bertugoymak @heurist_ai\
+            \ @explorersofai, @mishrakanika3 @nomyclub \n\n\U0001F3A4 Hosted by: @marouen19\
+            \ &amp; @nonfungibleyash\U0001F399️⚡\n\n"
+          mentioned_at: '2025-02-27T18:12:36+00:00'
+          type: post
+          metrics:
+            like_count: 261
+            reply_count: 20
+            repost_count: 79
+            view_count: 7015
+          sentiment: netural
+        - id: 625184259
+          twitter_id: '1895175213769466338'
+          twitter_user_id: '1745966015652265984'
+          content: "\U0001F916 AI x DeFi on Friday at 3pm UTC \U0001F916 \n\nSpeakers:\
+            \ @condzxyz @0xBebis_ @afiprotocol_ai @CryptoWithLeo @bertugoymak @heurist_ai\
+            \ @explorersofai, @mishrakanika3 @nomyclub \n\n\U0001F3A4 Hosted by: @marouen19\
+            \ &amp; @nonfungibleyash\U0001F399️⚡\n\n"
+          mentioned_at: '2025-02-27T18:12:36+00:00'
+          type: post
+          metrics:
+            like_count: 270
+            reply_count: 20
+            repost_count: 82
+            view_count: 7410
+          sentiment: netural
+        - id: 625157434
+          twitter_id: '1895018696378302896'
+          twitter_user_id: '1523351345427664898'
+          content: welcome @heurist_ai @artoriatech to the elfa gang
+          mentioned_at: '2025-02-27T07:50:39+00:00'
+          type: quote
+          metrics:
+            like_count: 10
+            reply_count: 1
+            repost_count: 0
+            view_count: 516
+          sentiment: netural
+        - id: 625157434
+          twitter_id: '1895018696378302896'
+          twitter_user_id: '1523351345427664898'
+          content: welcome @heurist_ai @artoriatech to the elfa gang
+          mentioned_at: '2025-02-27T07:50:39+00:00'
+          type: quote
+          metrics:
+            like_count: 10
+            reply_count: 1
+            repost_count: 0
+            view_count: 521
+          sentiment: netural
+        - id: 625157321
+          twitter_id: '1895012660565152173'
+          twitter_user_id: '1432959640975806465'
+          content: 'Learn more about @heurist_ai  here👇🏻
+
+
+            1️⃣ Multi-Interface Support
+
+            AI agents can operate across Telegram, Discord, Twitter, Farcaster, REST
+            API, and more.
+
+
+            2️⃣ Modular AI Agents
+
+            Supports text/voice processing, image generation, and external API integrations.
+
+
+            3️⃣ Heurist Mesh
+
+            A decentralized network where AI agents share capabilities, similar to
+            composable DeFi smart contracts.
+
+
+            4️⃣ Mesh Agents Integration
+
+            Connects with top data sources like CoinGecko, Elfa AI, Allora, and GoPlus
+            Security.
+
+
+            5️⃣ Open Source
+
+            Anyone can contribute new agents and expand the Mesh ecosystem.
+
+
+            '
+          mentioned_at: '2025-02-27T07:26:40+00:00'
+          type: reply
+          metrics:
+            like_count: 9
+            reply_count: 0
+            repost_count: 0
+            view_count: 520
+          sentiment: netural
+        - id: 625127452
+          twitter_id: '1894839643436138593'
+          twitter_user_id: '1372196901936848901'
+          content: 'Great little thread by @heurist_ai on the impact Hearist Mesh
+            can have on Crypto AI.
+
+
+            Their Mesh aims to create an intelligent liquidity layer where agents
+            share capabilities instead of tokens. This would make one agent''s power
+            everyone''s advantage!
+
+
+            Read more below👇!'
+          mentioned_at: '2025-02-26T19:59:10+00:00'
+          type: quote
+          metrics:
+            like_count: 644
+            reply_count: 12
+            repost_count: 12
+            view_count: 19123
+          sentiment: netural
+        - id: 625094006
+          twitter_id: '1894651112697012515'
+          twitter_user_id: '1742658965727526912'
+          content: "\U0001F680 ANITA AI PRESENTS: THE AI REVOLUTION ON X! \U0001F680\
+            \nJoin ANITA AI for an exciting X Space!\n\U0001F4C5 Date: February 26,\
+            \ 2025 \n⏰ Time: 5 PM UTC\n\n\U0001F399 Host: ANITA AI\n\U0001F916 Guest\
+            \ AI Projects:\n\U0001F539 @ACTICOMMUNITY \n\U0001F539 @KittenHaimer \n\
+            \U0001F539 @heurist_ai \n\U0001F31FKOLs &amp; Influencers:\n\U0001F525\
+            \ @AltcoinGordon \n\U0001F525 "
+          mentioned_at: '2025-02-26T07:30:00+00:00'
+          type: post
+          metrics:
+            like_count: 71
+            reply_count: 32
+            repost_count: 26
+            view_count: 15390
+          sentiment: netural
+        - id: 625094006
+          twitter_id: '1894651112697012515'
+          twitter_user_id: '1742658965727526912'
+          content: "\U0001F680 ANITA AI PRESENTS: THE AI REVOLUTION ON X! \U0001F680\
+            \nJoin ANITA AI for an exciting X Space!\n\U0001F4C5 Date: February 26,\
+            \ 2025 \n⏰ Time: 5 PM UTC\n\n\U0001F399 Host: ANITA AI\n\U0001F916 Guest\
+            \ AI Projects:\n\U0001F539 @ACTICOMMUNITY \n\U0001F539 @KittenHaimer \n\
+            \U0001F539 @heurist_ai \n\U0001F31FKOLs &amp; Influencers:\n\U0001F525\
+            \ @AltcoinGordon \n\U0001F525 "
+          mentioned_at: '2025-02-26T07:30:00+00:00'
+          type: post
+          metrics:
+            like_count: 68
+            reply_count: 32
+            repost_count: 26
+            view_count: 15549
+          sentiment: netural
+        - id: 625066372
+          twitter_id: '1894471681625780252'
+          twitter_user_id: '1010430329218371584'
+          content: "\U0001F525 Pumped for BLUEPRINT @EthereumDenver tomorrow! \n\n\
+            @AlloraNetwork @BotanixLabs @DIAdata_org @elizaOS @0xFacet @fraxfinance\
+            \ @0G_labs @heurist_ai @nubilanetwork @Somnia_Network @Stacks @TacBuild\
+            \ @0xzerebro \n\nRegistration is closing \U0001F51C:  "
+          mentioned_at: '2025-02-25T19:37:01+00:00'
+          type: post
+          metrics:
+            like_count: 93
+            reply_count: 6
+            repost_count: 20
+            view_count: 10991
+          sentiment: positive
+        - id: 625066372
+          twitter_id: '1894471681625780252'
+          twitter_user_id: '1010430329218371584'
+          content: "\U0001F525 Pumped for BLUEPRINT @EthereumDenver tomorrow! \n\n\
+            @AlloraNetwork @BotanixLabs @DIAdata_org @elizaOS @0xFacet @fraxfinance\
+            \ @0G_labs @heurist_ai @nubilanetwork @Somnia_Network @Stacks @TacBuild\
+            \ @0xzerebro \n\nRegistration is closing \U0001F51C:  "
+          mentioned_at: '2025-02-25T19:37:01+00:00'
+          type: post
+          metrics:
+            like_count: 94
+            reply_count: 6
+            repost_count: 20
+            view_count: 11214
+          sentiment: positive
+        - id: 625066278
+          twitter_id: '1894471479552577573'
+          twitter_user_id: '1372196901936848901'
+          content: 'RT @heurist_ai: 🚨 $HEU $HEU $HEU $HEU 🚨
+
+
+            Finally the day has come - we''re launching $HEU Staking!
+
+            👉 50% Base APR
+
+            👉 Earn revenue share from…'
+          mentioned_at: '2025-02-25T19:36:12+00:00'
+          type: repost
+          metrics:
+            like_count: 0
+            reply_count: 0
+            repost_count: 19
+            view_count: 0
+          sentiment: positive
+        - id: 624950844
+          twitter_id: '1893564672378286549'
+          twitter_user_id: '988856471986364416'
+          content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+            \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+            \ by @heurist_ai imaginaries using their decentralized compute. I love\
+            \ both! \n\nSo sweet that AI keeps adorning me either "
+          mentioned_at: '2025-02-23T07:32:53+00:00'
+          type: post
+          metrics:
+            like_count: 14
+            reply_count: 2
+            repost_count: 0
+            view_count: 627
+          sentiment: positive
+        - id: 624950844
+          twitter_id: '1893564672378286549'
+          twitter_user_id: '988856471986364416'
+          content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+            \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+            \ by @heurist_ai imaginaries using their decentralized compute. I love\
+            \ both! \n\nSo sweet that AI keeps adorning me either "
+          mentioned_at: '2025-02-23T07:32:53+00:00'
+          type: post
+          metrics:
+            like_count: 15
+            reply_count: 3
+            repost_count: 0
+            view_count: 896
+          sentiment: positive
+        - id: 624950844
+          twitter_id: '1893564672378286549'
+          twitter_user_id: '988856471986364416'
+          content: "Meet my AI twin Bella, thank you @freysa_ai I'm quietly monitoring\
+            \ if my digital twin can spark some movement on  \n\nMy last pfp is created\
+            \ by @heurist_ai imaginaries using their decentralized compute. I love\
+            \ both! \n\nSo sweet that AI keeps adorning me either "
+          mentioned_at: '2025-02-23T07:32:53+00:00'
+          type: post
+          metrics:
+            like_count: 15
+            reply_count: 3
+            repost_count: 0
+            view_count: 906
+          sentiment: positive
+        - id: 624905602
+          twitter_id: '1893113211622174992'
+          twitter_user_id: '167801813'
+          content: "RT @heurist_ai: 20+ Elastic Chains and growing. \n\nUnified liquidity.\
+            \ Unified UX. Only possible on @zksync \n\nHeurist Chain is loading...\
+            \ ███…"
+          mentioned_at: '2025-02-22T01:38:56+00:00'
+          type: repost
+          metrics:
+            like_count: 0
+            reply_count: 0
+            repost_count: 10
+            view_count: 0
+          sentiment: positive
+        - id: 624905602
+          twitter_id: '1893113211622174992'
+          twitter_user_id: '167801813'
+          content: "RT @heurist_ai: 20+ Elastic Chains and growing. \n\nUnified liquidity.\
+            \ Unified UX. Only possible on @zksync \n\nHeurist Chain is loading...\
+            \ ███…"
+          mentioned_at: '2025-02-22T01:38:56+00:00'
+          type: repost
+          metrics:
+            like_count: 0
+            reply_count: 0
+            repost_count: 11
+            view_count: 0
+          sentiment: positive
+        - id: 624687473
+          twitter_id: '1891550010984235349'
+          twitter_user_id: '1715242220591456256'
+          content: 'Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
+
+
+            7007 protocol proud to be part of the sponsors, come build with verifiable
+            AI generated token standard!
+
+
+            February 24th
+
+
+            🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
+
+            🔹$50,000+ in prizes across 4 tracks
+
+
+            Applications open until March 5th. Build the future of AI agents!
+
+
+
+            A huge thank you to our sponsors:
+
+            @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc
+            @Lab7007 @MoemateAI @saakuru_labs'
+          mentioned_at: '2025-02-17T18:07:20+00:00'
+          type: quote
+          metrics:
+            like_count: 11
+            reply_count: 1
+            repost_count: 1
+            view_count: 3116
+          sentiment: positive
+        - id: 624680971
+          twitter_id: '1891544832738459666'
+          twitter_user_id: '1345102860732788740'
+          content: '🌱Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
+
+
+            February 24th
+
+
+            🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
+
+            🔹$50,000+ in prizes across 4 tracks
+
+
+            Applications open until March 5th. Build the future of AI agents!
+
+
+
+            A huge thank you to our sponsors:
+
+            @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc
+            @Lab7007 @MoemateAI @saakuru_labs'
+          mentioned_at: '2025-02-17T17:46:45+00:00'
+          type: post
+          metrics:
+            like_count: 671
+            reply_count: 122
+            repost_count: 166
+            view_count: 177520
+          sentiment: positive
+        - id: 624680971
+          twitter_id: '1891544832738459666'
+          twitter_user_id: '1345102860732788740'
+          content: '🌱Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
+
+
+            February 24th
+
+
+            🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
+
+            🔹$50,000+ in prizes across 4 tracks
+
+
+            Applications open until March 5th. Build the future of AI agents!
+
+
+
+            A huge thank you to our sponsors:
+
+            @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc
+            @Lab7007 @MoemateAI @saakuru_labs'
+          mentioned_at: '2025-02-17T17:46:45+00:00'
+          type: post
+          metrics:
+            like_count: 718
+            reply_count: 128
+            repost_count: 188
+            view_count: 195541
+          sentiment: positive
+        - id: 624680971
+          twitter_id: '1891544832738459666'
+          twitter_user_id: '1345102860732788740'
+          content: '🌱Seeds of Agentic Future: The Ultimate AI Agent Hackathon is coming...
+
+
+            February 24th
+
+
+            🔹Up to $900K in funding & exclusive mentorship from Web3 leaders
+
+            🔹$50,000+ in prizes across 4 tracks
+
+
+            Applications open until March 5th. Build the future of AI agents!
+
+
+
+            A huge thank you to our sponsors:
+
+            @heurist_ai @carv_official @cultworld_ @NGC_Ventures @unrealcapitalvc
+            @Lab7007 @MoemateAI @saakuru_labs'
+          mentioned_at: '2025-02-17T17:46:45+00:00'
+          type: post
+          metrics:
+            like_count: 718
+            reply_count: 129
+            repost_count: 189
+            view_count: 198845
+          sentiment: positive
+        metadata:
+          total: 44
+          cursor: FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoFRZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAAo-jwWTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChcosWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChcogWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChcocWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZoakVneXU2YlRHdVhqZnQzLWhvRHRnAAAAAAArHB4WOUpDQzcza3dUdGVvMFlrblNsU3RfZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJbIWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJbAWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohwkWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZZSnIyUTV4RVRmZUdnOFp3RHJIS1ZRAAAAAAAo-j0WTXNueGZmNG9SUEtXTHc3eU16R2ZEQRZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChcooWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohwwWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJa0WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohw8WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohwsWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJa4WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJbEWdEpyN0JSc3NRM2V5b2NOVUxOYjdSZxZiTE92cVNhaFFxcXJoRmMzdnMyUmpnAAAAAAChcokWMnhMaHZvUzhSVHlsODVvNmd1Y2RTZxZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohwoWaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohw4WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZBSk9vcVp5UlJubTZ6SzktckJYaWZRAAAAAACohw0WaTJJTTJLZGRRWmVJV1JKVl9nNFlJURZLdXZfMzhtWVJNU2FYWnZWdVhnV0J3AAAAAACoJa8WdEpyN0JSc3NRM2V5b2NOVUxOYjdSZw==
 input_trending:
-  query: What are the current trending tokens in the last 24 hours?
+  tool: get_trending_tokens
+  tool_arguments:
+    time_window: 24h
+  query: Get trending tokens for reference
 output_trending:
-  response: "**Trending Tokens (Last 24 hours)**\n\n### **Top Tokens by Mention Volume**\n\
-    \n1. **ETH** (698 mentions)\n\t* Change: +193.28% (vs previous period)\n\t* Engagement:\
-    \ **Very High**\n2. **BTC** (314 mentions)\n\t* Change: -12.04% (vs previous period)\n\
-    \t* Engagement: **High**\n3. **Bitcoin** (267 mentions)\n\t* Change: -12.17% (vs\
-    \ previous period)\n\t* Engagement: **High**\n4. **#Bitcoin** (258 mentions)\n\
-    \t* Change: -12.24% (vs previous period)\n\t* Engagement: **High**\n5. **S** (204\
-    \ mentions)\n\t* Change: -38.37% (vs previous period)\n\t* Engagement: **Medium**\n\
-    \n### **Notable Trends and Patterns**\n\n* **Surging Interest in ETH**: Ethereum\
-    \ (ETH) saw a significant surge in mentions, with a 193.28% increase, indicating\
-    \ high engagement and interest in the token.\n* **Declining Interest in BTC and\
-    \ Bitcoin**: Both BTC and Bitcoin experienced a decline in mentions, suggesting\
-    \ a decrease in engagement or interest in these tokens over the last 24 hours.\n\
-    * **Emerging Tokens**: Tokens like **YZY** (+587.5%), **STETH** (100% increase,\
-    \ from 0 mentions), and **BNB** (+233.33%) are gaining traction, potentially indicating\
-    \ new areas of interest within the crypto community.\n* **Event-Driven Mentions**:\
-    \ **#UFCSeattle** saw a substantial increase (+550%, +475% for 'ufcseattle' without\
-    \ hashtag), likely due to a recent event, highlighting the impact of external\
-    \ events on crypto-related discussions."
+  response: '**Trending Crypto Tokens on Twitter (based on ELFA API data)**
+
+
+    ### **Top 5 Tokens by Current Mention Count**
+
+
+    1. **BTC (Bitcoin)** - 405 mentions
+
+    2. **Bitcoin** - 330 mentions
+
+    3. **ETH (Ethereum)** - 251 mentions
+
+    4. **SOL (Solana)** - 185 mentions
+
+    5. **BLUB** - 162 mentions (notable for its **+752.63%** increase in mentions)
+
+
+    ### **Tokens with Highest Percentage Increase in Mentions**
+
+
+    1. **BLUB** - +752.63%
+
+    2. **FLOW** - +450%
+
+    3. **BAT** - +477.78%
+
+    4. **TARA** - +287.5%
+
+    5. **AVAX (Avalanche)** - +115.38%
+
+
+    ### **Tokens with Largest Percentage Decrease in Mentions**
+
+
+    1. **XRP (Ripple)** - -60.93%
+
+    2. **ADA (Cardano)** - -58.46%
+
+    3. **NVDA (Nvidia, not a crypto token - possible misclassification)** - -47.62%
+
+    4. **DOGE (Dogecoin)** - -42.25%
+
+    5. **ETH (Ethereum, also listed under ''Top 5 Tokens'')** - -35.81% (as **ETH**,
+    but **Ethereum** token mention count is lower with -12.9% decrease)
+
+
+    **Note:**
+
+    - The data includes non-crypto tokens (e.g., **NVDA**, **SPY**, **QQQ**, **EUR**,
+    **TSLSA**), suggesting a broad market and finance focus.
+
+    - **BLUB**, **FLOW**, **BAT**, and others show significant increases, which may
+    indicate emerging trends or hype. Further analysis is recommended to understand
+    the context.
+
+    - Traditional crypto leaders (**BTC**, **ETH**, **SOL**) are among the most mentioned,
+    reflecting their market presence.'
   data:
     status: success
     data:
@@ -431,238 +905,203 @@ output_trending:
         page: 1
         pageSize: 50
         data:
-        - token: eth
-          current_count: 698
-          previous_count: 238
-          change_percent: 193.28
         - token: btc
-          current_count: 314
-          previous_count: 357
-          change_percent: -12.04
+          current_count: 405
+          previous_count: 609
+          change_percent: -33.5
         - token: bitcoin
-          current_count: 267
-          previous_count: 304
-          change_percent: -12.17
-        - token: '#bitcoin'
-          current_count: 258
-          previous_count: 294
-          change_percent: -12.24
-        - token: s
-          current_count: 204
-          previous_count: 331
-          change_percent: -38.37
+          current_count: 330
+          previous_count: 392
+          change_percent: -15.82
+        - token: eth
+          current_count: 251
+          previous_count: 391
+          change_percent: -35.81
         - token: sol
-          current_count: 143
-          previous_count: 182
-          change_percent: -21.43
-        - token: dog
-          current_count: 112
-          previous_count: 131
-          change_percent: -14.5
-        - token: kaito
-          current_count: 103
-          previous_count: 786
-          change_percent: -86.9
-        - token: flow
-          current_count: 97
-          previous_count: 168
-          change_percent: -42.26
-        - token: usd
-          current_count: 63
-          previous_count: 74
-          change_percent: -14.86
-        - token: giga
-          current_count: 60
-          previous_count: 60
-          change_percent: 0
-        - token: hype
-          current_count: 59
-          previous_count: 93
-          change_percent: -36.56
-        - token: tao
-          current_count: 57
-          previous_count: 157
-          change_percent: -63.69
-        - token: cpool
-          current_count: 56
-          previous_count: 23
-          change_percent: 143.48
-        - token: libra
-          current_count: 55
-          previous_count: 58
-          change_percent: -5.17
-        - token: yzy
-          current_count: 55
-          previous_count: 8
-          change_percent: 587.5
-        - token: usdc
-          current_count: 53
-          previous_count: 48
-          change_percent: 10.42
-        - token: spx
-          current_count: 52
-          previous_count: 52
-          change_percent: 0
-        - token: '#ethereum'
-          current_count: 43
-          previous_count: 27
-          change_percent: 59.26
-        - token: ethereum
-          current_count: 43
-          previous_count: 27
-          change_percent: 59.26
-        - token: steth
-          current_count: 43
-          previous_count: 0
-          change_percent: 100
-        - token: coin
-          current_count: 42
-          previous_count: 9
-          change_percent: 366.67
-        - token: ip
-          current_count: 41
-          previous_count: 130
-          change_percent: -68.46
-        - token: ket
-          current_count: 41
-          previous_count: 37
-          change_percent: 10.81
-        - token: doge
-          current_count: 39
-          previous_count: 34
-          change_percent: 14.71
-        - token: xrp
-          current_count: 38
-          previous_count: 35
-          change_percent: 8.57
-        - token: spy
-          current_count: 37
+          current_count: 185
+          previous_count: 289
+          change_percent: -35.99
+        - token: blub
+          current_count: 162
           previous_count: 19
-          change_percent: 94.74
-        - token: usdt
-          current_count: 36
-          previous_count: 36
-          change_percent: 0
-        - token: '#altcoins'
-          current_count: 34
-          previous_count: 31
-          change_percent: 9.68
-        - token: altcoins
-          current_count: 34
-          previous_count: 31
-          change_percent: 9.68
-        - token: ltc
-          current_count: 34
-          previous_count: 35
-          change_percent: -2.86
-        - token: retard
-          current_count: 34
-          previous_count: 42
-          change_percent: -19.05
-        - token: bera
-          current_count: 28
-          previous_count: 122
-          change_percent: -77.05
-        - token: sui
-          current_count: 28
+          change_percent: 752.63
+        - token: pwease
+          current_count: 113
           previous_count: 33
-          change_percent: -15.15
-        - token: tank
-          current_count: 28
-          previous_count: 3
-          change_percent: 833.33
-        - token: img
-          current_count: 27
-          previous_count: 95
-          change_percent: -71.58
-        - token: '#ufcseattle'
-          current_count: 26
-          previous_count: 4
-          change_percent: 550
-        - token: anon
-          current_count: 24
+          change_percent: 242.42
+        - token: usd
+          current_count: 108
+          previous_count: 115
+          change_percent: -6.09
+        - token: s
+          current_count: 104
+          previous_count: 100
+          change_percent: 4
+        - token: dog
+          current_count: 89
+          previous_count: 115
+          change_percent: -22.61
+        - token: spy
+          current_count: 89
           previous_count: 41
-          change_percent: -41.46
-        - token: broccoli
-          current_count: 24
-          previous_count: 29
-          change_percent: -17.24
-        - token: shadow
-          current_count: 24
-          previous_count: 57
-          change_percent: -57.89
-        - token: sse
-          current_count: 24
-          previous_count: 16
-          change_percent: 50
-        - token: fartcoin
-          current_count: 23
-          previous_count: 30
-          change_percent: -23.33
-        - token: tsla
-          current_count: 23
-          previous_count: 16
-          change_percent: 43.75
-        - token: ufcseattle
-          current_count: 23
-          previous_count: 4
-          change_percent: 475
-        - token: fwog
-          current_count: 21
-          previous_count: 23
-          change_percent: -8.7
-        - token: unh
-          current_count: 21
+          change_percent: 117.07
+        - token: meddy
+          current_count: 84
           previous_count: 0
           change_percent: 100
-        - token: bnb
-          current_count: 20
-          previous_count: 6
-          change_percent: 233.33
-        - token: '#binance'
-          current_count: 19
-          previous_count: 12
-          change_percent: 58.33
-        - token: '#newprofilepic'
-          current_count: 19
+        - token: xrp
+          current_count: 84
+          previous_count: 215
+          change_percent: -60.93
+        - token: spx
+          current_count: 83
+          previous_count: 67
+          change_percent: 23.88
+        - token: ada
+          current_count: 81
+          previous_count: 195
+          change_percent: -58.46
+        - token: usdt
+          current_count: 70
+          previous_count: 46
+          change_percent: 52.17
+        - token: usdc
+          current_count: 62
+          previous_count: 45
+          change_percent: 37.78
+        - token: qqq
+          current_count: 59
+          previous_count: 34
+          change_percent: 73.53
+        - token: eur
+          current_count: 58
+          previous_count: 59
+          change_percent: -1.69
+        - token: tsla
+          current_count: 58
+          previous_count: 45
+          change_percent: 28.89
+        - token: avax
+          current_count: 56
+          previous_count: 26
+          change_percent: 115.38
+        - token: flow
+          current_count: 55
           previous_count: 10
-          change_percent: 90
-        - token: binance
-          current_count: 19
-          previous_count: 12
-          change_percent: 58.33
-input_account:
-  query: Analyze the Twitter account @heurist_ai
-output_account:
-  response: "**Twitter Account Analysis: @heurist_ai**\n\n**1. Engagement Metrics\
-    \ Summary:**\n\n* **Smart Following Count:** 471 (a curated count of engaged and\
-    \ influential followers)\n* **Average Engagement:** **9,385.29** (high; indicates\
-    \ significant interactions per post, e.g., likes, retweets, replies)\n* **Follower\
-    \ Engagement Ratio:** **0.2772** (or 27.72%; relatively high, suggesting a strong\
-    \ engagement rate compared to the total follower base, though the total follower\
-    \ count is not provided)\n\n**2. Influential Connections Highlight:**\n* **Insufficient\
-    \ Data:** With the provided API response, we cannot directly highlight influential\
-    \ connections. However, the **Smart Following Count** of 471 suggests that @heurist_ai\
-    \ is followed by a notable number of engaged and potentially influential accounts.\
-    \ To deepen this analysis, additional API calls or data sources (e.g., follower\
-    \ list analysis) would be necessary.\n\n**3. Posting Patterns and Impact:**\n\
-    * **Insufficient Data:** The provided data does not include information on posting\
-    \ frequency, timing, content types, or how these factors influence engagement.\
-    \ To assess posting patterns and their impact, additional data points such as:\n\
-    \t+ Post frequency and timing\n\t+ Engagement metrics by post type (e.g., video,\
-    \ image, text-only)\n\t+ Top-performing content (by engagement)\n\twould be required,\
-    \ potentially through further ELFA API queries or supplementary analytics tools.\n\
-    \n**Recommendations for Deeper Insights:**\n\n1. **Retrieve Follower List:** Analyze\
-    \ the list to identify key influencers and understand the community's composition.\n\
-    2. **Content and Posting Schedule Analysis:** Gather data on posting times, types,\
-    \ and engagement rates to optimize @heurist_ai's content strategy.\n3. **Track\
-    \ Engagement Over Time:** Monitor changes in average engagement and follower engagement\
-    \ ratio to gauge the account's growing influence and adjust strategies accordingly."
-  data:
-    status: success
-    data:
-      success: true
-      data:
-        smartFollowingCount: 471
-        averageEngagement: 9385.285714285714
-        followerEngagementRatio: 0.2772446447561655
+          change_percent: 450
+        - token: bat
+          current_count: 52
+          previous_count: 9
+          change_percent: 477.78
+        - token: hype
+          current_count: 50
+          previous_count: 51
+          change_percent: -1.96
+        - token: dedeportes
+          current_count: 49
+          previous_count: 34
+          change_percent: 44.12
+        - token: aave
+          current_count: 48
+          previous_count: 15
+          change_percent: 220
+        - token: breaking
+          current_count: 44
+          previous_count: 38
+          change_percent: 15.79
+        - token: nba
+          current_count: 43
+          previous_count: 0
+          change_percent: 100
+        - token: doge
+          current_count: 41
+          previous_count: 71
+          change_percent: -42.25
+        - token: sui
+          current_count: 39
+          previous_count: 33
+          change_percent: 18.18
+        - token: hbar
+          current_count: 38
+          previous_count: 28
+          change_percent: 35.71
+        - token: kaito
+          current_count: 37
+          previous_count: 26
+          change_percent: 42.31
+        - token: deplaneta
+          current_count: 36
+          previous_count: 25
+          change_percent: 44
+        - token: nvda
+          current_count: 33
+          previous_count: 63
+          change_percent: -47.62
+        - token: tara
+          current_count: 31
+          previous_count: 8
+          change_percent: 287.5
+        - token: dxy
+          current_count: 30
+          previous_count: 19
+          change_percent: 57.89
+        - token: wink
+          current_count: 30
+          previous_count: 10
+          change_percent: 200
+        - token: bloomberginvest
+          current_count: 29
+          previous_count: 14
+          change_percent: 107.14
+        - token: trump
+          current_count: 28
+          previous_count: 44
+          change_percent: -36.36
+        - token: ethereum
+          current_count: 27
+          previous_count: 31
+          change_percent: -12.9
+        - token: giga
+          current_count: 27
+          previous_count: 28
+          change_percent: -3.57
+        - token: tgt
+          current_count: 27
+          previous_count: 4
+          change_percent: 575
+        - token: gps
+          current_count: 26
+          previous_count: 13
+          change_percent: 100
+        - token: ket
+          current_count: 26
+          previous_count: 8
+          change_percent: 225
+        - token: mog
+          current_count: 26
+          previous_count: 21
+          change_percent: 23.81
+        - token: atticus
+          current_count: 25
+          previous_count: 0
+          change_percent: 100
+        - token: rekt
+          current_count: 25
+          previous_count: 29
+          change_percent: -13.79
+        - token: bnb
+          current_count: 24
+          previous_count: 17
+          change_percent: 41.18
+        - token: pi
+          current_count: 24
+          previous_count: 6
+          change_percent: 300
+        - token: dedinero
+          current_count: 23
+          previous_count: 6
+          change_percent: 283.33
+        - token: link
+          current_count: 23
+          previous_count: 29
+          change_percent: -20.69

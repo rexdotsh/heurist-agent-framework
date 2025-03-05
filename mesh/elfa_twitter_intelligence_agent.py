@@ -36,7 +36,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             'version': '1.0.0',
             'author': 'Heurist team',
             'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'description': 'This agent analyzes Twitter mentions and trends for crypto tokens using ELFA API',
+            'description': 'This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart accounts.',
             'inputs': [
                 {
                     'name': 'query',
@@ -91,10 +91,6 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             "1. Summarize the overall sentiment and engagement\n"
             "2. Highlight key influencers and their impact\n"
             "3. Identify notable trends or patterns\n\n"
-            "When providing trending tokens:\n"
-            "1. List top tokens by mention volume\n"
-            "2. Include engagement metrics\n"
-            "3. Note any significant changes or patterns\n\n"
             "When analyzing accounts:\n"
             "1. Summarize engagement metrics\n"
             "2. Highlight influential connections\n"
@@ -107,7 +103,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 'type': 'function',
                 'function': {
                     'name': 'search_mentions',
-                    'description': 'Search for mentions of specific keywords',
+                    'description': 'Search for mentions of specific tokens or topics',
                     'parameters': {
                         'type': 'object',
                         'properties': {
@@ -134,6 +130,33 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             {
                 'type': 'function',
                 'function': {
+                    'name': 'search_account',
+                    'description': 'Analyze a Twitter account with both mention search and account stats',
+                    'parameters': {
+                        'type': 'object',
+                        'properties': {
+                            'username': {
+                                'type': 'string',
+                                'description': 'Twitter username to analyze (without @)'
+                            },
+                            'days_ago': {
+                                'type': 'integer',
+                                'description': 'Number of days to look back for mentions',
+                                'default': 30
+                            },
+                            'limit': {
+                                'type': 'integer',
+                                'description': 'Maximum number of mention results',
+                                'default': 20
+                            }
+                        },
+                        'required': ['username'],
+                    },
+                }
+            },
+            {
+                'type': 'function',
+                'function': {
                     'name': 'get_trending_tokens',
                     'description': 'Get current trending tokens',
                     'parameters': {
@@ -145,23 +168,6 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                                 'default': '24h'
                             }
                         }
-                    },
-                }
-            },
-            {
-                'type': 'function',
-                'function': {
-                    'name': 'get_account_stats',
-                    'description': 'Get account analytics and statistics',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'username': {
-                                'type': 'string',
-                                'description': 'Twitter username to analyze'
-                            }
-                        },
-                        'required': ['username'],
                     },
                 }
             }
@@ -221,15 +227,10 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             }
 
     @with_cache(ttl_seconds=300)
-    async def get_trending_tokens(self, time_window: str = "24h") -> Dict:
+    async def get_account_stats(self, username: str) -> Dict:
         try:
-            params = {
-                'timeWindow': time_window,
-                'page': 1,
-                'pageSize': 50,
-                'minMentions': 5
-            }
-            result = await self._make_request("trending-tokens", params=params)
+            params = {'username': username}
+            result = await self._make_request("account/smart-stats", params=params)
             return {
                 'status': 'success',
                 'data': result
@@ -239,12 +240,44 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 'status': 'error',
                 'error': str(e)
             }
+            
+    @with_cache(ttl_seconds=300)
+    async def search_account(self, username: str, days_ago: int = 30, limit: int = 20) -> Dict:
+        try:
+            # Get account stats
+            account_stats_result = await self.get_account_stats(username)
+            if 'error' in account_stats_result:
+                return account_stats_result
+                
+            # Search for mentions of the account
+            mentions_result = await self.search_mentions([username], days_ago, limit)
+            if 'error' in mentions_result:
+                return mentions_result
+                
+            # Combine both results
+            return {
+                'status': 'success',
+                'data': {
+                    'account_stats': account_stats_result.get('data', {}),
+                    'mentions': mentions_result.get('data', {})
+                }
+            }
+        except Exception as e:
+            return {
+                'status': 'error',
+                'error': str(e)
+            }
 
     @with_cache(ttl_seconds=300)
-    async def get_account_stats(self, username: str) -> Dict:
+    async def get_trending_tokens(self, time_window: str = "24h") -> Dict:
         try:
-            params = {'username': username}
-            result = await self._make_request("account/smart-stats", params=params)
+            params = {
+                'timeWindow': time_window,
+                'page': 1,
+                'pageSize': 50,
+                'minMentions': 5
+            }
+            result = await self._make_request("trending-tokens", params=params)
             return {
                 'status': 'success',
                 'data': result
@@ -265,10 +298,10 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         
         if tool_name == 'search_mentions':
             result = await self.search_mentions(**function_args)
+        elif tool_name == 'search_account':
+            result = await self.search_account(**function_args)
         elif tool_name == 'get_trending_tokens':
             result = await self.get_trending_tokens(**function_args)
-        elif tool_name == 'get_account_stats':
-            result = await self.get_account_stats(**function_args)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 
@@ -324,6 +357,10 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
         # ---------------------
+        # Only use search_mentions and search_account for LLM tool selection
+        llm_tools = [tool for tool in self.get_tool_schemas() 
+                    if tool['function']['name'] in ['search_mentions', 'search_account']]
+        
         response = await call_llm_with_tools_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
@@ -331,7 +368,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             system_prompt=self.get_system_prompt(),
             user_prompt=query,
             temperature=0.1,
-            tools=self.get_tool_schemas()
+            tools=llm_tools
         )
 
         if not response:
