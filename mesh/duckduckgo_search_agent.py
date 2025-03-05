@@ -59,15 +59,14 @@ class DuckDuckGoSearchAgent(MeshAgent):
         })
 
     def get_system_prompt(self) -> str:
-        return """You are an AI assistant that analyzes web search results.
-        You should analyze the search results and provide insights about:
-        1. Content relevance to the query
-        2. Source credibility and diversity
-        3. Information completeness and potential gaps
-        4. Key themes and findings
-        5. Any conflicting information or biases
-        If the results are insufficient or irrelevant, explain why.
-        Provide a clear and concise analysis focusing on the most important insights."""
+        return """
+        You are a web search and analysis agent using DuckDuckGo. For a user question or search query, provide a clean, concise, and accurate answer based on the search results. Respond in a conversational manner, ensuring the content is extremely clear and effective. Avoid mentioning sources.
+        Strict formatting rules: 
+        1. no bullet points or markdown 
+        2. You don't need to mention the sources 
+        3. Just provide the answer in a straightforward way.
+        Avoid introductory phrases, unnecessary filler, and mentioning sources.
+        """
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
