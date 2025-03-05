@@ -1,0 +1,22 @@
+[project]
+name = "heurist-mesh-client"
+version = "0.1.0"
+description = "Python client for Heurist Mesh API"
+authors = []
+dependencies = [
+    "httpx>=0.25.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0"
+] 
