@@ -1,13 +1,15 @@
-import datetime
-import requests
-import os
-from .mesh_agent import MeshAgent, with_cache, with_retry, monitor_execution
-from core.llm import call_llm_async, call_llm_with_tools_async
-from typing import List, Dict, Any
 import json
+from typing import Any, Dict, List
+
+import requests
 from dotenv import load_dotenv
 
+from core.llm import call_llm_async, call_llm_with_tools_async
+
+from .mesh_agent import MeshAgent, monitor_execution, with_cache, with_retry
+
 load_dotenv()
+
 
 class DexScreenerTokenInfoAgent(MeshAgent):
     """
@@ -18,75 +20,67 @@ class DexScreenerTokenInfoAgent(MeshAgent):
     def __init__(self):
         super().__init__()
 
-        self.metadata.update({
-            'name': 'DexScreener Token Info Agent', 
-            'version': '1.0.0',
-            'author': 'dyt9qc',
-            'author_address': '0x7d9d1821d15B9e0b8Ab98A058361233E255E405D',
-            'created_at': '2025-02-13 07:43:15',
-            'description': 'This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API',
-            'inputs': [
-                {
-                    'name': 'query',
-                    'description': 'Search query for token name, symbol or address',
-                    'type': 'str', 
-                    'required': True
-                },
-                {
-                    'name': 'raw_data_only',
-                    'description': 'If true, return only raw data without natural language response',
-                    'type': 'bool',
-                    'required': False,
-                    'default': False
-                }
-            ],
-            'outputs': [
-                {
-                    'name': 'response',
-                    'description': 'Natural language explanation of token/pair data',
-                    'type': 'str'
-                },
-                {
-                    'name': 'data',
-                    'description': 'Structured token/pair data from DexScreener',
-                    'type': 'dict'
-                }
-            ],
-            'external_apis': ['DexScreener'],
-            'tags': ['DeFi', 'Trading', 'Multi-chain', 'DEX']
-        })
+        self.metadata.update(
+            {
+                "name": "DexScreener Token Info Agent",
+                "version": "1.0.0",
+                "author": "dyt9qc",
+                "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
+                "created_at": "2025-02-13 07:43:15",
+                "description": "This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API",
+                "inputs": [
+                    {
+                        "name": "query",
+                        "description": "Search query for token name, symbol or address",
+                        "type": "str",
+                        "required": True,
+                    },
+                    {
+                        "name": "raw_data_only",
+                        "description": "If true, return only raw data without natural language response",
+                        "type": "bool",
+                        "required": False,
+                        "default": False,
+                    },
+                ],
+                "outputs": [
+                    {
+                        "name": "response",
+                        "description": "Natural language explanation of token/pair data",
+                        "type": "str",
+                    },
+                    {"name": "data", "description": "Structured token/pair data from DexScreener", "type": "dict"},
+                ],
+                "external_apis": ["DexScreener"],
+                "tags": ["DeFi", "Trading", "Multi-chain", "DEX"],
+            }
+        )
 
     def get_system_prompt(self) -> str:
         return (
             "You are DexScreener Assistant, a professional analyst providing concise token/pair information.\n\n"
-            
             "Strict Data Presentation Rules:\n"
             "1. OMIT ENTIRE SECTIONS if no data exists for that category\n"
             "2. NEVER show 'Not Provided' or similar placeholders\n"
             "3. If only partial data exists, show ONLY available fields\n\n"
-            
             "Data Presentation Hierarchy:\n"
             "[Only display sections with available data]\n"
             "Core Token Information (Mandatory if available):\n"
             "   - Base/Quote token names, symbols and addresses\n"
-            "   - Chain/DEX platform\n" 
+            "   - Chain/DEX platform\n"
             "   - Contract addresses (full format)\n\n"
-
             "Market Metrics (Conditional):\n"
             "   - Price (USD and native token)\n"
             "   - 24h Volume\n"
             "   - Liquidity\n"
             "   - Market Cap/FDV\n\n"
-
             "Trading Activity (Conditional):\n"
             "   - Price change (24h)\n"
             "   - Volume distribution\n"
             "   - Transaction ratio (24h Buy/Sell)\n\n"
-
             "Project Links (Conditional):\n"
             "   - Website\n"
             "   - Social media links\n"
-
             "Response Protocol:\n"
             "1. STRUCTURED OMISSION: If a main category has no data, exclude its entire section\n"
             "2. PRECISION FORMAT:\n"
@@ -96,91 +90,82 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             "3. DENSITY CONTROL:\n"
             "   - 1 token info = ~200 words\n"
             "   - Multi-token = tabular comparison\n\n"
-            
             "Exception Handling:\n"
             "When the requested data cannot be retrieved, strictly follow the process below:\n"
             "1. Confirm the validity of the base contract address.\n"
             "2. Check the corresponding chain's trading pairs.\n"
             "3. If no data is ultimately found, return:\n"
-                'No on-chain data for [Token Symbol] was found at this time. Please verify the validity of the contract address.\n\n'
+            "No on-chain data for [Token Symbol] was found at this time. Please verify the validity of the contract address.\n\n"
         )
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
             {
-                'type': 'function',
-                'function': {
-                    'name': 'search_pairs',
-                    'description': 'Search for trading pairs by token name, symbol, or address',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'query': {
-                                'type': 'string',
-                                'description': 'Search query (token name, symbol, or address)'
-                            }
+                "type": "function",
+                "function": {
+                    "name": "search_pairs",
+                    "description": "Search for trading pairs by token name, symbol, or address",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "Search query (token name, symbol, or address)"}
                         },
-                        'required': ['query']
-                    }
-                }
+                        "required": ["query"],
+                    },
+                },
             },
             {
-                'type': 'function',
-                'function': {
-                    'name': 'get_specific_pair_info',
-                    'description': 'Get pair info by chain and pair address',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'chain': {
-                                'type': 'string',
-                                'description': 'Chain identifier (e.g., solana, bsc, ethereum)'
+                "type": "function",
+                "function": {
+                    "name": "get_specific_pair_info",
+                    "description": "Get pair info by chain and pair address",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "chain": {
+                                "type": "string",
+                                "description": "Chain identifier (e.g., solana, bsc, ethereum)",
                             },
-                            'pair_address': {
-                                'type': 'string',
-                                'description': 'The pair contract address to look up'
-                            }
+                            "pair_address": {"type": "string", "description": "The pair contract address to look up"},
                         },
-                        'required': ['chain', 'pair_address']
-                    }
-                }
+                        "required": ["chain", "pair_address"],
+                    },
+                },
             },
             {
-                'type': 'function',
-                'function': {
-                    'name': 'get_token_pairs',
-                    'description': 'Get the trading pairs by chain and token address',
-                    'parameters': {
-                        'type': 'object',
-                        'properties': {
-                            'chain': {
-                                'type': 'string',
-                                'description': 'Chain identifier (e.g., solana, bsc, ethereum)'
+                "type": "function",
+                "function": {
+                    "name": "get_token_pairs",
+                    "description": "Get the trading pairs by chain and token address",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "chain": {
+                                "type": "string",
+                                "description": "Chain identifier (e.g., solana, bsc, ethereum)",
                             },
-                            'token_address': {
-                                'type': 'string',
-                                'description': 'The token contract address to look up all pairs for'
-                            }
+                            "token_address": {
+                                "type": "string",
+                                "description": "The token contract address to look up all pairs for",
+                            },
                         },
-                        'required': ['chain', 'token_address']
-                    }
-                }
+                        "required": ["chain", "token_address"],
+                    },
+                },
             },
             {
-                'type': 'function',
-                'function': {
-                    'name': 'get_token_profiles',
-                    'description': 'Get the latest token profiles from DexScreener',
-                }
-            }
+                "type": "function",
+                "function": {
+                    "name": "get_token_profiles",
+                    "description": "Get the latest token profiles from DexScreener",
+                },
+            },
         ]
 
     # ------------------------------------------------------------------------
     #                       SHARED / UTILITY METHODS
     # ------------------------------------------------------------------------
-    async def _respond_with_llm(
-        self, query: str, tool_call_id: str, data: dict, temperature: float
-    ) -> str:
+    async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
         """
         Reusable helper to ask the LLM to generate a user-friendly explanation
         given a piece of data from a tool call.
@@ -188,13 +173,13 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         return await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
-            model_id=self.metadata['large_model_id'],
+            model_id=self.metadata["large_model_id"],
             messages=[
                 {"role": "system", "content": self.get_system_prompt()},
                 {"role": "user", "content": query},
-                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id}
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id},
             ],
-            temperature=temperature
+            temperature=temperature,
         )
 
     def _handle_error(self, maybe_error: dict) -> dict:
@@ -202,8 +187,8 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         Small helper to return the error if present in
         a dictionary with the 'error' key.
         """
-        if 'error' in maybe_error:
-            return {"error": maybe_error['error']}
+        if "error" in maybe_error:
+            return {"error": maybe_error["error"]}
         return {}
 
     # ------------------------------------------------------------------------
@@ -223,28 +208,20 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         try:
             result = fetch_dex_pairs(query)
 
-            if result['status'] == 'success':
+            if result["status"] == "success":
                 return {
-                    'status': 'success',
-                    'data': {
-                        'pairs': result['pairs'],
-                    }
+                    "status": "success",
+                    "data": {
+                        "pairs": result["pairs"],
+                    },
                 }
 
-            return {
-                'status': result['status'],
-                'error': result.get('error', 'Unknown error occurred'),
-                'data': None
-            }
+            return {"status": result["status"], "error": result.get("error", "Unknown error occurred"), "data": None}
 
         except Exception as e:
-            return {
-                'status': 'error',
-                'error': f'Failed to search pairs: {str(e)}',
-                'data': None
-            }
+            return {"status": "error", "error": f"Failed to search pairs: {str(e)}", "data": None}
 
-    @with_cache(ttl_seconds=300)  
+    @with_cache(ttl_seconds=300)
     async def get_specific_pair_info(self, chain: str, pair_address: str) -> Dict:
         """
         Get detailed information for a specific trading pair.
@@ -259,32 +236,20 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         try:
             result = fetch_pair_info(chain, pair_address)
 
-            if result['status'] == 'success':
-                if result.get('pair'):
+            if result["status"] == "success":
+                if result.get("pair"):
                     return {
-                        'status': 'success',
-                        'data': {
-                            'pair': result['pair'],
-                        }
+                        "status": "success",
+                        "data": {
+                            "pair": result["pair"],
+                        },
                     }
-                return {
-                    'status': 'no_data',
-                    'error': 'No matching pair found',
-                    'data': None
-                }
+                return {"status": "no_data", "error": "No matching pair found", "data": None}
 
-            return {
-                'status': 'error', 
-                'error': result.get('error', 'Unknown error occurred'),
-                'data': None
-            }
+            return {"status": "error", "error": result.get("error", "Unknown error occurred"), "data": None}
 
         except Exception as e:
-            return {
-                'status': 'error',
-                'error': f"Failed to get pair info: {str(e)}",
-                'data': None
-            }
+            return {"status": "error", "error": f"Failed to get pair info: {str(e)}", "data": None}
 
     @with_cache(ttl_seconds=300)
     async def get_token_pairs(self, chain: str, token_address: str) -> Dict:
@@ -301,27 +266,16 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         try:
             result = fetch_token_pairs(chain, token_address)
 
-            if result['status'] == 'success':
+            if result["status"] == "success":
                 return {
-                    'status': 'success',
-                    'data': {
-                        'pairs': result['pairs'],
-                        'dex_url': f"https://dexscreener.com/{chain}/{token_address}"
-                    }
+                    "status": "success",
+                    "data": {"pairs": result["pairs"], "dex_url": f"https://dexscreener.com/{chain}/{token_address}"},
                 }
 
-            return {
-                'status': result['status'],
-                'error': result.get('error', 'Unknown error occurred'),
-                'data': None
-            }
+            return {"status": result["status"], "error": result.get("error", "Unknown error occurred"), "data": None}
 
         except Exception as e:
-            return {
-                'status': 'error',
-                'error': f'Failed to get token pairs: {str(e)}',
-                'data': None
-            }
+            return {"status": "error", "error": f"Failed to get token pairs: {str(e)}", "data": None}
 
     @with_cache(ttl_seconds=300)
     async def get_token_profiles(self) -> Dict:
@@ -334,26 +288,13 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         try:
             result = fetch_token_profiles()
 
-            if result['status'] == 'success':
-                return {
-                    'status': 'success',
-                    'data': {
-                        'profiles': result['profiles']
-                    }
-                }
+            if result["status"] == "success":
+                return {"status": "success", "data": {"profiles": result["profiles"]}}
 
-            return {
-                'status': result['status'],
-                'error': result.get('error', 'Unknown error occurred'),
-                'data': None
-            }
+            return {"status": result["status"], "error": result.get("error", "Unknown error occurred"), "data": None}
 
         except Exception as e:
-            return {
-                'status': 'error',
-                'error': f'Failed to get token profiles: {str(e)}',
-                'data': None
-            }
+            return {"status": "error", "error": f"Failed to get token profiles: {str(e)}", "data": None}
 
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
@@ -365,21 +306,19 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         A single method that calls the appropriate function, handles
         errors/formatting, and optionally calls the LLM to explain the result.
         """
-        temp = 0.3 if tool_name == 'get_token_profiles' else 0.7 
+        temp = 0.3 if tool_name == "get_token_profiles" else 0.7
 
-        if tool_name == 'search_pairs':
-            result_data = await self.search_pairs(function_args['query'])
-        elif tool_name == 'get_specific_pair_info':
+        if tool_name == "search_pairs":
+            result_data = await self.search_pairs(function_args["query"])
+        elif tool_name == "get_specific_pair_info":
             result_data = await self.get_specific_pair_info(
-                chain=function_args['chain'], 
-                pair_address=function_args['pair_address']
+                chain=function_args["chain"], pair_address=function_args["pair_address"]
             )
-        elif tool_name == 'get_token_pairs':
+        elif tool_name == "get_token_pairs":
             result_data = await self.get_token_pairs(
-                chain=function_args['chain'],
-                token_address=function_args['token_address']
+                chain=function_args["chain"], token_address=function_args["token_address"]
             )
-        elif tool_name == 'get_token_profiles':
+        elif tool_name == "get_token_profiles":
             result_data = await self.get_token_profiles()
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
@@ -392,10 +331,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             return {"response": "", "data": result_data}
 
         explanation = await self._respond_with_llm(
-            query=query,
-            tool_call_id=tool_call_id,
-            data=result_data,
-            temperature=temp
+            query=query, tool_call_id=tool_call_id, data=result_data, temperature=temp
         )
 
         return {"response": explanation, "data": result_data}
@@ -408,10 +344,10 @@ class DexScreenerTokenInfoAgent(MeshAgent):
           - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
           - If 'query' is provided, route via LLM for dynamic tool selection.
         """
-        query = params.get('query')
-        tool_name = params.get('tool')
-        tool_args = params.get('tool_arguments', {})
-        raw_data_only = params.get('raw_data_only', False)
+        query = params.get("query")
+        tool_name = params.get("tool")
+        tool_args = params.get("tool_arguments", {})
+        raw_data_only = params.get("raw_data_only", False)
 
         # ---------------------
         # 1) DIRECT TOOL CALL
@@ -422,7 +358,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 function_args=tool_args,
                 query=query or "Direct tool call without LLM.",
                 tool_call_id="direct_tool",
-                raw_data_only=raw_data_only
+                raw_data_only=raw_data_only,
             )
 
         # ---------------------
@@ -432,21 +368,21 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             response = await call_llm_with_tools_async(
                 base_url=self.heurist_base_url,
                 api_key=self.heurist_api_key,
-                model_id=self.metadata['large_model_id'],
+                model_id=self.metadata["large_model_id"],
                 system_prompt=self.get_system_prompt(),
                 user_prompt=query,
                 temperature=0.1,
-                tools=self.get_tool_schemas()
+                tools=self.get_tool_schemas(),
             )
 
             if not response:
                 return {"error": "Failed to process query"}
 
-            if not response.get('tool_calls'):
+            if not response.get("tool_calls"):
                 # No tool calls => the LLM just answered
-                return {"response": response['content'], "data": {}}
+                return {"response": response["content"], "data": {}}
 
-            tool_call = response['tool_calls']
+            tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
@@ -455,12 +391,14 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 function_args=tool_call_args,
                 query=query,
                 tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only
+                raw_data_only=raw_data_only,
             )
 
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
 
+
 # ------------------------- Helper Functions ------------------------- #
+
 
 def fetch_dex_pairs(query: str) -> Dict:
     """
@@ -480,32 +418,24 @@ def fetch_dex_pairs(query: str) -> Dict:
 
         if response.status_code != 200:
             return {
-                'status': 'error',
-                'error': f"Query failed with status code {response.status_code}: {response.text}"
+                "status": "error",
+                "error": f"Query failed with status code {response.status_code}: {response.text}",
             }
 
         data = response.json()
 
-        if not data.get('pairs'):
-            return {
-                'status': 'no_data',
-                'error': 'No pairs found for this query'
-            }
+        if not data.get("pairs"):
+            return {"status": "no_data", "error": "No pairs found for this query"}
 
         # Limit the number of pairs
         limit = 5
-        pairs = data['pairs'][:limit] if len(data['pairs']) > limit else data['pairs']
+        pairs = data["pairs"][:limit] if len(data["pairs"]) > limit else data["pairs"]
 
-        return {
-            'status': 'success',
-            'pairs': pairs
-        }
+        return {"status": "success", "pairs": pairs}
 
     except Exception as e:
-        return {
-            'status': 'error',
-            'error': f'Failed to fetch pairs: {str(e)}'
-        }
+        return {"status": "error", "error": f"Failed to fetch pairs: {str(e)}"}
+
 
 def fetch_pair_info(chain: str, pair_address: str) -> Dict:
     """
@@ -526,35 +456,26 @@ def fetch_pair_info(chain: str, pair_address: str) -> Dict:
 
         if response.status_code != 200:
             return {
-                'status': 'error',
-                'error': f"Query failed with status code {response.status_code}: {response.text}"
+                "status": "error",
+                "error": f"Query failed with status code {response.status_code}: {response.text}",
             }
 
         data = response.json()
-        pairs = data.get('pairs', [])
+        pairs = data.get("pairs", [])
 
-        # Get first matching pair 
+        # Get first matching pair
         matching_pair = next(
-            (pair for pair in pairs if pair.get('pairAddress', '').lower() == pair_address.lower()),
-            None
+            (pair for pair in pairs if pair.get("pairAddress", "").lower() == pair_address.lower()), None
         )
 
         if matching_pair:
-            return {
-                'status': 'success',
-                'pair': matching_pair
-            }
+            return {"status": "success", "pair": matching_pair}
 
-        return {
-            'status': 'success',
-            'message': 'No matching pair found'
-        }
+        return {"status": "success", "message": "No matching pair found"}
 
     except Exception as e:
-        return {
-            'status': 'error',
-            'error': str(e)
-        }
+        return {"status": "error", "error": str(e)}
+
 
 def fetch_token_pairs(chain: str, token_address: str) -> Dict:
     """
@@ -575,31 +496,23 @@ def fetch_token_pairs(chain: str, token_address: str) -> Dict:
 
         if response.status_code != 200:
             return {
-                'status': 'error',
-                'error': f"Query failed with status code {response.status_code}: {response.text}"
+                "status": "error",
+                "error": f"Query failed with status code {response.status_code}: {response.text}",
             }
 
         pairs = response.json()
 
         if not pairs:
-            return {
-                'status': 'no_data',
-                'error': 'No pairs found for this token'
-            }
+            return {"status": "no_data", "error": "No pairs found for this token"}
 
         # Limit the number of pairs
         limit = 5
         limited_pairs = pairs[:limit] if len(pairs) > limit else pairs
 
-        return {
-            'status': 'success',
-            'pairs': limited_pairs
-        }
+        return {"status": "success", "pairs": limited_pairs}
     except Exception as e:
-        return {
-            'status': 'error',
-            'error': f'Failed to fetch token pairs: {str(e)}'
-        }
+        return {"status": "error", "error": f"Failed to fetch token pairs: {str(e)}"}
+
 
 def fetch_token_profiles() -> Dict:
     """
@@ -616,8 +529,8 @@ def fetch_token_profiles() -> Dict:
 
         if response.status_code != 200:
             return {
-                'status': 'error',
-                'error': f"Query failed with status code {response.status_code}: {response.text}"
+                "status": "error",
+                "error": f"Query failed with status code {response.status_code}: {response.text}",
             }
 
         data = response.json()
@@ -626,13 +539,7 @@ def fetch_token_profiles() -> Dict:
         # Limit the number of profiles
         profiles = data[:limit] if len(data) > limit else data
 
-        return {
-            'status': 'success',
-            'profiles': profiles
-        }
+        return {"status": "success", "profiles": profiles}
 
     except Exception as e:
-        return {
-            'status': 'error',
-            'error': f'Failed to fetch token profiles: {str(e)}'
-        }
+        return {"status": "error", "error": f"Failed to fetch token profiles: {str(e)}"}

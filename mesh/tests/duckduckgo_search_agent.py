@@ -1,6 +1,7 @@
 import asyncio
 import sys
 from pathlib import Path
+
 import yaml
 from dotenv import load_dotenv
 
@@ -9,6 +10,7 @@ from mesh.duckduckgo_search_agent import DuckDuckGoSearchAgent  # noqa: E402
 
 load_dotenv()
 
+
 async def run_agent():
     agent = DuckDuckGoSearchAgent()
     try:
@@ -16,11 +18,11 @@ async def run_agent():
         agent_input = {
             "query": "What are the latest developments in artificial intelligence?",
             "tool": "search_web",  # Specify the tool name
-            "tool_arguments": {     # Provide tool-specific arguments
+            "tool_arguments": {  # Provide tool-specific arguments
                 "query": "What are the latest developments in artificial intelligence?",
-                "max_results": 3
+                "max_results": 3,
             },
-            "raw_data_only": False  # Set to True if you only want the raw data without LLM analysis
+            "raw_data_only": False,  # Set to True if you only want the raw data without LLM analysis
         }
 
         agent_output = await agent.handle_message(agent_input)
@@ -39,6 +41,7 @@ async def run_agent():
 
     finally:
         await agent.cleanup()
+
 
 if __name__ == "__main__":
     asyncio.run(run_agent())

@@ -1,12 +1,11 @@
-from typing import Dict, Any, List, Optional
-import logging
-import os
-from dotenv import load_dotenv
-from smolagents import ToolCallingAgent, tool, Model, ChatMessage, Tool
+from typing import Dict, List, Optional
+
+from smolagents import ChatMessage, Model, Tool
 from smolagents.models import parse_tool_args_if_needed
 
+
 def smolagents_system_prompt() -> str:
-    return '''
+    return """
 You are an expert assistant who can solve any task using tool calls. You will be given a task to solve as best you can.
 To do so, you have been given access to some tools.
 
@@ -25,7 +24,8 @@ Here are the rules you should always follow to solve your task:
 5. NEVER re-do a tool call that you previously did with the exact same function name and exact same parameters.
 
 Now Begin! If you solve the task correctly, you will receive a reward of $1,000,000.
-'''
+"""
+
 
 class OpenAIServerModel(Model):
     """This model connects to an OpenAI-compatible API server.
@@ -94,15 +94,15 @@ class OpenAIServerModel(Model):
             **kwargs,
         )
         response = self.client.chat.completions.create(**completion_kwargs)
-        #print(f"Response: {response}")
+        # print(f"Response: {response}")
         # Some models don't return usage data
-        self.last_input_token_count = 0 #response.usage.prompt_tokens
-        self.last_output_token_count = 0 #response.usage.completion_tokens
+        self.last_input_token_count = 0  # response.usage.prompt_tokens
+        self.last_output_token_count = 0  # response.usage.completion_tokens
 
         message = ChatMessage.from_dict(
             response.choices[0].message.model_dump(include={"role", "content", "tool_calls"})
         )
-        #print(f"Message: {message}")
+        # print(f"Message: {message}")
         message.raw = response
         if tools_to_call_from is not None:
             return parse_tool_args_if_needed(message)

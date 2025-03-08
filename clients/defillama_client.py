@@ -1,36 +1,38 @@
-from typing import Dict, List
-from .base_client import BaseAPIClient
 import logging
+from typing import Dict, List
+
+from .base_client import BaseAPIClient
 
 logger = logging.getLogger(__name__)
 
+
 class DefiLlamaClient(BaseAPIClient):
     """DefiLlama API implementation"""
-    
+
     def __init__(self):
         super().__init__("https://api.llama.fi")
 
     # sync methods
     def get_protocol_tvl(self, protocol: str) -> Dict:
         return self._sync_request("get", f"/protocol/{protocol}")
-    
+
     def get_protocols(self) -> List[Dict]:
         return self._sync_request("get", "/protocols")
-    
+
     def get_chain_tvl(self, chain: str) -> Dict:
         return self._sync_request("get", f"/v2/historicalChainTvl/{chain}")
-    
+
     def get_current_tvl_all_chains(self) -> float:
         return self._sync_request("get", "/v2/chains")
-    
+
     # async methods
     async def get_protocol_tvl_async(self, protocol: str) -> Dict:
         """
         Get TVL data for a specific protocol
-        
+
         Args:
             protocol: Protocol identifier (e.g. 'aave', 'uniswap') in lowercase
-                
+
         Returns:
             Dictionary containing detailed TVL data for the protocol, including:
             - tvl: Current total locked value
@@ -40,15 +42,12 @@ class DefiLlamaClient(BaseAPIClient):
             - symbol: Protocol token symbol (if any)
             - gecko_id: CoinGecko API ID (if any)
         """
-        return await self._async_request(
-            "get",
-            f"/protocol/{protocol}"
-        )
-    
+        return await self._async_request("get", f"/protocol/{protocol}")
+
     async def get_protocols_async(self) -> List[Dict]:
         """
         Get list of all protocols and their TVL data
-        
+
         Returns:
             List of protocols, each containing:
             - name: Protocol name
@@ -59,18 +58,15 @@ class DefiLlamaClient(BaseAPIClient):
             - change_1d: 24 hour TVL change percentage
             - change_7d: 7 day TVL change percentage
         """
-        return await self._async_request(
-            "get",
-            "/protocols"
-        )
-    
+        return await self._async_request("get", "/protocols")
+
     async def get_chain_tvl_async(self, chain: str) -> Dict:
         """
         Get historical TVL data for a specific blockchain
-        
+
         Args:
             chain: Blockchain identifier (e.g. 'ethereum', 'bsc') in lowercase
-                
+
         Returns:
             Historical TVL data for the chain, containing timestamps and corresponding TVL values:
             [
@@ -81,15 +77,12 @@ class DefiLlamaClient(BaseAPIClient):
                 ...
             ]
         """
-        return await self._async_request(
-            "get",
-            f"/v2/historicalChainTvl/{chain}"
-        )
+        return await self._async_request("get", f"/v2/historicalChainTvl/{chain}")
 
     def get_current_tvl_all_chains_async(self) -> float:
         """
         Get current TVL data for all chains
-        
+
         Returns:
             List containing current TVL data for all chains:
             [

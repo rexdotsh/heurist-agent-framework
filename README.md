@@ -178,7 +178,7 @@ We encourage the community to open **GitHub issues** whenever you have a new ide
 4. **Bounty**  
    - For tasks with a **reward** (e.g., tokens, NFTs, or other benefits).  
    - The bounty label indicates that Heurist team or another community member are offering a reward to whoever resolves the issue.  
-   - **Bounty Rules**: 
+   - **Bounty Rules**:
      - Make sure to read the issue description carefully for scope and acceptance criteria.  
      - Once your Pull Request addressing the bounty is merged, we’ll follow up on fulfilling the reward.  
      - Additional instructions (e.g., contact method) may be included in the issue itself.

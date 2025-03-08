@@ -1,6 +1,7 @@
+import os
 from abc import ABC, abstractmethod
 from typing import List, Optional
-import os
+
 import tiktoken
 
 
@@ -41,18 +42,14 @@ class TextSplitter(ABC):
             _len = len(d)
             if total + _len >= self.chunk_size:
                 if total > self.chunk_size:
-                    print(
-                        f"Created a chunk of size {total}, which is longer than the specified {self.chunk_size}"
-                    )
+                    print(f"Created a chunk of size {total}, which is longer than the specified {self.chunk_size}")
 
                 if current_doc:
                     doc = self._join_docs(current_doc, separator)
                     if doc is not None:
                         docs.append(doc)
 
-                    while total > self.chunk_overlap or (
-                        total + _len > self.chunk_size and total > 0
-                    ):
+                    while total > self.chunk_overlap or (total + _len > self.chunk_size and total > 0):
                         total -= len(current_doc[0])
                         current_doc.pop(0)
 
@@ -112,15 +109,12 @@ class RecursiveCharacterTextSplitter(TextSplitter):
 
         return final_chunks
 
+
 MIN_CHUNK_SIZE = 140
-encoder = tiktoken.get_encoding(
-    "cl100k_base"
-)  # Updated to use OpenAI's current encoding
+encoder = tiktoken.get_encoding("cl100k_base")  # Updated to use OpenAI's current encoding
 
 
-def trim_prompt(
-    prompt: str, context_size: int = int(os.environ.get("CONTEXT_SIZE", "128000"))
-) -> str:
+def trim_prompt(prompt: str, context_size: int = int(os.environ.get("CONTEXT_SIZE", "128000"))) -> str:
     """Trims a prompt to fit within the specified context size."""
     if not prompt:
         return ""
@@ -137,13 +131,10 @@ def trim_prompt(
 
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
 
-    trimmed_prompt = (
-        splitter.split_text(prompt)[0] if splitter.split_text(prompt) else ""
-    )
+    trimmed_prompt = splitter.split_text(prompt)[0] if splitter.split_text(prompt) else ""
 
     # Handle edge case where trimmed prompt is same length
     if len(trimmed_prompt) == len(prompt):
         return trim_prompt(prompt[:chunk_size], context_size)
 
     return trim_prompt(trimmed_prompt, context_size)
-

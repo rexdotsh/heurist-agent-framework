@@ -3,7 +3,6 @@ import time
 from typing import Any
 
 from dotenv import load_dotenv
-
 from heurist_mesh_client.client import MeshClient
 
 

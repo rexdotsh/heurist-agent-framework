@@ -44,7 +44,7 @@ Mesh agents hosted by Heurist can be accessed via two interfaces:
 - Synchronous API - Direct, immediate responses
 - Asynchronous API - For longer-running tasks, or when you want to query the reasoning process of the agent execution
 
-To use any Mesh agent, you'll need a Heurist API key. Get one at https://www.heurist.ai/credits 
+To use any Mesh agent, you'll need a Heurist API key. Get one at https://www.heurist.ai/credits
 
 ### Synchronous API
 
@@ -394,7 +394,7 @@ Each example agent has a corresponding test script in `mesh/tests/` that demonst
 - **Issues**: If you find bugs or have questions, open an issue on the [GitHub repository](https://github.com/heurist-network/heurist-agent-framework/issues).
 - **Community Chat**: Join our [Discord](https://discord.com/invite/heuristai) or [Telegram Builder Group](https://t.me/heuristsupport) for real-time support or to showcase your new agents.  
 
-Thank you for contributing to **Heurist Mesh** and helping build a diverse ecosystem of AI agents! We're excited to see the specialized solutions you create. 
+Thank you for contributing to **Heurist Mesh** and helping build a diverse ecosystem of AI agents! We're excited to see the specialized solutions you create.
 
 > **Happy Hacking & Welcome to the Mesh!**  
 

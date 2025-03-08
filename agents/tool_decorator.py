@@ -1,11 +1,12 @@
 import inspect
-from typing import Callable, Dict, Any
+from typing import Any, Callable, Dict
 
 
 def tool(description: str):
     """
     A decorator factory that creates a tool decorator with a specified description.
     """
+
     def decorator(func):
         # Add metadata to the function
         func.name = func.__name__
@@ -21,32 +22,30 @@ def tool(description: str):
             "properties": {
                 param: {
                     "type": str(param_type.annotation.__name__).lower(),
-                    "description": str(param_type.annotation) if param_type.annotation != inspect._empty else "No type specified"
+                    "description": str(param_type.annotation)
+                    if param_type.annotation != inspect._empty
+                    else "No type specified",
                 }
                 for param, param_type in parameters.items()
             },
-            "required": [
-                param
-                for param, param_type in parameters.items()
-                if param_type.default == inspect._empty
-            ]
+            "required": [param for param, param_type in parameters.items() if param_type.default == inspect._empty],
         }
-        
+
         async def wrapper(args: Dict[str, Any], agent_context: Any):
             # re-add agent context
             if func.is_ctx_required:
-                args["agent_context"] = agent_context   
+                args["agent_context"] = agent_context
             result = await func(**args) if func.is_async else func(**args)
             return result
-            
+
         wrapper.name = func.name
         wrapper.description = func.description
         wrapper.args_schema = func.args_schema
         wrapper.original = func
-        
-        return wrapper
-    return decorator
 
+        return wrapper
+
+    return decorator
 
 
 def convert_to_function_schema(func: Callable) -> Dict[str, Any]:
@@ -55,20 +54,17 @@ def convert_to_function_schema(func: Callable) -> Dict[str, Any]:
     """
     return {
         "type": "function",
-        "function": {
-            "name": func.name,
-            "description": func.description,
-            "parameters": func.args_schema
-        }
+        "function": {"name": func.name, "description": func.description, "parameters": func.args_schema},
     }
+
 
 def get_tool_schemas(tools: list[Callable]) -> list[Dict[str, Any]]:
     """
     Convert a list of tool-decorated functions into OpenAI function schemas.
-    
+
     Args:
         tools: List of functions decorated with @tool
-        
+
     Returns:
         List of function schemas in OpenAI format
     """

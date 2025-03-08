@@ -18,7 +18,7 @@ async def run_agent():
             "query": "What are the latest developments in zero knowledge proofs?",
             "depth": 2,
             "breadth": 3,
-            "concurrency": 2
+            "concurrency": 2,
         }
 
         try:
@@ -43,11 +43,15 @@ async def run_agent():
                     "analyses_count": len(agent_output["data"]["analyses"]),
                     "analyses_sample": agent_output["data"]["analyses"][:2] if agent_output["data"]["analyses"] else [],
                     "learnings_count": len(agent_output["data"]["learnings"]),
-                    "learnings_sample": agent_output["data"]["learnings"][:5] if agent_output["data"]["learnings"] else [],
+                    "learnings_sample": agent_output["data"]["learnings"][:5]
+                    if agent_output["data"]["learnings"]
+                    else [],
                     "visited_urls_count": len(agent_output["data"]["visited_urls"]),
-                    "visited_urls_sample": agent_output["data"]["visited_urls"][:5] if agent_output["data"]["visited_urls"] else []
-                }
-            }
+                    "visited_urls_sample": agent_output["data"]["visited_urls"][:5]
+                    if agent_output["data"]["visited_urls"]
+                    else [],
+                },
+            },
         }
 
         with open(output_file, "w", encoding="utf-8") as f:
@@ -68,4 +72,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nOperation cancelled by user")
     except Exception as e:
-        print(f"Unexpected error: {str(e)}") 
+        print(f"Unexpected error: {str(e)}")
