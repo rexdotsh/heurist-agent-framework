@@ -14,7 +14,7 @@ async def main():
     try:
         print("Starting Twitter Reply Agent...")
         # Start monitoring in background thread
-        monitor_thread = agent.start_monitoring()
+        agent.start_monitoring()
         print("Monitoring thread started")
 
         print("Starting workers... Press Ctrl+C to exit")

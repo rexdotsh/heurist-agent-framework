@@ -200,11 +200,9 @@ class TwitterAgent(CoreAgent):
 
                 if tweet:
                     if not DRYRUN:
-                        token_id = None
                         if image_url:
                             tweet_id, username = tweet_with_image(tweet, image_url)
                             logger.info("Successfully posted tweet with image: %s", tweet)
-                            tweet_url = f"https://x.com/{username}/status/{tweet_id}"
                         else:
                             tweet_id, username = tweet_text_only(tweet)
                             logger.info("Successfully posted tweet: %s", tweet)

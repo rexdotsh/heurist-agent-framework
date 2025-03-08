@@ -205,7 +205,7 @@ def get_tvl_overview(client: DefiLlamaClient):
 
         # Process each protocol in DEFILLAMA_PROTOCOL_NAME_TO_INFO
         for protocol_name, info in DEFILLAMA_PROTOCOL_NAME_TO_INFO.items():
-            protocol_id = info["id"]
+            protocol_id = info["id"]  # noqa: F841
             parent_protocol = info["parentProtocol"]
 
             try:

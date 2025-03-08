@@ -380,7 +380,7 @@ class TwitterReplyAgent(CoreAgent):
 
     async def start(self):
         """Main entry point to start the agent"""
-        monitor_thread = self.start_monitoring()
+        self.start_monitoring()
 
         try:
             await self.run_workers()

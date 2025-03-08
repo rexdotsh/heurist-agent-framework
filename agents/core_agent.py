@@ -349,7 +349,7 @@ class CoreAgent:
         self.current_message = message
 
         system_prompt_context = ""
-        system_prompt_conversation_context = ""
+        system_prompt_conversation_context = ""  # noqa: F841
 
         if system_prompt is None:
             system_prompt = self.basic_personality_settings()
@@ -631,7 +631,7 @@ class CoreAgent:
                 skip_pre_validation=True,
             )
         try:
-            message_final = f"User: {display_name}, Username: {username}, \nMessage: {message_data}"
+            message_final = f"User: {display_name}, Username: {username}, \nMessage: {message_data}"  # noqa: F841
             final_reasoning_prompt = f"""Generate the final response for the user.
             Given the context of your reasoning, and the steps you've taken, generate a final response for the user.
             Your final reasoning is: {text_response}

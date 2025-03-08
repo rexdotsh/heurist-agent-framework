@@ -60,7 +60,7 @@ def main():
         flask_agent = FlaskAgent(core_agent)
         telegram_agent = TelegramAgent(core_agent)
         twitter_agent = TwitterAgent(core_agent)
-        farcaster_agent = FarcasterAgent
+        farcaster_agent = FarcasterAgent(core_agent)  # noqa: F841
 
         # Start Flask in a separate thread
         flask_thread = threading.Thread(target=run_flask, args=(flask_agent,), daemon=True)

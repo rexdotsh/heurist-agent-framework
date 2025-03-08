@@ -51,9 +51,6 @@ class ImageGen:
         try:
             await self._ensure_session()
 
-            # Generate a random job ID
-            job_id = f"sdk-image-{secrets.token_hex(5)}"
-
             # Extract parameters
             prompt = params.get("prompt", "")
             neg_prompt = params.get("neg_prompt")

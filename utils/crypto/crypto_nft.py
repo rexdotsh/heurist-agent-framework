@@ -73,7 +73,7 @@ def mint_nft(description: str, image_url: str) -> dict:
     # Sign and send transaction
     signed_tx = web3.eth.account.sign_transaction(tx, private_key)
     tx_hash = web3.eth.send_raw_transaction(signed_tx.raw_transaction)
-    tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
+    tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash)  # noqa: F841
 
     return ("Minted", tx_hash.hex(), next_token_id)
 

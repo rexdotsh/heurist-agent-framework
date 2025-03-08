@@ -192,7 +192,6 @@ class FarcasterAgent(CoreAgent):
             instruction_cast_idea = random.choice(self.prompt_config.get_tweet_ideas())
             system_prompt = prompt + self.prompt_config.get_farcaster_rules() + self.format_context(past_casts)
 
-            ideas = None
             cast_data["metadata"]["ideas_instruction"] = instruction_cast_idea
             ideas_text, _, _ = await self.handle_message(
                 instruction_cast_idea, system_prompt_fixed=system_prompt, source_interface="farcaster"
@@ -247,7 +246,6 @@ class FarcasterAgent(CoreAgent):
 
                 if cast:
                     if not DRYRUN:
-                        token_id = None
                         if image_url:
                             cast_hash, username = self.farcaster_api.post_cast(cast, image_url)
                             logger.info("Successfully posted cast with image: %s", cast)

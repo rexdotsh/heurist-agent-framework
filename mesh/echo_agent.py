@@ -29,7 +29,7 @@ class EchoAgent(MeshAgent):
         """Sleep for a random 1-4 seconds, then echo the input."""
         query = params.get("query", "")
         # Example of accessing auth info
-        user_context = f"heurist_api_key: {self.heurist_api_key}"
+        user_context = f"heurist_api_key: {self.heurist_api_key}"  # noqa: F841
         delay = random.uniform(1, 4)
         await asyncio.sleep(delay)
 
