@@ -25,7 +25,7 @@ assignees: ''
   - Bounty
 -->
 **Issue Type:**
-- [ ] Integration Request 
+- [ ] Integration Request
 - [ ] Bug
 - [ ] Question
 - [ ] Bounty
@@ -33,22 +33,22 @@ assignees: ''
 ---
 
 ### 1. Summary/Context
-<!-- 
-  Give a brief statement of the problem or request. For example, for an Integration Request, 
-  specify which platform, data source or use case you'd like to see supported. 
-  For a Bug, describe what’s broken. For a Question, clarify what you need help with. 
+<!--
+  Give a brief statement of the problem or request. For example, for an Integration Request,
+  specify which platform, data source or use case you'd like to see supported.
+  For a Bug, describe what’s broken. For a Question, clarify what you need help with.
 -->
 
 ### 2. Details & Motivation
 <!--
-  - If Integration Request: 
+  - If Integration Request:
       - The expected input and output schema, if user or agent interaction is involved.
       - 3rd party API documentation, if applicable.
       - Any API keys or credentials required.
-  - If Bug: 
+  - If Bug:
       - Steps to reproduce?
       - Expected vs. actual behavior?
-  - If Question: 
+  - If Question:
       - What exactly do you want to know or need clarification about?
   - If Bounty:
       - Provide additional explanation of the task, scope, or requirements.
@@ -67,9 +67,9 @@ assignees: ''
 -->
 
 ### 4. Additional Context or Screenshots
-<!-- 
-  Add any other context or screenshots about the issue request here. 
-  This can include error logs, references, designs, etc. 
+<!--
+  Add any other context or screenshots about the issue request here.
+  This can include error logs, references, designs, etc.
 -->
 
 ### 5. Bounty Rules (If Applicable)

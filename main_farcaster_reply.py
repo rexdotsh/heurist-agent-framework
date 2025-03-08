@@ -1,13 +1,12 @@
-import logging
 import asyncio
-from interfaces.farcaster_reply  import FarcasterReplyAgent
+import logging
+
+from interfaces.farcaster_reply import FarcasterReplyAgent
 
 # Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
 
 async def main():
     """
@@ -24,6 +23,7 @@ async def main():
     except Exception as e:
         logger.error(f"Fatal error: {str(e)}")
         raise
+
 
 if __name__ == "__main__":
     asyncio.run(main())

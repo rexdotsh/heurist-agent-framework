@@ -1,13 +1,14 @@
 import asyncio
-import typer
 from functools import wraps
+
+import typer
 from prompt_toolkit import PromptSession
+from rich import print as rprint
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich import print as rprint
 
-from agents.research_agent import deep_research, write_final_report, generate_feedback
+from agents.research_agent import deep_research, generate_feedback, write_final_report
 
 app = typer.Typer()
 console = Console()
@@ -30,17 +31,10 @@ async def async_prompt(message: str, default: str = "") -> str:
 @app.command()
 @coro
 async def main(
-    concurrency: int = typer.Option(
-        default=2, help="Number of concurrent tasks, depending on your API rate limits."
-    ),
+    concurrency: int = typer.Option(default=2, help="Number of concurrent tasks, depending on your API rate limits."),
 ):
     """Deep Research CLI"""
-    console.print(
-        Panel.fit(
-            "[bold blue]Deep Research Assistant[/bold blue]\n"
-            "[dim]An AI-powered research tool[/dim]"
-        )
-    )
+    console.print(Panel.fit("[bold blue]Deep Research Assistant[/bold blue]\n[dim]An AI-powered research tool[/dim]"))
 
     # Get initial inputs with clear formatting
     query = await async_prompt("\n🔍 What would you like to research? ")
@@ -81,9 +75,7 @@ async def main(
         console=console,
     ) as progress:
         # Do research
-        task = progress.add_task(
-            "[yellow]Researching your topic...[/yellow]", total=None
-        )
+        task = progress.add_task("[yellow]Researching your topic...[/yellow]", total=None)
         research_results = await deep_research(
             query=combined_query,
             breadth=breadth,

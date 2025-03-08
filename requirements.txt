@@ -26,3 +26,6 @@ rich>=13.7.0
 prompt-toolkit>=3.0.0
 duckduckgo-search==7.4.3
 smolagents==1.9.2
+pre-commit>=3.6.0
+ruff>=0.9.10
+isort>=5.13.2

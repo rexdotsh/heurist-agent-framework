@@ -1,29 +1,25 @@
-import requests
-import json
-import time
-import os
-import logging
-from openai import OpenAI
-from pathlib import Path
 import hashlib
+import logging
+import os
 import random
+from pathlib import Path
+
+from openai import OpenAI
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
 def transcribe_audio(file_path):
     with open(file_path, "rb") as audio_file:
-        transcription = client.audio.transcriptions.create(
-            model="whisper-1", 
-            file=audio_file
-        )
+        transcription = client.audio.transcriptions.create(model="whisper-1", file=audio_file)
     return transcription.text
 
 
 def speak_text(text):
-
     # Make the TTS request
     response = client.audio.speech.create(
         model="tts-1",

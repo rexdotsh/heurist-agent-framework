@@ -1,23 +1,19 @@
-import discord
-from discord.ext import commands
-import json
 import logging
 import os
-import random
-import time
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Dict, Any, List, Optional
+
+import discord
 import dotenv
-import yaml
+from discord.ext import commands
+
 from agents.core_agent import CoreAgent
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv()
 
-    
+
 class DiscordAgent(CoreAgent):
     def __init__(self):
         super().__init__()
@@ -28,7 +24,7 @@ class DiscordAgent(CoreAgent):
 
         self.bot = commands.Bot(command_prefix="!", intents=intents)
         self.token = os.getenv("DISCORD_TOKEN")
-        
+
         self.setup_handlers()
 
     def setup_handlers(self):

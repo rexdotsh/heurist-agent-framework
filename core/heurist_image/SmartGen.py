@@ -1,20 +1,26 @@
-from typing import Dict, Any, Optional
-import aiohttp
-import secrets
 import os
+import secrets
+from typing import Any, Dict, Optional
+
+import aiohttp
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class APIError(Exception):
     """Raised when the API returns an error response."""
+
     def __init__(self, message: str, status_code: int = None):
         super().__init__(message)
         self.status_code = status_code
 
+
 class PromptEnhancementError(Exception):
     """Raised when there's an error enhancing a prompt."""
+
     pass
+
 
 class SmartGen:
     def __init__(self, api_key: str, base_url: str = os.getenv("HEURIST_SEQUENCER_URL")):
@@ -32,10 +38,9 @@ class SmartGen:
     async def _create_session(self):
         """Create aiohttp session if it doesn't exist."""
         if self._session is None:
-            self._session = aiohttp.ClientSession(headers={
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
-            })
+            self._session = aiohttp.ClientSession(
+                headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+            )
 
     async def _close_session(self):
         """Close the aiohttp session."""
@@ -60,11 +65,11 @@ class SmartGen:
         lighting_level: Optional[int] = None,
         must_include: Optional[str] = None,
         quality: str = "normal",
-        param_only: bool = False
+        param_only: bool = False,
     ) -> Dict[str, Any]:
         try:
             await self._ensure_session()
-            
+
             # Generate a random job ID using secrets module
             job_id = f"sdk-image-{secrets.token_hex(5)}"  # 5 bytes = 10 hex characters
 
@@ -89,36 +94,28 @@ class SmartGen:
             # Prepare the full request parameters
             params = {
                 "job_id": job_id,
-                "model_input": {
-                    "SD": model_input
-                },
+                "model_input": {"SD": model_input},
                 "model_type": "SD",
                 "model_id": image_model,
                 "deadline": 30,
-                "priority": 1
+                "priority": 1,
             }
 
             if param_only:
                 return {"parameters": params}
 
             # Generate the image
-            async with self._session.post(
-                f"{self.base_url}/submit_job",
-                json=params
-            ) as response:
+            async with self._session.post(f"{self.base_url}/submit_job", json=params) as response:
                 if response.status != 200:
                     raise APIError(f"Generate image error: {response.status} {await response.text()}")
-                
+
                 url = await response.text()
                 # Remove quotes from the URL if present
                 url = url.strip('"')
-                
-                return {
-                    "url": url,
-                    "parameters": model_input
-                }
+
+                return {"url": url, "parameters": model_input}
 
         except Exception as e:
             if isinstance(e, (PromptEnhancementError, APIError)):
                 raise e
-            raise APIError(f"Failed to generate image: {str(e)}") 
+            raise APIError(f"Failed to generate image: {str(e)}")
