@@ -1,35 +1,43 @@
 input_basic:
-  query: '@heurist_ai'
+  query: '#go_green'
   max_results: 100
 output_basic:
-  response: "**Twitter Search Analysis for `@heurist_ai`**\n\n**Search Context:**\n\
-    * **Query:** `@heurist_ai`\n* **Total Results:** 1 tweet\n* **Time Frame:** Most\
-    \ recent tweet found is from March 3, 2025 (given the provided data, the exact\
-    \ time frame of the search isn't specified, but this tweet represents the latest\
-    \ mention within the returned results)\n* **Language:** English\n\n**Key Insights:**\n\
-    \n1. **Volume and Engagement:**\n\t* **Mentions:** 1 tweet mentioning `@heurist_ai`\
-    \ was found.\n\t* **Engagement Metrics:** The tweet has 0 likes, retweets, replies,\
-    \ quotes, and bookmarks, indicating no engagement on this specific mention.\n\n\
-    2. **Common Themes/Topics:**\n\t* Due to the singular result, no broader themes\
-    \ or topics beyond the direct mention can be accurately identified.\n\n3. **Notable\
-    \ Users/Accounts:**\n\t* **Author ID:** `1829042940242522112` (No public profile\
-    \ information is provided in the search results; respecting privacy guidelines,\
-    \ no further identification is attempted.)\n\t* **Mentioned Account:** `@heurist_ai`\
-    \ (The subject of the search query)\n\n4. **Sentiment Trends:**\n\t* **Sentiment:**\
-    \ Neutral (The provided tweet content, \"Sample tweet mention @heurist_ai\", does\
-    \ not express a clear positive, negative, or emotional sentiment towards `@heurist_ai`.)\n\
-    \n**Conclusion:**\nThe search for `@heurist_ai` yielded a single, recent English-language\
-    \ tweet with no engagement. The tweet's content is neutral, providing no clear\
-    \ sentiment towards `@heurist_ai`. Given the limited scope of the results, broader\
-    \ themes or trends cannot be conclusively identified."
+  response: "**Query Analysis: #go_green**\n\n**Search Stats:**\n\n* **Total Results:**\
+    \ 10\n* **Time Frame:** Recent (all tweets from March 5, 2025, within a short\
+    \ time span)\n* **Languages:** Primarily Indonesian (in) and English (en), with\
+    \ one tweet in Turkish (tr)\n\n**Key Insights:**\n\n1. **Volume and Engagement:**\n\
+    \t* Low engagement across all tweets, with most having 0 likes, retweets, replies,\
+    \ quotes, and bookmarks.\n\t* One exception is a retweeted post (ID: 1897216024904392776)\
+    \ with 36 retweets, discussing banks and environmental impact.\n2. **Common Themes:**\n\
+    \t* **Selling Accounts:** Many tweets (6 out of 10) are selling various types\
+    \ of accounts (e.g., kosongan, BA F1K, acc bekas ba) with features like \"go green,\"\
+    \ verification, and access to certain platforms (MT, HT). These appear to be related\
+    \ to online gaming or digital services.\n\t* **Environmental/Green Themes:** \n\
+    \t\t+ One tweet promotes an electric vehicle fair in Turkey (\"Go Green Türkiye\"\
+    ).\n\t\t+ Another discusses market trends possibly \"going green\" again, in a\
+    \ financial context.\n\t\t+ A single retweet mentions banks fueling environmental\
+    \ degradation, using \"go green\" in a call to action for environmental responsibility.\n\
+    3. **Notable Users or Accounts:**\n\t* None prominently stand out for influential\
+    \ engagement or content related to \"#go_green\" beyond the usual account selling\
+    \ activities.\n4. **Sentiment Trends:**\n\t* **Neutral:** The majority, as they\
+    \ are sales posts without emotional tone.\n\t* **Positive (Implicit):** The environmental\
+    \ and financial recovery contexts imply a positive outlook when \"going green.\"\
+    \n\t* **Negative (Implicit):** The critique of banks' environmental impact carries\
+    \ a negative sentiment, though \"go green\" is used as a positive action within\
+    \ this criticism.\n\n**Conclusion:**\nThe \"#go_green\" query yields a diverse\
+    \ set of results, with a significant portion dedicated to selling digital accounts,\
+    \ a smaller segment touching on environmental and financial themes, and minimal\
+    \ engagement across the board, except for a singular retweeted post on environmental\
+    \ responsibility."
   data:
     search_stats:
-      total_results: 1
+      total_results: 10
       has_results: true
     tweets:
-    - id: '1896550195095326755'
-      content: Sample tweet mention @heurist_ai
-      created_at: '2025-03-03T13:16:17Z'
+    - id: '1897216305759125874'
+      content: "͏\n\nkosongan v all dom gmail 9k/each go green \n\n#zonauang #zonaba\
+        \ https://t.co/NjvM0vd77g"
+      created_at: '2025-03-05T09:23:10Z'
       language: en
       metrics:
         likes: 0
@@ -37,91 +45,338 @@ output_basic:
         replies: 0
         quotes: 0
         bookmarks: 0
-      author_id: '1829042940242522112'
-      conversation_id: '1896550195095326755'
+      author_id: '2990889107'
+      conversation_id: '1897216305759125874'
+    - id: '1897216301212557804'
+      content: '@AdamSchefter Yeah um, it''s March.  March Madness.  Go Green!!'
+      created_at: '2025-03-05T09:23:09Z'
+      language: en
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '274368706'
+      conversation_id: '1897215946814841275'
+    - id: '1897216225337597974'
+      content: "@x_anmdcjo5m wts 6 akun acc kosongan y15 \n\n\U0001F423 6,000/ea,\
+        \ take 3 only  15k\n\n\U0001F42C v email only (get all pass)\n\U0001F42C go\
+        \ green, sehat \n\U0001F42C masuk mt + (ht dimainin dulu) \n\U0001F42C @ random,\
+        \ bisa langsung ganti usn\n\U0001F42C Qris\n\n☎: @kzteu / https://t.co/hQ3boHEWuF\
+        \ \n\nBisa kak yuk! take all 30k aja\U0001F490"
+      created_at: '2025-03-05T09:22:51Z'
+      language: in
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1719029199724593152'
+      conversation_id: '1897214902403785008'
+    - id: '1897216024904392776'
+      content: 'RT @MMMoneyMatter: Our planet is burning and our banks are fuelling
+        the fire. ​
+
+
+        @BarclaysUK @HSBC_UK  @bancosantander  @NatWestGroup and @…'
+      created_at: '2025-03-05T09:22:03Z'
+      language: en
+      metrics:
+        likes: 0
+        retweets: 36
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '941992894482845696'
+      conversation_id: '1897216024904392776'
+    - id: '1897215914929799622'
+      content: "It looks like there is chance for market do reversal and we go green/\
+        \ back on track. \nHowever, do not forget market can easily fool us and continue\
+        \ to drop even more. \n\nDCA slowly and keep on building your positions for\
+        \ long term!"
+      created_at: '2025-03-05T09:21:37Z'
+      language: en
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1822287077901221888'
+      conversation_id: '1897215914929799622'
+    - id: '1897215875775914305'
+      content: "WTS ACC BA F1K MASUK HTMT\n\n99k\n\nhttps://t.co/NUoY5BCezd \n\n-\
+        \ go green\n- masuk htmt deres\n- vemail\n- masih dimainin sampe sold \n-\
+        \ acc bekas ba pribadi spess apk prem\n- no selective buyer \n\n#zonauang\
+        \ #zonaba https://t.co/yIgGO020Bi"
+      created_at: '2025-03-05T09:21:28Z'
+      language: in
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1485902466730586119'
+      conversation_id: '1897215875775914305'
+    - id: '1897215783895498781'
+      content: "wts akun  kosongan  y13  dan  y15  \n\n\U0001F4B8 10,500 / each\n\n\
+        \U000168B7. @  mulchar  cantik\n\U000168B7. verif  email  only  (gmail) \n\
+        \U000168B7. masuk  mt   non  moots\n\U000168B7. go  green,  min  ssb  ganti\
+        \  usn\n\U000168B7. dapat  data  acc  lengkap\n\n#zonauang https://t.co/7Wc6iRS5T7"
+      created_at: '2025-03-05T09:21:06Z'
+      language: in
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1872657387603238913'
+      conversation_id: '1897215783895498781'
+    - id: '1897215689661751506'
+      content: Otomotiv endüstrisinde değişimin öncüsü olan elektriklileşme hareketi,
+        devlet destekleri ve çevresel bilincin artmasıyla hızla büyümeye devam ediyor.
+        Sektörün tüm paydaşlarını bir araya getirecek Türkiye’nin öncü elektrikli
+        araç fuarı Go Green Türkiye, bu yıl 2’nci kez… https://t.co/7qxjJ3Tu5s https://t.co/mN7W47NTfz
+      created_at: '2025-03-05T09:20:43Z'
+      language: tr
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '335753836'
+      conversation_id: '1897215689661751506'
+    - id: '1897215568228540561'
+      content: '*wts acc bekas ba f300+*
+
+
+        - verif email dom gmail
+
+        - masuk mt + ht deres
+
+        - go green, reply gak showmore
+
+        - selective buyer (❌ akun pijet, 18+, nipu, etc)
+
+        - ⁠set up rapi
+
+
+        💸41k
+
+
+        ☎️ https://t.co/yc6GTC6zE3 https://t.co/YPwF5IUmuK'
+      created_at: '2025-03-05T09:20:14Z'
+      language: in
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 1
+        bookmarks: 0
+      author_id: '1092776550947155969'
+      conversation_id: '1897215568228540561'
+    - id: '1897215538042167465'
+      content: "AKUN KOSONGAN Y13 &amp; Y15\n\nᏪ verif email only (Gmail)\nᏪ go green\
+        \ \nᏪ masuk mt only, ht sambil dimainin \nᏪ bisa langsung ganti usn\nᏪ dapat\
+        \ data lengkap\n\nY13 &amp; Y15 : 10.500/each\n\n#zonauang https://t.co/gHg8YL0Hew"
+      created_at: '2025-03-05T09:20:07Z'
+      language: in
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1872657387603238913'
+      conversation_id: '1897215538042167465'
 input_specific:
   query: $HEU
   max_results: 100
 output_specific:
-  response: "**Search Query Analysis: $HEU**\n\n**Search Stats:**\n* **Total Results:**\
-    \ 4\n* **Has Results:** True\n* **Time Frame:** Recent (all tweets from `2025-03-03`,\
-    \ within a few minutes of each other)\n* **Languages:** Primarily Catalan (`ca`)\
-    \ and French (`fr`)\n\n**Insights and Notable Patterns:**\n\n1. **Volume and Engagement:**\n\
-    \t* Low to moderate engagement across all tweets, with one outlier.\n\t* **Highest\
-    \ Engagement:** A tweet from `@BasquetManresa` (a basketball team) addressing\
-    \ `@vueling` (an airline) about lost luggage, garnered **343 retweets**.\n2. **Common\
-    \ Themes or Topics:**\n\t* **Lost Luggage (Travel Issue):** 1 tweet (`@BasquetManresa`\
-    \ to `@vueling`)\n\t* **European Politics/War Concerns:** 2 tweets (both retweets\
-    \ of `@GaccioB`, discussing Putin and Europe)\n\t* **Cinema (Classic Film Reference):**\
-    \ 1 tweet (`@CinesCCastellet`, mentioning Luis Buñuel's \"Un perro andaluz\")\n\
-    3. **Notable Users or Accounts:**\n\t* **@BasquetManresa:** For its high engagement\
-    \ rate regarding a customer service issue.\n\t* **@GaccioB:** As the original\
-    \ author of the widely retweeted political commentary.\n4. **Sentiment Trends:**\n\
-    \t* **Concern/Frustration:** Evident in both the political commentary (fear of\
-    \ invasion) and the travel issue (lost luggage).\n\t* **Neutral/Cultural:** The\
-    \ tweet about the classic film, which doesn't convey a strong emotional tone.\n\
-    \n**Observation:** The search query `$HEU` does not directly relate to the content\
-    \ of the tweets provided, suggesting the query might be a stock ticker symbol\
-    \ or an abbreviation without clear context in these Twitter conversations. The\
-    \ tweets themselves cover disparate topics, indicating the query's relevance might\
-    \ be indirect or non-existent in the provided dataset."
+  response: "**Search Query Analysis: $HEU**\n\n**Search Stats:**\n\n* **Total Results:**\
+    \ 10\n* **Has Results:** True\n* **Time Frame:** Recent tweets from March 5, 2025\
+    \ (within a few minutes, between 09:20 and 09:23 UTC)\n\n**Key Insights:**\n\n\
+    1. **Language Diversity:** Tweets are in multiple languages, including:\n\t* French\
+    \ (fr): 3 tweets\n\t* Catalan (ca): 3 tweets\n\t* German (de): 1 tweet\n\t* Portuguese\
+    \ (pt): 1 tweet\n\t* English (en): 1 tweet\n\t* Undetermined (und): 1 tweet (appears\
+    \ to be a mix of characters and symbols)\n2. **Content Themes:**\n\t* **Conversations\
+    \ and Reactions:**\n\t\t+ Expressions of surprise or disbelief (e.g., \"Heu non?\"\
+    , \"Heu si on m'enlève un tiers de salaire...\")\n\t\t+ Criticism or strong opinions\
+    \ (e.g., \"@enricvd @gabrielrufian Ara tenim una Catalunya que vosaltres heu trinxat...\"\
+    )\n\t* **Retweeted Content:**\n\t\t+ Immigration resources in Catalonia (14 retweets)\n\
+    \t\t+ Update on a pet's health (2 retweets)\n\t\t+ Emotional or fandom-related\
+    \ content (4 retweets, in Portuguese)\n3. **Engagement Metrics:**\n\t* **Low Engagement:**\
+    \ Most tweets have 0 likes, retweets, replies, quotes, or bookmarks, except for\
+    \ a few retweeted posts.\n\t* **Notable Exceptions:**\n\t\t+ 14 retweets for the\
+    \ tweet about immigration resources in Catalonia\n\t\t+ 2 retweets for the update\
+    \ on a pet's health\n\t\t+ 4 retweets for the emotional/fandom content in Portuguese\n\
+    \t\t+ 1 like for a tweet discussing salary reduction\n4. **Sentiment Trends:**\n\
+    \t* **Predominantly Negative:** Criticism, disappointment, and strong negative\
+    \ opinions are prevalent in the tweets analyzed.\n\t* **Neutral/Miscellaneous:**\
+    \ Updates, expressions of surprise, and undetermined content also present.\n\n\
+    **Limitations and Future Searches:**\nGiven the small sample size and diverse\
+    \ language set, focusing future searches on specific languages or themes might\
+    \ yield more targeted insights. Additionally, expanding the time frame could provide\
+    \ a more comprehensive understanding of the topics"
   data:
     search_stats:
-      total_results: 4
+      total_results: 10
       has_results: true
     tweets:
-    - id: '1896550471537656255'
-      content: 'RT @CinesCCastellet: ''Un perro andaluz'' de Luis Buñuel és d''aquells
-        clàssics que tots coneixem, però que potser no heu vist mai... veritat?…'
-      created_at: '2025-03-03T13:17:23Z'
-      language: ca
-      metrics:
-        likes: 0
-        retweets: 1
-        replies: 0
-        quotes: 0
-        bookmarks: 0
-      author_id: '1075065774866341888'
-      conversation_id: '1896550471537656255'
-    - id: '1896550377295851954'
-      content: "RT @GaccioB: heu, donc aucun doute: c acquis Poutine veut envahir\
-        \ toute l'Europe. \nEst-ce qu'on pourrait avoir qql éléments + probants que…"
-      created_at: '2025-03-03T13:17:00Z'
+    - id: '1897216454304653638'
+      content: Pas ma RH qui a demander mon insta ptdrrrr, heu non ????
+      created_at: '2025-03-05T09:23:45Z'
       language: fr
       metrics:
         likes: 0
-        retweets: 47
+        retweets: 0
         replies: 0
         quotes: 0
         bookmarks: 0
-      author_id: '1119498439572762624'
-      conversation_id: '1896550377295851954'
-    - id: '1896550347063373881'
-      content: "RT @GaccioB: heu, donc aucun doute: c acquis Poutine veut envahir\
-        \ toute l'Europe. \nEst-ce qu'on pourrait avoir qql éléments + probants que…"
-      created_at: '2025-03-03T13:16:53Z'
-      language: fr
-      metrics:
-        likes: 0
-        retweets: 47
-        replies: 0
-        quotes: 0
-        bookmarks: 0
-      author_id: '1358404486130196480'
-      conversation_id: '1896550347063373881'
-    - id: '1896550281242161525'
-      content: 'RT @BasquetManresa: 👋 Hola, @vueling! Ens heu perdut les maletes amb
-        material que necessitem demà per jugar el partit a Màlaga contra l''Uni…'
-      created_at: '2025-03-03T13:16:37Z'
+      author_id: '953469997'
+      conversation_id: '1897216454304653638'
+    - id: '1897216332426567877'
+      content: '@enricvd @gabrielrufian Ara tenim una Catalunya que vosaltres heu
+        trinxat, la que vivim  amb por fins i tot estan a casa amb la porta tancada,
+        últims en educació, llengua fatal, sanitat,.. ..... A veure qui ho arregla
+        tot el merder que heu fet, no entenc com algú encara us vota, diu destrales
+        !!!!'
+      created_at: '2025-03-05T09:23:16Z'
       language: ca
       metrics:
         likes: 0
-        retweets: 343
+        retweets: 0
         replies: 0
         quotes: 0
         bookmarks: 0
-      author_id: '1662043462563233792'
-      conversation_id: '1896550281242161525'
+      author_id: '1612821008032976896'
+      conversation_id: '1896845736471658549'
+    - id: '1897216247559021055'
+      content: '@jordisalvia @Holaiquetal Heu exposat dones racialitzades i amb les
+        llibertats retallades pel patriarcat. I això és just contra el que lluita
+        la Orriols. Sou uns feixistes antifeministes.'
+      created_at: '2025-03-05T09:22:56Z'
+      language: ca
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1179403252510724100'
+      conversation_id: '1897199235025567938'
+    - id: '1897216201413288360'
+      content: '@VirginiePerez15 De la démocrate ? Heu, 🤔 tu es sûr ? Parce que, honnêtement,
+        on dirait plutôt un mec avec une perruque de Gifi sur la tête. 🤣'
+      created_at: '2025-03-05T09:22:45Z'
+      language: fr
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1592894673059823623'
+      conversation_id: '1897143333765435457'
+    - id: '1897216154671964425'
+      content: '@HummelClement Heu si on m''enlève un tiers de salaire, je passe au
+        smig .
+
+        Ça va pas?'
+      created_at: '2025-03-05T09:22:34Z'
+      language: fr
+      metrics:
+        likes: 1
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '904029906450997248'
+      conversation_id: '1897187164737429749'
+    - id: '1897215983846359179'
+      content: "RT @ushiusb: @324cat No hi ha prou recursos per tanta immigració.\
+        \ \nSi amb prou penes ens queden recursos pels autòctons davant de l'expoli…"
+      created_at: '2025-03-05T09:21:53Z'
+      language: ca
+      metrics:
+        likes: 0
+        retweets: 14
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1213859496713310208'
+      conversation_id: '1897215983846359179'
+    - id: '1897215973461254578'
+      content: 'RT @A_Girl_Insane: Der kleinen (großen) Bademaus geht es etwas besser.
+        Sie hält den Kopf selbst hoch und die Augen sind offen. Sogar ein bi…'
+      created_at: '2025-03-05T09:21:51Z'
+      language: de
+      metrics:
+        likes: 0
+        retweets: 2
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1030406933512167424'
+      conversation_id: '1897215973461254578'
+    - id: '1897215681231548758'
+      content: 'RT @dearmiracles: XIAO DE JUNNNNNNN 😭 EU😭💧💧🥺 Uu E u😭💧🥺 UE😭 EU 🥺💧💧EE
+        u 😭UUEH🥺🥺 E 😭U EE 💧U EU🥺💧EU😭💧HEu😭 UEUE😭u💧 😭 UE e u🥺💧EU uu😭U 😭eE E😭🥺 e E…'
+      created_at: '2025-03-05T09:20:41Z'
+      language: pt
+      metrics:
+        likes: 0
+        retweets: 4
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '1278784948447690753'
+      conversation_id: '1897215681231548758'
+    - id: '1897215651875578027'
+      content: 'Wuye kambil mbejiro wuye ragǝkǝna
+
+
+        ⎐فؤغٱ▬كلؤسىت⎐
+
+        ⊵RRGG⊴
+
+
+        ╝لُفيُل▬شوُز▬لُيفُل▬لُيُفيُل╚
+
+        ▤VEL33▤
+
+        heu'
+      created_at: '2025-03-05T09:20:34Z'
+      language: und
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '361453545'
+      conversation_id: '1897215651875578027'
+    - id: '1897215534976131316'
+      content: '@DrScratch "Good fucking service medal".
+
+        - Heu on pourrait pas trouver moins vulgaire ?
+
+        - No, sir, he was actually fucking'
+      created_at: '2025-03-05T09:20:06Z'
+      language: en
+      metrics:
+        likes: 0
+        retweets: 0
+        replies: 0
+        quotes: 0
+        bookmarks: 0
+      author_id: '402911521'
+      conversation_id: '1897213717454184873'
 input_direct:
   tool: search_twitter
   tool_arguments:

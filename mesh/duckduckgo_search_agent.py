@@ -150,23 +150,14 @@ class DuckDuckGoSearchAgent(MeshAgent):
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle both direct tool calls and natural language queries"""
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
-
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
-        max_results = params.get("max_results", 5)
-
         # ---------------------
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            if "max_results" not in tool_args:
-                tool_args["max_results"] = max_results
-
             return await self._handle_tool_logic(
                 tool_name=tool_name,
                 function_args=tool_args,
@@ -174,46 +165,37 @@ class DuckDuckGoSearchAgent(MeshAgent):
                 tool_call_id="direct_tool",
                 raw_data_only=raw_data_only,
             )
-
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
         # ---------------------
-        response = await call_llm_with_tools_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata["large_model_id"],
-            system_prompt=self.get_system_prompt(),
-            user_prompt=query,
-            temperature=0.1,
-            tools=self.get_tool_schemas(),
-        )
+        if query:
+            response = await call_llm_with_tools_async(
+                base_url=self.heurist_base_url,
+                api_key=self.heurist_api_key,
+                model_id=self.metadata["large_model_id"],
+                system_prompt=self.get_system_prompt(),
+                user_prompt=query,
+                temperature=0.1,
+                tools=self.get_tool_schemas(),
+            )
 
-        if not response:
-            return {"error": "Failed to process query"}
+            if not response:
+                return {"error": "Failed to process query"}
+            if not response.get("tool_calls"):
+                return {"response": response["content"], "data": {}}
 
-        tool_calls = response.get("tool_calls", [])
-        if not tool_calls:
-            return {"response": response.get("content", ""), "data": {}}
-
-        # Get the first tool call
-        tool_call = tool_calls[0] if isinstance(tool_calls, list) else tool_calls
-
-        # Handle both function call formats
-        if hasattr(tool_call, "function"):
+            tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
-            try:
-                tool_call_args = json.loads(tool_call.function.arguments)
-            except Exception:
-                # Fallback for string format
-                tool_call_args = {"query": query, "max_results": max_results}
+            tool_call_args = json.loads(tool_call.function.arguments)
 
-        if "max_results" not in tool_call_args:
-            tool_call_args["max_results"] = max_results
-
-        return await self._handle_tool_logic(
-            tool_name=tool_call_name,
-            function_args=tool_call_args,
-            query=query,
-            tool_call_id=tool_call.id,
-            raw_data_only=raw_data_only,
-        )
+            return await self._handle_tool_logic(
+                tool_name=tool_call_name,
+                function_args=tool_call_args,
+                query=query,
+                tool_call_id=tool_call.id,
+                raw_data_only=raw_data_only,
+            )
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
+        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}

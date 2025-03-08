@@ -298,9 +298,6 @@ class ZkIgniteAnalystAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Handle incoming message with multi-tool analysis"""
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
-
         self.current_message = params
 
         try:

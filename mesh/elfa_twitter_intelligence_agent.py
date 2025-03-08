@@ -115,9 +115,13 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                             "days_ago": {
                                 "type": "integer",
                                 "description": "Number of days to look back",
-                                "default": 30,
+                                "default": 20,
                             },
-                            "limit": {"type": "integer", "description": "Maximum number of results", "default": 20},
+                            "limit": {
+                                "type": "integer",
+                                "description": "Maximum number of results (minimum: 20)",
+                                "default": 20,
+                            },
                         },
                         "required": ["keywords"],
                     },
@@ -188,6 +192,9 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     async def search_mentions(self, keywords: List[str], days_ago: int = 30, limit: int = 20) -> Dict:
+        if limit < 20:
+            raise ValueError("Limit must be at least 20")
+
         try:
             end_time = int(time.time())
             start_time = int((datetime.now() - timedelta(days=days_ago)).timestamp())
@@ -288,9 +295,6 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
           - If 'query' is provided, route via LLM for dynamic tool selection.
         """
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
-
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
