@@ -841,8 +841,9 @@ IMPORTANT:
 
             for trade in trades:
                 buy_sell_ratio = 0
-                if trade["sold"] > 0:
-                    buy_sell_ratio = trade["bought"] / trade["sold"]
+                if float(trade["sold"]) > 0:
+                    buy_sell_ratio = float(trade["bought"]) / float(trade["sold"])
+
 
                 formatted_trader = {
                     "owner": trade["Trade"]["Account"]["Owner"],
