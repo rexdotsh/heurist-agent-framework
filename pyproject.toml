@@ -1,0 +1,8 @@
+[project]
+name = "heurist-agent-framework"
+version = "0.1.0"
+description = "Heurist Agent Framework"
+requires-python = ">=3.8"
+
+[tool.black]
+line-length = 88
