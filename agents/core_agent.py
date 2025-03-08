@@ -754,7 +754,7 @@ class CoreAgent:
                 temperature=0.3,
             )
             return classification.strip().upper()
-        except:
+        except Exception:
             return "general"
 
     async def _extract_key_topics(self, text: str) -> List[str]:
@@ -773,7 +773,7 @@ class CoreAgent:
                 temperature=0.3,
             )
             return [t.strip() for t in topics.split(",")]
-        except:
+        except Exception:
             return []
 
     async def send_to_interface(self, target_interface: str, message: dict):

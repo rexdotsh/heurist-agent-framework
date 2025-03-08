@@ -202,7 +202,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             try:
                 tool_call_args = json.loads(tool_call.function.arguments)
-            except:
+            except Exception:
                 # Fallback for string format
                 tool_call_args = {"query": query, "max_results": max_results}
 

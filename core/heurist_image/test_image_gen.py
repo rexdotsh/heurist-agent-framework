@@ -10,8 +10,8 @@ root_dir = str(Path(__file__).parent.parent)
 if root_dir not in sys.path:
     sys.path.append(root_dir)
 
-from heurist_image.ImageGen import ImageGen
-from heurist_image.SmartGen import SmartGen
+from heurist_image.ImageGen import ImageGen  # noqa: E402
+from heurist_image.SmartGen import SmartGen  # noqa: E402
 
 # Load environment variables from .env file
 load_dotenv()

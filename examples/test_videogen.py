@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
 
-from core.videogen import Text2VideoTask, Workflow
+from core.videogen import Text2VideoTask, Workflow  # noqa: E402
 
 load_dotenv()
 api_key = os.getenv("HEURIST_API_KEY")
