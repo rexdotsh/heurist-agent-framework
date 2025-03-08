@@ -28,3 +28,4 @@ duckduckgo-search==7.4.3
 smolagents==1.9.2
 pre-commit>=3.6.0
 black>=24.3.0
+isort>=5.13.2
