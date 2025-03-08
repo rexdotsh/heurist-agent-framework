@@ -8,7 +8,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import asyncio
 
-from mesh.goplus_analysis_agent import TokenContractSecurityAgent
+from mesh.goplus_analysis_agent import GoplusAnalysisAgent
 
 load_dotenv()
 
@@ -16,11 +16,9 @@ load_dotenv()
 
 
 async def run_agent():
-    agent = TokenContractSecurityAgent()
+    agent = GoplusAnalysisAgent()
     try:
-        agent_input = {
-            "query": "Fetch the security details of contract address 0xEF22cb48B8483dF6152e1423b19dF5553BbD818b on Base chain"
-        }
+        agent_input = {"query": "Check the safety of this Solana token: AcmFHCquGwbrPxh9b3sUPMtAtXKMjkEzKnqkiHEnpump"}
 
         agent_output = await agent.handle_message(agent_input)
 

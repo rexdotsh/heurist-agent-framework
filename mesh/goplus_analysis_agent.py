@@ -76,6 +76,7 @@ class GoplusAnalysisAgent(MeshAgent):
             "200901": "Bitlayer Mainnet",
             "810180": "zkLink Nova",
             "196": "X Layer Mainnet",
+            "solana": "Solana",
         }
 
     def get_system_prompt(self) -> str:
@@ -92,7 +93,20 @@ class GoplusAnalysisAgent(MeshAgent):
             - Other Metrics: Any other relevant metrics or information
         4. Risk Assessment: Provide a risk assessment based on the data
 
-        Supported chains: {", ".join([f"{name} (Chain ID: {id})" for id, name in self.supported_blockchains.items()])}"""
+        Supported chains: {", ".join([f"{name} (Chain ID: {id})" for id, name in self.supported_blockchains.items()])}
+
+        For Solana tokens, include these specific details:
+        - Token Metadata: Name, symbol, description, URI
+        - Solana-specific Properties:
+            - Mintable status and authority
+            - Metadata mutability and upgrade authority
+            - Freezable status and authority
+            - Balance mutability and authority
+            - Closable status and authority
+            - Default account state
+            - Non-transferable status
+        - Security Assessment: Analyze authority settings and trusted token status
+    """
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
@@ -105,7 +119,11 @@ class GoplusAnalysisAgent(MeshAgent):
                         "type": "object",
                         "properties": {
                             "contract_address": {"type": "string", "description": "The blockchain contract address"},
-                            "chain_id": {"type": "integer", "description": "The blockchain chain ID", "default": 1},
+                            "chain_id": {
+                                "type": ["integer", "string"],
+                                "description": "The blockchain chain ID or 'solana' for Solana tokens",
+                                "default": 1,
+                            },
                         },
                         "required": ["contract_address"],
                     },
@@ -137,6 +155,11 @@ class GoplusAnalysisAgent(MeshAgent):
     async def fetch_security_details(self, contract_address: str, chain_id: int = 1) -> Dict:
         """Fetch security details from GoPlus API"""
         try:
+            # Handle Solana tokens specifically
+            if chain_id == "solana":
+                return await self._fetch_solana_security_details(contract_address)
+
+            # Standard EVM chain handling
             base_url = f"https://api.gopluslabs.io/api/v1/token_security/{chain_id}"
             params = {"contract_addresses": contract_address}
             headers = {"accept": "*/*"}
@@ -181,6 +204,91 @@ class GoplusAnalysisAgent(MeshAgent):
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching security details: {e}")
             return {"error": f"Failed to fetch security details: {str(e)}"}
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+            return {"error": f"Unexpected error: {str(e)}"}
+
+    @monitor_execution()
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def _fetch_solana_security_details(self, contract_address: str) -> Dict:
+        """Fetch Solana token security details from GoPlus API"""
+        try:
+            base_url = "https://api.gopluslabs.io/api/v1/solana/token_security"
+            params = {"contract_addresses": contract_address}
+            headers = {"accept": "*/*"}
+
+            response = requests.get(base_url, params=params, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+
+            # Process the response data
+            token_data = data.get("result", {}).get(contract_address, {})
+
+            if not token_data:
+                return {"error": f"No data found for Solana token: {contract_address}"}
+
+            # Extract metadata
+            metadata = token_data.get("metadata", {})
+
+            # Map Solana-specific data structures
+            essential_security_info = {
+                "token_info": {
+                    "name": metadata.get("name"),
+                    "symbol": metadata.get("symbol"),
+                    "decimals": None,  # Not directly in API response
+                    "supply": token_data.get("total_supply"),
+                    "holder_count": None,  # Not directly in API response
+                    "description": metadata.get("description"),
+                    "uri": metadata.get("uri"),
+                },
+                "solana_specific": {
+                    "mint": contract_address,  # Using the provided contract address
+                    "default_account_state": token_data.get("default_account_state"),
+                    "non_transferable": token_data.get("non_transferable"),
+                    # Authority mappings
+                    "metadata_mutable": {
+                        "status": token_data.get("metadata_mutable", {}).get("status"),
+                        "metadata_upgrade_authority": token_data.get("metadata_mutable", {}).get(
+                            "metadata_upgrade_authority", []
+                        ),
+                    },
+                    "mintable": {
+                        "status": token_data.get("mintable", {}).get("status"),
+                        "authority": token_data.get("mintable", {}).get("authority", []),
+                    },
+                    "freezable": {
+                        "status": token_data.get("freezable", {}).get("status"),
+                        "authority": token_data.get("freezable", {}).get("authority", []),
+                    },
+                    "closable": {
+                        "status": token_data.get("closable", {}).get("status"),
+                        "authority": token_data.get("closable", {}).get("authority", []),
+                    },
+                    "balance_mutable_authority": {
+                        "status": token_data.get("balance_mutable_authority", {}).get("status"),
+                        "authority": token_data.get("balance_mutable_authority", {}).get("authority", []),
+                    },
+                },
+                "security_metrics": {
+                    "is_verified": False,  # This might be equivalent to trusted_token
+                    "is_mintable": token_data.get("mintable", {}).get("status") == "1",
+                    "is_freezable": token_data.get("freezable", {}).get("status") == "1",
+                    "is_metadata_mutable": token_data.get("metadata_mutable", {}).get("status") == "1",
+                    "trusted_token": bool(int(token_data.get("trusted_token", "0"))),
+                },
+                "ownership": {
+                    "creators": token_data.get("creators", []),
+                    "metadata_upgrade_authority": token_data.get("metadata_mutable", {}).get(
+                        "metadata_upgrade_authority", []
+                    ),
+                },
+            }
+            return essential_security_info
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error fetching Solana token details: {e}")
+            return {"error": f"Failed to fetch Solana token details: {str(e)}"}
         except Exception as e:
             logger.error(f"Unexpected error: {e}")
             return {"error": f"Unexpected error: {str(e)}"}
@@ -243,11 +351,20 @@ class GoplusAnalysisAgent(MeshAgent):
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
         # ---------------------
         if query:
+            # Detect Solana queries and assist with the appropriate chain_id
+            if "solana" in query.lower():
+                system_prompt = (
+                    self.get_system_prompt()
+                    + "\nIf the user is asking about a Solana token, make sure to use 'solana' as the chain_id."
+                )
+            else:
+                system_prompt = self.get_system_prompt()
+
             response = await call_llm_with_tools_async(
                 base_url=self.heurist_base_url,
                 api_key=self.heurist_api_key,
                 model_id=self.metadata["large_model_id"],
-                system_prompt=self.get_system_prompt(),
+                system_prompt=system_prompt,
                 user_prompt=query,
                 temperature=0.1,
                 tools=self.get_tool_schemas(),
@@ -261,6 +378,10 @@ class GoplusAnalysisAgent(MeshAgent):
             tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
+
+            # For Solana queries, ensure we're using the correct chain ID
+            if "solana" in query.lower() and tool_call_name == "fetch_security_details":
+                tool_call_args["chain_id"] = "solana"
 
             return await self._handle_tool_logic(
                 tool_name=tool_call_name,
