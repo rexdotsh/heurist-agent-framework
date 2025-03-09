@@ -116,8 +116,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(
-    self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-) -> Dict[str, Any]:
+        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
+    ) -> Dict[str, Any]:
         """Handle tool execution and optional LLM explanation"""
         if tool_name == "search_web":
             result = await self.search_web(

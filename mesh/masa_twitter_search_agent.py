@@ -19,7 +19,6 @@ class MasaTwitterSearchAgent(MeshAgent):
         self.api_url = "https://api1.dev.masalabs.ai/v1"
         self.headers = {"Authorization": f"Bearer {os.getenv('MASA_API_KEY')}", "Content-Type": "application/json"}
 
-        # Add required metadata
         self.metadata.update(
             {
                 "name": "Masa Twitter Search Agent",
@@ -153,7 +152,6 @@ class MasaTwitterSearchAgent(MeshAgent):
             response = requests.post(f"{self.api_url}/search/live/twitter", headers=self.headers, json=payload)
             response.raise_for_status()
 
-            # Rest of the method remains unchanged
             search_data = response.json()
             uuid = search_data.get("uuid")
 

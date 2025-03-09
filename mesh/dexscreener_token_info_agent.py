@@ -109,7 +109,10 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "search_term": {"type": "string", "description": "Search term (token name, symbol, or address)"}
+                            "search_term": {
+                                "type": "string",
+                                "description": "Search term (token name, symbol, or address)",
+                            }
                         },
                         "required": ["search_term"],
                     },
@@ -162,6 +165,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 },
             },
         ]
+
     # ------------------------------------------------------------------------
     #                       SHARED / UTILITY METHODS
     # ------------------------------------------------------------------------
@@ -220,7 +224,6 @@ class DexScreenerTokenInfoAgent(MeshAgent):
 
         except Exception as e:
             return {"status": "error", "error": f"Failed to search pairs: {str(e)}", "data": None}
-
 
     @with_cache(ttl_seconds=300)
     async def get_specific_pair_info(self, chain: str, pair_address: str) -> Dict:
@@ -436,6 +439,7 @@ def fetch_dex_pairs(search_term: str) -> Dict:
 
     except Exception as e:
         return {"status": "error", "error": f"Failed to fetch pairs: {str(e)}"}
+
 
 def fetch_pair_info(chain: str, pair_address: str) -> Dict:
     """

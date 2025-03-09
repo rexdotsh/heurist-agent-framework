@@ -19,12 +19,10 @@ load_dotenv()
 class ElfaTwitterIntelligenceAgent(MeshAgent):
     def __init__(self):
         super().__init__()
-        # Load and parse API keys
         api_keys_str = os.getenv("ELFA_API_KEY")
         if not api_keys_str:
             raise ValueError("ELFA_API_KEY environment variable is required")
 
-        # Split and clean the API keys
         self.api_keys = [key.strip() for key in api_keys_str.split(",") if key.strip()]
         if not self.api_keys:
             raise ValueError("No valid API keys found in ELFA_API_KEY")

@@ -20,7 +20,6 @@ class ExaSearchAgent(MeshAgent):
         self.base_url = "https://api.exa.ai"
         self.headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"}
 
-        # Add required metadata
         self.metadata.update(
             {
                 "name": "Exa Search Agent",

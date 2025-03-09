@@ -3,7 +3,7 @@ import logging
 import random
 from typing import Any, Dict
 
-from .mesh_agent import MeshAgent  # Adjust this import to match your project structure
+from .mesh_agent import MeshAgent
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 class EchoAgent(MeshAgent):
     def __init__(self):
         super().__init__()
-        # You can update the metadata if you want
         self.metadata.update(
             {
                 "name": "EchoAgent",
