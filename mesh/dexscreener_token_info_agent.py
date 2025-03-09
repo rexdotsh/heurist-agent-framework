@@ -109,9 +109,12 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "query": {"type": "string", "description": "Search query (token name, symbol, or address)"}
+                            "search_term": {
+                                "type": "string",
+                                "description": "Search term (token name, symbol, or address)",
+                            }
                         },
-                        "required": ["query"],
+                        "required": ["search_term"],
                     },
                 },
             },
@@ -196,18 +199,18 @@ class DexScreenerTokenInfoAgent(MeshAgent):
     #                      API-SPECIFIC METHODS
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
-    async def search_pairs(self, query: str) -> Dict:
+    async def search_pairs(self, search_term: str) -> Dict:
         """
         Search for trading pairs (up to 30) using DexScreener API.
 
         Args:
-            query (str): Search query for token name, symbol, or address
+            search_term (str): Search term for token name, symbol, or address
 
         Returns:
             Dict: Top 30 matching pairs with status information
         """
         try:
-            result = fetch_dex_pairs(query)
+            result = fetch_dex_pairs(search_term)
 
             if result["status"] == "success":
                 return {
@@ -310,7 +313,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         temp = 0.3 if tool_name == "get_token_profiles" else 0.7
 
         if tool_name == "search_pairs":
-            result_data = await self.search_pairs(function_args["query"])
+            result_data = await self.search_pairs(function_args["search_term"])
         elif tool_name == "get_specific_pair_info":
             result_data = await self.get_specific_pair_info(
                 chain=function_args["chain"], pair_address=function_args["pair_address"]
@@ -401,19 +404,19 @@ class DexScreenerTokenInfoAgent(MeshAgent):
 # ------------------------- Helper Functions ------------------------- #
 
 
-def fetch_dex_pairs(query: str) -> Dict:
+def fetch_dex_pairs(search_term: str) -> Dict:
     """
     Fetches trading pair information from DexScreener API.
 
     Args:
-        query (str): Search query (token name, symbol, or address)
+        search_term (str): Search term (token name, symbol, or address)
 
     Returns:
         Dict: Processed pair information with status
     """
     try:
         response = requests.get(
-            f"https://api.dexscreener.com/latest/dex/search/?q={query}",
+            f"https://api.dexscreener.com/latest/dex/search/?q={search_term}",
             headers={},
         )
 

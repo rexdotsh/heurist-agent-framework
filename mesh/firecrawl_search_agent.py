@@ -86,8 +86,8 @@ class FirecrawlSearchAgent(MeshAgent):
                     "description": "Execute a web search query by reading the web pages",
                     "parameters": {
                         "type": "object",
-                        "properties": {"query": {"type": "string", "description": "The search query to execute"}},
-                        "required": ["query"],
+                        "properties": {"search_term": {"type": "string", "description": "The search term to execute"}},
+                        "required": ["search_term"],
                     },
                 },
             },
@@ -217,11 +217,11 @@ class FirecrawlSearchAgent(MeshAgent):
         """Handle execution of specific tools and format responses"""
 
         if tool_name == "execute_search":
-            search_query = function_args.get("query")
-            if not search_query:
-                return {"error": "Missing 'query' in tool_arguments"}
+            search_term = function_args.get("search_term")
+            if not search_term:
+                return {"error": "Missing 'search_term' in tool_arguments"}
 
-            result = await self.execute_search(search_query)
+            result = await self.execute_search(search_term)
 
         elif tool_name == "generate_queries":
             topic = function_args.get("topic")

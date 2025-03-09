@@ -19,7 +19,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         self.api_url = "https://api.coingecko.com/api/v3"
         self.headers = {"Authorization": f"Bearer {os.getenv('COINGECKO_API_KEY')}"}
 
-        # Add required metadata
         self.metadata.update(
             {
                 "name": "CoinGecko Token Info Agent",
@@ -323,8 +322,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         A single method that calls the appropriate function, handles
         errors/formatting, and optionally calls the LLM to explain the result.
         """
-        # Decide on temperature defaults per tool:
-        # (You could also store these in a dictionary if you want more variation)
         temp_for_explanation = 0.7 if tool_name != "get_trending_coins" else 0.3
 
         if tool_name == "get_trending_coins":
