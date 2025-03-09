@@ -114,14 +114,15 @@ class GoplusAnalysisAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "fetch_security_details",
-                    "description": "Fetch security details of a blockchain contract",
+                    "description": "Fetch security details of a blockchain token contract",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "contract_address": {"type": "string", "description": "The blockchain contract address"},
+                            "contract_address": {"type": "string", "description": "The token contract address"},
                             "chain_id": {
                                 "type": ["integer", "string"],
-                                "description": "The blockchain chain ID or 'solana' for Solana tokens",
+                                "description": "The blockchain chain ID or 'solana' for Solana tokens. Supported chains: "
+                                + ", ".join([f"{name} ({id})" for id, name in self.supported_blockchains.items()]),
                                 "default": 1,
                             },
                         },

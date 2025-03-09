@@ -22,12 +22,10 @@ class DuckDuckGoSearchAgent(MeshAgent):
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
                 "description": (
-                    "This agent can fetch and analyze web search results using DuckDuckGo API. "
-                    "Analyze content relevance, source credibility, information completeness, "
-                    "and provide intelligent summaries."
+                    "This agent can fetch and analyze web search results using DuckDuckGo API and provide intelligent summaries."
                 ),
                 "inputs": [
-                    {"name": "query", "description": "The search query to analyze", "type": "str", "required": True},
+                    {"name": "query", "description": "The search query or question or keyword", "type": "str", "required": True},
                     {
                         "name": "max_results",
                         "description": "The maximum number of results to return",

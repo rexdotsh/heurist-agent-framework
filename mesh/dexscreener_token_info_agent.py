@@ -105,7 +105,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_pairs",
-                    "description": "Search for trading pairs by token name, symbol, or address",
+                    "description": "Search for trading pairs on DexScreener by token name, symbol, or address",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -119,13 +119,13 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_specific_pair_info",
-                    "description": "Get pair info by chain and pair address",
+                    "description": "Get trading pair info by chain and pair address on DexScreener",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "chain": {
                                 "type": "string",
-                                "description": "Chain identifier (e.g., solana, bsc, ethereum)",
+                                "description": "Chain identifier (e.g., solana, bsc, ethereum, base)",
                             },
                             "pair_address": {"type": "string", "description": "The pair contract address to look up"},
                         },
@@ -137,13 +137,13 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_pairs",
-                    "description": "Get the trading pairs by chain and token address",
+                    "description": "Get the trading pairs by chain and token address on DexScreener",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "chain": {
                                 "type": "string",
-                                "description": "Chain identifier (e.g., solana, bsc, ethereum)",
+                                "description": "Chain identifier (e.g., solana, bsc, ethereum, base)",
                             },
                             "token_address": {
                                 "type": "string",
@@ -158,7 +158,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_profiles",
-                    "description": "Get the latest token profiles from DexScreener",
+                    "description": "Get the basic info of the latest tokens from DexScreener",
                 },
             },
         ]

@@ -30,7 +30,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "inputs": [
                     {
                         "name": "query",
-                        "description": "Natural language query about a token, or a request for trending coins. ",
+                        "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins. ",
                         "type": "str",
                         "required": False,
                     },
@@ -105,7 +105,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_info",
-                    "description": "Get detailed token information and market data using CoinGecko ID",
+                    "description": "Get detailed token information and market data using CoinGecko ID (you can't use the token address or name or symbol)",
                     "parameters": {
                         "type": "object",
                         "properties": {

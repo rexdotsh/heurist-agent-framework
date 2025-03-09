@@ -79,7 +79,7 @@ class ExaSearchAgent(MeshAgent):
 
     When presenting search results, apply these criteria:
     1. Prioritize recency and relevance
-    2. Include source URLs and timestamps where available
+    2. Include source URLs where available
     3. Organize information logically and highlight key insights
 
     IMPORTANT:

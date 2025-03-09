@@ -61,23 +61,21 @@ class FirecrawlSearchAgent(MeshAgent):
 
         When analyzing results, focus on:
         - Key findings and main themes
-        - Source credibility and diversity
         - Information completeness
         - Emerging patterns and trends
         - Potential biases or conflicts
 
         For search results:
-        1. First analyze the content quality and relevance
+        1. Only use relevant, good quality, credible information
         2. Extract key facts and statistics
-        3. Identify primary themes and patterns
-        4. Note any gaps or areas needing more research
+        3. Present the information like a human, not a robot
 
         For query generation:
         1. Break down complex topics into focused sub-queries
-        2. Consider different aspects and perspectives
+        2. Consider different aspects and perspectives. Be diverse.
         3. Prioritize specific, targeted questions
 
-        Return analyses in clear, structured formats with concrete findings and specific examples."""
+        Return analyses in clear, structured formats with concrete findings. Do not make up any information."""
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
@@ -85,7 +83,7 @@ class FirecrawlSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "execute_search",
-                    "description": "Execute a web search query",
+                    "description": "Execute a web search query by reading the web pages",
                     "parameters": {
                         "type": "object",
                         "properties": {"query": {"type": "string", "description": "The search query to execute"}},
@@ -97,7 +95,7 @@ class FirecrawlSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "generate_queries",
-                    "description": "Generate related search queries for a topic",
+                    "description": "Generate related search queries for a topic that can expand the research",
                     "parameters": {
                         "type": "object",
                         "properties": {

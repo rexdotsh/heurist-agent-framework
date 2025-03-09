@@ -38,7 +38,7 @@ class PumpFunTokenAgent(MeshAgent):
                 "inputs": [
                     {
                         "name": "query",
-                        "description": "Natural language query about a token, or a request for trending coins. ",
+                        "description": "Natural language query about a token (must include a token address), or a request for trending coins. ",
                         "type": "str",
                         "required": False,
                     },

@@ -42,11 +42,11 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart accounts.",
+                "description": "This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart influencers.",
                 "inputs": [
                     {
                         "name": "query",
-                        "description": "Natural language query about token mentions, trends, or account analysis",
+                        "description": "Natural language query about token mentions, trends, topics, or a Twitter account",
                         "type": "str",
                         "required": True,
                     },
@@ -103,7 +103,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_mentions",
-                    "description": "Search for mentions of specific tokens or topics",
+                    "description": "Search for mentions of specific tokens or topics on Twitter",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -155,7 +155,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_trending_tokens",
-                    "description": "Get current trending tokens",
+                    "description": "Get current trending tokens on Twitter",
                     "parameters": {
                         "type": "object",
                         "properties": {
