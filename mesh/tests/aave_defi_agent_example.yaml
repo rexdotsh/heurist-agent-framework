@@ -1,73 +1,1380 @@
-input_reserve_data:
-  query: Get Aave V3 reserve data
-output_reserve_data:
-  response: "**Aave V3 Reserve Data Analysis**\n\nBased on the provided data:\n\n\
-    ### **Key Takeaways**\n\n1. **Total Reserves**: **0**\n\t* This indicates that,\
-    \ as of the last update, the total value of all reserves across Aave V3 pools\
-    \ is zero.\n2. **Last Updated**: **2025-03-09T13:48:59.530178**\n\t* The data\
-    \ was last refreshed at this timestamp. Be aware that the situation may have changed\
-    \ since then.\n3. **Base Currency Info**: **Empty Object ({})**\n\t* There is\
-    \ no information provided about the base currency used for the reserves.\n4. **Aggregated\
-    \ Reserve Data**: **Empty List ([])**\n\t* No detailed or aggregated data is available\
-    \ for individual reserves or asset classes within Aave V3.\n\n### **Insights &\
-    \ Recommendations**\n\n- **Data Freshness**: The data is relatively recent, but\
-    \ for real-time critical decisions, consider verifying if this is the latest update.\n\
-    - **Empty Reserves**: The total reserves being zero could indicate a lack of liquidity,\
-    \ a specific market condition, or an issue with the data feed. Investigate further\
-    \ for context.\n- **Missing Base Currency Info**: To fully understand the reserves'\
-    \ value, identifying the base currency is crucial. Attempt to find this information\
-    \ through other means.\n- **No Detailed Data**: Without aggregated reserve data,\
-    \ asset-specific analysis or portfolio optimization within Aave V3 cannot be conducted\
-    \ with this dataset. Seek more comprehensive data for in-depth analysis.\n\n###\
-    \ **Next Steps Suggestion**\n\n1. **Verify Data Source**: Ensure the data source\
-    \ is correct and functioning properly.\n2. **Fetch Latest Update**: Try to retrieve\
-    \ more recent data to confirm if the total reserves and detailed data remain the\
-    \ same.\n3. **Cross-Reference**: Use other reliable sources to find the base currency\
-    \ information and detailed reserve data for a more comprehensive understanding.\n\
-    \n**If you have a specific question based on this analysis or need to query something\
-    \ else, please ask!**"
-  data:
-    summary:
-      total_reserves: 0
-      base_currency_info: &id001 {}
-      last_updated: '2025-03-09T13:48:59.530178'
-    detailed_data:
-      aggregated_reserve_data: []
-      base_currency_info: *id001
-input_reserve_data_block:
-  query: 'Get Aave V3 reserve data at block 14568297 '
-  tool_arguments:
-    block_identifier: '14568297 '
-output_reserve_data_block:
-  response: "**Aave V3 Reserve Data at Block 14568297**\n\n**Summary:**\n\n1. **Total\
-    \ Reserves:** `0`\n\t* **Interpretation:** The total reserve balance across all\
-    \ assets on Aave V3 at block 14568297 is zero.\n2. **Base Currency Info:**\n\t\
-    * **Status:** *Empty Object* (`{}`)\n\t* **Interpretation:** No base currency\
-    \ information is available or provided for this snapshot.\n3. **Last Updated:**\n\
-    \t* **Timestamp:** `2025-03-09T13:49:16.059646`\n\t* **Interpretation:** This\
-    \ indicates when the data was last updated, but note that the update time does\
-    \ not necessarily correlate with the block time of 14568297.\n\n**Detailed Data:**\n\
-    \n1. **Aggregated Reserve Data:**\n\t* **Status:** *Empty List* (`[]`)\n\t* **Interpretation:**\
-    \ There is no aggregated reserve data available for any asset at block 14568297.\n\
-    2. **Base Currency Info (Detailed):**\n\t* **Status:** *Empty Object* (`{}`)\n\
-    \t* **Interpretation:** Same as in the summary, no detailed base currency information\
-    \ is provided.\n\n**Key Observations:**\n\n- **Zero Total Reserves:** This could\
-    \ indicate a data anomaly, a temporary state, or a genuine reflection of the protocol's\
-    \ reserves at the exact block, which seems unlikely.\n- **Lack of Asset-Specific\
-    \ Data:** No detailed or aggregated data is available for any assets, suggesting\
-    \ either a data collection issue at this block or an unusual market condition.\n\
-    \n**Recommendations for Further Analysis:**\n\n1. **Verify Block Time:** Ensure\
-    \ the block time for 14568297 aligns closely with the 'Last Updated' timestamp\
-    \ to assess data freshness.\n2. **Check Neighboring Blocks:** Analyze reserve\
-    \ data from immediately preceding and following blocks to identify if this state\
-    \ is an outlier.\n3. **Consult Additional Data Sources:** Cross-reference with\
-    \ other Aave V3 data feeds or blockchain explorers to verify the accuracy of the\
-    \ provided data."
-  data:
-    summary:
-      total_reserves: 0
-      base_currency_info: &id002 {}
-      last_updated: '2025-03-09T13:49:16.059646'
-    detailed_data:
-      aggregated_reserve_data: []
-      base_currency_info: *id002
+example1:
+  input:
+    query: What are the current borrow rates for USDC on Polygon?
+  output:
+    response: "**USDC Borrow Rates on Polygon (Aave v3)**\n\nTwo USDC reserves are\
+      \ available on Polygon, with differing configurations. Here are the current\
+      \ borrow rates for each:\n\n1. **USD Coin (PoS) - USDC**\n\t* **Variable Borrow\
+      \ APR:** 9.64%\n\t* **Stable Borrow Rate:** Not Enabled (i.e., 0%)\n\t* **Deposit\
+      \ APR (Liquidity Provider Reward):** 3.19%\n\t* **Available Liquidity:** 1,526,759,037.527\
+      \ USDC\n\t* **Total Scaled Variable Debt:** 5,889,829,959.986 USDC\n\n2. **USD\
+      \ Coin - USDC**\n\t* **Variable Borrow APR:** 7.1%\n\t* **Stable Borrow Rate:**\
+      \ Not Enabled (i.e., 0%)\n\t* **Deposit APR (Liquidity Provider Reward):** 3.82%\n\
+      \t* **Available Liquidity:** 14,607,111,918.080 USDC\n\t* **Total Scaled Variable\
+      \ Debt:** 26,659,330,641.653 USDC\n\n**Key Takeaways for DeFi Users and Analysts:**\n\
+      \n- **Borrowers:** The USD Coin (PoS) reserve offers a higher variable borrow\
+      \ APR (9.64%) compared to the standard USD Coin reserve (7.1%).\n- **Liquidity\
+      \ Providers (LPs):** The standard USD Coin reserve provides a slightly higher\
+      \ deposit APR (3.82%) than the USD Coin (PoS) reserve (3.19%), indicating a\
+      \ potentially more rewarding option for suppliers of liquidity, but consider\
+      \ the overall market and reserve conditions.\n- **Market Conditions:** The significant\
+      \ difference in available liquidity and total scaled variable debt between the\
+      \ two reserves may indicate market preferences or utilization patterns. The\
+      \ standard USD Coin reserve has substantially more liquidity available and a\
+      \ higher total debt, suggesting it might be the more actively used or trusted\
+      \ option at the time of the data snapshot."
+    data: &id001
+      reserves:
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174':
+          underlyingAsset: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+          name: USD Coin (PoS)
+          symbol: USDC
+          decimals: 6
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10500
+          reserveFactor: 6000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1136597654517557807521657078'
+          variableBorrowIndex: '1233978398481576324631119093'
+          liquidityRate: '31871662162943545538566794'
+          variableBorrowRate: '96415257409137718550748036'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596013
+          aTokenAddress: '0x625E7708f30cA75bfd92586e17077590C60eb4cD'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xFCCf3cAbbe80101232d343252614b6A3eE81C989'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 1526759037527
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 5889829959986
+          priceInMarketReferenceCurrency: 99989000
+          priceOracle: '0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 2891686659
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 43500000
+          supplyCap: 48000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: true
+          variableBorrowAPR: 9.64
+          depositAPR: 3.19
+        '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359':
+          underlyingAsset: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+          name: USD Coin
+          symbol: USDC
+          decimals: 6
+          baseLTVasCollateral: 7000
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10500
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1099269837888375623720549329'
+          variableBorrowIndex: '1124895121237516764575735670'
+          liquidityRate: '38185674445376943772907940'
+          variableBorrowRate: '70981600665585339260112896'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596137
+          aTokenAddress: '0xA4D94019934D8333Ef880ABFFbF2FDd611C762BD'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xE701126012EC0290822eEA17B794454d1AF8b030'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 14607119118080
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 26659330641653
+          priceInMarketReferenceCurrency: 99989000
+          priceOracle: '0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 2419197317
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 90000000
+          supplyCap: 100000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 7.1
+          depositAPR: 3.82
+      base_currency:
+        marketReferenceCurrencyUnit: '100000000'
+        marketReferenceCurrencyPriceInUsd: '100000000'
+        networkBaseTokenPriceInUsd: '22251734'
+      chain_id: 137
+      total_reserves: 2
+example2:
+  input:
+    tool: get_aave_reserves
+    tool_arguments:
+      chain_id: 137
+      asset_filter: USDC
+  output:
+    response: "**Aave v3 Reserve Data Summary (Chain ID: 137 - Polygon)**\n\n**Reserve\
+      \ Overview (2 assets)**\n\n1. **USD Coin (PoS) - USDC (0x2791bca1f2de4661ed88a30c99a7a9449aa84174)**\n\
+      \t* **Liquidity Provider (LP) Insights:**\n\t\t+ Available Liquidity: 1,526,759,037.527\
+      \ USDC\n\t\t+ Deposit APR: 3.19%\n\t* **Borrower Insights:**\n\t\t+ Borrowing\
+      \ Enabled: Yes\n\t\t+ Variable Borrow APR: 9.64%\n\t\t+ Total Scaled Variable\
+      \ Debt: 5,889,829,959.986 USDC\n\t* **Collateral:**\n\t\t+ Usage as Collateral:\
+      \ Disabled\n\t\t+ Base LTV as Collateral: 0%\n\n2. **USD Coin - USDC (0x3c499c542cef5e3811e1192ce70d8cc03d5c3359)**\n\
+      \t* **Liquidity Provider (LP) Insights:**\n\t\t+ Available Liquidity: 14,607,111,918.080\
+      \ USDC\n\t\t+ Deposit APR: 3.82%\n\t* **Borrower Insights:**\n\t\t+ Borrowing\
+      \ Enabled: Yes\n\t\t+ Variable Borrow APR: 7.1%\n\t\t+ Total Scaled Variable\
+      \ Debt: 26,659,330,641.653 USDC\n\t* **Collateral:**\n\t\t+ Usage as Collateral:\
+      \ Enabled\n\t\t+ Base LTV as Collateral: 70%\n\n**Chain and Currency Reference**\n\
+      * **Chain ID:** 137 (Polygon)\n* **Base Currency Reference:**\n\t+ Unit: 100,000,000\n\
+      \t+ Price in USD: 100,000,000\n\t+ Network Base Token Price in USD: 22,251,734"
+    data: *id001
+example3:
+  input:
+    query: Show me all Aave assets on Polygon with their liquidity rates
+    raw_data_only: true
+  output:
+    response: ''
+    data:
+      reserves:
+        '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063':
+          underlyingAsset: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063'
+          name: (PoS) Dai Stablecoin
+          symbol: DAI
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 7700
+          reserveLiquidationBonus: 10500
+          reserveFactor: 2500
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1142179589829381688527075384'
+          variableBorrowIndex: '1216911269445038742200253077'
+          liquidityRate: '49498971484661994109589818'
+          variableBorrowRate: '83465694511855464571063326'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596209
+          aTokenAddress: '0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x8619d80FB0141ba7F184CbF22fd724116D9f7ffC'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '1436987449252841099765578'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '4461290051648316744312051'
+          priceInMarketReferenceCurrency: 99990000
+          priceOracle: '0xF86577E7d27Ed35b85A7645c58bAaA64453fe32B'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '780993643066704188672'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 30000000
+          supplyCap: 45000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: true
+          variableBorrowAPR: 8.35
+          depositAPR: 4.95
+        '0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39':
+          underlyingAsset: '0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39'
+          name: ChainLink Token
+          symbol: LINK
+          decimals: 18
+          baseLTVasCollateral: 6600
+          reserveLiquidationThreshold: 7100
+          reserveLiquidationBonus: 10750
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1011217936131496852260955365'
+          variableBorrowIndex: '1051806268703524996774607950'
+          liquidityRate: '651457183227696044425594'
+          variableBorrowRate: '11254875835479128404932793'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596099
+          aTokenAddress: '0x191c10Aa4AF7C30e871E70C95dB0E4eb77237530'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x953A573793604aF8d41F306FEb8274190dB4aE0e'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '533648603208321684390576'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '39572359720336192569558'
+          priceInMarketReferenceCurrency: 1384290000
+          priceOracle: '0xd9FFdb71EbE7496cC440152d43986Aae0AB76665'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '551133700865439077'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 163702
+          supplyCap: 1600000
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 1.13
+          depositAPR: 0.07
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174':
+          underlyingAsset: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+          name: USD Coin (PoS)
+          symbol: USDC
+          decimals: 6
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10500
+          reserveFactor: 6000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1136597654517557807521657078'
+          variableBorrowIndex: '1233978398481576324631119093'
+          liquidityRate: '31871662162943545538566794'
+          variableBorrowRate: '96415257409137718550748036'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596013
+          aTokenAddress: '0x625E7708f30cA75bfd92586e17077590C60eb4cD'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xFCCf3cAbbe80101232d343252614b6A3eE81C989'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 1526759037527
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 5889829959986
+          priceInMarketReferenceCurrency: 99989001
+          priceOracle: '0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 2891686659
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 43500000
+          supplyCap: 48000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: true
+          variableBorrowAPR: 9.64
+          depositAPR: 3.19
+        '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6':
+          underlyingAsset: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6'
+          name: (PoS) Wrapped BTC
+          symbol: WBTC
+          decimals: 8
+          baseLTVasCollateral: 7300
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10650
+          reserveFactor: 5000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1002880615783799512038315643'
+          variableBorrowIndex: '1018040705489631967595101846'
+          liquidityRate: '38005943381684928341495'
+          variableBorrowRate: '1949511313123522652302181'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596163
+          aTokenAddress: '0x078f358208685046a11C85e8ad32895DED33A249'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x92b42c66840C7AD907b4BF74879FF3eF7c529473'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 121478654979
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 4841307199
+          priceInMarketReferenceCurrency: 8127833710200
+          priceOracle: '0xc907E116054Ad103354f2D350FD2514433D57F6f'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 30115
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 851
+          supplyCap: 3100
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.19
+          depositAPR: 0.0
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619':
+          underlyingAsset: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
+          name: Wrapped Ether
+          symbol: WETH
+          decimals: 18
+          baseLTVasCollateral: 8000
+          reserveLiquidationThreshold: 8300
+          reserveLiquidationBonus: 10500
+          reserveFactor: 1500
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1015838301343247164012833094'
+          variableBorrowIndex: '1060087060091469488250042092'
+          liquidityRate: '6018202388074228002682709'
+          variableBorrowRate: '20408022037513516121449668'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596205
+          aTokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x0c84331e39d6658Cd6e6b9ba04736cC4c4734351'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '16617970381414172583910'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '8327724834431382859667'
+          priceInMarketReferenceCurrency: 205547202900
+          priceOracle: '0xF9680D99D6C9589e2a93a78A04A279e509205945'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '207520162975650094'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 3
+          borrowCap: 14795
+          supplyCap: 50000
+          eModeLtv: 9000
+          eModeLiquidationThreshold: 9300
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ETH correlated
+          borrowableInIsolation: false
+          variableBorrowAPR: 2.04
+          depositAPR: 0.6
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f':
+          underlyingAsset: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F'
+          name: (PoS) Tether USD
+          symbol: USDT
+          decimals: 6
+          baseLTVasCollateral: 7000
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10500
+          reserveFactor: 2500
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1166878920506647558109842779'
+          variableBorrowIndex: '1223757026728712441545238931'
+          liquidityRate: '38682513632795842365474665'
+          variableBorrowRate: '73784860824412738250908722'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596163
+          aTokenAddress: '0x6ab707Aca953eDAeFBc4fD23bA73294241490620'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xfb00AC187a8Eb5AFAE4eACE434F493Eb62672df7'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 16402590926631
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 31128331545141
+          priceInMarketReferenceCurrency: 99999000
+          priceOracle: '0xaA574f4f6E124E77a7a1B5Ed91c8b407000A7730'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 4858924199
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 85000000
+          supplyCap: 90000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: true
+          variableBorrowAPR: 7.38
+          depositAPR: 3.87
+        '0xd6df932a45c0f255f85145f286ea0b292b21c90b':
+          underlyingAsset: '0xD6DF932A45C0f255f85145f286eA0b292B21C90B'
+          name: Aave (PoS)
+          symbol: AAVE
+          decimals: 18
+          baseLTVasCollateral: 6300
+          reserveLiquidationThreshold: 7000
+          reserveLiquidationBonus: 10750
+          reserveFactor: 0
+          usageAsCollateralEnabled: true
+          borrowingEnabled: false
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1001208404082580482498278085'
+          variableBorrowIndex: '1000000000000000000000000000'
+          liquidityRate: 0
+          variableBorrowRate: 0
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741595557
+          aTokenAddress: '0xf329e36C7bF6E5E86ce2150875a84Ce77f477375'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xE80761Ea617F66F96274eA5e8c37f03960ecC679'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '56557097950118132724135'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 0
+          priceInMarketReferenceCurrency: 19181279976
+          priceOracle: '0x72484B12719E23115761D5DA1646945632979bB6'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 171384425317736
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 0
+          supplyCap: 100000
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.0
+          depositAPR: 0.0
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270':
+          underlyingAsset: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+          name: Wrapped Polygon Ecosystem Token
+          symbol: WPOL
+          decimals: 18
+          baseLTVasCollateral: 6800
+          reserveLiquidationThreshold: 7300
+          reserveLiquidationBonus: 10700
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1059467807220641132860768896'
+          variableBorrowIndex: '1151256836926304465776666174'
+          liquidityRate: '10460597588571229972042258'
+          variableBorrowRate: '29524844888911256807548795'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596179
+          aTokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x4a1c3aD6Ed28a636ee1751C69071f6be75DEb8B8'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '37112113294697826701665512'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '25625236716070520591160406'
+          priceInMarketReferenceCurrency: 22201878
+          priceOracle: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '1240326713990391589467'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 2
+          borrowCap: 67000000
+          supplyCap: 105000000
+          eModeLtv: 9250
+          eModeLiquidationThreshold: 9500
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: MATIC correlated
+          borrowableInIsolation: false
+          variableBorrowAPR: 2.95
+          depositAPR: 1.05
+        '0x172370d5cd63279efa6d502dab29171933a610af':
+          underlyingAsset: '0x172370d5Cd63279eFa6d502DAB29171933a610AF'
+          name: CRV (PoS)
+          symbol: CRV
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 5000
+          reserveLiquidationBonus: 10500
+          reserveFactor: 3500
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1079858290714051553178272767'
+          variableBorrowIndex: '1327051243856579684115645127'
+          liquidityRate: '14864835890837649415341838'
+          variableBorrowRate: '84273340172964640605356527'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741566214
+          aTokenAddress: '0x513c7E3a9c69cA3e22550eF58AC1C0088e918FFf'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x77CA01483f379E58174739308945f044e1a764dc'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '85928521924739414285768'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '24115436533824944579311'
+          priceInMarketReferenceCurrency: 38165585
+          priceOracle: '0x336584C8E6Dc19637A5b36206B1c79923111b405'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '6346444287920178261'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 300000
+          supplyCap: 1400000
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 8.43
+          depositAPR: 1.49
+        '0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a':
+          underlyingAsset: '0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a'
+          name: SushiToken (PoS)
+          symbol: SUSHI
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 4500
+          reserveLiquidationBonus: 11000
+          reserveFactor: 2000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1422431399094780907162100617'
+          variableBorrowIndex: '2172213058837056513289929032'
+          liquidityRate: '84467968328542873507792215'
+          variableBorrowRate: '221032696927850749821043474'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741562036
+          aTokenAddress: '0xc45A479877e1e9Dfe9FcD4056c699575a1045dAA'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x34e2eD44EF7466D5f9E0b782B5c08b57475e7907'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '59584117160066398981270'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '25084795694924449835128'
+          priceInMarketReferenceCurrency: 61595072
+          priceOracle: '0x49B0c695039243BBfEb8EcD054EB70061fd54aa0'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '10341430331929484051'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 180000
+          supplyCap: 299320
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 22.1
+          depositAPR: 8.45
+        '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7':
+          underlyingAsset: '0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7'
+          name: Aavegotchi GHST Token (PoS)
+          symbol: GHST
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 4500
+          reserveLiquidationBonus: 11500
+          reserveFactor: 3500
+          usageAsCollateralEnabled: false
+          borrowingEnabled: false
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1010746657271612474912922806'
+          variableBorrowIndex: '1042753732026763897040945024'
+          liquidityRate: '5347613007987842940659'
+          variableBorrowRate: '1131269479627687314518582'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741571830
+          aTokenAddress: '0x8Eb270e296023E9D92081fdF967dDd7878724424'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xCE186F6Cccb0c955445bb9d10C59caE488Fea559'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '1429182370450984086529326'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '10040523704331586453518'
+          priceInMarketReferenceCurrency: 39668153
+          priceOracle: '0xDD229Ce42f11D8Ee7fFf29bDB71C7b81352e11be'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '30057092734871308'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 220000
+          supplyCap: 4650000
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.11
+          depositAPR: 0.0
+        '0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3':
+          underlyingAsset: '0x9a71012B13CA4d3D0Cdc72A177DF3ef03b0E76A3'
+          name: Balancer (PoS)
+          symbol: BAL
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 4200
+          reserveLiquidationBonus: 11000
+          reserveFactor: 2000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1126424843959911180444925343'
+          variableBorrowIndex: '1468691027616488905679411343'
+          liquidityRate: '5308704039684037530748475'
+          variableBorrowRate: '74496131299742891129702518'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741561920
+          aTokenAddress: '0x8ffDf2DE812095b1D19CB146E4c004587C0A0692'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xA8669021776Bc142DfcA87c21b4A52595bCbB40a'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '156442277118864651119124'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '10416096410000926021458'
+          priceInMarketReferenceCurrency: 151808013
+          priceOracle: '0xD106B538F2A868c28Ca1Ec7E298C3325E0251d66'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '1581175090023136334'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 290000
+          supplyCap: 361000
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 7.45
+          depositAPR: 0.53
+        '0x85955046df4668e1dd369d2de9f3aeb98dd2a369':
+          underlyingAsset: '0x85955046DF4668e1DD369D2DE9f3AEB98DD2A369'
+          name: DefiPulse Index (PoS)
+          symbol: DPI
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 4500
+          reserveLiquidationBonus: 11000
+          reserveFactor: 3500
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1142170269196502863558176808'
+          variableBorrowIndex: '1490494798085974791885031594'
+          liquidityRate: '52520465919137673178892317'
+          variableBorrowRate: '174282768043089763192028233'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741176606
+          aTokenAddress: '0x724dc807b04555b71ed48a6896b6F41593b8C637'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xf611aEb5013fD2c0511c9CD55c7dc5C1140741A6'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '223735063456069888660'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '129744981040798584417'
+          priceInMarketReferenceCurrency: 7790313501
+          priceOracle: '0x2e48b7924FBe04d575BA229A59b64547d9da16e9'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 0
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 0
+          borrowCap: 779
+          supplyCap: 1417
+          eModeLtv: 0
+          eModeLiquidationThreshold: 0
+          eModeLiquidationBonus: 0
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ''
+          borrowableInIsolation: false
+          variableBorrowAPR: 17.43
+          depositAPR: 5.25
+        '0xe111178a87a3bff0c8d18decba5798827539ae99':
+          underlyingAsset: '0xE111178A87A3BFf0c8d18DECBa5798827539Ae99'
+          name: STASIS EURS Token (PoS)
+          symbol: EURS
+          decimals: 2
+          baseLTVasCollateral: 6500
+          reserveLiquidationThreshold: 7000
+          reserveLiquidationBonus: 10750
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1118199782009269539169748066'
+          variableBorrowIndex: '1202834757388748214627492995'
+          liquidityRate: '39209949711667772057683504'
+          variableBorrowRate: '76290412943561719665589776'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741587635
+          aTokenAddress: '0x38d693cE1dF5AaDF7bC62595A37D667aD57922e5'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x5D557B07776D12967914379C71a1310e917C7555'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 95184286
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 142182527
+          priceInMarketReferenceCurrency: 108170000
+          priceOracle: '0x73366Fe0AA0Ded304479862808e02506FE556a98'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 17773
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 67500000
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 3000000
+          supplyCap: 4000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 7.63
+          depositAPR: 3.92
+        '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c':
+          underlyingAsset: '0x4e3Decbb3645551B8A19f0eA1678079FCB33fB4c'
+          name: Jarvis Synthetic Euro
+          symbol: jEUR
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 0
+          reserveLiquidationBonus: 0
+          reserveFactor: 2000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1061176974654390459144766468'
+          variableBorrowIndex: '1115099143375388416461348984'
+          liquidityRate: '11243951413561430126953964'
+          variableBorrowRate: '29307216776804467582041953'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741326413
+          aTokenAddress: '0x6533afac2E7BCCB20dca161449A13A32D391fb00'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x44705f578135cC5d703b4c9c122528C73Eb87145'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '14663673788777909511334'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '12116075610702302005105'
+          priceInMarketReferenceCurrency: 108170000
+          priceOracle: '0x73366Fe0AA0Ded304479862808e02506FE556a98'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 0
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 100000
+          supplyCap: 120000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 2.93
+          depositAPR: 1.12
+        '0xe0b52e49357fd4daf2c15e02058dce6bc0057db4':
+          underlyingAsset: '0xE0B52e49357Fd4DAf2c15e02058DCE6BC0057db4'
+          name: EURA (previously agEUR)
+          symbol: EURA
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 0
+          reserveLiquidationBonus: 0
+          reserveFactor: 2000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: false
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1130551437415939757746556614'
+          variableBorrowIndex: '1211785351955820955533648595'
+          liquidityRate: '29675209184723545073322558'
+          variableBorrowRate: '50499636526535313813937398'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741490179
+          aTokenAddress: '0x8437d7C167dFB82ED4Cb79CD44B7a32A1dd95c77'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x3ca5FA07689F266e907439aFd1fBB59c44fe12f6'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '2636922016323026733584'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '6014893165525599237981'
+          priceInMarketReferenceCurrency: 108170000
+          priceOracle: '0x73366Fe0AA0Ded304479862808e02506FE556a98'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '321760774090305268'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 250000
+          supplyCap: 300000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 5.05
+          depositAPR: 2.97
+        '0xa3fa99a148fa48d14ed51d610c367c61876997f1':
+          underlyingAsset: '0xa3Fa99A148fA48D14Ed51d610c367C61876997F1'
+          name: miMATIC
+          symbol: miMATIC
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 100
+          reserveLiquidationBonus: 10500
+          reserveFactor: 9500
+          usageAsCollateralEnabled: false
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1053935173022366805284175607'
+          variableBorrowIndex: '1408154231595313934947822809'
+          liquidityRate: '321109080372951284188899'
+          variableBorrowRate: '35839033489922759589122938'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741558196
+          aTokenAddress: '0xeBe517846d0F36eCEd99C735cbF6131e1fEB775D'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x18248226C16BF76c032817854E7C83a2113B4f06'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '9986989438698414224233'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '1548355762259992658926'
+          priceInMarketReferenceCurrency: 99957651
+          priceOracle: '0x4ae2Ab1af7e3b0092dbF3A4B20ec3de8fC834873'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '558784015378377344'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 18000000
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 700000
+          supplyCap: 900000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 3.58
+          depositAPR: 0.03
+        '0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4':
+          underlyingAsset: '0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4'
+          name: Staked MATIC (PoS)
+          symbol: stMATIC
+          decimals: 18
+          baseLTVasCollateral: 0
+          reserveLiquidationThreshold: 5800
+          reserveLiquidationBonus: 11000
+          reserveFactor: 2000
+          usageAsCollateralEnabled: false
+          borrowingEnabled: false
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: true
+          liquidityIndex: '1000145278475898230437556680'
+          variableBorrowIndex: '1000000000000000000000000000'
+          liquidityRate: 0
+          variableBorrowRate: 0
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741566848
+          aTokenAddress: '0xEA1132120ddcDDA2F119e99Fa7A27a0d036F7Ac9'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x6b030Ff3FB9956B1B69f475B77aE0d3Cf2CC5aFa'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '23999298883234557155520043'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 0
+          priceInMarketReferenceCurrency: 25560646
+          priceOracle: '0x6D02E35031C4D99ee3A6A2BA47FaD0cFE355cA8f'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 0
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 2
+          borrowCap: 0
+          supplyCap: 61000000
+          eModeLtv: 9250
+          eModeLiquidationThreshold: 9500
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: MATIC correlated
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.0
+          depositAPR: 0.0
+        '0xfa68fb4628dff1028cfec22b4162fccd0d45efb6':
+          underlyingAsset: '0xfa68FB4628DFF1028CFEc22b4162FCcd0d45efb6'
+          name: Liquid Staking Matic (PoS)
+          symbol: MaticX
+          decimals: 18
+          baseLTVasCollateral: 5000
+          reserveLiquidationThreshold: 6000
+          reserveLiquidationBonus: 11000
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1000150628908675252415749487'
+          variableBorrowIndex: '1006380648397224161186362256'
+          liquidityRate: '12471914237661028065158'
+          variableBorrowRate: '2967052197409561314338778'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741582283
+          aTokenAddress: '0x80cA0d8C38d2e2BcbaB66aA1648Bd1C7160500FE'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xB5b46F918C2923fC7f26DB76e8a6A6e9C4347Cf9'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '49317685317893816111270577'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '258848883408702421263350'
+          priceInMarketReferenceCurrency: 25487335
+          priceOracle: '0xB0A72A5e454890e9715e059e8df8582a6B383DE3'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: '1127760101979234869'
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 2
+          borrowCap: 1
+          supplyCap: 120000000
+          eModeLtv: 9250
+          eModeLiquidationThreshold: 9500
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: MATIC correlated
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.3
+          depositAPR: 0.0
+        '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd':
+          underlyingAsset: '0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD'
+          name: Wrapped liquid staked Ether 2.0 (PoS)
+          symbol: wstETH
+          decimals: 18
+          baseLTVasCollateral: 7500
+          reserveLiquidationThreshold: 7900
+          reserveLiquidationBonus: 10720
+          reserveFactor: 500
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1001449047075669829956001032'
+          variableBorrowIndex: '1008814343782455871618401618'
+          liquidityRate: '10664194789847769446634'
+          variableBorrowRate: '2888611247362831856631622'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741590462
+          aTokenAddress: '0xf59036CAEBeA7dC4b86638DFA2E3C97dA9FcCd40'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0x77fA66882a8854d883101Fb8501BD3CaD347Fc32'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: '7796958606348751037556'
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: '30152293431875943698'
+          priceInMarketReferenceCurrency: 245878831319
+          priceOracle: '0xBD96b5ABBC6048c28184b462167E487533F2e35E'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 38213935578270
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 3
+          borrowCap: 570
+          supplyCap: 11500
+          eModeLtv: 9000
+          eModeLiquidationThreshold: 9300
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: ETH correlated
+          borrowableInIsolation: false
+          variableBorrowAPR: 0.29
+          depositAPR: 0.0
+        '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359':
+          underlyingAsset: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+          name: USD Coin
+          symbol: USDC
+          decimals: 6
+          baseLTVasCollateral: 7000
+          reserveLiquidationThreshold: 7800
+          reserveLiquidationBonus: 10500
+          reserveFactor: 2000
+          usageAsCollateralEnabled: true
+          borrowingEnabled: true
+          stableBorrowRateEnabled: false
+          isActive: true
+          isFrozen: false
+          liquidityIndex: '1099269837888375623720549329'
+          variableBorrowIndex: '1124895121237516764575735670'
+          liquidityRate: '38185674445376943772907940'
+          variableBorrowRate: '70981600665585339260112896'
+          stableBorrowRate: 0
+          lastUpdateTimestamp: 1741596137
+          aTokenAddress: '0xA4D94019934D8333Ef880ABFFbF2FDd611C762BD'
+          stableDebtTokenAddress: '0xd94112B5B62d53C9402e7A60289c6810dEF1dC9B'
+          variableDebtTokenAddress: '0xE701126012EC0290822eEA17B794454d1AF8b030'
+          interestRateStrategyAddress: '0x56076f960980d453b5B749CB6A1c4D2E4e138B1A'
+          availableLiquidity: 14607119118080
+          totalPrincipalStableDebt: 0
+          averageStableRate: 0
+          stableDebtLastUpdateTimestamp: 1722955864
+          totalScaledVariableDebt: 26659330641653
+          priceInMarketReferenceCurrency: 99989001
+          priceOracle: '0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb'
+          variableRateSlope1: 0
+          variableRateSlope2: 0
+          stableRateSlope1: 0
+          stableRateSlope2: 0
+          baseStableBorrowRate: 0
+          baseVariableBorrowRate: 0
+          optimalUsageRatio: 0
+          isPaused: false
+          isSiloedBorrowing: false
+          accruedToTreasury: 2419197317
+          unbacked: 0
+          isolationModeTotalDebt: 0
+          flashLoanEnabled: true
+          debtCeiling: 0
+          debtCeilingDecimals: 2
+          eModeCategoryId: 1
+          borrowCap: 90000000
+          supplyCap: 100000000
+          eModeLtv: 9125
+          eModeLiquidationThreshold: 9425
+          eModeLiquidationBonus: 10100
+          eModePriceSource: '0x0000000000000000000000000000000000000000'
+          eModeLabel: Stablecoins
+          borrowableInIsolation: false
+          variableBorrowAPR: 7.1
+          depositAPR: 3.82
+      base_currency:
+        marketReferenceCurrencyUnit: '100000000'
+        marketReferenceCurrencyPriceInUsd: '100000000'
+        networkBaseTokenPriceInUsd: '22201878'
+      chain_id: 137
+      total_reserves: 21
