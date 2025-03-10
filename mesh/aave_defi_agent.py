@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import aiohttp
 from dotenv import load_dotenv
@@ -12,9 +12,7 @@ from decorators import monitor_execution, with_cache, with_retry
 from eth_defi.aave_v3.reserve import (
     get_helper_contracts,
     fetch_reserve_data,
-    AaveContractsNotConfigured,
-    AggregatedReserveData,
-    BaseCurrencyInfo
+    AaveContractsNotConfigured
 )
 
 from .mesh_agent import MeshAgent
@@ -27,9 +25,6 @@ class AaveReserveAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.session = None
-        self.web3 = None
-        self.helper_contracts = None
-        
         self.metadata.update({
             "name": "Aave Reserve Data Agent",
             "version": "1.0.0",
@@ -50,19 +45,6 @@ class AaveReserveAgent(MeshAgent):
                     "required": False,
                     "default": False,
                 },
-                {
-                    "name": "chain_id",
-                    "description": "Chain ID to query (default: Polygon)",
-                    "type": "int",
-                    "required": False,
-                    "default": 137,  # Polygon
-                },
-                {
-                    "name": "block_identifier",
-                    "description": "Optional block number or hash for historical data",
-                    "type": "str",
-                    "required": False,
-                }
             ],
             "outputs": [
                 {
@@ -113,6 +95,7 @@ class AaveReserveAgent(MeshAgent):
                             "chain_id": {
                                 "type": "integer",
                                 "description": "Blockchain network ID (137=Polygon, 1=Ethereum, etc.)",
+                                "enum": [1, 137, 43114, 42161]
                             },
                             "block_identifier": {
                                 "type": "string",
@@ -164,19 +147,26 @@ class AaveReserveAgent(MeshAgent):
             Web3 instance connected to the appropriate RPC
         """
         rpc_urls = {
-            1: os.getenv("ETH_RPC_URL", "https://eth.llamarpc.com"),
-            137: os.getenv("POLYGON_RPC_URL", "https://polygon-rpc.com"),
-            43114: os.getenv("AVAX_RPC_URL", "https://api.avax.network/ext/bc/C/rpc"),
-            10: os.getenv("OPTIMISM_RPC_URL", "https://mainnet.optimism.io"),
-            42161: os.getenv("ARBITRUM_RPC_URL", "https://arb1.arbitrum.io/rpc"),
-            # Add more chains as needed
+            1: "https://rpc.ankr.com/eth",
+            137: "https://polygon-rpc.com",
+            43114: "https://api.avax.network/ext/bc/C/rpc",
+            42161: "https://arb1.arbitrum.io/rpc"
         }
         
         if chain_id not in rpc_urls:
             raise ValueError(f"Chain ID {chain_id} not supported or RPC URL not configured")
         
         rpc_url = rpc_urls[chain_id]
-        w3 = Web3(Web3.HTTPProvider(rpc_url))
+        
+        request_kwargs = {
+            "timeout": 60,
+            "headers": {
+                "Content-Type": "application/json",
+                "User-Agent": "AaveReserveAgent/1.0.0"
+            }
+        }
+        
+        w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs=request_kwargs))
         
         if not w3.is_connected():
             raise ConnectionError(f"Failed to connect to RPC for chain ID {chain_id}")
@@ -186,10 +176,8 @@ class AaveReserveAgent(MeshAgent):
     def _initialize_aave_contracts(self, web3: Web3):
         """
         Initialize Aave helper contracts for the connected Web3 instance.
-        
         Args:
             web3: Connected Web3 instance
-            
         Returns:
             Aave helper contracts
         """
@@ -211,20 +199,16 @@ class AaveReserveAgent(MeshAgent):
         """
         processed = {}
         for key, value in reserve.items():
-            # Convert large integers to strings to avoid JSON serialization issues
             if isinstance(value, int) and abs(value) > 2**53 - 1:
                 processed[key] = str(value)
             else:
                 processed[key] = value
                 
-        # Add additional calculated fields if needed
         if 'variableBorrowRate' in reserve:
-            # Convert ray units (1e27) to percentage
             apr = float(reserve['variableBorrowRate']) / 1e25
             processed['variableBorrowAPR'] = round(apr, 2)
             
         if 'liquidityRate' in reserve:
-            # Convert ray units to percentage
             apr = float(reserve['liquidityRate']) / 1e25
             processed['depositAPR'] = round(apr, 2)
             
@@ -246,37 +230,44 @@ class AaveReserveAgent(MeshAgent):
             Dictionary with reserve data and base currency info
         """
         try:
-            # Convert block identifier from string to int if it's a number
             block_id = None
             if block_identifier:
                 try:
                     block_id = int(block_identifier)
                 except ValueError:
-                    # It's probably a block hash, keep as string
                     block_id = block_identifier
-            
-            # Initialize Web3 connection
             web3 = self._initialize_web3(chain_id)
             helper_contracts = self._initialize_aave_contracts(web3)
             
-            # Fetch reserve data
-            raw_reserves, base_currency = fetch_reserve_data(
-                helper_contracts,
-                block_identifier=block_id
-            )
+            if chain_id == 1:  # Ethereum mainnet
+                web3.eth.default_block_identifier = 'latest'
+                logger.info("Using latest block for Ethereum mainnet query")
             
-            # Process reserves
+            try:
+                raw_reserves, base_currency = fetch_reserve_data(
+                    helper_contracts,
+                    block_identifier=block_id
+                )
+            except Exception as contract_error:
+                logger.error(f"Contract error when fetching reserve data: {str(contract_error)}")
+                
+                # for demonstration, fall back to Polygon data if Ethereum fails
+                if chain_id == 1:
+                    logger.info("Ethereum query failed, falling back to Polygon data")
+                    fallback_message = "Ethereum data temporarily unavailable. Consider using Polygon network data instead."
+                    return {"error": fallback_message}
+                else:
+                    raise
+            
             processed_reserves = {}
             for reserve in raw_reserves:
                 symbol = reserve.get('symbol', '').upper()
-                # Apply asset filter if provided
                 if asset_filter and asset_filter.upper() != symbol:
                     continue
                     
                 asset_address = reserve['underlyingAsset'].lower()
                 processed_reserves[asset_address] = self._process_reserve(reserve)
             
-            # Process base currency info
             processed_base_currency = {
                 "marketReferenceCurrencyUnit": str(base_currency["marketReferenceCurrencyUnit"]),
                 "marketReferenceCurrencyPriceInUsd": str(base_currency["marketReferenceCurrencyPriceInUsd"]),
@@ -318,13 +309,22 @@ class AaveReserveAgent(MeshAgent):
         if errors:
             return errors
 
+        formatted_data = {
+            "reserve_data": {
+                "chain_id": chain_id,
+                "reserves": result["reserves"],
+                "base_currency": result["base_currency"],
+                "total_reserves": result["total_reserves"]
+            }
+        }
+
         if raw_data_only:
-            return {"response": "", "data": result}
+            return {"response": "", "data": formatted_data}
 
         explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=result, temperature=0.1
+            query=query, tool_call_id=tool_call_id, data=formatted_data, temperature=0.1
         )
-        return {"response": explanation, "data": result}
+        return {"response": explanation, "data": formatted_data}
 
     # ------------------------------------------------------------------------
     #                      MAIN HANDLER
@@ -341,15 +341,6 @@ class AaveReserveAgent(MeshAgent):
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
-        
-        # Add support for direct parameters at the top level
-        chain_id = params.get("chain_id")
-        if chain_id and "chain_id" not in tool_args:
-            tool_args["chain_id"] = chain_id
-            
-        block_identifier = params.get("block_identifier")
-        if block_identifier and "block_identifier" not in tool_args:
-            tool_args["block_identifier"] = block_identifier
 
         # ---------------------
         # 1) DIRECT TOOL CALL
@@ -385,13 +376,6 @@ class AaveReserveAgent(MeshAgent):
             tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
-            
-            # Merge direct parameters if not specified in tool args
-            if chain_id and "chain_id" not in tool_call_args:
-                tool_call_args["chain_id"] = chain_id
-                
-            if block_identifier and "block_identifier" not in tool_call_args:
-                tool_call_args["block_identifier"] = block_identifier
 
             return await self._handle_tool_logic(
                 tool_name=tool_call_name,

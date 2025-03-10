@@ -9,8 +9,8 @@ import asyncio
 
 from mesh.aave_defi_agent import AaveReserveAgent
 
-
-async def run_agent():
+# Tested Chain IDs: (43114 – Avalanche), (137 – Polygon), (42161 – Arbitrum), its not working now for (1 – Ethereum Mainnet)
+async def run_agent(): 
     agent = AaveReserveAgent()
     try:
         agent_input = {"query": "What are the current borrow rates for USDC on Polygon?"}
@@ -19,13 +19,12 @@ async def run_agent():
         direct_input = {
             "tool": "get_aave_reserves",
             "tool_arguments": {
-                "chain_id": 137,  # Polygon
+                "chain_id": 42161,
                 "asset_filter": "USDC"
             }
         }
         direct_output = await agent.handle_message(direct_input)
         
-        print("\nExample 3: Raw data only")
         raw_input = {
             "query": "Show me all Aave assets on Polygon with their liquidity rates",
             "raw_data_only": True
