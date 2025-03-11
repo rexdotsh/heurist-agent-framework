@@ -87,7 +87,7 @@ class AaveReserveAgent(MeshAgent):
                         "properties": {
                             "chain_id": {
                                 "type": "integer",
-                                "description": "Blockchain network ID (137=Polygon, 1=Ethereum, etc.)",
+                                "description": "Blockchain network ID (137=Polygon, 1=Ethereum, 43114=Avalanche C-Chain, 42161=Arbitrum One.)",
                                 "enum": [1, 137, 43114, 42161],
                             },
                             "block_identifier": {
