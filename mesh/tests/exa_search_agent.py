@@ -24,10 +24,7 @@ async def run_agent():
         # Direct search tool call
         agent_input_search = {
             "tool": "search",
-            "tool_arguments": {
-                "search_term": "quantum computing breakthroughs 2024",
-                "limit": 5
-            },
+            "tool_arguments": {"search_term": "quantum computing breakthroughs 2024", "limit": 5},
             "raw_data_only": False,
         }
         agent_output_search = await agent.handle_message(agent_input_search)
@@ -35,9 +32,7 @@ async def run_agent():
         # Direct answer tool call
         agent_input_answer = {
             "tool": "answer",
-            "tool_arguments": {
-                "question": "What is quantum supremacy?"
-            },
+            "tool_arguments": {"question": "What is quantum supremacy?"},
             "raw_data_only": False,
         }
         agent_output_answer = await agent.handle_message(agent_input_answer)
@@ -45,9 +40,7 @@ async def run_agent():
         # Combined search and answer tool call
         agent_input_combined = {
             "tool": "search_and_answer",
-            "tool_arguments": {
-                "topic": "quantum error correction"
-            },
+            "tool_arguments": {"topic": "quantum error correction"},
             "raw_data_only": False,
         }
         agent_output_combined = await agent.handle_message(agent_input_combined)

@@ -25,7 +25,12 @@ class DuckDuckGoSearchAgent(MeshAgent):
                     "This agent can fetch and analyze web search results using DuckDuckGo API and provide intelligent summaries."
                 ),
                 "inputs": [
-                    {"name": "query", "description": "The search query or question or keyword", "type": "str", "required": True},
+                    {
+                        "name": "query",
+                        "description": "The search query or question or keyword",
+                        "type": "str",
+                        "required": True,
+                    },
                     {
                         "name": "max_results",
                         "description": "The maximum number of results to return",
