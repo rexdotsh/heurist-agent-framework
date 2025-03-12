@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import asyncio
 
-from mesh.aave_reserve_agent import AaveReserveAgent
+from mesh.aave_agent import AaveReserveAgent
 
 
 # Tested Chain IDs: (43114 – Avalanche), (137 – Polygon), (42161 – Arbitrum), its not working now for (1 – Ethereum Mainnet)
