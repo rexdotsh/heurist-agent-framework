@@ -8,13 +8,13 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import asyncio
 
-from mesh.coinsider_arbitrage_agent import CoinsiderFundingRateAgent
+from mesh.coinsider_arbitrage_agent import CoinsiderArbitrageAgent
 
 load_dotenv()
 
 
 async def run_agent():
-    agent = CoinsiderFundingRateAgent()
+    agent = CoinsiderArbitrageAgent()
     try:
         # Test with a query for all funding rates
         agent_input = {"query": "What are the current funding rates for Bitcoin?"}
