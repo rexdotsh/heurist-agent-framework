@@ -77,7 +77,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
                         "properties": {
                             "search_term": {"type": "string", "description": "The search term to look up"},
                             "max_results": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Maximum number of results to return (default: 5)",
                                 "minimum": 1,
                                 "maximum": 10,

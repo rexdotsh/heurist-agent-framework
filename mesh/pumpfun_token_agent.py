@@ -94,7 +94,7 @@ RESPONSE GUIDELINES:
 DOMAIN-SPECIFIC RULES:
 For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
 - Token addresses on Solana are base58-encoded strings typically ending with 'pump'
-- For token metrics, use USDC as the default quote token unless specified otherwise
+- For token metrics, use SOL as the default quote token unless specified otherwise
 - When analyzing token holders, focus on concentration patterns and whale activity
 - For trading analysis, highlight unusual volume patterns and top trader behaviors
 
@@ -122,7 +122,7 @@ IMPORTANT:
                                 "description": "Time interval (hours/days)",
                             },
                             "offset": {
-                                "type": "integer",
+                                "type": "number",
                                 "minimum": 1,
                                 "maximum": 99,
                                 "default": 1,
@@ -143,8 +143,8 @@ IMPORTANT:
                             "token_address": {"type": "string", "description": "Token mint address on Solana"},
                             "quote_token": {
                                 "type": "string",
-                                "description": "Quote token to use (usdc, sol, virtual, or direct address)",
-                                "default": "usdc",
+                                "description": "Quote token to use ('usdc', 'sol', 'virtual', or the token address)",
+                                "default": "sol",
                             },
                         },
                         "required": ["token_address"],
@@ -174,7 +174,7 @@ IMPORTANT:
                         "type": "object",
                         "properties": {
                             "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "integer", "description": "Number of buyers to fetch", "default": 100},
+                            "limit": {"type": "number", "description": "Number of buyers to fetch", "default": 100},
                         },
                         "required": ["token_address"],
                     },
@@ -208,7 +208,7 @@ IMPORTANT:
                         "type": "object",
                         "properties": {
                             "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "integer", "description": "Number of traders to fetch", "default": 100},
+                            "limit": {"type": "number", "description": "Number of traders to fetch", "default": 100},
                         },
                         "required": ["token_address"],
                     },
@@ -291,7 +291,7 @@ IMPORTANT:
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def query_token_metrics(self, token_address: str, quote_token: str = "usdc") -> Dict:
+    async def query_token_metrics(self, token_address: str, quote_token: str = "sol") -> Dict:
         """
         Query token metrics including volume, liquidity and market cap.
 
@@ -968,7 +968,7 @@ IMPORTANT:
 
         elif tool_name == "query_token_metrics":
             token_address = function_args.get("token_address")
-            quote_token = function_args.get("quote_token", "usdc")
+            quote_token = function_args.get("quote_token", "sol")
 
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}

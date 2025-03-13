@@ -101,7 +101,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_mentions",
-                    "description": "Search for mentions of specific tokens or topics on Twitter",
+                    "description": "Search for mentions of specific tokens or topics on Twitter by smart influencers",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -111,12 +111,12 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                                 "description": "List of keywords to search for",
                             },
                             "days_ago": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Number of days to look back",
                                 "default": 20,
                             },
                             "limit": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Maximum number of results (minimum: 20)",
                                 "default": 20,
                             },
@@ -129,18 +129,18 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_account",
-                    "description": "Analyze a Twitter account with both mention search and account stats",
+                    "description": "Analyze a Twitter account by searching for mentions by smart accounts and account stats",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "username": {"type": "string", "description": "Twitter username to analyze (without @)"},
                             "days_ago": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Number of days to look back for mentions",
                                 "default": 30,
                             },
                             "limit": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Maximum number of mention results",
                                 "default": 20,
                             },
