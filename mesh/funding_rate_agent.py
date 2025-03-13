@@ -12,7 +12,7 @@ from .mesh_agent import MeshAgent
 logger = logging.getLogger(__name__)
 
 
-class CoinsiderArbitrageAgent(MeshAgent):
+class FundingRateAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.api_url = "https://api.coinsider.app/api"

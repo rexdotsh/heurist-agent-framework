@@ -6,13 +6,13 @@ import yaml
 from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-from mesh.coinsider_arbitrage_agent import CoinsiderArbitrageAgent  # noqa: E402
+from mesh.funding_rate_agent import FundingRateAgent  # noqa: E402
 
 load_dotenv()
 
 
 async def run_agent():
-    agent = CoinsiderArbitrageAgent()
+    agent = FundingRateAgent()
     try:
         # Test with a query for all funding rates
         agent_input = {"query": "What are the current funding rates for Bitcoin?"}
