@@ -23,23 +23,23 @@ async def main():
 
         try:
             # Process the message using the core agent
-            # response = await agent.handle_message(
-            #     message=user_message,
-            #     source_interface="terminal",
-            #     chat_id="console1",
-            #     skip_conversation_context=False,
-            #     skip_embedding=False  # Skip embedding for simple console interaction
-            # )
-            response = await agent.deep_research(
-                query=user_message,
+            response = await agent.smart_message(
+                message=user_message,
+                source_interface="terminal",
                 chat_id="console1",
-                interactive=True,
-                breadth=3,
-                depth=2,
-                concurrency=3,
-                temperature=0.7,
-                raw_data_only=False,
+                skip_conversation_context=False,
+                skip_embedding=False,  # Skip embedding for simple console interaction
             )
+            # response = await agent.deep_research(
+            #     query=user_message,
+            #     chat_id="console1",
+            #     interactive=False,
+            #     breadth=3,
+            #     depth=2,
+            #     concurrency=3,
+            #     temperature=0.7,
+            #     raw_data_only=False,
+            # )
             # response = await agent.agent_cot(user_message, user="User", display_name="User 1", chat_id="console1")
 
             # Print the response

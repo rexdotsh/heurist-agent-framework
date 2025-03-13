@@ -225,23 +225,23 @@ class CoreAgent(BaseAgent):
             response, research_data = await self.deep_research(query=message, chat_id=chat_id, **research_options)
 
             # Store in conversation history if available
-            if not skip_conversation_context:
-                await self.conversation_manager.add_message(
-                    chat_id=chat_id,
-                    role="user",
-                    content=message,
-                    embedding=message_embedding,
-                    metadata={"message_type": message_type, "source_interface": source_interface},
-                )
-                await self.conversation_manager.add_message(
-                    chat_id=chat_id,
-                    role="assistant",
-                    content=response,
-                    metadata={
-                        "workflow": "deep_research",
-                        "research_data": {"url_count": len(research_data.get("visited_urls", []))},
-                    },
-                )
+            # if not skip_conversation_context:
+            #     await self.conversation_manager.add_message(
+            #         chat_id=chat_id,
+            #         role="user",
+            #         content=message,
+            #         embedding=message_embedding,
+            #         metadata={"message_type": message_type, "source_interface": source_interface},
+            #     )
+            #     await self.conversation_manager.add_message(
+            #         chat_id=chat_id,
+            #         role="assistant",
+            #         content=response,
+            #         metadata={
+            #             "workflow": "deep_research",
+            #             "research_data": {"url_count": len(research_data.get("visited_urls", []))},
+            #         },
+            #     )
 
             # No image for research responses by default
             return response, None, {"research_data": research_data}
