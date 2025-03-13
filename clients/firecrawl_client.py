@@ -1,10 +1,13 @@
-from firecrawl import FirecrawlApp
-from typing import Optional
 import asyncio
+from typing import Dict, List, Optional, TypedDict
+
+from firecrawl import FirecrawlApp
+
 
 class SearchResponse(TypedDict):
     data: List[Dict[str, str]]
-    
+
+
 class Firecrawl:
     """Simple wrapper for Firecrawl SDK."""
 
