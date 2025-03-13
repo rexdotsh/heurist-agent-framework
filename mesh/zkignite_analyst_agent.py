@@ -38,7 +38,7 @@ def get_zkignite_overview(client: MerklClient):
         """Get an overview of DeFi yield farming opportunities in zkIgnite program. Return a list of opportunities including protocol name, opportunity name, APR, TVL, and data ready for creating a chart"""
         data = []
         chart_data = []
-        baseData = client.get_opportunities(chain_id="324", items=100)
+        baseData = client.get_opportunities(chainId="324", items=100)
 
         for item in baseData:
             if "protocol" not in item or item["status"] != "LIVE" or not is_zk_rewards(item):
@@ -130,7 +130,7 @@ def get_top_yield_opportunities(client: MerklClient):
         """
         token_filters = {"zk": ["ZK"], "stable": ["USDT", "USDC", "USDC.e"], "eth": ["ETH", "WETH", "wstETH", "wrsETH"]}
 
-        responses = client.get_opportunities(chain_id="324", items=100, sort="apr", order="desc")
+        responses = client.get_opportunities(chainId="324", items=100, sort="apr", order="desc")
 
         data = []
         for item in responses:
