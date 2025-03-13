@@ -7,12 +7,12 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import asyncio
 
-from mesh.aave_agent import AaveReserveAgent
+from mesh.aave_agent import AaveAgent  # noqa: E402
 
 
 # Tested Chain IDs: (43114 – Avalanche), (137 – Polygon), (42161 – Arbitrum), its not working now for (1 – Ethereum Mainnet)
 async def run_agent():
-    agent = AaveReserveAgent()
+    agent = AaveAgent()
     try:
         agent_input = {"query": "What are the current borrow rates for USDC on Polygon?"}
         agent_output = await agent.handle_message(agent_input)

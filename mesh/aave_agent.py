@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 
-class AaveReserveAgent(MeshAgent):
+class AaveAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.session = None
