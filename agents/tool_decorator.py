@@ -16,12 +16,27 @@ def tool(description: str):
         func.is_async = inspect.iscoroutinefunction(func)
         signature = inspect.signature(func)
         func.is_ctx_required = "agent_context" in signature.parameters
+        
+        # Map Python types to valid JSON Schema types
+        type_mapping = {
+            'str': 'string',
+            'int': 'number',
+            'float': 'number',
+            'bool': 'boolean',
+            'list': 'array',
+            'dict': 'object',
+            'NoneType': 'null'
+        }
+        
         parameters = {k: v for k, v in signature.parameters.items() if k != "agent_context"}
         func.args_schema = {
             "type": "object",
             "properties": {
                 param: {
-                    "type": str(param_type.annotation.__name__).lower(),
+                    "type": type_mapping.get(
+                        str(param_type.annotation.__name__).lower(), 
+                        "string"
+                    ),
                     "description": str(param_type.annotation)
                     if param_type.annotation != inspect._empty
                     else "No type specified",
