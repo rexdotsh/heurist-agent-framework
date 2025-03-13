@@ -5,10 +5,8 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-# Add the project root to the Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
-
-from mesh.dexscreener_token_info_agent import DexScreenerTokenInfoAgent
+from mesh.dexscreener_token_info_agent import DexScreenerTokenInfoAgent  # noqa: E402
 
 load_dotenv()
 

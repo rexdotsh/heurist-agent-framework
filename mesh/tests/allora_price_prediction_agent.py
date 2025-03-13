@@ -1,13 +1,11 @@
+import asyncio
 import sys
 from pathlib import Path
 
 import yaml
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-
-import asyncio
-
-from mesh.allora_price_prediction_agent import AlloraPricePredictionAgent
+from mesh.allora_price_prediction_agent import AlloraPricePredictionAgent  # noqa: E402
 
 
 async def run_agent():

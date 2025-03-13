@@ -1,12 +1,10 @@
+import asyncio
 import sys
 from pathlib import Path
 
 import yaml
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-
-import asyncio
-
 from mesh.aave_agent import AaveAgent  # noqa: E402
 
 
