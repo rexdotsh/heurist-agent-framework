@@ -45,7 +45,7 @@ class ChainOfThoughtReasoning:
         
         try:
             # Planning phase
-            planning_prompt = f"""<SYSTEM_PROMPT> I want you to analyze the question {message_info}.
+            planning_prompt = f"""<SYSTEM_PROMPT> I want you to give analyze the question {message_info}.
                     IMPORTANT: DON'T USE TOOLS RIGHT NOW. ANALYZE AND Give me a list of steps with the tools you'd use in each step, if the step is not a specific tool you have to use, just put the tool name as "None".
                     The most important thing to tell me is what different calls you'd do or processes as a list. Your answer should be a valid JSON and ONLY the JSON.
                     Make sure you analyze what outputs from previous steps you'd need to use in the next step if applicable.
@@ -81,7 +81,7 @@ class ChainOfThoughtReasoning:
                     </SYSTEM_PROMPT>"""
                     
             # Get planning steps
-            text_response, _, _ = await self.llm_provider.call(
+            text_response, _, _ = self.llm_provider.call(
                 system_prompt=planning_prompt,
                 user_prompt=message_info,
                 temperature=options["planning_temperature"],
@@ -91,9 +91,10 @@ class ChainOfThoughtReasoning:
             # Parse the JSON response
             try:
                 json_response = json.loads(text_response)
+                print("json_response: ", json_response)
             except json.JSONDecodeError:
                 logger.error(f"Failed to parse JSON response: {text_response}")
-                return await self._fallback(message, personality_provider, chat_id, **kwargs)
+                return self._fallback(message, personality_provider, chat_id, **kwargs)
                 
             # Execute each step
             for step in json_response:
@@ -107,12 +108,12 @@ class ChainOfThoughtReasoning:
                     skip_conversation_context = False
 
                 # Execute step
-                text_response, image_url, tool_calls = await self.llm_provider.call(
+                text_response, image_url, tool_calls = self.llm_provider.call(
                     system_prompt=system_prompt,
                     user_prompt=str(step),
                     temperature=options["execution_temperature"],
                     skip_tools=skip_tools,
-                    tool_choice="required" if not skip_tools else None,
+                    tool_choice="auto"#"required" if not skip_tools else None,
                 )
                 
                 # Retry logic if tool calls are expected but not found
@@ -120,7 +121,7 @@ class ChainOfThoughtReasoning:
                 while retries > 0:
                     if "<function" in text_response or (not tool_calls and step["tool"] != "None"):
                         logger.info("Retrying step due to missing tool call")
-                        text_response, image_url, tool_calls = await self.llm_provider.call(
+                        text_response, image_url, tool_calls = self.llm_provider.call(
                             system_prompt=text_response,
                             user_prompt=str(text_response),
                             temperature=options["execution_temperature"],
@@ -157,7 +158,7 @@ class ChainOfThoughtReasoning:
                 prompt_final = final_format_prompt + final_reasoning_prompt
                 
             # Generate final response
-            response, _, _ = await self.llm_provider.call(
+            response, _, _ = self.llm_provider.call(
                 system_prompt=prompt_final,
                 user_prompt=final_reasoning_prompt,
                 temperature=options["final_temperature"],
@@ -188,7 +189,7 @@ class ChainOfThoughtReasoning:
             if personality_provider:
                 system_prompt = personality_provider.get_formatted_personality()
                 
-            response, image_url, _ = await self.llm_provider.call(
+            response, image_url, _ = self.llm_provider.call(
                 system_prompt=system_prompt,
                 user_prompt=message,
                 temperature=0.7,

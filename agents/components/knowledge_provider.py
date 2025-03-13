@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from typing import Dict, List, Optional, Any
 
 from core.embedding import get_embedding, MessageData
@@ -13,8 +12,34 @@ class KnowledgeProvider:
     def __init__(self, message_store):
         self.message_store = message_store
         
+    async def get_knowledge_context(self, message: str, message_embedding: List[float]) -> str:
+        """
+        Get knowledge base data from the message embedding
+        """
+        if message_embedding is None:
+            message_embedding = get_embedding(message)
+            
+        system_prompt_context = ""
+        knowledge_base_data = self.message_store.find_similar_messages(
+            message_embedding, 
+            threshold=0.6, 
+            message_type="knowledge_base"
+        )
+        
+        logger.info(f"Found {len(knowledge_base_data)} relevant items from knowledge base")
+        
+        if knowledge_base_data:
+            system_prompt_context = "\n\nConsider the Following As Facts and use them to answer the question if applicable and relevant:\nKnowledge base data:\n"
+            for data in knowledge_base_data:
+                system_prompt_context += f"{data['message']}\n"
+                
+        return system_prompt_context
+
     async def update_knowledge_base(self, json_file_path: str = "data/data.json") -> None:
-        """Updates the knowledge base by processing JSON data and storing embeddings"""
+        """
+        Updates the knowledge base by processing JSON data and storing embeddings.
+        Handles any JSON structure by treating each key-value pair as knowledge.
+        """
         logger.info(f"Updating knowledge base from {json_file_path}")
 
         try:
@@ -51,7 +76,7 @@ class KnowledgeProvider:
                 )
 
                 if existing_entries:
-                    logger.info(f"Knowledge item already exists in database, skipping: {message[:100]}...")
+                    logger.info("Similar content already exists in knowledge base, skipping...")
                     continue
 
                 # Store the message with metadata
@@ -59,11 +84,15 @@ class KnowledgeProvider:
                     MessageData(
                         message=message,
                         embedding=message_embedding,
-                        metadata={
-                            "message_type": "knowledge",
-                            "source": json_file_path,
-                            "timestamp": None,
-                        },
+                        timestamp=None,
+                        message_type="knowledge_base",
+                        chat_id=None,
+                        source_interface=None,
+                        original_query=None,
+                        original_embedding=None,
+                        response_type=None,
+                        key_topics=None,
+                        tool_call=None
                     )
                 )
 
@@ -74,34 +103,4 @@ class KnowledgeProvider:
         except json.JSONDecodeError:
             logger.error(f"Invalid JSON format in knowledge base file: {json_file_path}")
         except Exception as e:
-            logger.error(f"Error updating knowledge base: {str(e)}")
-            
-    async def get_knowledge_context(self, message: str, embedding: List[float], threshold: float = 0.6) -> str:
-        """Get relevant knowledge for a query"""
-        try:
-            if not embedding:
-                return ""
-                
-            # Find similar messages in knowledge base
-            similar_messages = self.message_store.find_similar_messages(
-                embedding, 
-                threshold=threshold,
-                message_types=["knowledge"],
-                limit=5,
-            )
-            
-            if not similar_messages:
-                return ""
-                
-            # Format knowledge context
-            knowledge_context = "Here's some information that might be relevant to the query:\n\n"
-            
-            for item in similar_messages:
-                similarity = item.get("similarity", 0)
-                knowledge_context += f"--- Knowledge (similarity: {similarity:.2f}) ---\n{item['message']}\n\n"
-                
-            return knowledge_context
-            
-        except Exception as e:
-            logger.error(f"Error retrieving knowledge context: {str(e)}")
-            return "" 
+            logger.error(f"Error updating knowledge base: {str(e)}") 

@@ -31,6 +31,8 @@ class AugmentedLLMCall:
             "use_tools": True,
             "max_tokens": None,
             "temperature": 0.7,
+            "model_id": None,
+            "tool_choice": "auto"
         }
         
         # Override with provided options
@@ -38,7 +40,7 @@ class AugmentedLLMCall:
             options.update(workflow_options)
             
         # Get message embedding if not provided
-        embedding = kwargs.get("embedding")
+        message_embedding = kwargs.get("embedding")
         
         # Build system prompt components
         system_prompt = ""
@@ -48,8 +50,8 @@ class AugmentedLLMCall:
             system_prompt = personality_provider.get_formatted_personality()
             
         # Get knowledge context if enabled
-        if options["use_knowledge"] and embedding:
-            knowledge_context = await self.knowledge_provider.get_knowledge_context(message, embedding)
+        if options["use_knowledge"] and message_embedding:
+            knowledge_context = await self.knowledge_provider.get_knowledge_context(message, message_embedding)
             if knowledge_context:
                 system_prompt += f"\n\n{knowledge_context}"
             
@@ -60,54 +62,43 @@ class AugmentedLLMCall:
                 system_prompt += f"\n\n{conversation_context}"
                 
         # Get similar messages if enabled  
-        if options["use_similar"] and embedding:
-            similar_context = await self.conversation_provider.get_similar_messages(embedding, chat_id)
+        if options["use_similar"] and message_embedding:
+            similar_context = await self.conversation_provider.get_similar_messages(
+                message_embedding, 
+                chat_id=chat_id,
+                threshold=0.9,
+                limit=10
+            )
             if similar_context:
                 system_prompt += f"\n\n{similar_context}"
         
         # Make LLM call with tools if enabled
         try:
-            response = await self.llm_provider.call(
+            text_response, image_url, tool_back = await self.llm_provider.call(
                 system_prompt=system_prompt,
                 user_prompt=message,
                 temperature=options["temperature"],
                 max_tokens=options["max_tokens"],
+                model_id=options["model_id"],
+                skip_tools=not options["use_tools"],
                 tools=self.tool_manager.get_tools_config() if options["use_tools"] else None,
+                tool_choice=options["tool_choice"] if options["use_tools"] else None
             )
-            
-            # Extract response elements
-            text_response = response.get("content", "")
-            image_url = None
-            tool_result = None
-            
-            # Handle tool calls if present
-            if options["use_tools"] and "tool_calls" in response and response["tool_calls"]:
-                tool_call = response["tool_calls"]
-                args = json.loads(tool_call.function.arguments)
-                tool_name = tool_call.function.name
-                
-                # Execute the tool
-                agent = kwargs.get("agent")
-                if agent and tool_name:
-                    tool_output = await self.tool_manager.execute_tool(tool_name, args, agent)
-                    if tool_output:
-                        if "image_url" in tool_output:
-                            image_url = tool_output["image_url"]
-                        if "result" in tool_output:
-                            text_response += f"\n{tool_output['result']}"
-                        if "tool_call" in tool_output:
-                            tool_result = tool_output["tool_call"]
             
             # Store interaction if needed
             if not kwargs.get("skip_store", False) and chat_id:
+                metadata = kwargs.get("metadata", {})
+                if tool_back:
+                    metadata["tool_call"] = tool_back
+                    
                 await self.conversation_provider.store_interaction(
                     message, 
                     text_response, 
                     chat_id, 
-                    kwargs.get("metadata", {})
+                    metadata
                 )
                 
-            return text_response, image_url, tool_result
+            return text_response, image_url, tool_back
             
         except Exception as e:
             logger.error(f"LLM processing failed: {str(e)}")

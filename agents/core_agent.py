@@ -388,7 +388,7 @@ class CoreAgent:
                 temperature=temperature,
                 max_tokens=max_tokens,
                 tools=self.tools.get_tools_config() + external_tools if not skip_tools else None,
-                tool_choice=tool_choice if not skip_tools else None,
+                tool_choice=tool_choice if not skip_tools else None
             )
 
             # Process response and handle tools

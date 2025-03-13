@@ -22,29 +22,27 @@ class ConversationManager:
             return ""
             
         try:
-            # Retrieve recent messages for this chat
-            messages = self.message_store.get_recent_messages(
+            # Get conversation history
+            system_prompt_conversation_context = "\n\nPrevious conversation history (in chronological order):\n"
+            
+            # Get last messages (will be in DESC order)
+            conversation_messages = self.message_store.find_messages(
+                message_type="agent_response",
                 chat_id=chat_id,
-                limit=limit,
-                message_types=["user_message", "agent_response"]
+                limit=limit
             )
             
-            if not messages:
-                return ""
-                
-            # Format conversation context
-            conversation_context = "Here's our recent conversation history:\n\n"
+            # Sort by timestamp and reverse to get chronological order
+            conversation_messages.sort(key=lambda x: x["timestamp"], reverse=True)
+            conversation_messages.reverse()
             
-            for msg in messages:
-                msg_type = msg.get("metadata", {}).get("message_type", "unknown")
-                if msg_type == "user_message":
-                    conversation_context += f"User: {msg['message']}\n"
-                else:
-                    conversation_context += f"Assistant: {msg['message']}\n"
+            # Build conversation history
+            for msg in conversation_messages:
+                if msg.get("original_query"):  # Ensure we have both question and answer
+                    system_prompt_conversation_context += f"User: {msg['original_query']}\n"
+                    system_prompt_conversation_context += f"Assistant: {msg['message']}\n\n"
                     
-            conversation_context += "\nContinue the conversation in a consistent and helpful manner.\n"
-            
-            return conversation_context
+            return system_prompt_conversation_context
             
         except Exception as e:
             logger.error(f"Error retrieving conversation context: {str(e)}")
@@ -54,43 +52,33 @@ class ConversationManager:
         self,
         embedding: List[float],
         chat_id: Optional[str] = None,
-        threshold: float = 0.7,
-        limit: int = 5
+        threshold: float = 0.9,
+        limit: int = 10
     ) -> str:
         """Get context from similar previous conversations"""
         if not embedding:
             return ""
             
         try:
-            # Find similar previous conversations
             similar_messages = self.message_store.find_similar_messages(
                 embedding,
                 threshold=threshold,
-                message_types=["user_message"],
-                limit=limit * 2,  # Get more to filter later
+                message_type="user_message",
+                chat_id=chat_id
             )
             
             if not similar_messages:
                 return ""
                 
-            # Get related responses
-            context = "Here are some similar questions and answers that might be relevant:\n\n"
+            context = "\n\nRelated previous conversations and responses\nNOTE: Please provide a response that differs from these recent replies, don't use the same words:\n"
             seen_responses = set()
             message_count = 0
             
             for similar_msg in similar_messages:
-                # Skip if we've already included enough messages
-                if message_count >= limit:
-                    break
-                    
-                # Skip if from the current chat (to avoid duplicating current context)
-                if chat_id and similar_msg.get("metadata", {}).get("chat_id") == chat_id:
-                    continue
-                    
-                # Get agent responses to this similar message
-                agent_responses = self.message_store.get_responses_for_message(
-                    similar_msg["id"],
-                    message_type="agent_response"
+                # Find the agent's response where this similar message was the original_query
+                agent_responses = self.message_store.find_messages(
+                    message_type="agent_response",
+                    original_query=similar_msg["message"]
                 )
                 
                 for response in agent_responses:
@@ -99,16 +87,16 @@ class ConversationManager:
                         
                     seen_responses.add(response["message"])
                     context += f"""
-                    Previous similar question: {similar_msg["message"]}
-                    My response: {response["message"]}
-                    Similarity score: {similar_msg.get("similarity", 0):.2f}
-                    """
+                        Previous similar question: {similar_msg["message"]}
+                        My response: {response["message"]}
+                        Similarity score: {similar_msg.get("similarity", 0):.2f}
+                        """
                     message_count += 1
                     if message_count >= limit:
                         break
                         
             if message_count > 0:
-                context += "\nConsider the above responses for context, but provide a fresh perspective that adds value to the conversation.\n"
+                context += "\nConsider the above responses for context, but provide a fresh perspective that adds value to the conversation, don't repeat the same responses.\n"
                 return context
                 
             return ""
@@ -129,41 +117,40 @@ class ConversationManager:
             return
             
         try:
-            # Prepare metadata
-            msg_metadata = metadata.copy() if metadata else {}
-            msg_metadata.update({
-                "message_type": "user_message",
-                "chat_id": chat_id,
-                "timestamp": datetime.now().isoformat(),
-            })
+            # Generate message embedding
+            message_embedding = get_embedding(message)
             
             # Store user message
-            message_embedding = get_embedding(message)
-            message_id = self.message_store.add_message(
-                MessageData(
-                    message=message,
-                    embedding=message_embedding,
-                    metadata=msg_metadata
-                )
+            message_data = MessageData(
+                message=message,
+                embedding=message_embedding,
+                timestamp=datetime.now().isoformat(),
+                message_type="user_message",
+                chat_id=chat_id,
+                source_interface=metadata.get("source_interface"),
+                original_query=None,
+                original_embedding=None,
+                tool_call=None,
+                response_type=None,
+                key_topics=None
             )
-            
-            # Prepare response metadata
-            resp_metadata = {
-                "message_type": "agent_response",
-                "chat_id": chat_id,
-                "timestamp": datetime.now().isoformat(),
-                "parent_message_id": message_id
-            }
+            message_id = self.message_store.add_message(message_data)
             
             # Store agent response
-            response_embedding = get_embedding(response)
-            self.message_store.add_message(
-                MessageData(
-                    message=response,
-                    embedding=response_embedding,
-                    metadata=resp_metadata
-                )
+            response_data = MessageData(
+                message=response,
+                embedding=get_embedding(response),
+                timestamp=datetime.now().isoformat(),
+                message_type="agent_response",
+                chat_id=chat_id,
+                source_interface=metadata.get("source_interface"),
+                original_query=message,
+                original_embedding=message_embedding,
+                tool_call=metadata.get("tool_call"),
+                response_type=metadata.get("response_type"),
+                key_topics=metadata.get("key_topics")
             )
+            self.message_store.add_message(response_data)
             
         except Exception as e:
             logger.error(f"Error storing interaction: {str(e)}")
