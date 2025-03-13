@@ -1,3 +1,4 @@
+import asyncio
 import sys
 from pathlib import Path
 
@@ -5,10 +6,7 @@ import yaml
 from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-
-import asyncio
-
-from mesh.coingecko_token_info_agent import CoinGeckoTokenInfoAgent
+from mesh.coingecko_token_info_agent import CoinGeckoTokenInfoAgent  # noqa: E402
 
 load_dotenv()
 

@@ -1,3 +1,4 @@
+import asyncio
 import sys
 from pathlib import Path
 
@@ -5,10 +6,7 @@ import yaml
 from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-
-import asyncio
-
-from mesh.goplus_analysis_agent import GoplusAnalysisAgent
+from mesh.goplus_analysis_agent import GoplusAnalysisAgent  # noqa: E402
 
 load_dotenv()
 

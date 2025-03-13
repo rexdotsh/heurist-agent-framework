@@ -20,24 +20,19 @@ async def run_agent():
             "raw_data_only": False,
         }
         agent_output = await agent.handle_message(agent_input)
-        
+
         # Example for direct execute_search tool
         agent_input_search = {
             "tool": "execute_search",
-            "tool_arguments": {
-                "search_term": "zero knowledge proofs recent advancements"
-            },
+            "tool_arguments": {"search_term": "zero knowledge proofs recent advancements"},
             "raw_data_only": False,
         }
         agent_output_search = await agent.handle_message(agent_input_search)
-        
+
         # Example for generate_queries tool
         agent_input_queries = {
             "tool": "generate_queries",
-            "tool_arguments": {
-                "topic": "zero knowledge proofs",
-                "num_queries": 3
-            },
+            "tool_arguments": {"topic": "zero knowledge proofs", "num_queries": 3},
             "raw_data_only": False,
         }
         agent_output_queries = await agent.handle_message(agent_input_queries)
@@ -50,7 +45,7 @@ async def run_agent():
         yaml_content = {
             "natural_language_query": {"input": agent_input, "output": agent_output},
             "direct_search": {"input": agent_input_search, "output": agent_output_search},
-            "generate_queries": {"input": agent_input_queries, "output": agent_output_queries}
+            "generate_queries": {"input": agent_input_queries, "output": agent_output_queries},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

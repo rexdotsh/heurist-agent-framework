@@ -379,18 +379,28 @@ class CoreAgent:
 
             system_prompt += system_prompt_context
 
-            response = call_llm_with_tools(
-                HEURIST_BASE_URL,
-                HEURIST_API_KEY,
-                model_id,
-                system_prompt=system_prompt,
-                user_prompt=message,
-                temperature=temperature,
-                max_tokens=max_tokens,
-                tools=self.tools.get_tools_config() + external_tools if not skip_tools else None,
-                tool_choice=tool_choice if not skip_tools else None
-            )
-
+            if not skip_tools:
+                response = call_llm_with_tools(
+                    HEURIST_BASE_URL,
+                    HEURIST_API_KEY,
+                    model_id,
+                    system_prompt=system_prompt,
+                    user_prompt=message,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                    tools=self.tools.get_tools_config(),
+                    tool_choice=tool_choice,
+                )
+            else:
+                response = call_llm(
+                    HEURIST_BASE_URL,
+                    HEURIST_API_KEY,
+                    model_id,
+                    system_prompt=system_prompt,
+                    user_prompt=message,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
             # Process response and handle tools
             text_response = ""
             image_url = None

@@ -101,7 +101,7 @@ class FirecrawlSearchAgent(MeshAgent):
                         "properties": {
                             "topic": {"type": "string", "description": "The main topic to research"},
                             "num_queries": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Number of queries to generate",
                                 "default": 3,
                             },

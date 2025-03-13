@@ -101,7 +101,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                         "properties": {
                             "search_term": {"type": "string", "description": "The search term to find tweets"},
                             "max_results": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Maximum number of results to return (default: 100)",
                             },
                         },

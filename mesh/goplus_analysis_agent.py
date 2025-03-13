@@ -120,7 +120,7 @@ class GoplusAnalysisAgent(MeshAgent):
                         "properties": {
                             "contract_address": {"type": "string", "description": "The token contract address"},
                             "chain_id": {
-                                "type": ["integer", "string"],
+                                "type": "string",
                                 "description": "The blockchain chain ID or 'solana' for Solana tokens. Supported chains: "
                                 + ", ".join([f"{name} ({id})" for id, name in self.supported_blockchains.items()]),
                                 "default": 1,

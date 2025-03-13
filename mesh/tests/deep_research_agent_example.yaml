@@ -4,247 +4,124 @@ input:
   breadth: 3
   concurrency: 2
 output:
-  response: "{\n    \"reportMarkdown\": \"# Zero-Knowledge Proofs in Blockchain Cryptography:\
-    \ 2023 Comprehensive Analysis\n\n## Executive Summary\n\nThe zero-knowledge proof\
-    \ (ZKP) landscape in blockchain cryptography has undergone transformative developments\
-    \ in 2023, characterized by significant technological advancements, reduced computational\
-    \ complexity, and expanded practical applications. This report synthesizes the\
-    \ latest research, highlighting critical innovations in scalability, privacy,\
-    \ and quantum resistance across blockchain ecosystems.\n\n## Key Findings and\
-    \ Insights\n\n### Technological Advancements\n- ZK-rollups have emerged as a superior\
-    \ scaling technology for Ethereum\n- Proof generation costs dramatically decreased\
-    \ from $80.21 to $1.30 per proof by 2025\n- Specialized zkVMs have democratized\
-    \ zero-knowledge proof development\n- Hardware acceleration techniques can improve\
-    \ ZKP generation speeds by 10-1000x\n\n### Market and Economic Projections\n-\
-    \ Zero-knowledge proof market projected to reach $575 million in 2024\n- Potential\
-    \ market expansion to exceed $10 billion by 2030\n- Layer 2 scaling solutions\
-    \ like zkSync and Polygon zkEVM driving technological integration\n\n### Privacy\
-    \ and Security Innovations\n- ZKPs enable privacy-preserving transactions across\
-    \ finance, identity verification, and AI\n- Multiple blockchain platforms integrating\
-    \ ZKPs for enhanced transaction privacy\n- Quantum-resistant cryptographic approaches\
-    \ emerging as critical research domain\n\n## Detailed Analysis by Theme\n\n###\
-    \ Scalability Improvements\nZK-Rollups represent a breakthrough in blockchain\
-    \ scalability, offering:\n- Off-chain transaction processing\n- Reduced transaction\
-    \ costs\n- Enhanced security through Layer 1 verification\n- Potential to process\
-    \ thousands of transactions per second\n\n#### Performance Metrics\n- Batch size\
-    \ influences proving mechanisms\n- Data availability strategies critical for efficiency\n\
-    - EVM compatibility remains a significant implementation challenge\n\n### Quantum\
-    \ Resistance\nCurrent blockchain cryptographic systems face substantial quantum\
-    \ computing risks:\n- Potential compromise of digital signatures\n- Vulnerability\
-    \ in key exchange mechanisms\n- Emerging post-quantum cryptographic algorithms\
-    \ like:\n  * Falcon-512\n  * zk-STARKs\n  * Lattice-based cryptography\n\n###\
-    \ Computational Complexity\nZero-knowledge proofs present unique computational\
-    \ challenges:\n-\n\n## Sources\n\n- https://blockworks.co/news/brief-history-zk-tech\n\
-    - https://cointelegraph.com/news/four-zk-proof-l2s-that-scaled-ethereum-in-2023\n\
-    - https://www.chainalysis.com/blog/zero-knowledge-rollups-optimistic-rollups-overview/\n\
-    - https://chain.link/education-hub/zero-knowledge-proof-projects\n- https://5g.wilsoncenter.org/article/dont-trust-when-you-can-verify-primer-zero-knowledge-proofs\n\
-    - https://chorus.one/articles/the-economics-of-zk-proving-market-size-and-future-projections\n\
-    - https://eprint.iacr.org/2024/889.pdf\n- https://simplystaking.com/wp-content/uploads/2024/06/A-Snapshot-Comparison-of-Layer-2-Solutions-on-Ethereum.pdf\n\
-    - https://www.21.co/research/on-chain-insights-5-overview-of-the-zkevm-race-zksync-vs-polygon\n\
-    - https://www.tokenmetrics.com/blog/top-zk-rollup\n- https://www.bankless.com/the-best-comparison-on-zkrollups\n\
-    - https://www.researchgate.net/publication/362609600_Blockchain_Scaling_using_Rollups_A_Comprehensive_Survey\n\
-    - https://messari.io/report/polygon-a-multi-sided-approach-to-zk-scaling\n- https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.AFT.2024.6\n\
-    - https://pixelplex.io/blog/overview-of-zk-rollups/\n- https://www.protocol.ai/protocol-labs-the-future-of-zk-proofs.pdf\n\
-    - https://arxiv.org/html/2501.03126v1\n- https://www.rapidinnovation.io/post/zk-rollup-scaling-solutions-a-comprehensive-guide\n\
-    - https://www.paradigm.xyz/2022/04/zk-hardware\n- https://people.csail.mit.edu/devadas/pubs/micro24_nocap.pdf\n\
-    - https://hackmd.io/@Cysic/BJQcpVbXn\n- https://figmentcapital.medium.com/accelerating-zero-knowledge-proofs-cfc806de611b\n\
-    - https://arxiv.org/html/2408.05890v1\n- https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/\n\
-    - https://a16zcrypto.com/posts/article/privacy-protecting-regulatory-solutions-using-zero-knowledge-proofs-full-paper/\n\
-    - https://www.itprotoday.com/regulatory-compliance/zero-knowledge-proofs-for-regulated-financial-institutions-do-the-risks-outweigh-the-rewards-\n\
-    - https://www.arnia.com/how-zero-knowledge-proofs-are-transforming-privacy/\n\
-    - https://www.dock.io/post/zero-knowledge-proofs\n- https://www.sciencedirect.com/science/article/pii/S2214212623002624\n\
-    - https://chain.link/education-hub/zero-knowledge-proof-use-cases\n- https://www.debutinfotech.com/blog/zero-knowledge-proof-uses\n\
-    - https://www.rapidinnovation.io/post/zero-knowledge-proofs-in-blockchain-enhancing-privacy-and-scalability\n\
-    - https://www.forbes.com/councils/forbesbusinesscouncil/2023/04/19/zero-knowledge-proofs-use-cases-for-businesses/\n\
-    - https://www.antiersolutions.com/blogs/zero-knowledge-proof-based-applications-are-the-future-of-defi/\n\
-    - https://arxiv.org/html/2408.00243v1\n- https://www.tii.ae/article/quantum-resistant-protocols-zero-knowledge-proofs-strengthen-blockchain-security\n\
-    - https://www.btq.com/blog/quantum-secure-cryptocurrencies-of-the-future\n- https://www.nature.com/articles/s41598-023-32701-6\n\
-    - https://www.blockhead.co/2025/01/19/the-blockchain-industry-cant-afford-complacency-in-preparing-for-quantum-computing/\n\
-    - https://www.rapidinnovation.io/post/quantum-resistant-blockchain-preparing-for-the-future-of-cybersecurity-in-2024\n\
-    - https://papers.ssrn.com/sol3/Delivery.cfm/5170329.pdf?abstractid=5170329&mirid=1&type=2\n\
-    - https://www.pqabelian.io/blog/welcome-to-the-post-quantum-era-explore-abelians-newly-launched-website\n\
-    - https://orochi.network/blog/Important-concepts-to-Understand-Zero-Knowledge-Better-in-2024\n\
-    - https://onlinelibrary.wiley.com/doi/full/10.1002/spy2.461\n- https://www.sciencedirect.com/science/article/abs/pii/S0045790625000321\n\
-    - https://blog.aelf.com/posts/why-blockchain-needs-quantum-resistant-cryptography\n\
-    - https://www.rapidinnovation.io/post/what-are-the-step-by-step-processes-for-implementing-zkps-in-a-blockchain-project\n\
-    - https://nextrope.com/how-to-implement-zero-knowledge-proof-in-blockchain-applications/\n\
-    - https://dev.to/spalladino/a-beginners-intro-to-coding-zero-knowledge-proofs-c56\n\
-    - https://www.rapidinnovation.io/post/guide-to-zero-knowledge-proof-zkp-libraries-and-tools\n\
-    - https://github.com/ventali/awesome-zk\n- https://github.com/matter-labs/awesome-zero-knowledge-proofs\n\
-    - https://medium.com/@scalingx/zk-programming-languages-a-comprehensive-overview-a3046ea5e859\n\
-    - https://starkware.co/blog/scaling-blockchains-with-zk-proofs/\n- https://aviatelabs.co/post/exploring-zero-knowledge-proofs-and-polygons-zkevm\n\
-    - https://polygon.technology/polygon-zkevm\n- https://www.jukshio.com/blog/zero-knowledge-proofs-in-kyc-can-we-verify-identities-without-exposing-personal-data\n\
-    - https://medium.com/@RocketMeUpCybersecurity/zero-knowledge-proofs-zkps-for-privacy-preserving-digital-identity-in-decentralized-systems-69ab615473f6\n\
-    - https://papers.ssrn.com/sol3/Delivery.cfm/5170068.pdf?abstractid=5170068&mirid=1&type=2"
+  response: "\n{\n  \"reportMarkdown\": \n    \"# **Latest Developments in Zero Knowledge\
+    \ Proofs**\\n\\n\n    ## **Executive Summary**\\n\n    This report provides an\
+    \ in-depth analysis of the latest developments in Zero Knowledge Proofs (ZKPs),\
+    \ highlighting their definition, types, benefits, and applications in blockchain\
+    \ technology, cryptography, and other fields. ZKPs enable a party to prove the\
+    \ truth of a statement without revealing any underlying information, enhancing\
+    \ privacy and security in digital systems. Despite facing challenges, ZKPs are\
+    \ being integrated into various industries to improve security, privacy, and efficiency.\\\
+    n\\n\n    ## **Key Findings and Insights**\\n\n    * ZKPs enable a party to prove\
+    \ the truth of a statement without revealing any underlying information.\n   \
+    \ * Various applications in blockchain technology, including private transactions,\
+    \ verifiable computations, and decentralized identity management.\n    * Different\
+    \ types of ZKPs: zk-SNARKs, zk-STARKs, PLONK, and Bulletproofs, each with its\
+    \ own trade-offs and use cases.\n    * Enhance decentralization, reliability,\
+    \ and security in blockchain protocols and privacy in identity-sharing systems.\n\
+    \    * Real-world deployments in finance, healthcare, and government services\
+    \ to improve security, privacy, and efficiency.\\n\\n\n    ## **Detailed Analysis\
+    \ by Theme**\\n\n    ### **Definition and Properties**\\n\n    * Enable a prover\
+    \ to convince a verifier of a statement's truth without revealing any underlying\
+    \ information.\n    * Properties: completeness, soundness, and zero-knowledge.\n\
+    \    * Variants: perfect, statistical, and computational zero-knowledge, each\
+    \ with different security guarantees.\n    * Non-interactive zero-knowledge proofs\
+    \ (NIZKs) and multi-prover interactive proof systems as alternatives.\n\n    ###\
+    \ **Applications in Blockchain Technology**\\n\n    * Private transactions, verifiable\
+    \ computations, and decentralized identity management.\n    * Examples: zk-SNARKs\
+    \ and zk-STARKs for enhanced scalability, security, and privacy.\n\n    ### **Real-World\
+    \ Deployments**\\n\n    * Finance: improved security and privacy for transactions.\n\
+    \    * Healthcare: secure sharing of medical records.\n    * Government Services:\
+    \ enhanced security and efficiency for identity verification and voting systems.\n\
+    \n    ### **Challenges and Limitations**\\n\n    * Complexity, performance issues,\
+    \ and the need for trusted setups limiting widespread adoption.\\n\\n\n\n## Sources\n\
+    \n- https://www.protocol.ai/protocol-labs-the-future-of-zk-proofs.pdf\n- https://www.zeeve.io/blog/top-10-zero-knowledge-proof-projects-for-2023/\n\
+    - https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/\n\
+    - https://www.soa.org/resources/research-reports/2023/zero-knowledge-proof/\n\
+    - https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof\n\
+    - https://chain.link/education/zero-knowledge-proof-zkp\n- https://chain.link/education-hub/zero-knowledge-proof-projects\n\
+    - https://en.wikipedia.org/wiki/Zero-knowledge_proof\n- https://www.stlouisfed.org/publications/review/2023/05/12/an-introduction-to-zero-knowledge-proofs-in-blockchains-and-economics\n\
+    - https://www.sciencedirect.com/science/article/pii/S2214212623002624\n- https://chain.link/education-hub/zero-knowledge-proof-use-cases\n\
+    - https://starkware.co/blog/scaling-blockchains-with-zero-knowledge-proofs/zk-proofs-applications-and-use-cases/\n\
+    - https://arxiv.org/html/2408.00243v1\n- https://www.dock.io/post/zero-knowledge-proofs\n\
+    - https://coinbureau.com/adoption/applications-zero-knowledge-proofs/\n- https://arxiv.org/abs/2408.00243\n\
+    - https://www.circularise.com/blogs/zero-knowledge-proofs-explained-in-3-examples\n\
+    - https://www.rapidinnovation.io/post/top-15-applications-of-zero-knowledge-proofs\n\
+    - https://csrc.nist.gov/csrc/media/presentations/2024/wpec2024-3b1/images-media/wpec2024-3b1-slides-akira-tjerand--ZKP-Overview.pdf\n\
+    - https://tees.tamu.edu/news/2022/05/cryptography-security-enhanced-through-zero-knowledge-schemes.html\n\
+    - https://www.debutinfotech.com/blog/zero-knowledge-proof-uses"
   data:
     query_info:
-      query: Latest developments in zero-knowledge proofs blockchain cryptography
-        2023
-      depth: 3
-      breadth: 4
-      result_count: 78
-    result_count: 78
+      query: latest developments in zero knowledge proofs
+      depth: 2
+      breadth: 3
+      result_count: 24
+    result_count: 24
     results_sample:
-    - title: A brief history of Ethereum's relationship with ZK - Blockworks
-      description: By using zk cryptography to prove Ethereum transactions, these
-        highly compressed proofs meant lower data availability costs and better ...
-      url: https://blockworks.co/news/brief-history-zk-tech
-      content_length: 15236
-    - title: 'The year of ZK-proofs: 4 layer 2s that helped Ethereum scale in 2023'
-      description: Layer 2 networks powered by zero-knowledge proofs have emerged
-        as a leading scaling technology for the Ethereum blockchain in 2023.
-      url: https://cointelegraph.com/news/four-zk-proof-l2s-that-scaled-ethereum-in-2023
-      content_length: 11716
-    analyses_count: 4
+    - title: '[PDF] Future of ZK Proofs - Protocol Labs'
+      description: Independent research shows that zk proof generation will become
+        a $10 billion market by the year 2030.
+      url: https://www.protocol.ai/protocol-labs-the-future-of-zk-proofs.pdf
+      content_length: 46819
+    - title: Top 10 Zero Knowledge Proof projects for 2023 - Zeeve
+      description: Get ahead of the curve with our breakdown of the top ten zero-knowledge
+        proof projects for 2023. From Ethereum to Zcash and everything in ...
+      url: https://www.zeeve.io/blog/top-10-zero-knowledge-proof-projects-for-2023/
+      content_length: 114362
+    analyses_count: 3
     analyses_sample:
-    - analysis: The search results provide a comprehensive overview of zero-knowledge
-        proof (ZKP) blockchain innovations in 2023, focusing on Ethereum's scaling
-        solutions, particularly ZK-rollups. The sources highlight the technological
-        evolution of ZKPs from theoretical concepts to practical blockchain scalability
-        and privacy solutions, with significant advancements in computational efficiency
-        and blockchain integration.
+    - analysis: Error processing search results.
+      key_findings: []
+      recommendations: []
+    - analysis: The search results provide an in-depth analysis of zero-knowledge
+        proofs (ZKPs) in blockchain technology. The main content is from Chainlink,
+        a leading blockchain platform, and Wikipedia, a reliable online encyclopedia.
+        The results cover the definition, types, benefits, and use cases of ZKPs,
+        as well as their applications in blockchain, cryptography, and other fields.
+        The content is technical, indicating a target audience with a background in
+        computer science, mathematics, or a related field. The tone is informative,
+        with a focus on educating readers about ZKPs and their potential in various
+        industries. The overall structure is well-organized, with clear headings,
+        sections, and links to additional resources.
       key_findings:
-      - ZK-rollups are emerging as a superior scaling technology for Ethereum, offering
-        smaller proof sizes and better scalability compared to optimistic rollups
-      - Proof generation costs for ZK technologies have dramatically decreased, from
-        $80.21 in December 2023 to approximately $1.30 per proof by 2025
-      - Multiple ZK-rollup projects like Polygon, zkSync, Scroll, and Linea have made
-        significant progress in 2023
-      - ZK technologies enable privacy-preserving transactions while maintaining verifiability
-        across multiple domains including finance, identity verification, and AI
-      - The development of specialized zkVMs (zero-knowledge virtual machines) has
-        democratized ZK development for developers
-      - ZK-Rollups are emerging as a critical scalability solution for Ethereum, offering
-        improved transaction processing and reduced costs compared to the main Ethereum
-        network
-      - Different ZK-Rollup implementations have varying approaches to EVM compatibility,
-        proof systems, and hardware optimization
-      - Transaction costs and proving times vary significantly between different ZK-Rollup
-        solutions
-      - The introduction of EIP-4844 (Proto-Danksharding) has dramatically reduced
-        transaction costs across Layer 2 solutions
-      - Performance metrics are heavily influenced by batch size, proving mechanisms,
-        and data availability strategies
-      - ZK-Rollups offer significant scalability improvements by using Zero-Knowledge
-        Proofs to verify transactions off-chain while maintaining Layer 1 security
-      - Different ZK-Rollup implementations have unique design trade-offs between
-        proving speed, data compression, and transaction throughput
-      - Data availability costs and proof generation times are critical factors in
-        ZK-Rollup performance and efficiency
-      - EVM compatibility remains a significant challenge for ZK-Rollup implementations
-      - The introduction of EIP-4844 has substantially reduced data availability costs
-        for ZK-Rollups
-      - ZK-rollup proof generation is computationally intensive, requiring significant
-        processing power and specialized hardware
-      - Community-based proving systems are emerging as a cost-effective alternative
-        to centralized cloud infrastructure
-      - Proof generation costs are expected to decrease with technological advancements
-        and hardware acceleration
-      - ZK-rollups can process thousands of transactions per second, significantly
-        improving blockchain scalability
-      - Specialized zkVMs and recursive proof techniques are being developed to optimize
-        proof generation efficiency
-      - Zero-knowledge proofs are computationally expensive, with proof generation
-        times potentially 1,000,000x slower than the underlying computation
-      - Hardware acceleration can improve ZKP generation speeds by 10-1000x using
-        specialized hardware like FPGAs and ASICs
-      - Multi-scalar Multiplications (MSMs) and Number Theoretic Transforms (NTTs)
-        are the most computationally intensive components of ZKP generation
-      - 'Different hardware platforms offer unique trade-offs: GPUs provide flexibility,
-        FPGAs offer programmability, and ASICs deliver maximum performance'
-      - Emerging architectures like SZKP can achieve proof generation speedups of
-        400-600x compared to traditional CPU implementations
+      - Zero-knowledge proofs (ZKPs) enable a party to prove the truth of a statement
+        without revealing any underlying information.
+      - ZKPs have various applications in blockchain technology, including private
+        transactions, verifiable computations, and decentralized identity management.
+      - There are different types of ZKPs, such as zk-SNARKs, zk-STARKs, PLONK, and
+        Bulletproofs, each with its own trade-offs and use cases.
+      - ZKPs can increase decentralization, reliability, and security in blockchain
+        protocols, and can be used to enhance privacy in identity-sharing systems.
+      - The integration of ZKP technology into blockchain has the potential to improve
+        privacy, security, and efficiency in various industries.
       recommendations:
-      - Conduct further research on the long-term scalability and performance of different
-        ZK-rollup implementations
-      - Investigate the potential regulatory challenges and compliance mechanisms
-        for ZK-proof technologies
-      - Explore the broader applications of ZKPs beyond blockchain in fields like
-        AI, healthcare, and government services
-      - Analyze the economic implications of reduced proof generation costs on blockchain
-        ecosystem development
-      - Study the potential interoperability challenges between different ZK-rollup
-        implementations
-    - analysis: The search results provide a comprehensive overview of zero-knowledge
-        proofs (ZKPs) in decentralized finance (DeFi), focusing on their applications
-        in blockchain security, privacy, and scalability for 2023. The research highlights
-        ZKPs as a transformative cryptographic technology that enables secure, private
-        transactions without revealing sensitive information.
-      key_findings:
-      - ZKPs are increasingly being adopted in blockchain ecosystems to enhance privacy
-        and scalability
-      - Zero-knowledge proof market is projected to reach $575 million in revenue
-        in 2024 and potentially exceed $10 billion by 2030
-      - Layer 2 scaling solutions like zkSync and Polygon zkEVM are leveraging ZKPs
-        to improve blockchain transaction efficiency
-      - ZKPs enable selective disclosure of identity attributes without compromising
-        personal information
-      - Multiple blockchain platforms are integrating ZKPs to provide privacy-preserving
-        transaction capabilities
-      - Quantum computing poses significant risks to current blockchain cryptographic
-        systems, particularly digital signatures and key exchange mechanisms
-      - Zero-knowledge proofs (ZKPs) offer a promising approach to maintaining privacy
-        and security in blockchain networks
-      - Post-quantum cryptographic algorithms like Falcon-512 and zk-STARKs can provide
-        quantum resistance
-      - Hybrid cryptographic approaches combining classical and quantum-resistant
-        algorithms are emerging as a practical transition strategy
-      - Current blockchain networks are vulnerable to potential quantum attacks, necessitating
-        proactive research and implementation of quantum-resistant technologies
-      - Quantum computing poses a significant threat to current blockchain cryptographic
-        algorithms, potentially compromising digital signatures and transaction security
-      - Zero-knowledge proofs (ZKPs) offer a promising approach to enhancing privacy
-        and security in blockchain systems
-      - Post-quantum cryptographic techniques like lattice-based, hash-based, and
-        code-based cryptography can provide quantum resistance
-      - Current blockchain networks are vulnerable to potential quantum attacks, necessitating
-        proactive quantum-resistant solutions
-      - ZKPs enable transaction validation without revealing underlying data, providing
-        enhanced privacy and security
-      - ZK-Rollups can significantly improve blockchain scalability by processing
-        multiple transactions off-chain and submitting a single proof
-      - Different types of ZKPs exist, including zk-SNARKs and zk-STARKs, each with
-        unique advantages and trade-offs
-      - Major blockchain projects like Ethereum, Zcash, and StarkWare are actively
-        developing and implementing ZKP technologies
-      - ZKPs have potential applications beyond blockchain, including identity verification,
-        secure voting, and confidential computing
-      - Current challenges include computational complexity, implementation difficulties,
-        and regulatory considerations
-      - ZKPs enable transaction verification without revealing underlying sensitive
-        information
-      - Multiple ZKP types exist, including zk-SNARKs, zk-STARKs, and Bulletproofs,
-        each with unique characteristics
-      - ZKPs are crucial for privacy in blockchain applications, particularly in decentralized
-        finance (DeFi), identity verification, and secure transactions
-      - Quantum computing poses a significant threat to current cryptographic methods,
-        necessitating quantum-resistant ZKP approaches
-      - Implementation challenges include computational complexity, performance overhead,
-        and integration with existing systems
-      recommendations:
-      - Continue research into quantum-resistant ZKP implementations
-      - Develop more user-friendly ZKP tools and frameworks to reduce complexity for
-        developers
-      - Explore cross-chain interoperability solutions using ZKP technologies
-      - Invest in hardware acceleration techniques to improve ZKP computational efficiency
-      - Create standardized protocols for ZKP implementation across different blockchain
-        platforms
-    learnings_count: 50
+      - Further research is needed to explore the applications of ZKPs in various
+        industries, such as finance, healthcare, and voting systems.
+      - Developing more efficient and scalable ZKP protocols is crucial for widespread
+        adoption in blockchain technology.
+      - Investigating the potential security risks and challenges associated with
+        ZKP implementation is essential for ensuring the integrity of blockchain systems.
+      - Educational resources and tutorials should be developed to make ZKP technology
+        more accessible to a broader audience, including those without a strong computer
+        science or mathematics background.
+      - Collaboration between academia, industry, and regulatory bodies is necessary
+        to establish standards and guidelines for the use of ZKPs in different sectors.
+    learnings_count: 14
     learnings_sample:
-    - ZK-rollups are emerging as a superior scaling technology for Ethereum, offering
-      smaller proof sizes and better scalability compared to optimistic rollups
-    - Proof generation costs for ZK technologies have dramatically decreased, from
-      $80.21 in December 2023 to approximately $1.30 per proof by 2025
-    - Multiple ZK-rollup projects like Polygon, zkSync, Scroll, and Linea have made
-      significant progress in 2023
-    - ZK technologies enable privacy-preserving transactions while maintaining verifiability
-      across multiple domains including finance, identity verification, and AI
-    - The development of specialized zkVMs (zero-knowledge virtual machines) has democratized
-      ZK development for developers
-    visited_urls_count: 59
+    - Zero-knowledge proofs (ZKPs) enable a party to prove the truth of a statement
+      without revealing any underlying information.
+    - ZKPs have various applications in blockchain technology, including private transactions,
+      verifiable computations, and decentralized identity management.
+    - There are different types of ZKPs, such as zk-SNARKs, zk-STARKs, PLONK, and
+      Bulletproofs, each with its own trade-offs and use cases.
+    - ZKPs can increase decentralization, reliability, and security in blockchain
+      protocols, and can be used to enhance privacy in identity-sharing systems.
+    - The integration of ZKP technology into blockchain has the potential to improve
+      privacy, security, and efficiency in various industries.
+    visited_urls_count: 21
     visited_urls_sample:
-    - https://blockworks.co/news/brief-history-zk-tech
-    - https://cointelegraph.com/news/four-zk-proof-l2s-that-scaled-ethereum-in-2023
-    - https://www.chainalysis.com/blog/zero-knowledge-rollups-optimistic-rollups-overview/
-    - https://chain.link/education-hub/zero-knowledge-proof-projects
-    - https://5g.wilsoncenter.org/article/dont-trust-when-you-can-verify-primer-zero-knowledge-proofs
+    - https://www.protocol.ai/protocol-labs-the-future-of-zk-proofs.pdf
+    - https://www.zeeve.io/blog/top-10-zero-knowledge-proof-projects-for-2023/
+    - https://www.forbes.com/councils/forbesbusinesscouncil/2024/10/31/why-zero-knowledge-proofs-will-shape-the-future-of-data-privacy/
+    - https://www.soa.org/resources/research-reports/2023/zero-knowledge-proof/
+    - https://www.nttdata.com/global/en/insights/focus/2024/what-is-zero-knowledge-proof

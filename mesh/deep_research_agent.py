@@ -390,19 +390,19 @@ class DeepResearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "deep_research",
-                    "description": "Perform deep recursive research on a topic",
+                    "description": "Perform deep research on a topic by searching the web and analyzing the results",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "query": {"type": "string", "description": "Research query or topic"},
-                            "depth": {"type": "integer", "description": "Research depth (1-3)", "default": 2},
+                            "depth": {"type": "number", "description": "Research depth (1-3)", "default": 2},
                             "breadth": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Search breadth per level (1-5)",
                                 "default": 3,
                             },
                             "concurrency": {
-                                "type": "integer",
+                                "type": "number",
                                 "description": "Number of concurrent searches",
                                 "default": 2,
                             },
