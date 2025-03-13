@@ -139,6 +139,13 @@ class AaveAgent(MeshAgent):
         Returns:
             Web3 instance connected to the appropriate RPC
         """
+        # handle string chain_id
+        if isinstance(chain_id, str):
+            try:
+                chain_id = int(chain_id)
+            except ValueError:
+                raise ValueError(f"Invalid chain ID format: {chain_id}")
+
         rpc_urls = {
             1: "https://rpc.ankr.com/eth",
             137: "https://polygon-rpc.com",
