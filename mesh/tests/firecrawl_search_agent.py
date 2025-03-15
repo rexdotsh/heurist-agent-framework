@@ -21,17 +21,17 @@ async def run_agent():
         }
         agent_output = await agent.handle_message(agent_input)
 
-        # Example for direct execute_web_search tool
+        # Example for direct tool
         agent_input_search = {
-            "tool": "execute_web_search",
+            "tool": "firecrawl_web_search",
             "tool_arguments": {"search_term": "zero knowledge proofs recent advancements"},
             "raw_data_only": False,
         }
         agent_output_search = await agent.handle_message(agent_input_search)
 
-        # Example for extract_web_data tool
+        # Example for direct tool
         agent_input_extract = {
-            "tool": "extract_web_data",
+            "tool": "firecrawl_extract_web_data",
             "tool_arguments": {
                 "urls": ["https://ethereum.org/en/zero-knowledge-proofs/"],
                 "extraction_prompt": "Extract information about how zero knowledge proofs are being used in blockchain technology",
@@ -49,7 +49,7 @@ async def run_agent():
         yaml_content = {
             "natural_language_query": {"input": agent_input, "output": agent_output},
             "direct_search": {"input": agent_input_search, "output": agent_output_search},
-            "extract_web_data": {"input": agent_input_extract, "output": agent_output_extract}
+            "direct_extract": {"input": agent_input_extract, "output": agent_output_extract}
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

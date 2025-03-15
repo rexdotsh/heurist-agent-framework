@@ -46,7 +46,7 @@ class FirecrawlSearchAgent(MeshAgent):
                     {"name": "data", "description": "Structured search results and metadata", "type": "dict"},
                 ],
                 "external_apis": ["Firecrawl"],
-                "tags": ["Search", "Research", "Analysis"],
+                "tags": ["Internet Search"],
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))
@@ -70,8 +70,8 @@ class FirecrawlSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "execute_web_search",
-                    "description": "Execute a web search query by reading the web pages. It provides more comprehensive information than standard web search by extracting the full contents from the pages. Use this when you need in-depth information on a topic. Data comes from Firecrawl search API. It may fail to find information of niche topics such like small cap crypto projects.",
+                    "name": "firecrawl_web_search",
+                    "description": "Execute a web search query by reading the web pages using Firecrawl. It provides more comprehensive information than standard web search by extracting the full contents from the pages. Use this when you need in-depth information on a topic. Data comes from Firecrawl search API. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {"search_term": {"type": "string", "description": "The search term to execute"}},
@@ -82,8 +82,8 @@ class FirecrawlSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "extract_web_data",
-                    "description": "Extract structured data from one or multiple web pages using natural language instructions. This tool can process single URLs or entire domains (using wildcards like example.com/*). Use this when you need specific information from websites rather than general search results. You must specify what data to extract from the pages using the 'extraction_prompt' parameter.",
+                    "name": "firecrawl_extract_web_data",
+                    "description": "Extract structured data from one or multiple web pages using natural language instructions using Firecrawl. This tool can process single URLs or entire domains (using wildcards like example.com/*). Use this when you need specific information from websites rather than general search results. You must specify what data to extract from the pages using the 'extraction_prompt' parameter.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -136,7 +136,7 @@ class FirecrawlSearchAgent(MeshAgent):
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def execute_web_search(self, query: str) -> Dict:
+    async def firecrawl_web_search(self, query: str) -> Dict:
         """Execute a search with error handling"""
         try:
             response = await asyncio.get_event_loop().run_in_executor(
@@ -170,7 +170,7 @@ class FirecrawlSearchAgent(MeshAgent):
 
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def extract_web_data(self, urls: List[str], extraction_prompt: str, enable_web_search: bool = False) -> Dict:
+    async def firecrawl_extract_web_data(self, urls: List[str], extraction_prompt: str, enable_web_search: bool = False) -> Dict:
         """Extract structured data from web pages using natural language instructions"""
         try:
             response = await asyncio.get_event_loop().run_in_executor(
@@ -206,13 +206,13 @@ class FirecrawlSearchAgent(MeshAgent):
     ) -> Dict[str, Any]:
         """Handle execution of specific tools and format responses"""
 
-        if tool_name == "execute_web_search":
+        if tool_name == "firecrawl_web_search":
             search_term = function_args.get("search_term")
             if not search_term:
                 return {"error": "Missing 'search_term' in tool_arguments"}
 
-            result = await self.execute_web_search(search_term)
-        elif tool_name == "extract_web_data":
+            result = await self.firecrawl_web_search(search_term)
+        elif tool_name == "firecrawl_extract_web_data":
             urls = function_args.get("urls")
             extraction_prompt = function_args.get("extraction_prompt")
             enable_web_search = function_args.get("enable_web_search", False)
@@ -222,7 +222,7 @@ class FirecrawlSearchAgent(MeshAgent):
             if not extraction_prompt:
                 return {"error": "Missing 'extraction_prompt' in tool_arguments"}
                 
-            result = await self.extract_web_data(urls, extraction_prompt, enable_web_search)
+            result = await self.firecrawl_extract_web_data(urls, extraction_prompt, enable_web_search)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 

@@ -3,68 +3,63 @@ natural_language_query:
     query: What are the latest developments in quantum computing?
     raw_data_only: false
   output:
-    response: '### Latest Developments in Quantum Computing
+    response: '**Latest Developments in Quantum Computing**
 
 
-      Based on the provided search results, here''s a curated overview of the latest
-      developments in quantum computing, focusing on recency and relevance:
+      Given the provided search results, here''s a compiled overview of the latest
+      developments in quantum computing, along with key insights and sources:
 
 
-      #### **1. Quantum Error Correction Advancements**
+      ### **1. Quantum Error Correction Advancements**
 
-      * **Source:** Google Research Blog - [Making quantum error correction work](https://research.google/blog/making-quantum-error-correction-work/)
+      - **Source:** Google Research Blog - [*Making quantum error correction work*](https://research.google/blog/making-quantum-error-correction-work/)
 
-      * **Insight:** Google has made significant strides in quantum error correction,
+      - **Insight:** Significant strides have been made in quantum error correction,
       a crucial step towards reliable, large-scale quantum computing.
 
-      * **Recency:** While the exact date is not provided, Google''s research blog
-      typically features recent developments.
+
+      ### **2. Breakthrough in Quantum Teleportation**
+
+      - **Source:** Science Alert - [*Teleportation Achieved Between Quantum Computers
+      in a World First*](https://www.sciencealert.com/teleportation-achieved-between-quantum-computers-in-a-world-first)
+
+      - **Insight:** A groundbreaking achievement in teleporting information between
+      two quantum computers, marking a significant advancement in quantum communication.
 
 
-      #### **2. Quantum Teleportation Between Computers**
+      ### **3. Enhanced Qubit Performance**
 
-      * **Source:** ScienceAlert - [Teleportation Achieved Between Quantum Computers
-      in a World First](https://www.sciencealert.com/teleportation-achieved-between-quantum-computers-in-a-world-first)
+      - **Source:** SciTech Daily - [*Noise Fuels Quantum Leap, Boosting Qubit Performance
+      by 700%*](https://scitechdaily.com/noise-fuels-quantum-leap-boosting-qubit-performance-by-700/)
 
-      * **Insight:** A breakthrough in quantum teleportation has been achieved, enabling
-      the transfer of quantum information between two quantum computers, marking a
-      significant milestone in quantum communication.
-
-      * **Recency:** The article does not specify the date, but given the nature of
-      ScienceAlert, it''s likely to be recent.
+      - **Insight:** Researchers have discovered that leveraging noise can remarkably
+      enhance qubit performance, a potential game-changer for quantum computing efficiency.
 
 
-      #### **3. Enhanced Qubit Performance**
+      ### **4. Integration of Quantum Technology with Robotics**
 
-      * **Source:** SciTechDaily - [Noise Fuels Quantum Leap, Boosting Qubit Performance
-      by 700%](https://scitechdaily.com/noise-fuels-quantum-leap-boosting-qubit-performance-by-700/)
+      - **Source:** Science Daily - [*Robots learn faster with quantum technology*](https://www.sciencedaily.com/releases/2021/03/210311123432.htm)
 
-      * **Insight:** Researchers have discovered that leveraging noise can significantly
-      enhance qubit performance, a finding that could accelerate the development of
-      more efficient quantum computers.
-
-      * **Recency:** The exact publication date is not provided, but SciTechDaily
-      regularly updates with fresh content.
+      - **Insight:** Quantum technology is being explored for its potential to accelerate
+      the learning process in robots, highlighting its interdisciplinary applications.
 
 
-      #### **4. Quantum Technology in Robotics**
+      ### **Companies at the Forefront:**
 
-      * **Source:** ScienceDaily - [Robots learn faster with quantum technology](https://www.sciencedaily.com/releases/2021/03/210311123432.htm)
-
-      * **Insight:** The integration of quantum technology into robotics has shown
-      promising results, with robots learning tasks significantly faster.
-
-      * **Recency:** This article is from March 2021, making it less recent compared
-      to the other findings but still relevant.
+      - **D-Wave Systems** - Positioning itself as a leader in practical quantum computing
+      solutions. ([*https://dwavequantum.com/*](https://dwavequantum.com/))
 
 
-      #### **Additional Resource for Practical Quantum Computing**
+      **Note on Published Dates:** The exact publication dates for these developments
+      are not provided in the search results. For the most current information, consider
+      checking the original sources for updates.
 
-      * **D-Wave Systems:** For the latest in practical quantum computing applications
-      and developments, [D-Wave Systems](https://dwavequantum.com/) is a leading resource.
 
+      **Recommendation for Further Reading:**
 
-      **'
+      - For detailed insights into these breakthroughs and to stay updated on the
+      latest in quantum computing, visit the sources provided above and explore related
+      research publications.'
     data:
       search_results:
       - title: D-Wave Systems | The Practical Quantum Computing Company
@@ -89,30 +84,39 @@ natural_language_query:
         text: ''
 direct_search:
   input:
-    tool: search
+    tool: exa_web_search
     tool_arguments:
       search_term: quantum computing breakthroughs 2024
       limit: 5
     raw_data_only: false
   output:
-    response: "**Quantum Computing Breakthroughs: Recent Advancements**\n\nBelow is\
-      \ a curated list of recent quantum computing breakthroughs, based on the provided\
-      \ search results:\n\n### **Summary of Findings:**\n\n* **Multiple Players Involved:**\
-      \ Research advancements are being made by various institutions, with Google\
-      \ specifically mentioned in two instances.\n* **Technological Innovations:**\n\
-      \t+ Quantum computing chip breakthroughs (Google)\n\t+ Utilization of laser\
-      \ beams for quantum computing\n\t+ Development of super-pure silicon chips for\
-      \ powerful quantum computers\n\n### **Detailed Search Results:**\n\n1. **Google\
-      \ Announces Quantum Computing Chip Breakthrough**\n\t* **Source:** TechXplore\n\
-      \t* **URL:** [https://techxplore.com/news/2024-12-google-quantum-chip-breakthrough.html](https://techxplore.com/news/2024-12-google-quantum-chip-breakthrough.html)\n\
-      \t* **Published Date:** Not Available (N/A)\n\n2. **Paving the Way to Quantum\
-      \ Supercomputers**\n\t* **Source:** ScienceDaily\n\t* **URL:** [https://www.sciencedaily.com/releases/2025/02/250205130938.htm](https://www.sciencedaily.com/releases/2025/02/250205130938.htm)\n\
-      \t* **Published Date:** N/A\n\n3. **Researchers Use Laser Beams to Pioneer New\
-      \ Quantum Computing Breakthrough**\n\t* **Source:** Phys.org\n\t* **URL:** [https://phys.org/news/2024-11-laser-quantum-breakthrough.html](https://phys.org/news/2024-11-laser-quantum-breakthrough.html)\n\
-      \t* **Published Date:** N/A\n\n4. **Google Makes New Quantum Computing Breakthrough**\n\
-      \t* **Source:** The New York Times\n\t* **URL:** [https://www.nytimes.com/2024/12/09/technology/google-quantum-computing.html](https://www.nytimes.com/2024/12/09/technology/google-quantum-computing.html)\n\
-      \t* **Published Date:** N/A\n\n5. **New Super-Pure Silicon Chip Opens Path to\
-      \ Powerful Quantum Computers**\n\t* **Source:** ScienceDaily\n\t* **URL:** [https://www.sciencedaily.com/releases/2024/05/240507150004.htm](https://www.sciencedaily.com/releases/2024/"
+    response: "**Direct Tool Call Response: Quantum Computing Breakthroughs**\n\n\
+      ### **Overview**\nRecent breakthroughs in quantum computing are paving the way\
+      \ for the development of powerful quantum supercomputers. Here's a summary of\
+      \ key advancements, along with relevant search results:\n\n### **Key Breakthroughs:**\n\
+      \n1. **Google's Quantum Computing Chip Breakthrough**: Google has announced\
+      \ a significant breakthrough in quantum computing chip technology.\n\t* **Source:**\
+      \ [Google announces quantum computing chip breakthrough](https://techxplore.com/news/2024-12-google-quantum-chip-breakthrough.html)\n\
+      2. **Paving the Way to Quantum Supercomputers**: Researchers are making strides\
+      \ towards the development of quantum supercomputers.\n\t* **Source:** [Paving\
+      \ the way to quantum supercomputers](https://www.sciencedaily.com/releases/2025/02/250205130938.htm)\n\
+      3. **Laser Beams in Quantum Computing**: A new breakthrough utilizes laser beams\
+      \ for quantum computing advancements.\n\t* **Source:** [Researchers use laser\
+      \ beams to pioneer new quantum computing breakthrough](https://phys.org/news/2024-11-laser-quantum-breakthrough.html)\n\
+      4. **Google's Quantum Computing Advancement**: Google has made another significant\
+      \ step forward in quantum computing.\n\t* **Source:** [Google Makes New Quantum\
+      \ Computing Breakthrough](https://www.nytimes.com/2024/12/09/technology/google-quantum-computing.html)\n\
+      5. **Super-Pure Silicon Chip for Quantum Computers**: The development of a new\
+      \ super-pure silicon chip is set to enhance quantum computer power.\n\t* **Source:**\
+      \ [New super-pure silicon chip opens path to powerful quantum computers](https://www.sciencedaily.com/releases/2024/05/240507150004.htm)\n\
+      \n### **Observations:**\n- **Recency:** Breakthroughs are recent, indicating\
+      \ a rapid pace of innovation in quantum computing.\n- **Sources:** Information\
+      \ comes from reputable tech and science news outlets.\n- **Key Players:** Google\
+      \ is prominently featured, showcasing its significant contributions to the field.\n\
+      \n### **Limitations of Current Response:**\n- **Published Dates:** Specific\
+      \ publication dates for the articles are not available in the provided search\
+      \ results.\n- **Detailed Text:** Summaries of the breakthroughs are not included\
+      \ in the search results provided."
     data:
       search_results:
       - title: Google announces quantum computing chip breakthrough
@@ -137,31 +141,27 @@ direct_search:
         text: ''
 direct_answer:
   input:
-    tool: answer
+    tool: exa_answer_question
     tool_arguments:
       question: What is quantum supremacy?
     raw_data_only: false
   output:
-    response: "It looks like you've provided the output of a direct tool call to the\
-      \ answer API for a query related to \"Quantum Supremacy\". Here's a formatted\
-      \ breakdown of the response for clarity and added context:\n\n**Direct Tool\
-      \ Call Response: Quantum Supremacy**\n\n* **Answer:**\n> **Quantum Supremacy**\
-      \ is the achievement of a quantum computer performing a task that classical\
-      \ computers cannot complete in a feasible amount of time.\n\n* **References:**\n\
-      \t1. **Barron's**: [https://www.barrons.com/articles/d-wave-quantum-computing-supremacy-88d7c23a](https://www.barrons.com/articles/d-wave-quantum-computing-supremacy-88d7c23a)\n\
-      \t2. **Wikipedia**: [https://en.wikipedia.org/wiki/Quantum_supremacy](https://en.wikipedia.org/wiki/Quantum_supremacy)\n\
-      \n* **Additional Information (Not Provided by the Tool but Added for Context):**\n\
-      \t+ **Key Concept:** Quantum supremacy is a milestone in the development of\
-      \ quantum computing, marking a point where quantum computers can solve specific\
-      \ problems more efficiently than classical computers.\n\t+ **Notable Achievement:**\
-      \ Google announced achieving quantum supremacy in 2019 with its 53-qubit Sycamore\
-      \ processor, which performed a complex calculation in 200 seconds that would\
-      \ take the world's most powerful supercomputer approximately 10,000 years to\
-      \ accomplish.\n\n* **Sources (Provided by the Tool but Initially Listed as Empty):**\n\
-      \t- The tool indicated an empty list for sources, but references to Barron's\
-      \ and Wikipedia were included in the answer. For future queries, if the 'sources'\
-      \ field is populated, it would typically include:\n\t\t- Source Name\n\t\t-\
-      \ Source URL (already provided in the answer for this query)"
+    response: "It looks like you've provided a response from the \"Direct Answer\"\
+      \ tool. Here's a breakdown and reformatted version of the response for better\
+      \ readability:\n\n**Direct Answer Response**\n\n* **Question (not provided):**\
+      \ Please infer the question based on the response, likely \"What is Quantum\
+      \ Supremacy?\"\n* **Answer:**\n\t+ **Text:** Quantum supremacy is the achievement\
+      \ of a quantum computer performing a task that classical computers cannot complete\
+      \ in a feasible amount of time.\n\t+ **References:**\n\t\t1. **[Barron's](https://www.barrons.com/articles/d-wave-quantum-computing-supremacy-88d7c23a)**\n\
+      \t\t2. **[Wikipedia](https://en.wikipedia.org/wiki/Quantum_supremacy)**\n* **Sources\
+      \ (as provided by the tool):** `[]` (Empty, but references are included in the\
+      \ answer section)\n\n**Reconstructed Response for End-User**\n\n### What is\
+      \ Quantum Supremacy?\n\n**Answer:** Quantum supremacy refers to the achievement\
+      \ of a quantum computer successfully performing a task that is beyond the capabilities\
+      \ of classical computers to complete within a feasible amount of time.\n\n**Learn\
+      \ More:**\n- Read about D-Wave's approach to quantum computing supremacy on\
+      \ [Barron's](https://www.barrons.com/articles/d-wave-quantum-computing-supremacy-88d7c23a)\n\
+      - Explore the concept in-depth on [Wikipedia](https://en.wikipedia.org/wiki/Quantum_supremacy)"
     data:
       answer: Quantum supremacy is the achievement of a quantum computer performing
         a task that classical computers cannot complete in a feasible amount of time
@@ -170,56 +170,56 @@ direct_answer:
       sources: []
 search_and_answer:
   input:
-    tool: search_and_answer
+    tool: exa_search_and_answer
     tool_arguments:
       topic: quantum error correction
     raw_data_only: false
   output:
-    response: "It appears you've provided the output of a direct tool call for a query\
-      \ related to **Quantum Error Correction**. Here's a breakdown and reformatting\
-      \ of the response for clarity, following the guidelines you provided earlier:\n\
-      \n### **Direct Answer**\n\n* **Query:** Quantum Error Correction (Note: The\
-      \ exact query is not provided in the output, but this is inferred from the results)\n\
-      * **Answer (as of March 15, 2025):** Quantum error correction (QEC) is crucial\
-      \ in quantum computing for protecting quantum information from errors due to\
-      \ decoherence and noise. QEC techniques involve encoding logical qubits into\
-      \ multiple physical qubits to detect and correct errors during quantum computations.\n\
-      * **Recent Advancements:**\n\t+ Google's Willow processor demonstrates improved\
-      \ error correction capabilities.\n\t+ Enhancements allow for more robust logical\
-      \ qubits, enhancing computational reliability.\n* **Sources for Recent Advancements:**\n\
-      \t- Wikipedia: [https://en.wikipedia.org/wiki/Quantum_error_correction](https://en.wikipedia.org/wiki/Quantum_error_correction)\n\
-      \t- Riverlane: [https://www.riverlane.com/quantum-error-correction](https://www.riverlane.com/quantum-error-correction)\n\
-      \t- Google Research: [https://research.google/blog/making-quantum-error-correction-work](https://research.google/blog/making-quantum-error-correction-work)\n\
-      \t- Nature: [https://www.nature.com/articles/s41586-024-08449-y](https://www.nature.com/articles/s41586-024-08449-y)\n\
-      \n### **Search Results**\n\n**Note:** The `published_date` for all search results\
-      \ is listed as `N/A`. Sources are primarily academic and research-oriented,\
-      \ indicating a focus on technical depth over general audience content.\n\n1.\
-      \ **Quantum Error Correction for Beginners**\n\t* **URL:** https://arxiv.org/pdf/0905.2794.pdf\n\
-      2. **[Untitled]**\n\t* **URL:** https://arxiv.org/pdf/2304.08678\n3. **Quantum\
-      \ Error Correction For Dummies**\n\t* **URL:** https://arxiv.org/pdf/2304.08678.pdf\n\
-      \t* **Note:** Duplicate content with the untitled entry above.\n4. **The Idiot's\
-      \ Guide to Quantum Error Correction**\n\t* **URL:** https://arxiv.org/abs/0905.2794v3\n\
-      5. **"
+    response: "**Response Summary**\n\n* **Query:** Quantum Error Correction (implied\
+      \ by the tool call)\n* **Direct Answer:**\n\t+ **Overview:** Quantum Error Correction\
+      \ (QEC) is crucial for protecting quantum information from errors due to decoherence\
+      \ and noise.\n\t+ **Mechanism:** QEC works by encoding information to detect\
+      \ and correct errors, often using multiple physical qubits to form a robust\
+      \ logical qubit.\n\t+ **Recent Advancements:**\n\t\t- **Google's Willow Processor:**\
+      \ Demonstrates exponential improvement in error-corrected qubits with scaling.\n\
+      \t\t- **Ongoing Research:** Focuses on developing and implementing various quantum\
+      \ error correction codes for practical quantum computing.\n* **Sources for Recent\
+      \ Advancements:**\n\t+ Google Research\n\t+ Nature\n\t+ Microsoft Learn (Azure\
+      \ Quantum)\n* **Additional Resources (Search Results):**\n\t1. **Quantum Error\
+      \ Correction, an informal introduction** - https://users.physics.ox.ac.uk/~Steane/qec/qec_ams_1.html\n\
+      \t2. **Quantum Error Correction: An Introductory Guide** - https://arxiv.org/pdf/1907.11157.pdf\n\
+      \t3. **Quantum Error Correction** - https://users.physics.ox.ac.uk/~Steane/qec/QECtute.html\n\
+      \t4. **Quantum Error Correction Codes - Azure Quantum** - https://learn.microsoft.com/en-us/azure/quantum/concepts-error-correction\n\
+      \t5. **Quantum Error Correction for Beginners** - https://arxiv.org/pdf/0905.2794.pdf\n\
+      \t6. **Quantum error correction and fault-tolerance** - https://www.quantiki.org/wiki/quantum-error-correction-and-fault-tolerance-0\n\
+      \t7. **The idiots guide to Quantum Error Correction** - \n\t\t* Semantic Scholar:\
+      \ https://www.semanticscholar.org/paper/The-idiots-guide-to-Quantum-Error-Correction-Devitt-Nemoto/4f4dcea6ac04b462bc1bad4469de136f2d353390\n\
+      \t\t* arXiv: https://arxiv.org/abs/0905.2794v1\n\t8. **qecintro3.dvi** - https://www2.physics.ox.ac.uk/sites/default/files/ErrorCorrectionSteane06.pdf\n\
+      \t9. **Quantum Error-Correcting Codes**"
     data:
       search_results:
+      - title: Quantum Error Correction, an informal introduction
+        url: https://users.physics.ox.ac.uk/~Steane/qec/qec_ams_1.html
+        published_date: N/A
+        text: ''
+      - title: 'Quantum Error Correction: An Introductory Guide'
+        url: https://arxiv.org/pdf/1907.11157.pdf
+        published_date: N/A
+        text: ''
+      - title: Quantum Error Correction
+        url: https://users.physics.ox.ac.uk/~Steane/qec/QECtute.html
+        published_date: N/A
+        text: ''
+      - title: Quantum Error Correction Codes - Azure Quantum
+        url: https://learn.microsoft.com/en-us/azure/quantum/concepts-error-correction
+        published_date: N/A
+        text: ''
       - title: Quantum Error Correction for Beginners
         url: https://arxiv.org/pdf/0905.2794.pdf
         published_date: N/A
         text: ''
-      - title: ''
-        url: https://arxiv.org/pdf/2304.08678
-        published_date: N/A
-        text: ''
-      - title: Quantum Error Correction For Dummies
-        url: https://arxiv.org/pdf/2304.08678.pdf
-        published_date: N/A
-        text: ''
-      - title: The idiots guide to Quantum Error Correction
-        url: https://arxiv.org/abs/0905.2794v3
-        published_date: N/A
-        text: ''
-      - title: Quantum computing and error correction
-        url: https://export.arxiv.org/pdf/quant-ph/0304016v2.pdf
+      - title: Quantum error correction and fault-tolerance
+        url: https://www.quantiki.org/wiki/quantum-error-correction-and-fault-tolerance-0
         published_date: N/A
         text: ''
       - title: The idiots guide to Quantum Error Correction | Semantic Scholar
@@ -230,28 +230,27 @@ search_and_answer:
         url: https://www2.physics.ox.ac.uk/sites/default/files/ErrorCorrectionSteane06.pdf
         published_date: N/A
         text: ''
-      - title: Quantum Error Correction
-        url: https://arxiv.org/pdf/1910.03672.pdf
+      - title: Quantum Error-Correcting Codes
+        url: https://www2.perimeterinstitute.ca/personal/dgottesman/QECC.html
         published_date: N/A
         text: ''
-      - title: Quantum error correction for beginners - PubMed
-        url: https://pubmed.ncbi.nlm.nih.gov/23787909/
+      - title: The idiots guide to Quantum Error Correction
+        url: https://arxiv.org/abs/0905.2794v1
         published_date: N/A
         text: ''
-      - title: Introduction to Quantum Error Correction
-        url: https://arxiv.org/pdf/quant-ph/0207170.pdf
-        published_date: N/A
-        text: ''
-      answer: As of March 15, 2025, quantum error correction (QEC) remains a critical
-        area in quantum computing, aimed at protecting quantum information from errors
-        due to decoherence and noise. QEC techniques involve encoding logical qubits
-        into multiple physical qubits, enabling the detection and correction of errors
-        that can occur during quantum computations ([Wikipedia](https://en.wikipedia.org/wiki/Quantum_error_correction),
-        [Riverlane](https://www.riverlane.com/quantum-error-correction)). Recent advancements,
-        such as Google's Willow processor, demonstrate improved error correction capabilities,
-        allowing for more robust logical qubits that enhance computational reliability
-        ([Google Research](https://research.google/blog/making-quantum-error-correction-work),
-        [Nature](https://www.nature.com/articles/s41586-024-08449-y)). These developments
-        are vital for achieving practical quantum computing, as they address the challenges
-        posed by error accumulation in quantum systems.
+      answer: 'As of March 15, 2025, quantum error correction (QEC) remains a critical
+        area in quantum computing, focusing on techniques to protect quantum information
+        from errors caused by decoherence and noise. QEC works by encoding information
+        in a way that allows for the detection and correction of errors, typically
+        by combining multiple physical qubits into a more robust logical qubit ([Wikipedia](https://en.wikipedia.org/wiki/Quantum_error_correction),
+        [Riverlane](https://www.riverlane.com/quantum-error-correction)).
+
+
+        Recent advancements include Google''s development of the Willow processor,
+        which showcases how error-corrected qubits can improve exponentially as they
+        scale up ([Google Research](https://research.google/blog/making-quantum-error-correction-work)).
+        Additionally, research continues to explore various quantum error correction
+        codes and their implementation, which are essential for achieving practical
+        quantum computing capabilities ([Nature](https://www.nature.com/articles/s41586-024-08449-y),
+        [Microsoft Learn](https://learn.microsoft.com/en-us/azure/quantum/concepts-error-correction)).'
       sources: []

@@ -23,7 +23,7 @@ async def run_agent():
 
         # Direct search tool call
         agent_input_search = {
-            "tool": "search",
+            "tool": "exa_web_search",
             "tool_arguments": {"search_term": "quantum computing breakthroughs 2024", "limit": 5},
             "raw_data_only": False,
         }
@@ -31,7 +31,7 @@ async def run_agent():
 
         # Direct answer tool call
         agent_input_answer = {
-            "tool": "answer",
+            "tool": "exa_answer_question",
             "tool_arguments": {"question": "What is quantum supremacy?"},
             "raw_data_only": False,
         }
@@ -39,7 +39,7 @@ async def run_agent():
 
         # Combined search and answer tool call
         agent_input_combined = {
-            "tool": "search_and_answer",
+            "tool": "exa_search_and_answer",
             "tool_arguments": {"topic": "quantum error correction"},
             "raw_data_only": False,
         }
