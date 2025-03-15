@@ -173,7 +173,7 @@ class ExaSearchAgent(MeshAgent):
         """
         try:
             url = f"{self.base_url}/search"
-            payload = {"query": search_term, "numResults": limit, "text": True}  # API still uses 'query'
+            payload = {"query": search_term, "numResults": limit, "contents": {"text": True}}
 
             response = requests.post(url, json=payload, headers=self.headers)
             response.raise_for_status()
