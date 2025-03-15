@@ -195,7 +195,8 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
     @with_cache(ttl_seconds=300)
     async def search_mentions(self, keywords: List[str], days_ago: int = 30, limit: int = 20) -> Dict:
         if limit < 20:
-            raise ValueError("Limit must be at least 20")
+            limit = 20
+            # raise ValueError("Limit must be at least 20")
 
         try:
             end_time = int(time.time())
