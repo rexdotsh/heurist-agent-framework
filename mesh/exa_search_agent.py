@@ -173,7 +173,7 @@ class ExaSearchAgent(MeshAgent):
         """
         try:
             url = f"{self.base_url}/search"
-            payload = {"query": search_term, "limit": limit}  # API still uses 'query'
+            payload = {"query": search_term, "numResults": limit, "text": True}  # API still uses 'query'
 
             response = requests.post(url, json=payload, headers=self.headers)
             response.raise_for_status()
@@ -187,9 +187,7 @@ class ExaSearchAgent(MeshAgent):
                         "title": result.get("title", "N/A"),
                         "url": result.get("url", "N/A"),
                         "published_date": result.get("published_date", "N/A"),
-                        "text": result.get("text", "")[:500] + "..."
-                        if len(result.get("text", "")) > 500
-                        else result.get("text", ""),
+                        "text": result.get("text", "")
                     }
                 )
 
