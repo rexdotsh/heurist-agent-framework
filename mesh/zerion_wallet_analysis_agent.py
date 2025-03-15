@@ -65,7 +65,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
         - Highlight the most valuable holdings
         - Note any significant price changes in the last 24 hours
         - Identify any interesting or rare tokens or NFT collections if present
-        - Don't mention any date that is not provided
+        - Don't mention any data that is not provided or missing
         """
 
     def get_tool_schemas(self) -> List[Dict]:
