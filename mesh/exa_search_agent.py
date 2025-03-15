@@ -92,7 +92,7 @@ class ExaSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search",
-                    "description": "Search for webpages related to a query",
+                    "description": "Search for webpages related to a query. This tool performs a web search and returns relevant results including titles, snippets, and URLs. It's useful for finding up-to-date information on any topic, but may fail to find information of niche topics such like small cap crypto projects. Use this when you need to gather information from across the web.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -110,7 +110,7 @@ class ExaSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "answer",
-                    "description": "Get a direct answer to a question using Exa's answer API",
+                    "description": "Get a direct answer to a question using Exa's answer API. This tool provides concise, factual answers to specific questions by searching and analyzing content from across the web. Use this when you need a direct answer to a specific question rather than a list of search results. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {"question": {"type": "string", "description": "The question to answer"}},
@@ -122,7 +122,7 @@ class ExaSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_and_answer",
-                    "description": "Perform both search and answer operations for a query",
+                    "description": "This tool combines web search with direct natrual language question answering to provide comprehensive results. It first searches the web for relevant information, then synthesizes that information into a direct answer. Use this when you need both a direct answer and supporting search results for a topic. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {

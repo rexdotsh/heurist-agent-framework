@@ -21,21 +21,25 @@ async def run_agent():
         }
         agent_output = await agent.handle_message(agent_input)
 
-        # Example for direct execute_search tool
+        # Example for direct execute_web_search tool
         agent_input_search = {
-            "tool": "execute_search",
+            "tool": "execute_web_search",
             "tool_arguments": {"search_term": "zero knowledge proofs recent advancements"},
             "raw_data_only": False,
         }
         agent_output_search = await agent.handle_message(agent_input_search)
 
-        # Example for generate_queries tool
-        agent_input_queries = {
-            "tool": "generate_queries",
-            "tool_arguments": {"topic": "zero knowledge proofs", "num_queries": 3},
+        # Example for extract_web_data tool
+        agent_input_extract = {
+            "tool": "extract_web_data",
+            "tool_arguments": {
+                "urls": ["https://ethereum.org/en/zero-knowledge-proofs/"],
+                "extraction_prompt": "Extract information about how zero knowledge proofs are being used in blockchain technology",
+                "enable_web_search": False
+            },
             "raw_data_only": False,
         }
-        agent_output_queries = await agent.handle_message(agent_input_queries)
+        agent_output_extract = await agent.handle_message(agent_input_extract)
 
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
@@ -45,7 +49,7 @@ async def run_agent():
         yaml_content = {
             "natural_language_query": {"input": agent_input, "output": agent_output},
             "direct_search": {"input": agent_input_search, "output": agent_output_search},
-            "generate_queries": {"input": agent_input_queries, "output": agent_output_queries},
+            "extract_web_data": {"input": agent_input_extract, "output": agent_output_extract}
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

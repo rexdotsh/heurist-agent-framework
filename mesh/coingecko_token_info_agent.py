@@ -92,7 +92,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_coingecko_id",
-                    "description": "Search for a token by name to get its CoinGecko ID",
+                    "description": "Search for a token by name to get its CoinGecko ID. This tool helps you find the correct CoinGecko ID for any cryptocurrency when you only know its name or symbol. The CoinGecko ID is required for fetching detailed token information using other CoinGecko tools. Use this when you need to look up a token's identifier before requesting more detailed information. You can skip this tool if you have the CoinGecko ID already.",
                     "parameters": {
                         "type": "object",
                         "properties": {"token_name": {"type": "string", "description": "The token name to search for"}},
@@ -104,7 +104,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_info",
-                    "description": "Get detailed token information and market data using CoinGecko ID (you can't use the token address or name or symbol)",
+                    "description": "Get detailed token information and market data using CoinGecko ID. This tool provides comprehensive cryptocurrency data including current price, market cap, trading volume, price changes, supply information, and more. Use this when you need up-to-date information of a specific cryptocurrency. Note that you must use the token's CoinGecko ID (not its symbol or address) - you can find this ID using the get_coingecko_id tool if needed.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -118,7 +118,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_trending_coins",
-                    "description": "Get the current top trending cryptocurrencies on CoinGecko",
+                    "description": "Get the current top trending cryptocurrencies on CoinGecko. This tool retrieves a list of the most popular cryptocurrencies based on trading volume and social media mentions. It provides key information about each trending coin such as name, symbol, market cap rank, and price data. Use this when you want to discover which cryptocurrencies are currently gaining the most attention in the market. Data is sourced directly from CoinGecko and represents real-time trends.",
                     "parameters": {
                         "type": "object",
                         "properties": {},
@@ -287,29 +287,17 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "name": data.get("name", "N/A"),
                 "symbol": data.get("symbol", "N/A").upper(),
                 "market_cap_rank": data.get("market_cap_rank", "N/A"),
-                "categories": data.get("categories", []),
-                "description": data.get("description", {}).get("en", "N/A"),
-            },
-            "market_metrics": {
-                "current_price_usd": market_data.get("current_price", {}).get("usd", "N/A"),
-                "market_cap_usd": market_data.get("market_cap", {}).get("usd", "N/A"),
-                "fully_diluted_valuation_usd": market_data.get("fully_diluted_valuation", {}).get("usd", "N/A"),
-                "total_volume_usd": market_data.get("total_volume", {}).get("usd", "N/A"),
-            },
-            "price_metrics": {
-                "ath_usd": market_data.get("ath", {}).get("usd", "N/A"),
-                "ath_change_percentage": market_data.get("ath_change_percentage", {}).get("usd", "N/A"),
-                "ath_date": market_data.get("ath_date", {}).get("usd", "N/A"),
-                "high_24h_usd": market_data.get("high_24h", {}).get("usd", "N/A"),
-                "low_24h_usd": market_data.get("low_24h", {}).get("usd", "N/A"),
+                "current_price": market_data.get("current_price", {}).get("usd", "N/A"),
+                "market_cap": market_data.get("market_cap", {}).get("usd", "N/A"),
+                "total_volume": market_data.get("total_volume", {}).get("usd", "N/A"),
+                "high_24h": market_data.get("high_24h", {}).get("usd", "N/A"),
+                "low_24h": market_data.get("low_24h", {}).get("usd", "N/A"),
                 "price_change_24h": market_data.get("price_change_24h", "N/A"),
                 "price_change_percentage_24h": market_data.get("price_change_percentage_24h", "N/A"),
-            },
-            "supply_info": {
+                "circulating_supply": market_data.get("circulating_supply", "N/A"),
                 "total_supply": market_data.get("total_supply", "N/A"),
                 "max_supply": market_data.get("max_supply", "N/A"),
-                "circulating_supply": market_data.get("circulating_supply", "N/A"),
-            },
+            }
         }
 
     # ------------------------------------------------------------------------
@@ -322,58 +310,40 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         A single method that calls the appropriate function, handles
         errors/formatting, and optionally calls the LLM to explain the result.
         """
-        temp_for_explanation = 0.7 if tool_name != "get_trending_coins" else 0.3
-
         if tool_name == "get_trending_coins":
-            logger.info("Getting trending coins")
             result = await self.get_trending_coins()
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
-
-        elif tool_name == "get_coingecko_id":
-            token_name = function_args.get("token_name")
-            if not token_name:
-                return {"error": "Missing 'token_name' in tool_arguments"}
-            logger.info(f"Getting coingecko id for {function_args.get('token_name')}")
-
-            raw_id_result = await self.get_coingecko_id(token_name)
-            if isinstance(raw_id_result, dict) and "error" in raw_id_result:
-                return raw_id_result
-
-            # raw_id_result is presumably just the string id
-            coingecko_id = raw_id_result
         elif tool_name == "get_token_info":
-            coingecko_id = function_args.get("coingecko_id")
-            if not coingecko_id:
-                return {"error": "Missing 'coingecko_id' in tool_arguments"}
+            result = await self.get_token_info(function_args["coingecko_id"])
+        elif tool_name == "get_coingecko_id":
+            result = await self.get_coingecko_id(function_args["token_name"])
+            if isinstance(result, str):
+                result = {"coingecko_id": result}
+            elif result is None:
+                result = {"error": f"No token found for {function_args['token_name']}"}
         else:
-            return {"error": f"Unsupported tool '{tool_name}'"}
+            return {"error": f"Unsupported tool: {tool_name}"}
 
-        logger.info(f"Getting token info by Coingecko ID for {coingecko_id}")
+        error = self._handle_error(result)
+        if error:
+            return error
 
-        token_info = await self.get_token_info(coingecko_id)
-        errors = self._handle_error(token_info)
-        if errors:
-            return errors
+        # Format the token information if we're returning token info
+        if tool_name == "get_token_info":
+            result = self.format_token_info(result)
 
-        formatted_data = self.format_token_info(token_info)
-
+        # If raw data only is requested, return just the data
         if raw_data_only:
-            return {"response": "", "data": formatted_data}
+            return {"response": "", "data": result}
 
+        # Default temperature: higher for more creative responses
+        temp = 0.7
+
+        # Generate an explanation using the LLM
         explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=formatted_data, temperature=temp_for_explanation
+            query=query, tool_call_id=tool_call_id, data=result, temperature=temp
         )
-        return {"response": explanation, "data": formatted_data}
+
+        return {"response": explanation, "data": result}
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -392,14 +362,10 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            # For a direct tool call, we do NOT use call_llm_with_tools_async
-            # We simply call our helper. We'll pass an empty `query` or something placeholder
-            # if user hasn't given a `query`.
-            # We'll also pass tool_call_id = "direct_tool" for consistency.
             return await self._handle_tool_logic(
                 tool_name=tool_name,
                 function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
+                query=query or "Direct tool call without LLM",
                 tool_call_id="direct_tool",
                 raw_data_only=raw_data_only,
             )
@@ -420,16 +386,15 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
             if not response:
                 return {"error": "Failed to process query"}
+
             if not response.get("tool_calls"):
                 # No tool calls => the LLM just answered
                 return {"response": response["content"], "data": {}}
 
-            # LLM provided a single tool call (or the first if multiple).
             tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            # Use the same _handle_tool_logic
             return await self._handle_tool_logic(
                 tool_name=tool_call_name,
                 function_args=tool_call_args,
@@ -438,7 +403,4 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 raw_data_only=raw_data_only,
             )
 
-        # ---------------------
-        # 3) NEITHER query NOR tool
-        # ---------------------
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}

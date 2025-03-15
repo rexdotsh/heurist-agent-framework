@@ -72,7 +72,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_trading_info",
-                    "description": "Get detailed token trading information using Solana mint address",
+                    "description": "Get detailed token trading information using Solana mint address. This tool fetches trading data including volume, price movements, and liquidity for any Solana token. Use this when you need to analyze a specific Solana token's market performance. Data comes from Bitquery API and only works with valid Solana token addresses.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -86,7 +86,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_top_trending_tokens",
-                    "description": "Get the current top trending tokens on Solana",
+                    "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem. Data comes from Bitquery API and is updated regularly.",
                     "parameters": {
                         "type": "object",
                         "properties": {},

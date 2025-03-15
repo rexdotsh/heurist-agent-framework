@@ -56,34 +56,22 @@ class FirecrawlSearchAgent(MeshAgent):
 
         Your capabilities:
         1. Execute targeted web searches on specific topics
-        2. Generate multiple related search queries for comprehensive research
-        3. Analyze search results for key findings and patterns
-
-        When analyzing results, focus on:
-        - Key findings and main themes
-        - Information completeness
-        - Emerging patterns and trends
-        - Potential biases or conflicts
+        2. Analyze search results for key findings and patterns
 
         For search results:
         1. Only use relevant, good quality, credible information
         2. Extract key facts and statistics
         3. Present the information like a human, not a robot
 
-        For query generation:
-        1. Break down complex topics into focused sub-queries
-        2. Consider different aspects and perspectives. Be diverse.
-        3. Prioritize specific, targeted questions
-
-        Return analyses in clear, structured formats with concrete findings. Do not make up any information."""
+        Return analyses in clear natural language with concrete findings. Do not make up any information."""
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
             {
                 "type": "function",
                 "function": {
-                    "name": "execute_search",
-                    "description": "Execute a web search query by reading the web pages",
+                    "name": "execute_web_search",
+                    "description": "Execute a web search query by reading the web pages. It provides more comprehensive information than standard web search by extracting the full contents from the pages. Use this when you need in-depth information on a topic. Data comes from Firecrawl search API. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {"search_term": {"type": "string", "description": "The search term to execute"}},
@@ -94,19 +82,27 @@ class FirecrawlSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "generate_queries",
-                    "description": "Generate related search queries for a topic that can expand the research",
+                    "name": "extract_web_data",
+                    "description": "Extract structured data from one or multiple web pages using natural language instructions. This tool can process single URLs or entire domains (using wildcards like example.com/*). Use this when you need specific information from websites rather than general search results. You must specify what data to extract from the pages using the 'extraction_prompt' parameter.",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "topic": {"type": "string", "description": "The main topic to research"},
-                            "num_queries": {
-                                "type": "number",
-                                "description": "Number of queries to generate",
-                                "default": 3,
+                            "urls": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "List of URLs to extract data from. Can include wildcards (e.g., 'example.com/*') to crawl entire domains."
                             },
+                            "extraction_prompt": {
+                                "type": "string",
+                                "description": "Natural language description of what data to extract from the pages."
+                            },
+                            # "enable_web_search": {
+                            #     "type": "boolean",
+                            #     "description": "When true, extraction can follow links outside the specified domain.",
+                            #     "default": False
+                            # }
                         },
-                        "required": ["topic"],
+                        "required": ["urls", "extraction_prompt"],
                     },
                 },
             },
@@ -140,7 +136,7 @@ class FirecrawlSearchAgent(MeshAgent):
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def execute_search(self, query: str) -> Dict:
+    async def execute_web_search(self, query: str) -> Dict:
         """Execute a search with error handling"""
         try:
             response = await asyncio.get_event_loop().run_in_executor(
@@ -172,41 +168,35 @@ class FirecrawlSearchAgent(MeshAgent):
             logger.error(f"Search error: {e}")
             return {"error": f"Failed to execute search: {str(e)}"}
 
-    @with_cache(ttl_seconds=3600)
-    async def generate_queries(self, topic: str, num_queries: int = 3) -> Dict:
-        """Generate multiple search queries for comprehensive research"""
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def extract_web_data(self, urls: List[str], extraction_prompt: str, enable_web_search: bool = False) -> Dict:
+        """Extract structured data from web pages using natural language instructions"""
         try:
-            prompt = f"""Generate {num_queries} specific search queries to research this topic thoroughly: {topic}
-
-            Format each query with:
-            1. The actual search query
-            2. The specific research goal it addresses
-
-            Return as JSON array of objects with 'query' and 'research_goal' fields."""
-
-            response = await call_llm_async(
-                base_url=self.heurist_base_url,
-                api_key=self.heurist_api_key,
-                model_id=self.metadata["small_model_id"],
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a research query generator. Generate specific, targeted search queries for comprehensive topic research.",
-                    },
-                    {"role": "user", "content": prompt},
-                ],
-                temperature=0.7,
+            response = await asyncio.get_event_loop().run_in_executor(
+                None, 
+                lambda: self.app.extract(
+                    urls=urls, 
+                    params={
+                        "prompt": extraction_prompt,
+                        "enableWebSearch": enable_web_search
+                    }
+                )
             )
-
-            try:
-                queries = json.loads(response)
-                return {"queries": queries[:num_queries]}
-            except json.JSONDecodeError:
-                return {"queries": [{"query": topic, "research_goal": "Main topic research"}]}
-
+            
+            if isinstance(response, dict):
+                if "data" in response:
+                    return response
+                elif "success" in response and response.get("success"):
+                    return {"data": response.get("data", {})}
+                else:
+                    return {"error": "Extraction failed", "details": response}
+            else:
+                return {"data": response}
+                
         except Exception as e:
-            logger.error(f"Query generation error: {e}")
-            return {"error": f"Failed to generate queries: {str(e)}"}
+            logger.error(f"Extraction error: {e}")
+            return {"error": f"Failed to extract data: {str(e)}"}
 
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
@@ -216,22 +206,23 @@ class FirecrawlSearchAgent(MeshAgent):
     ) -> Dict[str, Any]:
         """Handle execution of specific tools and format responses"""
 
-        if tool_name == "execute_search":
+        if tool_name == "execute_web_search":
             search_term = function_args.get("search_term")
             if not search_term:
                 return {"error": "Missing 'search_term' in tool_arguments"}
 
-            result = await self.execute_search(search_term)
-
-        elif tool_name == "generate_queries":
-            topic = function_args.get("topic")
-            num_queries = function_args.get("num_queries", 3)
-
-            if not topic:
-                return {"error": "Missing 'topic' in tool_arguments"}
-
-            result = await self.generate_queries(topic, num_queries)
-
+            result = await self.execute_web_search(search_term)
+        elif tool_name == "extract_web_data":
+            urls = function_args.get("urls")
+            extraction_prompt = function_args.get("extraction_prompt")
+            enable_web_search = function_args.get("enable_web_search", False)
+            
+            if not urls:
+                return {"error": "Missing 'urls' in tool_arguments"}
+            if not extraction_prompt:
+                return {"error": "Missing 'extraction_prompt' in tool_arguments"}
+                
+            result = await self.extract_web_data(urls, extraction_prompt, enable_web_search)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 

@@ -101,7 +101,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_mentions",
-                    "description": "Search for mentions of specific tokens or topics on Twitter by smart influencers",
+                    "description": "Search for mentions of specific tokens or topics on Twitter. This tool finds discussions about cryptocurrencies, blockchain projects, or other topics of interest. It provides the tweets and mentions of smart accounts (influential ones) and does not contain all tweets. Use this when you want to understand what influential people are saying about a particular token or topic on Twitter. Data comes from ELFA API and can search up to several weeks of historical tweets.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -129,7 +129,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_account",
-                    "description": "Analyze a Twitter account by searching for mentions by smart accounts and account stats",
+                    "description": "Search for a Twitter account with both mention search and account statistics. This tool provides engagement metrics, follower growth, and mentions by smart users. It does not contain all tweets, but only those of influential users. It also identifies the topics and cryptocurrencies they frequently discuss. Data comes from ELFA API and can analyze several weeks of historical activity.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -153,11 +153,15 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_trending_tokens",
-                    "description": "Get current trending tokens on Twitter",
+                    "description": "Get current trending tokens on Twitter. This tool identifies which cryptocurrencies and tokens are generating the most buzz on Twitter right now. The results include token names, their relative popularity, and sentiment indicators. Use this when you want to discover which cryptocurrencies are currently being discussed most actively on social media. Data comes from ELFA API and represents real-time trends.",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "time_window": {"type": "string", "description": "Time window to analyze", "default": "24h"}
+                            "time_window": {
+                                "type": "string",
+                                "description": "Time window to analyze",
+                                "default": "24h",
+                            }
                         },
                     },
                 },
