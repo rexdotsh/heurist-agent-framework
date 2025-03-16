@@ -15,14 +15,14 @@ class Firecrawl:
         self.app = FirecrawlApp(api_key=api_key, api_url=api_url)
         self._last_request_time = 0  # Track the last request time
 
-    async def search(self, query: str, timeout: int = 15000, limit: int = 5) -> SearchResponse:
+    async def search(self, query: str, timeout: int = 15000, rate_limit: int = 1) -> SearchResponse:
         """Search using Firecrawl SDK in a thread pool to keep it async."""
         try:
             # Add rate limiting delay
             current_time = asyncio.get_event_loop().time()
             time_since_last_request = current_time - self._last_request_time
-            if time_since_last_request < 6:
-                await asyncio.sleep(6 - time_since_last_request)
+            if time_since_last_request < rate_limit:
+                await asyncio.sleep(rate_limit - time_since_last_request)
 
             # Update last request time
             self._last_request_time = asyncio.get_event_loop().time()

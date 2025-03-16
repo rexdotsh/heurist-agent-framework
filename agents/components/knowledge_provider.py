@@ -1,38 +1,40 @@
 import json
 import logging
-from typing import Dict, List, Optional, Any
+from typing import List
 
-from core.embedding import get_embedding, MessageData
+from core.embedding import MessageData, get_embedding
 
 logger = logging.getLogger(__name__)
 
+
 class KnowledgeProvider:
     """Manages knowledge storage and retrieval"""
-    
+
     def __init__(self, message_store):
         self.message_store = message_store
-        
+
+    def get_embedding(self, message: str) -> List[float]:
+        return get_embedding(message)
+
     async def get_knowledge_context(self, message: str, message_embedding: List[float]) -> str:
         """
         Get knowledge base data from the message embedding
         """
         if message_embedding is None:
             message_embedding = get_embedding(message)
-            
+
         system_prompt_context = ""
         knowledge_base_data = self.message_store.find_similar_messages(
-            message_embedding, 
-            threshold=0.6, 
-            message_type="knowledge_base"
+            message_embedding, threshold=0.6, message_type="knowledge_base"
         )
-        
+
         logger.info(f"Found {len(knowledge_base_data)} relevant items from knowledge base")
-        
+
         if knowledge_base_data:
             system_prompt_context = "\n\nConsider the Following As Facts and use them to answer the question if applicable and relevant:\nKnowledge base data:\n"
             for data in knowledge_base_data:
                 system_prompt_context += f"{data['message']}\n"
-                
+
         return system_prompt_context
 
     async def update_knowledge_base(self, json_file_path: str = "data/data.json") -> None:
@@ -92,15 +94,15 @@ class KnowledgeProvider:
                         original_embedding=None,
                         response_type=None,
                         key_topics=None,
-                        tool_call=None
+                        tool_call=None,
                     )
                 )
 
             logger.info(f"Successfully updated knowledge base from {json_file_path}")
-            
+
         except FileNotFoundError:
             logger.error(f"Knowledge base file not found: {json_file_path}")
         except json.JSONDecodeError:
             logger.error(f"Invalid JSON format in knowledge base file: {json_file_path}")
         except Exception as e:
-            logger.error(f"Error updating knowledge base: {str(e)}") 
+            logger.error(f"Error updating knowledge base: {str(e)}")

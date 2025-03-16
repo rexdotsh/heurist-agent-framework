@@ -14,7 +14,13 @@ class AugmentedLLMCall:
         self.llm_provider = llm_provider
 
     async def process(
-        self, message: str, personality_provider=None, chat_id: str = None, workflow_options: Dict = None, **kwargs
+        self,
+        message: str,
+        system_prompt: str = None,
+        personality_provider=None,
+        chat_id: str = None,
+        workflow_options: Dict = None,
+        **kwargs,
     ) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
         """Process message using RAG + tools"""
 
@@ -22,6 +28,7 @@ class AugmentedLLMCall:
         options = {
             "use_knowledge": True,
             "use_conversation": True,
+            "store_interaction": True,
             "use_similar": True,
             "use_tools": True,
             "max_tokens": None,
@@ -35,14 +42,19 @@ class AugmentedLLMCall:
             options.update(workflow_options)
 
         # Get message embedding if not provided
-        message_embedding = kwargs.get("embedding")
-
-        # Build system prompt components
-        system_prompt = ""
+        message_embedding = None
 
         # Add personality if provided
-        if personality_provider:
+        if personality_provider and system_prompt is not None:
             system_prompt = personality_provider.get_formatted_personality()
+
+            # Generate embedding if needed
+        message_embedding = None
+        if options["use_knowledge"] or options["use_similar"]:
+            try:
+                message_embedding = self.conversation_provider.get_embedding(message)
+            except Exception as e:
+                logger.error(f"Failed to generate embedding: {str(e)}")
 
         # Get knowledge context if enabled
         if options["use_knowledge"] and message_embedding:
@@ -78,7 +90,7 @@ class AugmentedLLMCall:
             )
 
             # Store interaction if needed
-            if not kwargs.get("skip_store", False) and chat_id:
+            if options["store_interaction"] and chat_id:
                 metadata = kwargs.get("metadata", {})
                 if tool_back:
                     metadata["tool_call"] = tool_back

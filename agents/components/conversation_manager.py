@@ -13,6 +13,9 @@ class ConversationManager:
     def __init__(self, message_store):
         self.message_store = message_store
 
+    def get_embedding(self, message: str) -> List[float]:
+        return get_embedding(message)
+
     async def get_conversation_context(self, chat_id: str, limit: int = 10) -> str:
         """Get conversation history context"""
         if not chat_id:

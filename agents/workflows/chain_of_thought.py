@@ -9,9 +9,10 @@ logger = logging.getLogger(__name__)
 class ChainOfThoughtReasoning:
     """Chain of thought reasoning pattern"""
 
-    def __init__(self, llm_provider, tool_manager):
+    def __init__(self, llm_provider, tool_manager, augmented_llm):
         self.llm_provider = llm_provider
         self.tool_manager = tool_manager
+        self.augmented_llm = augmented_llm
 
     async def process(
         self, message: str, personality_provider=None, chat_id: str = None, workflow_options: Dict = None, **kwargs
@@ -24,6 +25,10 @@ class ChainOfThoughtReasoning:
             "planning_temperature": 0.1,
             "execution_temperature": 0.7,
             "final_temperature": 0.7,
+            "use_conversation": False,
+            "use_knowledge": False,
+            "use_similar": False,
+            "store_interaction": False,
         }
 
         # Override with provided options
@@ -77,11 +82,25 @@ class ChainOfThoughtReasoning:
                     </SYSTEM_PROMPT>"""
 
             # Get planning steps
-            text_response, _, _ = await self.llm_provider.call(
+            # text_response, _, _ = await self.llm_provider.call(
+            #     system_prompt=planning_prompt,
+            #     user_prompt=message_info,
+            #     temperature=options["planning_temperature"],
+            #     skip_tools=True,
+            # )
+            allm_options = {
+                "use_conversation": options["use_conversation"],
+                "use_knowledge": options["use_knowledge"],
+                "use_similar": options["use_similar"],
+                "store_interaction": options["store_interaction"],
+                "use_tools": True,
+            }
+            text_response, _, _ = await self.augmented_llm.process(
+                message=message_info,
                 system_prompt=planning_prompt,
-                user_prompt=message_info,
+                chat_id=chat_id,
                 temperature=options["planning_temperature"],
-                skip_tools=True,
+                workflow_options=allm_options,
             )
 
             # Parse the JSON response

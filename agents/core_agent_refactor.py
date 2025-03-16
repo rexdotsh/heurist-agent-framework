@@ -18,14 +18,7 @@ from agents.components.validation_manager import ValidationManager
 from agents.tools import Tools
 from agents.workflows.augmented_llm import AugmentedLLMCall
 from agents.workflows.chain_of_thought import ChainOfThoughtReasoning
-from core.embedding import (
-    MessageStore,
-    PostgresConfig,
-    PostgresVectorStorage,
-    SQLiteConfig,
-    SQLiteVectorStorage,
-    get_embedding,
-)
+from core.embedding import MessageStore, PostgresConfig, PostgresVectorStorage, SQLiteConfig, SQLiteVectorStorage
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -75,7 +68,7 @@ class CoreAgent(BaseAgent):
             self.knowledge_provider, self.conversation_manager, self.tools, self.llm_provider
         )
 
-        self.chain_of_thought = ChainOfThoughtReasoning(self.llm_provider, self.tools)
+        self.chain_of_thought = ChainOfThoughtReasoning(self.llm_provider, self.tools, self.augmented_llm)
 
         # Interface management
         self.interfaces = {}
@@ -116,14 +109,6 @@ class CoreAgent(BaseAgent):
             logger.info(f"Message failed pre-validation, skipping: {message[:100]}...")
             return None, None, None
 
-        # Generate embedding if needed
-        message_embedding = None
-        if not skip_embedding:
-            try:
-                message_embedding = get_embedding(message)
-            except Exception as e:
-                logger.error(f"Failed to generate embedding: {str(e)}")
-
         # Override system prompt if provided
         if system_prompt is None:
             system_prompt = self.personality_provider.get_formatted_personality()
@@ -132,6 +117,7 @@ class CoreAgent(BaseAgent):
         workflow_options = {
             "use_knowledge": not skip_embedding,
             "use_conversation": not skip_conversation_context,
+            "store_interaction": not skip_embedding,
             "use_similar": not skip_similar,
             "use_tools": not skip_tools,
             "max_tokens": max_tokens,
@@ -146,7 +132,6 @@ class CoreAgent(BaseAgent):
             personality_provider=self.personality_provider,
             chat_id=chat_id,
             workflow_options=workflow_options,
-            embedding=message_embedding,
             metadata={"message_type": message_type, "source_interface": source_interface},
             agent=self,
             **kwargs,
@@ -183,14 +168,6 @@ class CoreAgent(BaseAgent):
             logger.info(f"Message failed pre-validation, skipping: {message[:100]}...")
             return None, None, None
 
-        # Generate embedding if needed
-        message_embedding = None
-        if not skip_embedding:
-            try:
-                message_embedding = get_embedding(message)
-            except Exception as e:
-                logger.error(f"Failed to generate embedding: {str(e)}")
-
         # Override system prompt if provided
         if system_prompt is None:
             system_prompt = self.personality_provider.get_formatted_personality()
@@ -199,6 +176,7 @@ class CoreAgent(BaseAgent):
         workflow_options = {
             "use_knowledge": not skip_embedding,
             "use_conversation": not skip_conversation_context,
+            "store_interaction": not skip_embedding,
             "use_similar": not skip_similar,
             "use_tools": not skip_tools,
             "max_tokens": max_tokens,
@@ -254,7 +232,6 @@ class CoreAgent(BaseAgent):
                 personality_provider=self.personality_provider,
                 chat_id=chat_id,
                 workflow_options=workflow_options,
-                embedding=message_embedding,
                 metadata={"message_type": message_type, "source_interface": source_interface},
                 agent=self,
                 conversation_provider=self.conversation_manager,
@@ -268,7 +245,6 @@ class CoreAgent(BaseAgent):
                 personality_provider=self.personality_provider,
                 chat_id=chat_id,
                 workflow_options=workflow_options,
-                embedding=message_embedding,
                 metadata={"message_type": message_type, "source_interface": source_interface},
                 agent=self,
                 **kwargs,
