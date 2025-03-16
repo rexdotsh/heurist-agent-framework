@@ -51,7 +51,7 @@ class ExaSearchAgent(MeshAgent):
                     {"name": "data", "description": "Structured search results or direct answer data.", "type": "dict"},
                 ],
                 "external_apis": ["Exa.ai"],
-                "tags": ["Search", "Data"],
+                "tags": ["Internet Search"],
             }
         )
 
@@ -91,8 +91,8 @@ class ExaSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "search",
-                    "description": "Search for webpages related to a query",
+                    "name": "exa_web_search",
+                    "description": "Search for webpages related to a query using Exa search. This tool performs a web search and returns relevant results including titles, snippets, and URLs. It's useful for finding up-to-date information on any topic, but may fail to find information of niche topics such like small cap crypto projects. Use this when you need to gather information from across the web.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -109,8 +109,8 @@ class ExaSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "answer",
-                    "description": "Get a direct answer to a question using Exa's answer API",
+                    "name": "exa_answer_question",
+                    "description": "Get a direct answer to a question using Exa's answer API. This tool provides concise, factual answers to specific questions by searching and analyzing content from across the web. Use this when you need a direct answer to a specific question rather than a list of search results. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {"question": {"type": "string", "description": "The question to answer"}},
@@ -121,8 +121,8 @@ class ExaSearchAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "search_and_answer",
-                    "description": "Perform both search and answer operations for a query",
+                    "name": "exa_search_and_answer",
+                    "description": "This tool combines web search with direct natrual language question answering to provide comprehensive results. It first searches the web for relevant information, then synthesizes that information into a direct answer. Use this when you need both a direct answer and supporting search results for a topic. It may fail to find information of niche topics such like small cap crypto projects.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -173,7 +173,7 @@ class ExaSearchAgent(MeshAgent):
         """
         try:
             url = f"{self.base_url}/search"
-            payload = {"query": search_term, "limit": limit}  # API still uses 'query'
+            payload = {"query": search_term, "numResults": limit, "contents": {"text": True}}
 
             response = requests.post(url, json=payload, headers=self.headers)
             response.raise_for_status()
@@ -187,9 +187,7 @@ class ExaSearchAgent(MeshAgent):
                         "title": result.get("title", "N/A"),
                         "url": result.get("url", "N/A"),
                         "published_date": result.get("published_date", "N/A"),
-                        "text": result.get("text", "")[:500] + "..."
-                        if len(result.get("text", "")) > 500
-                        else result.get("text", ""),
+                        "text": result.get("text", "")
                     }
                 )
 
@@ -260,7 +258,7 @@ class ExaSearchAgent(MeshAgent):
         # Default temperature for explanations
         temp_for_explanation = 0.7
 
-        if tool_name == "search":
+        if tool_name == "exa_web_search":
             search_term = function_args.get("search_term")
             limit = function_args.get("limit", 10)
 
@@ -281,7 +279,7 @@ class ExaSearchAgent(MeshAgent):
             )
             return {"response": explanation, "data": result}
 
-        elif tool_name == "answer":
+        elif tool_name == "exa_answer_question":
             question = function_args.get("question")
 
             if not question:
@@ -301,7 +299,7 @@ class ExaSearchAgent(MeshAgent):
             )
             return {"response": explanation, "data": result}
 
-        elif tool_name == "search_and_answer":
+        elif tool_name == "exa_search_and_answer":
             topic = function_args.get("topic")
 
             if not topic:

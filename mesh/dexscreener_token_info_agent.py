@@ -105,7 +105,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_pairs",
-                    "description": "Search for trading pairs on DexScreener by token name, symbol, or address",
+                    "description": "Search for trading pairs on decentralized exchanges by token name, symbol, or address. This tool helps you find specific trading pairs across multiple DEXs and blockchains. It returns information about the pairs including price, volume, liquidity, and the exchanges where they're available. Data comes from DexScreener and covers major DEXs on most blockchains. The search results may be incomplete if the token is not traded on any of the supported chains.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -122,7 +122,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_specific_pair_info",
-                    "description": "Get trading pair info by chain and pair address on DexScreener",
+                    "description": "Get detailed information about a specific trading pair on a decentralized exchange by chain and pair address. This tool provides comprehensive data about a DEX trading pair including current price, 24h volume, liquidity, price changes, and trading history. Data comes from DexScreener and is updated in real-time. You must specify both the blockchain and the exact pair contract address. The pair address is the LP contract address, not the quote token address.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -140,7 +140,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_pairs",
-                    "description": "Get the trading pairs by chain and token address on DexScreener",
+                    "description": "Get all trading pairs for a specific token across decentralized exchanges by chain and token address. This tool retrieves a comprehensive list of all DEX pairs where the specified token is traded on a particular blockchain. It provides data on each pair including the paired token, exchange, price, volume, and liquidity. Data comes from DexScreener and is updated in real-time. You must specify both the blockchain and the exact token contract address.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -161,7 +161,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_profiles",
-                    "description": "Get the basic info of the latest tokens from DexScreener",
+                    "description": "Get the basic info of the latest tokens from DexScreener. This tool is useful when you want to get a list of recently launched tokens.",
                 },
             },
         ]
@@ -310,35 +310,33 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         A single method that calls the appropriate function, handles
         errors/formatting, and optionally calls the LLM to explain the result.
         """
-        temp = 0.3 if tool_name == "get_token_profiles" else 0.7
+        temp = 0.7
 
         if tool_name == "search_pairs":
-            result_data = await self.search_pairs(function_args["search_term"])
+            result = await self.search_pairs(function_args["search_term"])
         elif tool_name == "get_specific_pair_info":
-            result_data = await self.get_specific_pair_info(
-                chain=function_args["chain"], pair_address=function_args["pair_address"]
+            result = await self.get_specific_pair_info(
+                function_args["chain"], function_args["pair_address"]
             )
         elif tool_name == "get_token_pairs":
-            result_data = await self.get_token_pairs(
-                chain=function_args["chain"], token_address=function_args["token_address"]
-            )
+            result = await self.get_token_pairs(function_args["chain"], function_args["token_address"])
         elif tool_name == "get_token_profiles":
-            result_data = await self.get_token_profiles()
+            result = await self.get_token_profiles()
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 
-        errors = self._handle_error(result_data)
+        errors = self._handle_error(result)
         if errors:
             return errors
 
         if raw_data_only:
-            return {"response": "", "data": result_data}
+            return {"response": "", "data": result}
 
         explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=result_data, temperature=temp
+            query=query, tool_call_id=tool_call_id, data=result, temperature=temp
         )
 
-        return {"response": explanation, "data": result_data}
+        return {"response": explanation, "data": result}
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -360,7 +358,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             return await self._handle_tool_logic(
                 tool_name=tool_name,
                 function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
+                query=query or "Direct tool call without LLM",
                 tool_call_id="direct_tool",
                 raw_data_only=raw_data_only,
             )
@@ -401,149 +399,110 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
 
 
-# ------------------------- Helper Functions ------------------------- #
-
-
+# External API Utilities
 def fetch_dex_pairs(search_term: str) -> Dict:
     """
-    Fetches trading pair information from DexScreener API.
+    Fetch DEX pairs from DexScreener API based on a search term.
 
     Args:
         search_term (str): Search term (token name, symbol, or address)
 
     Returns:
-        Dict: Processed pair information with status
+        Dict: Status and pairs data or error message
     """
     try:
-        response = requests.get(
-            f"https://api.dexscreener.com/latest/dex/search/?q={search_term}",
-            headers={},
-        )
-
-        if response.status_code != 200:
-            return {
-                "status": "error",
-                "error": f"Query failed with status code {response.status_code}: {response.text}",
-            }
+        url = f"https://api.dexscreener.com/latest/dex/search?q={search_term}"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
 
         data = response.json()
+        if "pairs" in data and data["pairs"]:
+            return {"status": "success", "pairs": data["pairs"]}
+        else:
+            return {"status": "no_data", "error": "No matching pairs found", "pairs": []}
 
-        if not data.get("pairs"):
-            return {"status": "no_data", "error": "No pairs found for this query"}
-
-        # Limit the number of pairs
-        limit = 5
-        pairs = data["pairs"][:limit] if len(data["pairs"]) > limit else data["pairs"]
-
-        return {"status": "success", "pairs": pairs}
-
-    except Exception as e:
-        return {"status": "error", "error": f"Failed to fetch pairs: {str(e)}"}
+    except requests.RequestException as e:
+        return {"status": "error", "error": f"API request failed: {str(e)}", "pairs": []}
 
 
 def fetch_pair_info(chain: str, pair_address: str) -> Dict:
     """
-    Fetches detailed information for a specific trading pair from DexScreener API.
+    Fetch detailed information for a specific trading pair.
 
     Args:
-        chain (str): Chain identifier (e.g., 'solana, bsc, base, ethereum...')
-        pair_address (str): Pair contract address
+        chain (str): Chain identifier (e.g., solana, bsc, ethereum)
+        pair_address (str): The pair contract address
 
     Returns:
-        Dict: Pair information with status and data
+        Dict: Status and pair data or error message
     """
     try:
-        response = requests.get(
-            f"https://api.dexscreener.com/latest/dex/pairs/{chain}/{pair_address}",
-            headers={},
-        )
-
-        if response.status_code != 200:
-            return {
-                "status": "error",
-                "error": f"Query failed with status code {response.status_code}: {response.text}",
-            }
+        url = f"https://api.dexscreener.com/latest/dex/pairs/{chain}/{pair_address}"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
 
         data = response.json()
-        pairs = data.get("pairs", [])
+        if "pairs" in data and data["pairs"] and len(data["pairs"]) > 0:
+            return {"status": "success", "pair": data["pairs"][0]}
+        else:
+            return {"status": "no_data", "error": "No matching pair found"}
 
-        # Get first matching pair
-        matching_pair = next(
-            (pair for pair in pairs if pair.get("pairAddress", "").lower() == pair_address.lower()), None
-        )
-
-        if matching_pair:
-            return {"status": "success", "pair": matching_pair}
-
-        return {"status": "success", "message": "No matching pair found"}
-
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+    except requests.RequestException as e:
+        return {"status": "error", "error": f"API request failed: {str(e)}"}
 
 
 def fetch_token_pairs(chain: str, token_address: str) -> Dict:
     """
-    Fetches all trading pairs for a specific token on a given chain from DexScreener API.
+    Fetch trading pairs for a specific token on a chain.
 
     Args:
         chain (str): Chain identifier (e.g., solana, bsc, ethereum)
         token_address (str): Token contract address
 
     Returns:
-        Dict: Trading pairs information for the token
+        Dict: Status and pairs data or error message
     """
     try:
-        response = requests.get(
-            f"https://api.dexscreener.com/tokens/v1/{chain}/{token_address}",
-            headers={},
-        )
+        url = f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
 
-        if response.status_code != 200:
-            return {
-                "status": "error",
-                "error": f"Query failed with status code {response.status_code}: {response.text}",
-            }
+        data = response.json()
+        if "pairs" in data and data["pairs"]:
+            # Filter pairs by chain if specified
+            if chain and chain.lower() != "all":
+                pairs = [pair for pair in data["pairs"] if pair.get("chainId") == chain.lower()]
+            else:
+                pairs = data["pairs"]
 
-        pairs = response.json()
+            if pairs:
+                return {"status": "success", "pairs": pairs}
+            else:
+                return {"status": "no_data", "error": f"No pairs found for token on chain {chain}", "pairs": []}
+        else:
+            return {"status": "no_data", "error": "No pairs found for token", "pairs": []}
 
-        if not pairs:
-            return {"status": "no_data", "error": "No pairs found for this token"}
-
-        # Limit the number of pairs
-        limit = 5
-        limited_pairs = pairs[:limit] if len(pairs) > limit else pairs
-
-        return {"status": "success", "pairs": limited_pairs}
-    except Exception as e:
-        return {"status": "error", "error": f"Failed to fetch token pairs: {str(e)}"}
+    except requests.RequestException as e:
+        return {"status": "error", "error": f"API request failed: {str(e)}", "pairs": []}
 
 
 def fetch_token_profiles() -> Dict:
     """
-    Fetches the latest token profiles from DexScreener API.
+    Fetch the latest token profiles from DexScreener.
 
     Returns:
-        Dict: Token profiles information with status
+        Dict: Status and profiles data or error message
     """
     try:
-        response = requests.get(
-            "https://api.dexscreener.com/token-profiles/latest/v1",
-            headers={},
-        )
-
-        if response.status_code != 200:
-            return {
-                "status": "error",
-                "error": f"Query failed with status code {response.status_code}: {response.text}",
-            }
+        url = "https://api.dexscreener.com/latest/dex/tokens"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
 
         data = response.json()
+        if "profiles" in data and data["profiles"]:
+            return {"status": "success", "profiles": data["profiles"]}
+        else:
+            return {"status": "no_data", "error": "No token profiles available", "profiles": []}
 
-        limit = 5
-        # Limit the number of profiles
-        profiles = data[:limit] if len(data) > limit else data
-
-        return {"status": "success", "profiles": profiles}
-
-    except Exception as e:
-        return {"status": "error", "error": f"Failed to fetch token profiles: {str(e)}"}
+    except requests.RequestException as e:
+        return {"status": "error", "error": f"API request failed: {str(e)}", "profiles": []}

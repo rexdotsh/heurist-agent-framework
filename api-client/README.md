@@ -173,14 +173,13 @@ The Mesh API provides access to a growing ecosystem of specialized AI agents:
 | AlloraPricePredictionAgent   | ETH/BTC price predictions with confidence intervals    |
 | BitquerySolanaTokenInfoAgent | Solana token trading data and trending tokens          |
 | CoinGeckoTokenInfoAgent      | Token information, market data, and trending coins     |
-| DeepResearchAgent            | Recursive exploration and comprehensive topic research |
 | DexScreenerTokenInfoAgent    | Real-time DEX trading data across multiple chains      |
-| DuckDuckGoSearchAgent        | Web search with content relevance assessment           |
+| ExaSearchAgent               | Web search with content relevance assessment           |
 | ElfaTwitterIntelligenceAgent | Twitter mentions and trends for crypto tokens          |
 | FirecrawlSearchAgent         | Advanced search with intelligent query analysis        |
-| TokenContractSecurityAgent   | Security analysis of blockchain token contracts        |
-| MasaTwitterSearchAgent       | Twitter search and result analysis                     |
+| GoplusAnalysisAgent          | Security analysis of blockchain token contracts        |
 | PumpFunTokenAgent            | Solana token analysis with market cap and holder data  |
 | ZkIgniteAnalystAgent         | zkSync Era DeFi analysis with yield and TVL data       |
+| ZerionWalletAnalysisAgent    | Token and NFT holdings of a crypto wallet              |
 
 For a complete and up-to-date list of available agents and their capabilities, visit the [Mesh Agents Metadata Endpoint](https://mesh.heurist.ai/mesh_agents_metadata.json).

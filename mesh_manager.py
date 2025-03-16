@@ -4,7 +4,11 @@ import os
 import re
 import sys
 import time
-from datetime import UTC, datetime
+try:
+    from datetime import UTC, datetime
+except ImportError:
+    from datetime import timezone, datetime
+    UTC = timezone.utc
 from importlib import import_module
 from pathlib import Path
 from pkgutil import iter_modules
