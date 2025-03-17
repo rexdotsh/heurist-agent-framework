@@ -15,7 +15,7 @@ from agents.components.llm_provider import LLMProvider
 from agents.components.media_handler import MediaHandler
 from agents.components.personality_provider import PersonalityProvider
 from agents.components.validation_manager import ValidationManager
-from agents.tools import Tools
+from agents.tools_mcp import Tools
 from agents.workflows.augmented_llm import AugmentedLLMCall
 from agents.workflows.chain_of_thought import ChainOfThoughtReasoning
 from core.embedding import MessageStore, PostgresConfig, PostgresVectorStorage, SQLiteConfig, SQLiteVectorStorage
@@ -79,6 +79,9 @@ class CoreAgent(BaseAgent):
         """Register a communication interface"""
         with self._lock:
             self.interfaces[name] = interface
+
+    async def initialize(self):
+        await self.tools.initialize()
 
     async def handle_message(
         self,

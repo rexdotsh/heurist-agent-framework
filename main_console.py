@@ -13,6 +13,8 @@ async def main():
     print("Type 'exit' to quit")
     print("-" * 50)
 
+    await agent.initialize()
+
     while True:
         # Get user input
         user_message = input("\nYou: ").strip()
@@ -23,7 +25,7 @@ async def main():
 
         try:
             # Process the message using the core agent
-            response = await agent.smart_message(
+            response = await agent.handle_message(
                 message=user_message,
                 source_interface="terminal",
                 chat_id="console1",

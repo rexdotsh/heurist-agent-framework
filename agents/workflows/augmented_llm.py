@@ -16,7 +16,7 @@ class AugmentedLLMCall:
     async def process(
         self,
         message: str,
-        system_prompt: str = None,
+        system_prompt: str = "",
         personality_provider=None,
         chat_id: str = None,
         workflow_options: Dict = None,
@@ -45,11 +45,9 @@ class AugmentedLLMCall:
         message_embedding = None
 
         # Add personality if provided
-        if personality_provider and system_prompt is not None:
+        if personality_provider and system_prompt != "":
             system_prompt = personality_provider.get_formatted_personality()
 
-            # Generate embedding if needed
-        message_embedding = None
         if options["use_knowledge"] or options["use_similar"]:
             try:
                 message_embedding = self.conversation_provider.get_embedding(message)
