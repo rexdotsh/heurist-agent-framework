@@ -23,7 +23,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "DexScreener Token Info Agent",
+                "name": "DexScreener Agent",
                 "version": "1.0.0",
                 "author": "dyt9qc",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -53,7 +53,9 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     {"name": "data", "description": "Structured token/pair data from DexScreener", "type": "dict"},
                 ],
                 "external_apis": ["DexScreener"],
-                "tags": ["DeFi", "Trading", "Multi-chain", "DEX"],
+                "tags": ["DeFi", "Trading"],
+                "recommended": True,
+                "image_url": "" # use dexscreener logo
             }
         )
 

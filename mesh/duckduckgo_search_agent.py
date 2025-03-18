@@ -17,7 +17,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "DuckDuckGo Search Agent",
+                "name": "DuckDuckGo Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -51,7 +51,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
                     {"name": "data", "description": "The raw search results data", "type": "dict"},
                 ],
                 "external_apis": ["DuckDuckGo"],
-                "tags": ["Search", "Data"],
+                "tags": ["Search"],
+                "image_url": "" # use a duckduckgo logo
             }
         )
 

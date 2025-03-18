@@ -258,7 +258,9 @@ class ZkIgniteAnalystAgent(MeshAgent):
                 "outputs": [{"name": "response", "description": "Analysis results", "type": "str"}],
                 "large_model_id": "anthropic/claude-3.5-haiku",
                 "external_apis": ["Merkl", "DefiLlama"],
-                "tags": ["DeFi", "Yield Farming", "ZKsync", "Reasoning"],
+                "tags": ["DeFi", "Yield Farming", "ZKsync"],
+                "image_url": "",
+                "hidden": True
             }
         )
 

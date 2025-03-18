@@ -36,7 +36,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "ELFA Twitter Intelligence Agent",
+                "name": "Elfa Twitter Agent",
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -64,8 +64,10 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                     },
                     {"name": "data", "description": "Structured data from ELFA API", "type": "dict"},
                 ],
-                "external_apis": ["ELFA"],
-                "tags": ["Social", "Twitter", "Analysis"],
+                "external_apis": ["Elfa"],
+                "tags": ["Social", "Twitter"],
+                "recommended": True,
+                "image_url": "" # use the logo of elfa
             }
         )
 

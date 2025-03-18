@@ -19,7 +19,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "Zerion Wallet Analysis Agent",
+                "name": "Zerion Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "description": "This agent can fetch and analyze the token and NFT holdings of a crypto wallet (must be EVM chain)",
@@ -43,7 +43,9 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     {"name": "data", "description": "The wallet details", "type": "dict"},
                 ],
                 "external_apis": ["Zerion"],
-                "tags": ["Crypto", "Wallet", "Analysis"],
+                "tags": ["Onchain Data"],
+                "recommended": True,
+                "image_url": "" # use the logo of zerion
             }
         )
         

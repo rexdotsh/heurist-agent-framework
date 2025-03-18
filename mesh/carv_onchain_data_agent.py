@@ -24,7 +24,7 @@ class CarvOnchainDataAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "CARV Onchain Data Agent",
+                "name": "CARV Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -57,8 +57,8 @@ class CarvOnchainDataAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["CARV"],
-                "tags": ["Blockchain", "On-chain Data", "Analytics"],
-                "mcp_tool_name": "query_onchain_data",
+                "tags": ["Onchain Data"],
+                "image_url": "" # use carv logo
             }
         )
 
