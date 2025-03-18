@@ -46,7 +46,9 @@ class FirecrawlSearchAgent(MeshAgent):
                     {"name": "data", "description": "Structured search results and metadata", "type": "dict"},
                 ],
                 "external_apis": ["Firecrawl"],
-                "tags": ["Internet Search"],
+                "tags": ["Search"],
+                "recommended": True,
+                "image_url": "" # use the logo of firecrawl
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))

@@ -20,7 +20,7 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "MetaSleuth Solana Token Wallet Cluster Agent",
+                "name": "MetaSleuth Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "description": "This agent can analyze Solana token wallets and their clusters using the MetaSleuth API.",
@@ -44,7 +44,8 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
                     {"name": "data", "description": "The token wallet cluster details", "type": "dict"},
                 ],
                 "external_apis": ["MetaSleuth"],
-                "tags": ["Solana", "Data Analysis", "Wallet Clusters"],
+                "tags": ["Solana", "Onchain Data"],
+                "image_url": "" # use the logo of metasleuth
             }
         )
         self.base_url = "https://bot.metasleuth.io"

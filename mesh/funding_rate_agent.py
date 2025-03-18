@@ -19,7 +19,7 @@ class FundingRateAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "Coinsider Funding Rate Agent",
+                "name": "Funding Rate Agent",
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -52,7 +52,8 @@ class FundingRateAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["Coinsider"],
-                "tags": ["Trading", "Arbitrage", "Funding Rates"],
+                "tags": ["Trading", "Arbitrage"],
+                "image_url": "" # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
             }
         )
 

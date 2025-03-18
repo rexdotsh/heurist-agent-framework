@@ -50,8 +50,10 @@ class ExaSearchAgent(MeshAgent):
                     },
                     {"name": "data", "description": "Structured search results or direct answer data.", "type": "dict"},
                 ],
-                "external_apis": ["Exa.ai"],
-                "tags": ["Internet Search"],
+                "external_apis": ["Exa"],
+                "tags": ["Search"],
+                "recommended": True,
+                "image_url": "" # use the logo of exa
             }
         )
 
