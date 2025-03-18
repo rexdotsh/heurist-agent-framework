@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional
 import dotenv
 
 from agents.tools import Tools
+from agents.tools_mcp import Tools as ToolsMCP
 from core.config import PromptConfig
 from core.embedding import (
     EmbeddingError,
@@ -51,6 +52,8 @@ class CoreAgent:
     def __init__(self):
         self.prompt_config = PromptConfig()
         self.tools = Tools()
+        self.tools_mcp = ToolsMCP()
+        self.tools_mcp_initialized = False
         self.interfaces = {}
         self._message_queue = Queue()
         self._lock = threading.Lock()
@@ -73,6 +76,10 @@ class CoreAgent:
             storage = SQLiteVectorStorage(config)
 
         self.message_store = MessageStore(storage)
+
+    async def initialize(self, server_url: str = "http://localhost:8000/sse"):
+        await self.tools_mcp.initialize(server_url=server_url)
+        self.tools_mcp_initialized = True
 
     def register_interface(self, name, interface):
         with self._lock:
@@ -379,6 +386,10 @@ class CoreAgent:
 
             system_prompt += system_prompt_context
 
+            tools_config = self.tools.get_tools_config()
+            if self.tools_mcp_initialized:
+                tools_config += self.tools_mcp.get_tools_config()
+
             if not skip_tools:
                 response = call_llm_with_tools(
                     HEURIST_BASE_URL,
@@ -388,7 +399,7 @@ class CoreAgent:
                     user_prompt=message,
                     temperature=temperature,
                     max_tokens=max_tokens,
-                    tools=self.tools.get_tools_config(),
+                    tools=tools_config,
                     tool_choice=tool_choice,
                 )
             else:
@@ -422,9 +433,21 @@ class CoreAgent:
                 args = json.loads(tool_call.function.arguments)
                 tool_name = tool_call.function.name
                 available_tools = [t["function"]["name"] for t in self.tools.get_tools_config()]
+                mcp_tools = [t["function"]["name"] for t in self.tools_mcp.get_tools_config()]
                 if tool_name in available_tools:
                     logger.info(f"Executing tool {tool_name} with args {args}")
                     tool_result = await self.tools.execute_tool(tool_name, args, self)
+                    if tool_result:
+                        print("tool_result: ", tool_result)
+                        if "image_url" in tool_result:
+                            image_url = tool_result["image_url"]
+                        if "result" in tool_result:
+                            text_response += f"\n{tool_result['result']}"
+                        if "tool_call" in tool_result:
+                            tool_back = tool_result["tool_call"]
+                elif self.tools_mcp_initialized and tool_name in mcp_tools:
+                    logger.info(f"Executing tool {tool_name} with args {args}")
+                    tool_result = await self.tools_mcp.execute_tool(tool_name, args, self)
                     if tool_result:
                         print("tool_result: ", tool_result)
                         if "image_url" in tool_result:
