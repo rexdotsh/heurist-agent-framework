@@ -29,3 +29,4 @@ smolagents==1.9.2
 pre-commit>=3.6.0
 ruff>=0.9.10
 isort>=5.13.2
+mcp>=1.4.0
