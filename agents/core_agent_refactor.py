@@ -80,8 +80,8 @@ class CoreAgent(BaseAgent):
         with self._lock:
             self.interfaces[name] = interface
 
-    async def initialize(self):
-        await self.tools.initialize()
+    async def initialize(self, mcp_url: str = "http://localhost:8000/sse"):
+        await self.tools.initialize(mcp_url=mcp_url)
 
     async def handle_message(
         self,
