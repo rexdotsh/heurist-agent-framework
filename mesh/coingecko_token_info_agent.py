@@ -3,6 +3,7 @@ import logging
 import os
 from typing import Any, Dict, List
 
+from openai import AsyncOpenAI
 import requests
 
 from core.llm import call_llm_async, call_llm_with_tools_async
@@ -56,6 +57,8 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "external_apis": ["Coingecko"],
                 "tags": ["Trading"],
                 "recommended": True,
+                "large_model_id": "google/gemini-2.0-flash-001",
+                "small_model_id": "google/gemini-2.0-flash-001",
                 "image_url": "" # use coingecko logo
             }
         )
@@ -123,7 +126,12 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     "description": "Get the current top trending cryptocurrencies on CoinGecko. This tool retrieves a list of the most popular cryptocurrencies based on trading volume and social media mentions. It provides key information about each trending coin such as name, symbol, market cap rank, and price data. Use this when you want to discover which cryptocurrencies are currently gaining the most attention in the market. Data is sourced directly from CoinGecko and represents real-time trends.",
                     "parameters": {
                         "type": "object",
-                        "properties": {},
+                        "properties": {
+                            "_dummy": {
+                                "type": "string",
+                                "description": "Dummy parameter to satisfy schema requirements"
+                            }
+                        },
                         "required": [],
                     },
                 },
@@ -145,8 +153,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
         if not valid_tokens:
             return None
-
-        logger.info(f"valid_tokens: {valid_tokens}")
 
         # Create prompt for token selection
         token_selection_prompt = f"""Given the search query "{query}" and these token results:
@@ -348,7 +354,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         return {"response": explanation, "data": result}
 
     @monitor_execution()
-    @with_retry(max_retries=3)
+    #@with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
@@ -376,33 +382,86 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
         # ---------------------
         if query:
-            response = await call_llm_with_tools_async(
-                base_url=self.heurist_base_url,
-                api_key=self.heurist_api_key,
-                model_id=self.metadata["large_model_id"],
-                system_prompt=self.get_system_prompt(),
-                user_prompt=query,
+            # Step 1: First call to determine tool selection
+            client = AsyncOpenAI(base_url=self.heurist_base_url, api_key=self.heurist_api_key)
+            messages = [
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query}
+            ]
+            
+            initial_response = await client.chat.completions.create(
+                model=self.metadata["large_model_id"],
+                messages=messages,
                 temperature=0.1,
                 tools=self.get_tool_schemas(),
+                tool_choice="auto"
             )
 
-            if not response:
-                return {"error": "Failed to process query"}
+            print(f"initial_response: {initial_response}")
 
-            if not response.get("tool_calls"):
-                # No tool calls => the LLM just answered
-                return {"response": response["content"], "data": {}}
-
-            tool_call = response["tool_calls"]
+            # Check if the model wants to use a tool. If not, just return the content.
+            if not initial_response.choices[0].message.tool_calls:
+                return {"response": initial_response.choices[0].message.content, "data": {}}
+            
+            # Extract tool call information
+            tool_call = initial_response.choices[0].message.tool_calls[0]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
+            
+            # Call the appropriate function based on the tool choice
+            if tool_call_name == "get_trending_coins":
+                result = await self.get_trending_coins()
+            elif tool_call_name == "get_token_info":
+                result = await self.get_token_info(tool_call_args["coingecko_id"])
+                if not isinstance(result, dict) or "error" not in result:
+                    result = self.format_token_info(result)
+            elif tool_call_name == "get_coingecko_id":
+                result = await self.get_coingecko_id(tool_call_args["token_name"])
+                if isinstance(result, str):
+                    result = {"coingecko_id": result}
+                elif result is None:
+                    result = {"error": f"No token found for {tool_call_args['token_name']}"}
+            else:
+                return {"error": f"Unsupported tool: {tool_call_name}"}
+            
+            error = self._handle_error(result)
+            if error:
+                return error
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            if raw_data_only:
+                return {"response": "", "data": result}
+            
+            # Add the assistant message with tool call
+            assistant_message = {
+                "role": "assistant",
+                "content": initial_response.choices[0].message.content or "",
+                "tool_calls": [
+                    {
+                        "id": tool_call.id,
+                        "type": tool_call.type,
+                        "function": {
+                            "name": tool_call.function.name,
+                            "arguments": tool_call.function.arguments
+                        }
+                    }
+                ]
+            }
+            messages.append(assistant_message)
+            
+            # Add the tool response
+            messages.append({
+                "role": "tool",
+                "content": json.dumps(result),
+                "tool_call_id": tool_call.id
+            })
+            
+            # Step 2: Second call to generate the final response
+            final_response = await client.chat.completions.create(
+                model=self.metadata["large_model_id"],
+                messages=messages,
+                temperature=0.7
             )
+            
+            return {"response": final_response.choices[0].message.content, "data": result}
 
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
