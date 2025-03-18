@@ -46,6 +46,7 @@ Want to contribute your own agent? Check out the [Mesh README](./mesh/README.md)
 
 | Agent ID | Description | Available Tools | Source Code | External APIs |
 |----------|-------------|-----------------|-------------|---------------|
+| AaveAgent | This agent can fetch reserve data from Aave v3 protocols with details on liquidity, borrowing rates, and more | • get_aave_reserves | [Source](./mesh/aave_agent.py) | Aave v3 |
 | AlloraPricePredictionAgent | This agent can fetch price predictions for ETH/BTC with confidence intervals from Allora price prediction API | • get_allora_prediction | [Source](./mesh/allora_price_prediction_agent.py) | Allora |
 | BitquerySolanaTokenInfoAgent | This agent can fetch Solana token trading data and trending tokens from Bitquery. | • get_token_trading_info<br>• get_top_trending_tokens | [Source](./mesh/bitquery_solana_token_info_agent.py) | Bitquery |
 | CarvOnchainDataAgent | This agent can query on-chain data from multiple blockchains using natural language through the CARV API. | • query_onchain_data | [Source](./mesh/carv_onchain_data_agent.py) | CARV |
