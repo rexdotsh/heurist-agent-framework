@@ -13,7 +13,7 @@ async def main():
     print("Type 'exit' to quit")
     print("-" * 50)
 
-    await agent.initialize()
+    await agent.initialize("http://localhost:8000/sse")
 
     while True:
         # Get user input
