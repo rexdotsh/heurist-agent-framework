@@ -17,7 +17,7 @@ async def run_agent():
         # Test search_pairs tool
         agent_input = {
             "tool": "search_pairs",
-            "tool_arguments": {"search_term": "ETH"},  # Changed from "query" to "search_term"
+            "tool_arguments": {"search_term": "ETH"},
             "raw_data_only": False,  # Set to True if you only want raw data without LLM analysis
         }
         agent_output = await agent.handle_message(agent_input)
@@ -39,14 +39,6 @@ async def run_agent():
         agent_output_pairs = await agent.handle_message(agent_input_pairs)
         print(f"Result of get_token_pairs: {agent_output_pairs}")
 
-        # Test get_token_profiles tool
-        agent_input_profiles = {
-            "tool": "get_token_profiles",
-            "tool_arguments": {},  # No arguments needed for this tool
-        }
-        agent_output_profiles = await agent.handle_message(agent_input_profiles)
-        print(f"Result of get_token_profiles: {agent_output_profiles}")
-
         # Save the test inputs and outputs to a YAML file
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
@@ -57,7 +49,6 @@ async def run_agent():
             "search_pairs_test": {"input": agent_input, "output": agent_output},
             "specific_pair_info_test": {"input": agent_input_pair_info, "output": agent_output_pair_info},
             "token_pairs_test": {"input": agent_input_pairs, "output": agent_output_pairs},
-            "token_profiles_test": {"input": agent_input_profiles, "output": agent_output_profiles},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

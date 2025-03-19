@@ -55,7 +55,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "external_apis": ["DexScreener"],
                 "tags": ["DeFi", "Trading"],
                 "recommended": True,
-                "image_url": "" # use dexscreener logo
+                "image_url": "",  # use dexscreener logo
             }
         )
 
@@ -157,13 +157,6 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         },
                         "required": ["chain", "token_address"],
                     },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_token_profiles",
-                    "description": "Get the basic info of the latest tokens from DexScreener. This tool is useful when you want to get a list of recently launched tokens.",
                 },
             },
         ]
@@ -283,25 +276,6 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         except Exception as e:
             return {"status": "error", "error": f"Failed to get token pairs: {str(e)}", "data": None}
 
-    @with_cache(ttl_seconds=300)
-    async def get_token_profiles(self) -> Dict:
-        """
-        Get the latest token profiles from DexScreener.
-
-        Returns:
-            Dict: Latest token profiles with status
-        """
-        try:
-            result = fetch_token_profiles()
-
-            if result["status"] == "success":
-                return {"status": "success", "data": {"profiles": result["profiles"]}}
-
-            return {"status": result["status"], "error": result.get("error", "Unknown error occurred"), "data": None}
-
-        except Exception as e:
-            return {"status": "error", "error": f"Failed to get token profiles: {str(e)}", "data": None}
-
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
@@ -317,13 +291,9 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         if tool_name == "search_pairs":
             result = await self.search_pairs(function_args["search_term"])
         elif tool_name == "get_specific_pair_info":
-            result = await self.get_specific_pair_info(
-                function_args["chain"], function_args["pair_address"]
-            )
+            result = await self.get_specific_pair_info(function_args["chain"], function_args["pair_address"])
         elif tool_name == "get_token_pairs":
             result = await self.get_token_pairs(function_args["chain"], function_args["token_address"])
-        elif tool_name == "get_token_profiles":
-            result = await self.get_token_profiles()
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 
@@ -486,25 +456,3 @@ def fetch_token_pairs(chain: str, token_address: str) -> Dict:
 
     except requests.RequestException as e:
         return {"status": "error", "error": f"API request failed: {str(e)}", "pairs": []}
-
-
-def fetch_token_profiles() -> Dict:
-    """
-    Fetch the latest token profiles from DexScreener.
-
-    Returns:
-        Dict: Status and profiles data or error message
-    """
-    try:
-        url = "https://api.dexscreener.com/latest/dex/tokens"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-
-        data = response.json()
-        if "profiles" in data and data["profiles"]:
-            return {"status": "success", "profiles": data["profiles"]}
-        else:
-            return {"status": "no_data", "error": "No token profiles available", "profiles": []}
-
-    except requests.RequestException as e:
-        return {"status": "error", "error": f"API request failed: {str(e)}", "profiles": []}
