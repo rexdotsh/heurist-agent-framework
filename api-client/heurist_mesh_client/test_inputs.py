@@ -42,8 +42,8 @@ TOOL_TEST_INPUTS = {
     "FirecrawlSearchAgent": {
         "firecrawl_web_search": {"search_term": "What are the latest developments in zero knowledge proofs?"},
         "firecrawl_extract_web_data": {
-            "urls": ["https://ethereum.org"],
-            "extraction_prompt": "Extract information about Ethereum's roadmap",
+            "urls": ["https://ethereum.org/en/zero-knowledge-proofs/"],
+            "extraction_prompt": "Extract information about how zero knowledge proofs are being used in blockchain technology",
         },
     },
     "FundingRateAgent": {
