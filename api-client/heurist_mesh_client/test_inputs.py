@@ -15,8 +15,8 @@ TOOL_TEST_INPUTS = {
         "query_onchain_data": {"blockchain": "ethereum", "query": "Show me the latest transactions for this address"}
     },
     "CoinGeckoTokenInfoAgent": {
-        "get_coingecko_id": {"token_name": "matic-network"},
-        "get_token_info": {"coingecko_id": "matic-network"},
+        "get_coingecko_id": {"token_name": "ethereum"},
+        "get_token_info": {"coingecko_id": "ethereum"},
         "get_trending_coins": {},
     },
     "DeepResearchAgent": {"deep_research": {"query": "What is the total value locked in Aave v3?"}},
