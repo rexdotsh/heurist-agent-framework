@@ -1,218 +1,125 @@
 input_by_id:
   query: Get information about MONA
 output_by_id:
-  response: "**Token Information: MONA (Monavale)**\n\n### **Token Overview**\n\n\
-    * **Name:** Monavale\n* **Symbol:** MONA\n* **Market Cap Rank:** 5,174\n* **Categories:**\n\
-    \t+ NFT\n\t+ Metaverse\n\t+ Polygon Ecosystem\n\t+ Ethereum Ecosystem\n* **Description:**\
-    \ MONA is the native ERC-20 token for the DIGITALAX platform, serving as both\
-    \ a utility token and part of the platform's governance.\n\n### **Market Metrics**\n\
-    \n* **Current Price (USD):** $25.30\n* **Market Cap (USD):** $264,589\n* **Fully\
-    \ Diluted Valuation (USD):** $285,943\n* **Total Volume (USD) (24h):** $177.56\n\
-    \n### **Price Metrics**\n\n* **All-Time High (USD):** $2,843.59\n* **ATH Change\
-    \ Percentage:** -99.10992%\n* **ATH Date:** March 20, 2021, 03:07:37 UTC\n* **24h\
-    \ High (USD):** $26.02\n* **24h Low (USD):** $25.11\n* **24h Price Change:** -$0.27829510519087\n\
-    * **24h Price Change Percentage:** -1.08781%\n\n### **Supply Information**\n\n\
-    * **Total Supply:** 11,300.0\n* **Max Supply:** 11,300.0\n* **Circulating Supply:**\
-    \ 10,456.12756878095\n\n---\n\n**Note:** The data provided is subject to the snapshot\
-    \ in time when the query was executed. Cryptocurrency markets are highly volatile,\
-    \ so prices and rankings may have changed since the last update. For the most\
-    \ current information, please query again or refer to a real-time cryptocurrency\
-    \ data source."
-  data:
-    token_info:
-      name: Monavale
-      symbol: MONA
-      market_cap_rank: 5174
-      categories:
-      - NFT
-      - Metaverse
-      - Polygon Ecosystem
-      - Ethereum Ecosystem
-      description: 'MONA is the native ERC-20 token for the DIGITALAX platform. It
-        is the platform''s utility token and also serves as part of the platform''s
-        governance. '
-    market_metrics:
-      current_price_usd: 25.3
-      market_cap_usd: 264589
-      fully_diluted_valuation_usd: 285943
-      total_volume_usd: 177.56
-    price_metrics:
-      ath_usd: 2843.59
-      ath_change_percentage: -99.10992
-      ath_date: '2021-03-20T03:07:37.893Z'
-      high_24h_usd: 26.02
-      low_24h_usd: 25.11
-      price_change_24h: -0.27829510519087
-      price_change_percentage_24h: -1.08781
-    supply_info:
-      total_supply: 11300.0
-      max_supply: 11300.0
-      circulating_supply: 10456.12756878095
+  response: '### Monavale (MONA) Overview
+
+    - **Current Price:** $24.89
+
+    - **Market Cap:** $261,212
+
+    - **Market Cap Rank:** 5014
+
+
+    ### Trading Metrics
+
+    - **24h Trading Volume:** $516.09
+
+    - **24h Price High:** $25.01
+
+    - **24h Price Low:** $23.96
+
+    - **24h Price Change:** $0.41 (1.68%)
+
+
+    ### Supply Statistics
+
+    - **Circulating Supply:** 10,456.13 MONA
+
+    - **Total Supply:** 11,300 MONA
+
+    - **Max Supply:** 11,300 MONA'
+  data: {}
 input_by_name:
   query: analyze HEU
 output_by_name:
-  response: "**Token Analysis: Heurist (HEU)**\n\n**Overview**\n\n* **Name:** Heurist\n\
-    * **Symbol:** HEU\n* **Market Cap Rank:** 2,262\n* **Categories:**\n\t1. Artificial\
-    \ Intelligence (AI)\n\t2. Ethereum Ecosystem\n\t3. ZkSync Ecosystem\n\t4. DePIN\n\
-    \t5. Base Ecosystem\n\t6. AI Agents\n\t7. AI Framework\n\n**Description**\nHeurist\
-    \ is a decentralized AI-as-a-Service cloud, providing serverless AI services by\
-    \ aggregating compute resources. It enables cost-efficient, censorship-free AI\
-    \ integration with APIs and is building an AI application ecosystem, including\
-    \ AI image generation, chatbots, and AI-powered search engines.\n\n**Key Metrics**\n\
-    \n### **Market Metrics**\n\n* **Current Price (USD):** $0.03609178\n* **Market\
-    \ Capitalization (USD):** $3,987,555\n* **Fully Diluted Valuation (USD):** $36,091,135\n\
-    * **Total Volume (USD) (24h):** $175,453\n\n### **Price Metrics**\n\n* **All-Time\
-    \ High (USD):** $0.461144\n* **ATH Change Percentage:** -92.16438% (indicating\
-    \ a significant price drop from its peak)\n* **ATH Date:** December 28, 2024,\
-    \ 20:06:24 UTC\n* **24h High (USD):** $0.04019749\n* **24h Low (USD):** $0.03393059\n\
-    * **24h Price Change:** -$0.00280637835387951\n* **24h Price Change Percentage:**\
-    \ -7.21468% (indicating a recent decline)\n\n### **Supply Information**\n\n* **Total\
-    \ Supply:** 1,000,000,000 HEU\n* **Maximum Supply:** 1,000,000,000 HEU (indicating\
-    \ a fixed supply)\n* **Circulating Supply:** 110,485,716 HEU\n\n**Analysis Insights**\n\
-    \n1. **Market Position:** With a market cap rank of 2,262, Heurist is a relatively\
-    \ small player in the cryptocurrency market.\n2. **Price Volatility:** The significant\
-    \ drop from its all-time high (-92.16438%) and the recent 24-hour price decline\
-    \ (-7.21468%) suggest high price volatility.\n3. **Supply Dynamics:** The fixed\
-    \ maximum supply could potentially lead to increased value if demand rises, given\
-    \ the limited amount of HEU in circulation.\n4. **Use Case Strength:** Heurist's\
-    \ focus on decentralized AI services and its ecosystem of AI applications could\
-    \ attract interest from both the AI development community and investors looking\
-    \ for innovative use cases.\n5. **Investment Considerations:**\n\t* **High Risk,\
-    \ High Reward:** The project's innovative nature and potential for growth in the\
-    \ AI sector might appeal to high-risk investors.\n\t* **Market Fluctuations:**\
-    \ Investors should be prepared for significant price swings.\n\t* **Adoption and\
-    \ Development:** The success of Heurist's AI applications and the growth of its\
-    \ ecosystem will be crucial for the token's long-term value appreciation."
-  data:
-    token_info:
-      name: Heurist
-      symbol: HEU
-      market_cap_rank: 2262
-      categories:
-      - Artificial Intelligence (AI)
-      - Ethereum Ecosystem
-      - ZkSync Ecosystem
-      - DePIN
-      - Base Ecosystem
-      - AI Agents
-      - AI Framework
-      description: Heurist is a decentralized AI-as-a-Service cloud. Heurist aggregates
-        compute resources from individual GPU owners and data centers to provide serverless
-        AI services. Heurist's API-first infrastructure eliminates the need for developers
-        to manage GPU machines, enabling cost-efficient, censorship-free AI integration
-        with APIs. Heurist is building an AI application ecosystem powered by decentralized
-        compute. The AI products include Heurist Imagine (AI image generator with
-        NFT minting and create-to-earn rewards), Pondera (AI chatbot), and Heurist
-        Search (AI-powered Search Engine)
-    market_metrics:
-      current_price_usd: 0.03609178
-      market_cap_usd: 3987555
-      fully_diluted_valuation_usd: 36091135
-      total_volume_usd: 175453
-    price_metrics:
-      ath_usd: 0.461144
-      ath_change_percentage: -92.16438
-      ath_date: '2024-12-28T20:06:24.301Z'
-      high_24h_usd: 0.04019749
-      low_24h_usd: 0.03393059
-      price_change_24h: -0.00280637835387951
-      price_change_percentage_24h: -7.21468
-    supply_info:
-      total_supply: 1000000000.0
-      max_supply: 1000000000.0
-      circulating_supply: 110485716.0
+  response: '### Heurist (HEU) Analysis
+
+    - **Current Price**: $0.0159
+
+    - **Market Cap**: $1.9M
+
+    - **Market Cap Rank**: 2772
+
+    - **24h Trading Volume**: $63.8K
+
+    - **24h High**: $0.0159
+
+    - **24h Low**: $0.0150
+
+    - **Price Change (24h)**: +$0.0008 (+5.26%)
+
+    - **Circulating Supply**: 117,031,319 HEU
+
+    - **Total Supply**: 1,000,000,000 HEU
+
+    - **Max Supply**: 1,000,000,000 HEU
+
+
+    ### Key Insights:
+
+    - The price of HEU has seen a relatively strong increase of 5.26% in the past
+    24 hours.
+
+    - With a market cap of $1.9 million, HEU is currently considered a low-cap cryptocurrency
+    with significant room for growth, reflected in its market cap rank of 2772.'
+  data: {}
 input_by_trending:
   query: Get information about trending coins
 output_by_trending:
-  response: '**Current Top Trending Cryptocurrencies**
-
-
-    Below is the list of trending coins fetched from CoinGecko, showcasing their current
-    market standing and price in USD. The list is ordered as received from the trending
-    coins API, but for clarity, I''ve added a **Highlight** section to quickly point
-    out the top 3 trending coins based on their market cap rank.
-
-
-    ### Trending Coins List
-
-
-    | **Rank** | **Name** | **Symbol** | **Market Cap Rank** | **Price (USD)** |
-
-    | --- | --- | --- | --- | --- |
-
-    | - | Mantle | MNT | 44 | $0.9292474405077825 |
-
-    | - | Story | IP | 92 | $4.481256688918082 |
-
-    | - | Berachain | BERA | 112 | $7.3877783925100395 |
-
-    | - | Sonic (prev. FTM) | S | 50 | $0.8673339552616107 |
-
-    | - | KAITO | KAITO | 189 | $1.7154017989968495 |
-
-    | - | Ethena | ENA | 74 | $0.44751643482993336 |
-
-    | - | Jupiter | JUP | 59 | $0.7990055236218381 |
-
-    | - | **Solana** | **SOL** | **6** | **$171.95617232608515** |
-
-    | - | Shadow | SHADOW | 859 | $160.33721168563136 |
-
-    | - | Ondo | ONDO | 38 | $1.1560569776296947 |
-
-
-    ### **Highlight: Top 3 by Market Cap Rank**
-
-
-    1. **Solana (SOL)** - Market Cap Rank: **6** - Price: **$171.95617232608515**
-
-    2. **Ondo (ONDO)** - Market Cap Rank: **38** - Price: **$1.1560569776296947**
-
-    3. **Mantle (MNT)** - Market Cap Rank: **44** - Price: **$0.9292474405077825**
-
-
-    **Note:** Market trends and prices are subject to rapid change. The information
-    provided is a snapshot at the time of the query. For the most current data, please
-    query again or check directly on CoinGecko.'
+  response: "Here are the current top trending cryptocurrencies:\n\n1. **Bitcoin (BTC)**\
+    \  \n   - Price: **$83,713.03**  \n   - Market Cap Rank: **1**  \n\n2. **Ethereum\
+    \ (ETH)**  \n   - Price: **$2,019.68**  \n   - Market Cap Rank: **2**  \n\n3.\
+    \ **Solana (SOL)**  \n   - Price: **$128.25**  \n   - Market Cap Rank: **6** \
+    \ \n\n4. **MANTRA (OM)**  \n   - Price: **$6.93**  \n   - Market Cap Rank: **26**\
+    \  \n\n5. **Pi Network (PI)**  \n   - Price: **$1.15**  \n   - Market Cap Rank:\
+    \ **21**  \n\n6. **Hyperliquid (HYPE)**  \n   - Price: **$15.08**  \n   - Market\
+    \ Cap Rank: **32**  \n\n7. **Sonic (prev. FTM) (S)**  \n   - Price: **$0.52**\
+    \  \n   - Market Cap Rank: **66**  \n\n8. **Ondo (ONDO)**  \n   - Price: **$0.86**\
+    \  \n   - Market Cap Rank: **47**  \n\n9. **Plume (PLUME)**  \n   - Price: **$0.20**\
+    \  \n   - Market Cap Rank: **167**  \n\n10. **Bubblemaps (BMT)**  \n    - Price:\
+    \ **$0.22**  \n    - Market Cap Rank: **623**  \n\nThese tokens are currently\
+    \ gaining traction in the market."
+  data: {}
+input_direct_tool:
+  tool: get_token_info
+  tool_arguments:
+    coingecko_id: bitcoin
+  raw_data_only: true
+output_direct_tool:
+  response: ''
   data:
-    trending_coins:
-    - name: Mantle
-      symbol: MNT
-      market_cap_rank: 44
-      price_usd: 0.9292474405077825
-    - name: Story
-      symbol: IP
-      market_cap_rank: 92
-      price_usd: 4.481256688918082
-    - name: Berachain
-      symbol: BERA
-      market_cap_rank: 112
-      price_usd: 7.3877783925100395
-    - name: Sonic (prev. FTM)
-      symbol: S
-      market_cap_rank: 50
-      price_usd: 0.8673339552616107
-    - name: KAITO
-      symbol: KAITO
-      market_cap_rank: 189
-      price_usd: 1.7154017989968495
-    - name: Ethena
-      symbol: ENA
-      market_cap_rank: 74
-      price_usd: 0.44751643482993336
-    - name: Jupiter
-      symbol: JUP
-      market_cap_rank: 59
-      price_usd: 0.7990055236218381
-    - name: Solana
-      symbol: SOL
-      market_cap_rank: 6
-      price_usd: 171.95617232608515
-    - name: Shadow
-      symbol: SHADOW
-      market_cap_rank: 859
-      price_usd: 160.33721168563136
-    - name: Ondo
-      symbol: ONDO
-      market_cap_rank: 38
-      price_usd: 1.1560569776296947
+    token_info:
+      id: bitcoin
+      name: Bitcoin
+      symbol: BTC
+      market_cap_rank: 1
+      current_price: 83763
+      market_cap: 1663866425863
+      total_volume: 22961531648
+      high_24h: 84010
+      low_24h: 81208
+      price_change_24h: 1277
+      price_change_percentage_24h: 1.54855
+      circulating_supply: 19838918.0
+      total_supply: 19838918.0
+      max_supply: 21000000.0
+input_comparison:
+  query: Compare Bitcoin and Ethereum
+output_comparison:
+  response: "### Comparison of Bitcoin (BTC) and Ethereum (ETH)\n\n#### Current Price:\n\
+    - **Bitcoin:** $83,763  \n- **Ethereum:** $2,012.81  \n\n#### Market Capitalization:\n\
+    - **Bitcoin:** $1.66 Trillion  \n- **Ethereum:** $244.37 Billion  \n\n#### Market\
+    \ Cap Rank:\n- **Bitcoin:** 1  \n- **Ethereum:** 2  \n\n#### Trading Volume (24h):\n\
+    - **Bitcoin:** $22.96 Billion  \n- **Ethereum:** $12.50 Billion  \n\n#### Price\
+    \ Changes (24h):\n- **Bitcoin:** \n  - Change: +$1,277 (+1.55%)  \n  - High: $84,010\
+    \  \n  - Low: $81,208  \n\n- **Ethereum:** \n  - Change: +$118.73 (+6.27%)  \n\
+    \  - High: $2,026.89  \n  - Low: $1,874.09  \n\n#### Supply:\n- **Bitcoin:** \n\
+    \  - Circulating: 19,838,918 BTC  \n  - Total: 19,838,918 BTC  \n  - Max: 21,000,000\
+    \ BTC  \n\n- **Ethereum:** \n  - Circulating: 120,626,702 ETH  \n  - Total: 120,626,702\
+    \ ETH  \n  - Max: Unlimited  \n\n### Key Insights:\n- Bitcoin remains the leading\
+    \ cryptocurrency with a significantly higher market cap compared to Ethereum.\n\
+    - Ethereum shows a more substantial price increase percentage in the last 24 hours,\
+    \ indicating stronger recent market movement.\n- Bitcoin has a capped supply,\
+    \ while Ethereum does not have a maximum supply limit, which may influence their\
+    \ long-term value retention and inflation."
+  data: {}
