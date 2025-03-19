@@ -59,14 +59,17 @@ TOOL_TEST_INPUTS = {
     },
     "PumpFunTokenAgent": {
         "query_recent_token_creation": {},
-        "query_token_metrics": {"token_address": "So11111111111111111111111111111111111111112"},
-        "query_token_holders": {"token_address": "So11111111111111111111111111111111111111112"},
-        "query_token_buyers": {"token_address": "So11111111111111111111111111111111111111112"},
+        "query_token_metrics": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
+        "query_token_holders": {"token_address": "2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump"},
+        "query_token_buyers": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
         "query_holder_status": {
-            "token_address": "So11111111111111111111111111111111111111112",
-            "buyer_addresses": ["example_address_1", "example_address_2"],
+            "token_address": "2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump",
+            "buyer_addresses": [
+                "ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n",
+                "9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6",
+            ],
         },
-        "query_top_traders": {"token_address": "So11111111111111111111111111111111111111112"},
+        "query_top_traders": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
     },
     "ZerionWalletAnalysisAgent": {
         "fetch_wallet_tokens": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},
