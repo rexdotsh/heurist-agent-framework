@@ -156,8 +156,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Handle both direct tool calls and natural language queries"""
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
+        if not query and not (params.get("tool") and params.get("tool_arguments", {}).get("search_term")):
+            raise ValueError("Query parameter or tool call is required")
 
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
