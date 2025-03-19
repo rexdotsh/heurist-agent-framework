@@ -53,7 +53,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "" # use solana logo
+                "image_url": "",  # use solana logo
             }
         )
 

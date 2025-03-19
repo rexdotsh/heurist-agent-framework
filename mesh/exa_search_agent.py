@@ -53,7 +53,7 @@ class ExaSearchAgent(MeshAgent):
                 "external_apis": ["Exa"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "" # use the logo of exa
+                "image_url": "",  # use the logo of exa
             }
         )
 
@@ -189,7 +189,7 @@ class ExaSearchAgent(MeshAgent):
                         "title": result.get("title", "N/A"),
                         "url": result.get("url", "N/A"),
                         "published_date": result.get("published_date", "N/A"),
-                        "text": result.get("text", "")
+                        "text": result.get("text", ""),
                     }
                 )
 

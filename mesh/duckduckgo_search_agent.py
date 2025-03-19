@@ -52,7 +52,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
                 ],
                 "external_apis": ["DuckDuckGo"],
                 "tags": ["Search"],
-                "image_url": "" # use a duckduckgo logo
+                "image_url": "",  # use a duckduckgo logo
             }
         )
 

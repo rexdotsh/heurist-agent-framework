@@ -14,6 +14,7 @@ from .mesh_agent import MeshAgent
 logger = logging.getLogger(__name__)
 load_dotenv()
 
+
 class ZerionWalletAnalysisAgent(MeshAgent):
     def __init__(self):
         super().__init__()
@@ -45,10 +46,10 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                 "external_apis": ["Zerion"],
                 "tags": ["Onchain Data"],
                 "recommended": True,
-                "image_url": "" # use the logo of zerion
+                "image_url": "",  # use the logo of zerion
             }
         )
-        
+
         # Zerion API credentials - should be loaded from environment variables in production
         self.zerion_auth_key = "Basic " + os.getenv("ZERION_API_KEY")
 
@@ -80,7 +81,10 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "wallet_address": {"type": "string", "description": "The EVM wallet address to analyze. Must start with 0x and be 42 characters long."},
+                            "wallet_address": {
+                                "type": "string",
+                                "description": "The EVM wallet address to analyze. Must start with 0x and be 42 characters long.",
+                            },
                         },
                         "required": ["wallet_address"],
                     },
@@ -94,12 +98,15 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "wallet_address": {"type": "string", "description": "The EVM wallet address to analyze. Must start with 0x and be 42 characters long."},
+                            "wallet_address": {
+                                "type": "string",
+                                "description": "The EVM wallet address to analyze. Must start with 0x and be 42 characters long.",
+                            },
                         },
                         "required": ["wallet_address"],
                     },
                 },
-            }
+            },
         ]
 
     async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
@@ -131,12 +138,9 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                 "filter[positions]": "no_filter",
                 "currency": "usd",
                 "filter[trash]": "only_non_trash",
-                "sort": "value"
+                "sort": "value",
             }
-            headers = {
-                "accept": "application/json",
-                "authorization": self.zerion_auth_key
-            }
+            headers = {"accept": "application/json", "authorization": self.zerion_auth_key}
 
             response = requests.get(base_url, params=params, headers=headers)
             response.raise_for_status()
@@ -145,18 +149,18 @@ class ZerionWalletAnalysisAgent(MeshAgent):
             # Process the response data to extract relevant information
             tokens = []
             total_value = 0
-            
+
             for item in data.get("data", []):
                 attributes = item.get("attributes", {})
                 fungible_info = attributes.get("fungible_info", {})
-                
+
                 # Skip non-displayable items
                 if not attributes.get("flags", {}).get("displayable", False):
                     continue
-                
+
                 # Get the chain from relationships
                 chain = item.get("relationships", {}).get("chain", {}).get("data", {}).get("id", "unknown")
-                
+
                 # Find the correct token address for this chain
                 token_address = None
                 implementations = fungible_info.get("implementations", [])
@@ -164,18 +168,20 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     if impl.get("chain_id") == chain:
                         token_address = impl.get("address")
                         break
-                
+
                 token_data = {
                     "name": fungible_info.get("name", "Unknown"),
                     "symbol": fungible_info.get("symbol", "Unknown"),
                     "quantity": attributes.get("quantity", {}).get("float", 0),
                     "value": attributes.get("value", 0),
                     "price": attributes.get("price", 0),
-                    "change_24h_percent": attributes.get("changes", {}).get("percent_1d", 0) if attributes.get("changes") is not None else 0,
+                    "change_24h_percent": attributes.get("changes", {}).get("percent_1d", 0)
+                    if attributes.get("changes") is not None
+                    else 0,
                     "chain": chain,
-                    "token_address": token_address
+                    "token_address": token_address,
                 }
-                
+
                 tokens.append(token_data)
                 # Handle case where value might be None
                 if token_data["value"] is not None:
@@ -187,15 +193,11 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                         token_value = token_data["price"] * token_data["quantity"]
                     total_value += token_value
                     token_data["value"] = token_value
-            
+
             # Sort tokens by value (descending)
             tokens.sort(key=lambda x: x["value"] if x["value"] is not None else 0, reverse=True)
-            
-            return {
-                "total_value": total_value,
-                "token_count": len(tokens),
-                "tokens": tokens
-            }
+
+            return {"total_value": total_value, "token_count": len(tokens), "tokens": tokens}
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching wallet tokens: {e}")
@@ -212,10 +214,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
         try:
             base_url = f"https://api.zerion.io/v1/wallets/{wallet_address}/nft-collections/"
             params = {"currency": "usd"}
-            headers = {
-                "accept": "application/json",
-                "authorization": self.zerion_auth_key
-            }
+            headers = {"accept": "application/json", "authorization": self.zerion_auth_key}
 
             response = requests.get(base_url, params=params, headers=headers)
             response.raise_for_status()
@@ -225,34 +224,36 @@ class ZerionWalletAnalysisAgent(MeshAgent):
             collections = []
             total_floor_price = 0
             total_nfts = 0
-            
+
             for item in data.get("data", []):
                 attributes = item.get("attributes", {})
                 collection_info = attributes.get("collection_info", {})
-                
+
                 nfts_count = int(attributes.get("nfts_count", "0"))
                 floor_price = attributes.get("total_floor_price", 0)
-                
+
                 collection_data = {
                     "name": collection_info.get("name", "Unknown Collection"),
                     "description": collection_info.get("description", ""),
                     "nfts_count": nfts_count,
                     "floor_price": floor_price,
-                    "chains": [chain["id"] for chain in item.get("relationships", {}).get("chains", {}).get("data", [])]
+                    "chains": [
+                        chain["id"] for chain in item.get("relationships", {}).get("chains", {}).get("data", [])
+                    ],
                 }
-                
+
                 collections.append(collection_data)
                 total_floor_price += floor_price
                 total_nfts += nfts_count
-            
+
             # Sort collections by floor price (descending)
             collections.sort(key=lambda x: x["floor_price"], reverse=True)
-            
+
             return {
                 "total_collections": len(collections),
                 "total_nfts": total_nfts,
                 "total_floor_price": total_floor_price,
-                "collections": collections
+                "collections": collections,
             }
 
         except requests.exceptions.RequestException as e:
@@ -276,7 +277,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
             return {"error": "Missing 'wallet_address' in tool_arguments"}
 
         logger.info(f"Using {tool_name} for {wallet_address}")
-        
+
         if tool_name == "fetch_wallet_tokens":
             result = await self.fetch_wallet_tokens(wallet_address)
         else:  # fetch_wallet_nfts
@@ -332,60 +333,58 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     temperature=0.1,
                     tools=self.get_tool_schemas(),
                 )
-                
+
                 if not response:
                     return {"error": "Failed to process query"}
-                
+
                 # Check if tool_calls exists and is not None
                 tool_calls = response.get("tool_calls")
                 if not tool_calls:
                     return {"response": response.get("content", "No response content"), "data": {}}
-                
+
                 # Make sure we're accessing the first tool call correctly
                 if isinstance(tool_calls, list) and len(tool_calls) > 0:
                     tool_call = tool_calls[0]
                 else:
                     tool_call = tool_calls  # If it's not a list, use it directly
-                    
+
                 # Safely extract function name and arguments
-                tool_call_name = tool_call.function.name
+                tool_call_name = tool_call.function.name  # noqa: F841
                 tool_call_args = json.loads(tool_call.function.arguments)
-                
+
                 wallet_address = tool_call_args.get("wallet_address")
-                
+
                 if not wallet_address:
                     return {"error": "Could not extract wallet address from query"}
-                
+
                 # Fetch both tokens and NFTs
                 tokens_result = await self.fetch_wallet_tokens(wallet_address)
                 nfts_result = await self.fetch_wallet_nfts(wallet_address)
-                
+
                 errors = self._handle_error(tokens_result)
                 if errors:
                     return errors
-                
+
                 errors = self._handle_error(nfts_result)
                 if errors:
                     return errors
-                
+
                 combined_data = {
                     "wallet_address": wallet_address,
                     "tokens": tokens_result,
                     "nfts": nfts_result,
-                    "total_portfolio_value": tokens_result.get("total_value", 0) + nfts_result.get("total_floor_price", 0)
+                    "total_portfolio_value": tokens_result.get("total_value", 0)
+                    + nfts_result.get("total_floor_price", 0),
                 }
-                
+
                 if raw_data_only:
                     return {"response": "", "data": combined_data}
-                
+
                 explanation = await self._respond_with_llm(
-                    query=query, 
-                    tool_call_id="combined_analysis", 
-                    data=combined_data, 
-                    temperature=0.3
+                    query=query, tool_call_id="combined_analysis", data=combined_data, temperature=0.3
                 )
                 return {"response": explanation, "data": combined_data}
-            
+
             # Standard query processing with LLM tool selection
             response = await call_llm_with_tools_async(
                 base_url=self.heurist_base_url,
@@ -399,54 +398,51 @@ class ZerionWalletAnalysisAgent(MeshAgent):
 
             if not response:
                 return {"error": "Failed to process query"}
-            
+
             # Check if tool_calls exists and is not None
             tool_calls = response.get("tool_calls")
             if not tool_calls:
                 return {"response": response.get("content", "No response content"), "data": {}}
-            
+
             # Make sure we're accessing the first tool call correctly
             if isinstance(tool_calls, list) and len(tool_calls) > 0:
                 tool_call = tool_calls[0]
             else:
                 tool_call = tool_calls  # If it's not a list, use it directly
-            
+
             # Safely extract function name and arguments
-            tool_call_name = tool_call.function.name
+            tool_call_name = tool_call.function.name  # noqa: F841
             tool_call_args = json.loads(tool_call.function.arguments)
-            
+
             wallet_address = tool_call_args.get("wallet_address")
-            
+
             if not wallet_address:
                 return {"error": "Could not extract wallet address from query"}
-            
+
             # Fetch both tokens and NFTs
             tokens_result = await self.fetch_wallet_tokens(wallet_address)
             nfts_result = await self.fetch_wallet_nfts(wallet_address)
-            
+
             errors = self._handle_error(tokens_result)
             if errors:
                 return errors
-            
+
             errors = self._handle_error(nfts_result)
             if errors:
                 return errors
-            
+
             combined_data = {
                 "wallet_address": wallet_address,
                 "tokens": tokens_result,
                 "nfts": nfts_result,
-                "total_portfolio_value": tokens_result.get("total_value", 0) + nfts_result.get("total_floor_price", 0)
+                "total_portfolio_value": tokens_result.get("total_value", 0) + nfts_result.get("total_floor_price", 0),
             }
-            
+
             if raw_data_only:
                 return {"response": "", "data": combined_data}
-            
+
             explanation = await self._respond_with_llm(
-                query=query, 
-                tool_call_id="combined_analysis", 
-                data=combined_data, 
-                temperature=0.3
+                query=query, tool_call_id="combined_analysis", data=combined_data, temperature=0.3
             )
             return {"response": explanation, "data": combined_data}
 

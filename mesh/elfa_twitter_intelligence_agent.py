@@ -67,7 +67,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "external_apis": ["Elfa"],
                 "tags": ["Social", "Twitter"],
                 "recommended": True,
-                "image_url": "" # use the logo of elfa
+                "image_url": "",  # use the logo of elfa
             }
         )
 

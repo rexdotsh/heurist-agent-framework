@@ -53,7 +53,7 @@ class FundingRateAgent(MeshAgent):
                 ],
                 "external_apis": ["Coinsider"],
                 "tags": ["Trading", "Arbitrage"],
-                "image_url": "" # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
+                "image_url": "",  # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
             }
         )
 
