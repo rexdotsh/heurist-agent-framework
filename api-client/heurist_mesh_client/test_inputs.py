@@ -23,7 +23,7 @@ TOOL_TEST_INPUTS = {
             "chain": "base",
             "pair_address": "0x96d4b53a38337a5733179751781178a2613306063c511b78cd02684739288c0a",
         },
-        "get_token_pairs": {"chain": "ethereum", "token_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+        "get_token_pairs": {"chain": "solana", "token_address": "8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump"},
     },
     "DuckDuckGoSearchAgent": {"search_web": {"search_term": "latest crypto regulations"}},
     "ElfaTwitterIntelligenceAgent": {
