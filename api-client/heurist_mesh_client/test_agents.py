@@ -128,11 +128,10 @@ def list_agents():
 
 
 @cli.command()
-@click.argument("agent_id", required=False)
-@click.option("--tool", "-t", help="Specific tool to test")
+@click.argument("agent_tool_pairs", required=False)
 @click.option("--include-disabled", is_flag=True, help="Include disabled agents in testing")
-def test_agent(agent_id: Optional[str] = None, tool: Optional[str] = None, include_disabled: bool = False):
-    """Test a specific agent or all agents if no agent_id provided"""
+def test_agent(agent_tool_pairs: Optional[str] = None, include_disabled: bool = False):
+    """Test specific agent-tool pairs. Format: 'agent1,tool1 agent2,tool2'"""
     if not os.getenv("HEURIST_API_KEY"):
         click.echo("Error: HEURIST_API_KEY environment variable not set")
         return
@@ -144,9 +143,8 @@ def test_agent(agent_id: Optional[str] = None, tool: Optional[str] = None, inclu
         test_results = []
         skipped_tests = []
 
-        if not agent_id:
+        if not agent_tool_pairs:
             console.print("\n[bold yellow]Testing all agents with available test inputs[/bold yellow]")
-
             for test_agent_id, test_tools in TOOL_TEST_INPUTS.items():
                 if test_agent_id not in agents_metadata["agents"]:
                     console.print(f"[red]Skipping {test_agent_id} - not found in metadata[/red]")
@@ -162,29 +160,34 @@ def test_agent(agent_id: Optional[str] = None, tool: Optional[str] = None, inclu
                     if tool_name in agent_tools:
                         error, elapsed = execute_tool_test(client, test_agent_id, tool_name, inputs, console)
                         test_results.append((f"{test_agent_id} - {tool_name}", error, elapsed))
-
         else:
-            if agent_id not in agents_metadata["agents"]:
-                click.echo(f"Error: Agent {agent_id} not found")
-                return
+            pairs = [pair.strip() for pair in agent_tool_pairs.split()]
+            for pair in pairs:
+                try:
+                    agent_id, tool = pair.split(",")
+                    if agent_id not in agents_metadata["agents"]:
+                        console.print(f"[red]Error: Agent {agent_id} not found[/red]")
+                        continue
 
-            if agent_id in DISABLED_AGENTS and not include_disabled:
-                click.echo(f"Error: Agent {agent_id} is disabled. Use --include-disabled to test it.")
-                return
+                    if agent_id in DISABLED_AGENTS and not include_disabled:
+                        console.print(f"[yellow]Skipping disabled agent: {agent_id}[/yellow]")
+                        skipped_tests.append(f"{agent_id} - {tool}")
+                        continue
 
-            agent_tools = [t["function"]["name"] for t in agents_metadata["agents"][agent_id].get("tools", [])]
-            tools_to_test = [tool] if tool else agent_tools
+                    agent_tools = {t["function"]["name"] for t in agents_metadata["agents"][agent_id].get("tools", [])}
+                    if tool not in agent_tools:
+                        console.print(f"[red]Error: Tool {tool} not found in agent {agent_id}[/red]")
+                        continue
 
-            for t in tools_to_test:
-                if t not in agent_tools:
-                    click.echo(f"Error: Tool {t} not found in agent {agent_id}")
-                    continue
-
-                if agent_id in TOOL_TEST_INPUTS and t in TOOL_TEST_INPUTS[agent_id]:
-                    error, elapsed = execute_tool_test(client, agent_id, t, TOOL_TEST_INPUTS[agent_id][t], console)
-                    test_results.append((f"{agent_id} - {t}", error, elapsed))
-                else:
-                    console.print(f"[yellow]No test inputs defined for {t}[/yellow]")
+                    if agent_id in TOOL_TEST_INPUTS and tool in TOOL_TEST_INPUTS[agent_id]:
+                        error, elapsed = execute_tool_test(
+                            client, agent_id, tool, TOOL_TEST_INPUTS[agent_id][tool], console
+                        )
+                        test_results.append((f"{agent_id} - {tool}", error, elapsed))
+                    else:
+                        console.print(f"[yellow]No test inputs defined for {agent_id} - {tool}[/yellow]")
+                except ValueError:
+                    console.print(f"[red]Error: Invalid pair format: {pair}. Use 'agent,tool'[/red]")
 
         if test_results:
             display_test_summary(test_results, skipped_tests, console)
