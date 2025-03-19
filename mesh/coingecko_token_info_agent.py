@@ -38,14 +38,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                         "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins.",
                         "type": "str",
                         "required": False,
-                    },
-                    {
-                        "name": "raw_data_only",
-                        "description": "If true, the agent will only return the raw or base structured data without additional LLM explanation.",
-                        "type": "bool",
-                        "required": False,
-                        "default": False,
-                    },
+                    }
                 ],
                 "outputs": [
                     {
@@ -500,7 +493,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
-        raw_data_only = params.get("raw_data_only", False)
 
         self.current_message = params
 
