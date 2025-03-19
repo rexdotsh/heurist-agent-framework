@@ -37,14 +37,6 @@ async def run_agent():
         }
         agent_output_answer = await agent.handle_message(agent_input_answer)
 
-        # Combined search and answer tool call
-        agent_input_combined = {
-            "tool": "exa_search_and_answer",
-            "tool_arguments": {"topic": "quantum error correction"},
-            "raw_data_only": False,
-        }
-        agent_output_combined = await agent.handle_message(agent_input_combined)
-
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
         base_filename = f"{current_file}_example"
@@ -54,7 +46,6 @@ async def run_agent():
             "natural_language_query": {"input": agent_input, "output": agent_output},
             "direct_search": {"input": agent_input_search, "output": agent_output_search},
             "direct_answer": {"input": agent_input_answer, "output": agent_output_answer},
-            "search_and_answer": {"input": agent_input_combined, "output": agent_output_combined},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

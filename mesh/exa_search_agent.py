@@ -119,21 +119,7 @@ class ExaSearchAgent(MeshAgent):
                         "required": ["question"],
                     },
                 },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "exa_search_and_answer",
-                    "description": "This tool combines web search with direct natrual language question answering to provide comprehensive results. It first searches the web for relevant information, then synthesizes that information into a direct answer. Use this when you need both a direct answer and supporting search results for a topic. It may fail to find information of niche topics such like small cap crypto projects.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "topic": {"type": "string", "description": "The topic to search for and answer"}
-                        },
-                        "required": ["topic"],
-                    },
-                },
-            },
+            }
         ]
 
     # ------------------------------------------------------------------------
@@ -300,27 +286,6 @@ class ExaSearchAgent(MeshAgent):
                 query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
             )
             return {"response": explanation, "data": result}
-
-        elif tool_name == "exa_search_and_answer":
-            topic = function_args.get("topic")
-
-            if not topic:
-                return {"error": "Missing 'topic' in tool_arguments"}
-
-            logger.info(f"Performing search and answer for '{topic}'")
-            result = await self.search_and_answer(topic)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
-
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
 
