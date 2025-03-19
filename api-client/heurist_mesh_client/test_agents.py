@@ -122,7 +122,18 @@ def list_agents():
 
     for agent_id, agent_data in agents_metadata["agents"].items():
         tools = [tool["function"]["name"] for tool in agent_data.get("tools", [])]
-        table.add_row(agent_id, "\n".join(tools) if tools else "No tools", "✓" if agent_id in TOOL_TEST_INPUTS else "✗")
+        if not tools:
+            table.add_row(agent_id, "No tools", "✗")
+            continue
+
+        tool_names = []
+        tool_test_status = []
+        for tool in tools:
+            tool_names.append(tool)
+            has_test = agent_id in TOOL_TEST_INPUTS and tool in TOOL_TEST_INPUTS[agent_id]
+            tool_test_status.append("✓" if has_test else "✗")
+
+        table.add_row(agent_id, "\n".join(tool_names), "\n".join(tool_test_status))
 
     Console().print(table)
 

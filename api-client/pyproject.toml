@@ -1,5 +1,6 @@
 [project]
 name = "heurist-mesh-client"
+requires-python = ">=3.11"
 version = "0.1.0"
 description = "Python client for Heurist Mesh API"
 authors = []

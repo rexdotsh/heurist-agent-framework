@@ -1,18 +1,15 @@
 TOOL_TEST_INPUTS = {
-    "AaveAgent": {
-        "get_aave_reserves": {
-            "chain_id": 137  # polygon
-        }
-    },
+    "AaveAgent": {"get_aave_reserves": {"chain_id": 137}},
     "AlloraPricePredictionAgent": {"get_allora_prediction": {"token": "ETH", "timeframe": "5m"}},
     "BitquerySolanaTokenInfoAgent": {
-        "get_token_trading_info": {
-            "token_address": "So11111111111111111111111111111111111111112"  # SOL
-        },
+        "get_token_trading_info": {"token_address": "So11111111111111111111111111111111111111112"},
         "get_top_trending_tokens": {},
     },
     "CarvOnchainDataAgent": {
-        "query_onchain_data": {"blockchain": "solana", "query": "What's the most active address on Bitcoin during the last 24 hours?"}
+        "query_onchain_data": {
+            "blockchain": "solana",
+            "query": "What's the most active address on Bitcoin during the last 24 hours?",
+        }
     },
     "CoinGeckoTokenInfoAgent": {
         "get_coingecko_id": {"token_name": "ethereum"},
@@ -53,16 +50,12 @@ TOOL_TEST_INPUTS = {
         "find_spot_futures_opportunities": {},
     },
     "GoplusAnalysisAgent": {
-        "fetch_security_details": {
-            "contract_address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"  # MATIC
-        }
+        "fetch_security_details": {"contract_address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"}
     },
     "MasaTwitterSearchAgent": {"search_twitter": {"search_term": "defi"}},
     "MetaSleuthSolTokenWalletClusterAgent": {
-        "fetch_token_clusters": {
-            "address": "So11111111111111111111111111111111111111112"  # SOL
-        },
-        "fetch_cluster_details": {"cluster_uuid": "example_cluster_id"},
+        "fetch_token_clusters": {"address": "tQNVaFm2sy81tWdHZ971ztS5FKaShJUKGAzHMcypump"},
+        "fetch_cluster_details": {"cluster_uuid": "13axGrDoFlaj8E0ruhYfi1"},
     },
     "PumpFunTokenAgent": {
         "query_recent_token_creation": {},
