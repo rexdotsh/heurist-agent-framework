@@ -12,7 +12,7 @@ TOOL_TEST_INPUTS = {
         "get_top_trending_tokens": {},
     },
     "CarvOnchainDataAgent": {
-        "query_onchain_data": {"blockchain": "ethereum", "query": "Show me the latest transactions for this address"}
+        "query_onchain_data": {"blockchain": "solana", "query": "What's the most active address on Bitcoin during the last 24 hours?"}
     },
     "CoinGeckoTokenInfoAgent": {
         "get_coingecko_id": {"token_name": "ethereum"},
