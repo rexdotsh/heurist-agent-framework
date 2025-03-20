@@ -182,10 +182,11 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     "token_address": token_address,
                 }
 
-                tokens.append(token_data)
                 # Handle case where value might be None
+                token_value = 0
                 if token_data["value"] is not None:
-                    total_value += token_data["value"]
+                    token_value = token_data["value"]
+                    total_value += token_value
                 else:
                     token_value = 0
                     # Use price * quantity as fallback or default to 0
@@ -193,6 +194,11 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                         token_value = token_data["price"] * token_data["quantity"]
                     total_value += token_value
                     token_data["value"] = token_value
+
+                # Skip tokens with value less than 1
+                if token_value < 1:
+                    continue
+                tokens.append(token_data)
 
             # Sort tokens by value (descending)
             tokens.sort(key=lambda x: x["value"] if x["value"] is not None else 0, reverse=True)
