@@ -271,9 +271,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """Handle tool execution and optional LLM explanation"""
 
         if tool_name == "search_mentions":
@@ -307,13 +305,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            data = await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
             return {"response": "", "data": data}
 
         # ---------------------
@@ -346,13 +338,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         tool_call_name = tool_call.function.name
         tool_call_args = json.loads(tool_call.function.arguments)
 
-        data = await self._handle_tool_logic(
-            tool_name=tool_call_name,
-            function_args=tool_call_args,
-            query=query,
-            tool_call_id=tool_call.id,
-            raw_data_only=raw_data_only,
-        )
+        data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
 
         if raw_data_only:
             return {"response": "", "data": data}

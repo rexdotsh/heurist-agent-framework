@@ -100,9 +100,9 @@ class MeshClient:
         response.raise_for_status()
         return MeshTaskResponse(**response.json())
 
-    def query_task(self, agent_id: str, task_id: str) -> MeshTaskQueryResponse:
+    def query_task(self, task_id: str) -> MeshTaskQueryResponse:
         """Query the status and result of an asynchronous task."""
-        payload = self._prepare_payload(agent_id=agent_id, task_id=task_id)
+        payload = self._prepare_payload(task_id=task_id)
 
         response = self.client.post(f"{self.base_url}/mesh_task_query", json=payload)
         response.raise_for_status()
