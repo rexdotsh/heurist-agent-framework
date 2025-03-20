@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import aiohttp
 import uvicorn
@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 logger = logging.getLogger("MeshAPI")
 
 app = FastAPI()
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,8 +40,14 @@ class MeshRequest(BaseModel):
     heurist_api_key: str | None = None
 
 
-async def get_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
-    return credentials.credentials
+async def get_api_key(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security), request: MeshRequest = None
+) -> str:
+    if credentials:
+        return credentials.credentials
+    if request and request.api_key:
+        return request.api_key
+    raise HTTPException(status_code=401, detail="API key is required from either bearer token or request body")
 
 
 @app.post("/mesh_request")
@@ -61,8 +67,6 @@ async def process_mesh_request(request: MeshRequest, api_key: str = Depends(get_
     credits_api_url = os.getenv("HEURIST_CREDITS_DEDUCTION_API")
     credits_api_auth = os.getenv("HEURIST_CREDITS_DEDUCTION_AUTH")
     if credits_api_url:
-        if not api_key:
-            raise HTTPException(status_code=401, detail="API key is required")
         if not credits_api_auth:
             raise HTTPException(status_code=500, detail="Credits API auth not configured")
         try:
