@@ -263,11 +263,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
             logger.error(f"Unexpected error: {e}")
             return {"error": f"Unexpected error: {str(e)} for wallet address {wallet_address}"}
 
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
-        """Handle direct tool calls with proper error handling and response formatting"""
-
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         if tool_name not in ["fetch_wallet_tokens", "fetch_wallet_nfts"]:
             return {"error": f"Unsupported tool '{tool_name}'"}
 
@@ -286,12 +282,7 @@ class ZerionWalletAnalysisAgent(MeshAgent):
         errors = self._handle_error(result)
         if errors:
             return errors
-
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(query=query, tool_call_id=tool_call_id, data=result, temperature=0.3)
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -309,83 +300,13 @@ class ZerionWalletAnalysisAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
         # ---------------------
         if query:
-            # For comprehensive wallet analysis, we'll fetch both tokens and NFTs
-            if "comprehensive" in query.lower() or "complete" in query.lower() or "full" in query.lower():
-                # Extract wallet address from query using regex or LLM
-                response = await call_llm_with_tools_async(
-                    base_url=self.heurist_base_url,
-                    api_key=self.heurist_api_key,
-                    model_id=self.metadata["large_model_id"],
-                    system_prompt=self.get_system_prompt() + "\nExtract the wallet address from the query.",
-                    user_prompt=query,
-                    temperature=0.1,
-                    tools=self.get_tool_schemas(),
-                )
-
-                if not response:
-                    return {"error": "Failed to process query"}
-
-                # Check if tool_calls exists and is not None
-                tool_calls = response.get("tool_calls")
-                if not tool_calls:
-                    return {"response": response.get("content", "No response content"), "data": {}}
-
-                # Make sure we're accessing the first tool call correctly
-                if isinstance(tool_calls, list) and len(tool_calls) > 0:
-                    tool_call = tool_calls[0]
-                else:
-                    tool_call = tool_calls  # If it's not a list, use it directly
-
-                # Safely extract function name and arguments
-                tool_call_name = tool_call.function.name  # noqa: F841
-                tool_call_args = json.loads(tool_call.function.arguments)
-
-                wallet_address = tool_call_args.get("wallet_address")
-
-                if not wallet_address:
-                    return {"error": "Could not extract wallet address from query"}
-
-                # Fetch both tokens and NFTs
-                tokens_result = await self.fetch_wallet_tokens(wallet_address)
-                nfts_result = await self.fetch_wallet_nfts(wallet_address)
-
-                errors = self._handle_error(tokens_result)
-                if errors:
-                    return errors
-
-                errors = self._handle_error(nfts_result)
-                if errors:
-                    return errors
-
-                combined_data = {
-                    "wallet_address": wallet_address,
-                    "tokens": tokens_result,
-                    "nfts": nfts_result,
-                    "total_portfolio_value": tokens_result.get("total_value", 0)
-                    + nfts_result.get("total_floor_price", 0),
-                }
-
-                if raw_data_only:
-                    return {"response": "", "data": combined_data}
-
-                explanation = await self._respond_with_llm(
-                    query=query, tool_call_id="combined_analysis", data=combined_data, temperature=0.3
-                )
-                return {"response": explanation, "data": combined_data}
-
-            # Standard query processing with LLM tool selection
             response = await call_llm_with_tools_async(
                 base_url=self.heurist_base_url,
                 api_key=self.heurist_api_key,
@@ -419,32 +340,16 @@ class ZerionWalletAnalysisAgent(MeshAgent):
             if not wallet_address:
                 return {"error": "Could not extract wallet address from query"}
 
-            # Fetch both tokens and NFTs
-            tokens_result = await self.fetch_wallet_tokens(wallet_address)
-            nfts_result = await self.fetch_wallet_nfts(wallet_address)
-
-            errors = self._handle_error(tokens_result)
-            if errors:
-                return errors
-
-            errors = self._handle_error(nfts_result)
-            if errors:
-                return errors
-
-            combined_data = {
-                "wallet_address": wallet_address,
-                "tokens": tokens_result,
-                "nfts": nfts_result,
-                "total_portfolio_value": tokens_result.get("total_value", 0) + nfts_result.get("total_floor_price", 0),
-            }
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
 
             if raw_data_only:
-                return {"response": "", "data": combined_data}
+                print(f"Raw data only: {data}")
+                return {"response": "", "data": data}
 
             explanation = await self._respond_with_llm(
-                query=query, tool_call_id="combined_analysis", data=combined_data, temperature=0.3
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.3
             )
-            return {"response": explanation, "data": combined_data}
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool
