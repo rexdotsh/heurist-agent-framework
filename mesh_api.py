@@ -5,6 +5,7 @@ from typing import Any, Dict
 import aiohttp
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 
@@ -15,6 +16,18 @@ logger = logging.getLogger("MeshAPI")
 
 app = FastAPI()
 security = HTTPBearer()
+
+app.add_middleware(
+    CORSMiddleware,
+    # allow heurist.ai subdomains and localhost for development, mainly for the docs playground
+    # ref: http://docs.heurist.ai/dev-guide/heurist-mesh/endpoint
+    allow_origin_regex=r"^https?://.*\.heurist\.ai(:\d+)?$|^http?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+    max_age=600,
+    allow_credentials=False,
+)
+
 
 config = Config()
 agents_dict = AgentLoader(config).load_agents()
