@@ -53,7 +53,7 @@ class ExaSearchAgent(MeshAgent):
                 "external_apis": ["Exa"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "" # use the logo of exa
+                "image_url": "",  # use the logo of exa
             }
         )
 
@@ -119,7 +119,7 @@ class ExaSearchAgent(MeshAgent):
                         "required": ["question"],
                     },
                 },
-            }
+            },
         ]
 
     # ------------------------------------------------------------------------
@@ -175,7 +175,7 @@ class ExaSearchAgent(MeshAgent):
                         "title": result.get("title", "N/A"),
                         "url": result.get("url", "N/A"),
                         "published_date": result.get("published_date", "N/A"),
-                        "text": result.get("text", "")
+                        "text": result.get("text", ""),
                     }
                 )
 
@@ -268,7 +268,7 @@ class ExaSearchAgent(MeshAgent):
                 tool_name=tool_name,
                 function_args=tool_args,
             )
-            return { "response": response, "data": data }
+            return {"response": response, "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -301,12 +301,10 @@ class ExaSearchAgent(MeshAgent):
             )
 
             if raw_data_only:
-                return { "response": "", "data": data }
+                return {"response": "", "data": data}
 
-            response = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
-            )
-            return { "response": response, "data": data }
+            response = await self._respond_with_llm(query=query, tool_call_id=tool_call.id, data=data, temperature=0.7)
+            return {"response": response, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool
