@@ -39,9 +39,24 @@ async def run_agent():
         agent_output_direct = await agent.handle_message(agent_input_direct)
         print(f"Result of direct tool call: {agent_output_direct}")
 
+        # Test the new get_token_price_multi tool
+        agent_input_price_multi = {
+            "tool": "get_token_price_multi",
+            "tool_arguments": {
+                "ids": "bitcoin,ethereum,solana",
+                "vs_currencies": "usd",
+                "include_market_cap": True,
+                "include_24hr_vol": True,
+                "include_24hr_change": True,
+            },
+        }
+        agent_output_price_multi = await agent.handle_message(agent_input_price_multi)
+        print(f"Result of get_token_price_multi tool call: {agent_output_price_multi}")
+
+        # Test query for comparing multiple tokens
         agent_input_compare = {"query": "Compare Bitcoin and Ethereum"}
         agent_output_compare = await agent.handle_message(agent_input_compare)
-        print(f"Result of token comparison: {agent_output_compare}")
+        print(f"Result of token comparison query: {agent_output_compare}")
 
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
@@ -57,6 +72,8 @@ async def run_agent():
             "output_by_trending": agent_output_trending,
             "input_direct_tool": agent_input_direct,
             "output_direct_tool": agent_output_direct,
+            "input_price_multi": agent_input_price_multi,
+            "output_price_multi": agent_output_price_multi,
             "input_comparison": agent_input_compare,
             "output_comparison": agent_output_compare,
         }

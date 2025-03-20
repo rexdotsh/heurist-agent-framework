@@ -72,7 +72,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             self.get_coingecko_id_tool(),
             self.get_token_info_tool(),
             self.get_trending_coins_tool(),
-            self.get_token_comparison_tool(),
+            self.get_token_price_multi_tool(),
         ]
 
         max_steps = 6
@@ -101,7 +101,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     - Search and retrieve token details
     - Get current trending coins
     - Analyze token market data
-    - Compare multiple tokens
+    - Compare multiple tokens using the token price multi tool
 
     RESPONSE GUIDELINES:
     - Keep responses focused on what was specifically asked
@@ -111,7 +111,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     DOMAIN-SPECIFIC RULES:
     For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name or symbol. Coingecko ID is lowercase string and may contain dashes. If the user doesn't explicity say the input is the CoinGecko ID, you should use get_coingecko_id to search for the token. Do not make up CoinGecko IDs.
     For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies.
-    For token comparisons, use the get_token_comparison tool to compare multiple tokens at once.
+    For token comparisons or when needing to fetch multiple token prices at once, use the get_token_price_multi tool which is more efficient than making multiple individual calls.
 
     When selecting tokens from search results, apply these criteria in order:
     1. First priority: Select the token where name or symbol perfectly matches the query
@@ -166,18 +166,46 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "get_token_comparison",
-                    "description": "Compare multiple tokens side by side. This tool retrieves data for multiple tokens and presents it in a comparable format.",
+                    "name": "get_token_price_multi",
+                    "description": "Fetch price data for multiple tokens at once using CoinGecko IDs. Efficiently retrieves current prices and optional market data for multiple cryptocurrencies in a single API call.",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "token_ids": {
-                                "type": "array",
-                                "items": {"type": "string"},
-                                "description": "List of CoinGecko IDs to compare",
-                            }
+                            "ids": {
+                                "type": "string",
+                                "description": "Comma-separated CoinGecko IDs of the tokens to query",
+                            },
+                            "vs_currencies": {
+                                "type": "string",
+                                "description": "Comma-separated target currencies (e.g., usd,eur,btc)",
+                            },
+                            "include_market_cap": {
+                                "type": "boolean",
+                                "description": "Include market capitalization data",
+                                "default": False,
+                            },
+                            "include_24hr_vol": {
+                                "type": "boolean",
+                                "description": "Include 24hr trading volume data",
+                                "default": False,
+                            },
+                            "include_24hr_change": {
+                                "type": "boolean",
+                                "description": "Include 24hr price change percentage",
+                                "default": False,
+                            },
+                            "include_last_updated_at": {
+                                "type": "boolean",
+                                "description": "Include timestamp of when the data was last updated",
+                                "default": False,
+                            },
+                            "precision": {
+                                "type": "string",
+                                "description": "Decimal precision for currency values (e.g., 'full' for maximum precision)",
+                                "default": False,
+                            },
                         },
-                        "required": ["token_ids"],
+                        "required": ["ids", "vs_currencies"],
                     },
                 },
             },
@@ -309,36 +337,61 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
         return get_trending_coins
 
-    def get_token_comparison_tool(self):
+    def get_token_price_multi_tool(self):
         @tool
-        def get_token_comparison(token_ids: List[str]) -> Dict[str, Any]:
-            """Compare multiple tokens side by side.
+        def get_token_price_multi(
+            ids: str,
+            vs_currencies: str,
+            include_market_cap: bool = False,
+            include_24hr_vol: bool = False,
+            include_24hr_change: bool = False,
+            include_last_updated_at: bool = False,
+            precision: str = None,
+        ) -> Dict[str, Any]:
+            """Fetch price data for multiple tokens at once using the simple/price endpoint.
 
             Args:
-                token_ids: List of CoinGecko IDs to compare
+                ids: Comma-separated CoinGecko IDs of the tokens to query
+                vs_currencies: Comma-separated target currencies (e.g., usd,eur,btc)
+                include_market_cap: Include market capitalization data
+                include_24hr_vol: Include 24hr trading volume data
+                include_24hr_change: Include 24hr price change percentage
+                include_last_updated_at: Include timestamp of when the data was last updated
+                precision: Decimal precision for currency values (e.g., 'full' for maximum precision)
 
             Returns:
-                Dictionary with comparison data or error message
+                Dictionary with price data for the requested tokens or error message
             """
-            logger.info(f"Comparing tokens: {token_ids}")
-            comparison_data = []
+            logger.info(f"Getting multi-token price data for: {ids} in {vs_currencies}")
+            try:
+                params = {
+                    "ids": ids,
+                    "vs_currencies": vs_currencies,
+                    "include_market_cap": str(include_market_cap).lower(),
+                    "include_24hr_vol": str(include_24hr_vol).lower(),
+                    "include_24hr_change": str(include_24hr_change).lower(),
+                    "include_last_updated_at": str(include_last_updated_at).lower(),
+                }
 
-            for token_id in token_ids:
-                try:
-                    response = requests.get(f"{self.api_url}/coins/{token_id}", headers=self.headers)
-                    if response.status_code != 200:
-                        comparison_data.append({"id": token_id, "error": f"Failed to fetch data for {token_id}"})
-                    else:
-                        token_data = response.json()
-                        formatted_info = self.format_token_info(token_data)["token_info"]
-                        comparison_data.append(formatted_info)
-                except Exception as e:
-                    logger.error(f"Error getting token info for {token_id}: {e}")
-                    comparison_data.append({"id": token_id, "error": f"Error: {str(e)}"})
+                if precision:
+                    params["precision"] = precision
 
-            return {"comparison": comparison_data}
+                response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+                response.raise_for_status()
+                price_data = response.json()
 
-        return get_token_comparison
+                # Format the response in a more readable structure
+                formatted_data = {}
+                for token_id, data in price_data.items():
+                    formatted_data[token_id] = data
+
+                return {"price_data": formatted_data}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting multi-token price data: {e}")
+                return {"error": f"Failed to fetch price data: {str(e)}"}
+
+        return get_token_price_multi
 
     async def select_best_token_match(self, search_results: Dict, query: str) -> str:
         """
@@ -460,6 +513,37 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             logger.error(f"Error: {e}")
             return {"error": f"Failed to fetch token info: {str(e)}"}
 
+    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
+    async def _get_token_price_multi(
+        self,
+        ids: str,
+        vs_currencies: str,
+        include_market_cap: bool = False,
+        include_24hr_vol: bool = False,
+        include_24hr_change: bool = False,
+        include_last_updated_at: bool = False,
+        precision: str = None,
+    ) -> dict:
+        try:
+            params = {
+                "ids": ids,
+                "vs_currencies": vs_currencies,
+                "include_market_cap": str(include_market_cap).lower(),
+                "include_24hr_vol": str(include_24hr_vol).lower(),
+                "include_24hr_change": str(include_24hr_change).lower(),
+                "include_last_updated_at": str(include_last_updated_at).lower(),
+            }
+
+            if precision:
+                params["precision"] = precision
+
+            response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error(f"Error: {e}")
+            return {"error": f"Failed to fetch multi-token price data: {str(e)}"}
+
     def format_token_info(self, data: Dict) -> Dict:
         """Format token information in a structured way"""
         market_data = data.get("market_data", {})
@@ -515,16 +599,18 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                         result = {"coingecko_id": result}
                     elif result is None:
                         result = {"error": f"No token found for {tool_args['token_name']}"}
-                elif tool_name == "get_token_comparison":
-                    comparison_data = []
-                    for token_id in tool_args["token_ids"]:
-                        token_info = await self._get_token_info(token_id)
-                        if "error" in token_info:
-                            comparison_data.append({"id": token_id, "error": token_info["error"]})
-                        else:
-                            formatted_info = self.format_token_info(token_info)["token_info"]
-                            comparison_data.append(formatted_info)
-                    result = {"comparison": comparison_data}
+                elif tool_name == "get_token_price_multi":
+                    result = await self._get_token_price_multi(
+                        ids=tool_args["ids"],
+                        vs_currencies=tool_args["vs_currencies"],
+                        include_market_cap=tool_args.get("include_market_cap", False),
+                        include_24hr_vol=tool_args.get("include_24hr_vol", False),
+                        include_24hr_change=tool_args.get("include_24hr_change", False),
+                        include_last_updated_at=tool_args.get("include_last_updated_at", False),
+                        precision=tool_args.get("precision", None),
+                    )
+                    if "error" not in result:
+                        result = {"price_data": result}
                 else:
                     return {"error": f"Unsupported tool: {tool_name}"}
 
@@ -540,11 +626,11 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 result = self.agent.run(
                     f"""Analyze this query and provide insights: {query}
 
-Guidelines:
-- Use appropriate tools to find and analyze cryptocurrency data
-- Format numbers clearly (e.g. $1.5M, 15.2%) 
-- Keep response concise and focused on key insights
-"""
+                        Guidelines:
+                        - Use appropriate tools to find and analyze cryptocurrency data
+                        - Format numbers clearly (e.g. $1.5M, 15.2%) 
+                        - Keep response concise and focused on key insights
+                        """
                 )
                 response_text = result.to_string()
 
