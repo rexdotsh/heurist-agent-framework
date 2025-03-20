@@ -17,11 +17,7 @@ async def run_agent():
         # Example for direct fetch_token_clusters tool
         agent_input_clusters = {
             "tool": "fetch_token_clusters",
-            "tool_arguments": {
-                "address": "tQNVaFm2sy81tWdHZ971ztS5FKaShJUKGAzHMcypump",
-                "page": 1,
-                "page_size": 10
-            },
+            "tool_arguments": {"address": "tQNVaFm2sy81tWdHZ971ztS5FKaShJUKGAzHMcypump", "page": 1, "page_size": 10},
             "raw_data_only": True,
         }
         agent_output_clusters = await agent.handle_message(agent_input_clusters)
@@ -29,11 +25,7 @@ async def run_agent():
         # Example for direct fetch_cluster_details tool
         agent_input_details = {
             "tool": "fetch_cluster_details",
-            "tool_arguments": {
-                "cluster_uuid": "13axGrDoFlaj8E0ruhYfi1",
-                "page": 1,
-                "page_size": 10
-            },
+            "tool_arguments": {"cluster_uuid": "13axGrDoFlaj8E0ruhYfi1", "page": 1, "page_size": 10},
             "raw_data_only": True,
         }
         agent_output_details = await agent.handle_message(agent_input_details)
@@ -69,7 +61,7 @@ async def run_agent():
             "direct_cluster_details": {"input": agent_input_details, "output": agent_output_details},
             "nl_token_analysis": {"input": agent_input_nl_token, "output": agent_output_nl_token},
             "nl_cluster_details": {"input": agent_input_nl_cluster, "output": agent_output_nl_cluster},
-            "raw_data_query": {"input": agent_input_raw, "output": agent_output_raw}
+            "raw_data_query": {"input": agent_input_raw, "output": agent_output_raw},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:
@@ -82,4 +74,4 @@ async def run_agent():
 
 
 if __name__ == "__main__":
-    asyncio.run(run_agent()) 
+    asyncio.run(run_agent())

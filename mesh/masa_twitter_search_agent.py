@@ -58,7 +58,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                 ],
                 "external_apis": ["Masa"],
                 "tags": ["Social", "Twitter"],
-                "image_url": "" # use the logo of masa
+                "image_url": "",  # use the logo of masa
             }
         )
 

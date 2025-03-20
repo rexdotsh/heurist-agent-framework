@@ -44,7 +44,7 @@ class GoplusAnalysisAgent(MeshAgent):
                 ],
                 "external_apis": ["GoPlus"],
                 "tags": ["Security"],
-                "image_url": "" # use the logo of goplus
+                "image_url": "",  # use the logo of goplus
             }
         )
 

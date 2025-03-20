@@ -35,7 +35,7 @@ async def run_agent():
             "tool_arguments": {
                 "urls": ["https://ethereum.org/en/zero-knowledge-proofs/"],
                 "extraction_prompt": "Extract information about how zero knowledge proofs are being used in blockchain technology",
-                "enable_web_search": False
+                "enable_web_search": False,
             },
             "raw_data_only": False,
         }
@@ -49,7 +49,7 @@ async def run_agent():
         yaml_content = {
             "natural_language_query": {"input": agent_input, "output": agent_output},
             "direct_search": {"input": agent_input_search, "output": agent_output_search},
-            "direct_extract": {"input": agent_input_extract, "output": agent_output_extract}
+            "direct_extract": {"input": agent_input_extract, "output": agent_output_extract},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

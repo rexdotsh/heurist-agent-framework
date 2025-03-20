@@ -12,10 +12,10 @@ def print_json(data: Any) -> None:
     print(json.dumps(data, indent=2))
 
 
-def wait_for_task(client: MeshClient, agent_id: str, task_id: str) -> None:
+def wait_for_task(client: MeshClient, task_id: str) -> None:
     """Helper to wait for task completion and print progress."""
     while True:
-        result = client.query_task(agent_id=agent_id, task_id=task_id)
+        result = client.query_task(task_id=task_id)
         if result.status == "finished":
             print("\nTask completed:")
             if result.result:
@@ -40,7 +40,7 @@ def main():
         query="What is the current price of Bitcoin and its market cap?",
     )
     print(f"Task created with ID: {task.task_id}")
-    wait_for_task(client, "CoinGeckoTokenInfoAgent", task.task_id)
+    wait_for_task(client, task.task_id)
 
     # example 2: sync request with tool and raw data
     print("\nExample 2: Tool with Raw Data (Sync)")
@@ -63,7 +63,7 @@ def main():
         raw_data_only=False,
     )
     print(f"Task created with ID: {task.task_id}")
-    wait_for_task(client, "CoinGeckoTokenInfoAgent", task.task_id)
+    wait_for_task(client, task.task_id)
 
     # example 4: sync request with natural language query
     print("\nExample 4: Natural Language Query (Sync)")

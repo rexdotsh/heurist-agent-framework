@@ -53,7 +53,7 @@ class ExaSearchAgent(MeshAgent):
                 "external_apis": ["Exa"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "" # use the logo of exa
+                "image_url": "",  # use the logo of exa
             }
         )
 
@@ -120,20 +120,6 @@ class ExaSearchAgent(MeshAgent):
                     },
                 },
             },
-            {
-                "type": "function",
-                "function": {
-                    "name": "exa_search_and_answer",
-                    "description": "This tool combines web search with direct natrual language question answering to provide comprehensive results. It first searches the web for relevant information, then synthesizes that information into a direct answer. Use this when you need both a direct answer and supporting search results for a topic. It may fail to find information of niche topics such like small cap crypto projects.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "topic": {"type": "string", "description": "The topic to search for and answer"}
-                        },
-                        "required": ["topic"],
-                    },
-                },
-            },
         ]
 
     # ------------------------------------------------------------------------
@@ -189,7 +175,7 @@ class ExaSearchAgent(MeshAgent):
                         "title": result.get("title", "N/A"),
                         "url": result.get("url", "N/A"),
                         "published_date": result.get("published_date", "N/A"),
-                        "text": result.get("text", "")
+                        "text": result.get("text", ""),
                     }
                 )
 
@@ -225,41 +211,10 @@ class ExaSearchAgent(MeshAgent):
             logger.error(f"Answer API error: {e}")
             return {"error": f"Failed to get answer: {str(e)}"}
 
-    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
-    async def search_and_answer(self, topic: str) -> dict:
-        """
-        Combines both search and answer functionalities.
-        """
-        search_results = await self.search(topic)
-        search_error = self._handle_error(search_results)
-        if search_error:
-            return search_error
-
-        answer_results = await self.answer(topic)
-        answer_error = self._handle_error(answer_results)
-        if answer_error:
-            return answer_error
-
-        # Combine both results
-        return {
-            "search_results": search_results.get("search_results", []),
-            "answer": answer_results.get("answer", "No direct answer available"),
-            "sources": answer_results.get("sources", []),
-        }
-
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
-        """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
-        """
-        # Default temperature for explanations
-        temp_for_explanation = 0.7
-
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         if tool_name == "exa_web_search":
             search_term = function_args.get("search_term")
             limit = function_args.get("limit", 10)
@@ -272,14 +227,7 @@ class ExaSearchAgent(MeshAgent):
             errors = self._handle_error(result)
             if errors:
                 return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return result
 
         elif tool_name == "exa_answer_question":
             question = function_args.get("question")
@@ -293,34 +241,7 @@ class ExaSearchAgent(MeshAgent):
             if errors:
                 return errors
 
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
-
-        elif tool_name == "exa_search_and_answer":
-            topic = function_args.get("topic")
-
-            if not topic:
-                return {"error": "Missing 'topic' in tool_arguments"}
-
-            logger.info(f"Performing search and answer for '{topic}'")
-            result = await self.search_and_answer(topic)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
-
+            return result
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
 
@@ -341,17 +262,13 @@ class ExaSearchAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            # For a direct tool call, we do NOT use call_llm_with_tools_async
-            # We simply call our helper. We'll pass an empty `query` or something placeholder
-            # if user hasn't given a `query`.
-            # We'll also pass tool_call_id = "direct_tool" for consistency.
-            return await self._handle_tool_logic(
+            # For a direct tool call, we do NOT use LLM, just return the result
+            response = ""
+            data = await self._handle_tool_logic(
                 tool_name=tool_name,
                 function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
             )
+            return {"response": response, "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -378,14 +295,16 @@ class ExaSearchAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            # Use the same _handle_tool_logic
-            return await self._handle_tool_logic(
+            data = await self._handle_tool_logic(
                 tool_name=tool_call_name,
                 function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
             )
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            response = await self._respond_with_llm(query=query, tool_call_id=tool_call.id, data=data, temperature=0.7)
+            return {"response": response, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

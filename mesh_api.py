@@ -1,9 +1,12 @@
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import aiohttp
-from fastapi import FastAPI, HTTPException
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 
 from mesh_manager import AgentLoader, Config
@@ -12,6 +15,19 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 logger = logging.getLogger("MeshAPI")
 
 app = FastAPI()
+security = HTTPBearer(auto_error=False)
+
+app.add_middleware(
+    CORSMiddleware,
+    # allow heurist.ai subdomains and localhost for development, mainly for the docs playground
+    # ref: http://docs.heurist.ai/dev-guide/heurist-mesh/endpoint
+    allow_origin_regex=r"^https?://.*\.heurist\.ai(:\d+)?$|^http?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+    max_age=600,
+    allow_credentials=False,
+)
+
 
 config = Config()
 agents_dict = AgentLoader(config).load_agents()
@@ -24,8 +40,18 @@ class MeshRequest(BaseModel):
     heurist_api_key: str | None = None
 
 
+async def get_api_key(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security), request: MeshRequest = None
+) -> str:
+    if credentials:
+        return credentials.credentials
+    if request and request.api_key:
+        return request.api_key
+    raise HTTPException(status_code=401, detail="API key is required from either bearer token or request body")
+
+
 @app.post("/mesh_request")
-async def process_mesh_request(request: MeshRequest):
+async def process_mesh_request(request: MeshRequest, api_key: str = Depends(get_api_key)):
     if request.agent_id not in agents_dict:
         raise HTTPException(status_code=404, detail=f"Agent {request.agent_id} not found")
 
@@ -33,22 +59,22 @@ async def process_mesh_request(request: MeshRequest):
     agent = agent_cls()
 
     if request.heurist_api_key:
-        agent.set_heurist_api_key(request.heurist_api_key)
+        agent.set_heurist_api_key(
+            request.heurist_api_key
+        )  # this is the api key for the agent to authenticate with the heurist api, from config file if not provided
 
     # Handle API credit deduction if enabled
     credits_api_url = os.getenv("HEURIST_CREDITS_DEDUCTION_API")
     credits_api_auth = os.getenv("HEURIST_CREDITS_DEDUCTION_AUTH")
     if credits_api_url:
-        if not request.api_key:
-            raise HTTPException(status_code=401, detail="API key is required")
         if not credits_api_auth:
             raise HTTPException(status_code=500, detail="Credits API auth not configured")
         try:
-            # Parse user_id and api_key, split by first occurrence only
-            if "#" in request.api_key:
-                user_id, api_key = request.api_key.split("#", 1)
+            # Parse user_id and api_key, split by first occurrence only, this is passed in from the user
+            if "#" in api_key:
+                user_id, api_key = api_key.split("#", 1)
             else:
-                user_id, api_key = request.api_key.split("-", 1)
+                user_id, api_key = api_key.split("-", 1)
 
             logger.info(f"Deducting credits for agent {request.agent_id} with user_id {user_id} and api_key {api_key}")
             async with aiohttp.ClientSession() as session:
@@ -98,3 +124,7 @@ async def list_agents():
         logger.info(f"Agent {agent_id} has tools: {tools}")
 
     return agents_info
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0")

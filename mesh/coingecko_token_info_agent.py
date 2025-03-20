@@ -56,7 +56,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "external_apis": ["Coingecko"],
                 "tags": ["Trading"],
                 "recommended": True,
-                "image_url": "" # use coingecko logo
+                "image_url": "",  # use coingecko logo
             }
         )
 

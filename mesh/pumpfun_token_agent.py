@@ -60,7 +60,7 @@ class PumpFunTokenAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "" # use the logo of pumpfun
+                "image_url": "",  # use the logo of pumpfun
             }
         )
 
