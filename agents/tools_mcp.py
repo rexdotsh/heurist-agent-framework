@@ -16,11 +16,11 @@ class Tools:
         self.tools_config = []
         print(f"Initialized MCP client with URL: {self.mcp_url}")
 
-    async def initialize(self, mcp_url: str = "http://localhost:8000/sse"):
+    async def initialize(self, server_url: str = "http://localhost:8000/sse"):
         """Initialize the MCP client and fetch available tools"""
         try:
             print(f"Connecting to MCP server with URL: {self.mcp_url}")
-            tools = await self.mcp_client.connect_to_sse_server(server_url=mcp_url)
+            tools = await self.mcp_client.connect_to_sse_server(server_url=server_url)
             self.available_tools = tools
             self.tools_config = self.mcp_client.get_available_tools_json()
             logger.info(f"Connected to MCP server with {len(tools)} tools")

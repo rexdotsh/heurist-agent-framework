@@ -8,7 +8,9 @@ from agents.core_agent_refactor import CoreAgent
 async def main():
     # Initialize the core agent
     agent = CoreAgent()
-
+    # UNCOMMENT TO INITIALIZE MCP TOOLS
+    # server_url = "http://localhost:8000/sse"
+    # await agent.initialize(server_url=server_url)
     print("Welcome to the Heurist Agent Console!")
     print("Type 'exit' to quit")
     print("-" * 50)
