@@ -21,11 +21,11 @@ class AlloraPricePredictionAgent(MeshAgent):
         self.session = None
         self.metadata.update(
             {
-                "name": "Allora Price Prediction Agent",
+                "name": "Allora Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can fetch price predictions for ETH/BTC with confidence intervals from Allora price prediction API",
+                "description": "This agent can predict the price of ETH/BTC with confidence intervals using Allora price prediction API",
                 "inputs": [
                     {
                         "name": "query",
@@ -50,8 +50,8 @@ class AlloraPricePredictionAgent(MeshAgent):
                     {"name": "data", "description": "Structured prediction data", "type": "dict"},
                 ],
                 "external_apis": ["Allora"],
-                "tags": ["Trading", "Price Prediction", "Data"],
-                "mcp_tool_name": "get_allora_price_prediction",
+                "tags": ["Trading", "Prediction"],
+                "image_url": "",  # use allora logo
             }
         )
 

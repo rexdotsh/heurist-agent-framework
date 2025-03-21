@@ -19,11 +19,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "Bitquery Solana Token Info Agent",
+                "name": "Solana Token Info Agent",
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can fetch Solana token trading data and trending tokens from Bitquery.",
+                "description": "This agent can analyze the market data of any Solana token, and get trending tokens on Solana",
                 "inputs": [
                     {
                         "name": "query",
@@ -52,7 +52,8 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["Bitquery"],
-                "tags": ["Data", "Solana", "Trading"],
+                "tags": ["Solana", "Trading"],
+                "image_url": "",  # use solana logo
             }
         )
 

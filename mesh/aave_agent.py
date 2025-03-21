@@ -22,11 +22,11 @@ class AaveAgent(MeshAgent):
         self.session = None
         self.metadata.update(
             {
-                "name": "Aave Reserve Data Agent",
+                "name": "Aave Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can fetch reserve data from Aave v3 protocols with details on liquidity, borrowing rates, and more",
+                "description": "This agent can report the status of Aave v3 protocols deployed on Ethereum, Polygon, Avalanche, and Arbitrum with details on liquidity, borrowing rates, and more",
                 "inputs": [
                     {
                         "name": "query",
@@ -50,9 +50,9 @@ class AaveAgent(MeshAgent):
                     },
                     {"name": "data", "description": "Structured Aave reserve data", "type": "dict"},
                 ],
-                "external_apis": ["Aave v3"],
-                "tags": ["DeFi", "Lending", "Liquidity"],
-                "mcp_tool_name": "get_aave_reserve_data",
+                "external_apis": ["Aave"],
+                "tags": ["DeFi", "Lending"],
+                "image_url": "",  # use aave logo
             }
         )
 

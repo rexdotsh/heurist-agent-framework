@@ -2,7 +2,6 @@ import json
 import os
 import random
 import time
-from datetime import datetime, timedelta
 from typing import Any, Dict, List
 
 import requests
@@ -36,7 +35,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "ELFA Twitter Intelligence Agent",
+                "name": "Elfa Twitter Agent",
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -64,8 +63,10 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                     },
                     {"name": "data", "description": "Structured data from ELFA API", "type": "dict"},
                 ],
-                "external_apis": ["ELFA"],
-                "tags": ["Social", "Twitter", "Analysis"],
+                "external_apis": ["Elfa"],
+                "tags": ["Social", "Twitter"],
+                "recommended": True,
+                "image_url": "",  # use the logo of elfa
             }
         )
 
@@ -101,7 +102,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_mentions",
-                    "description": "Search for mentions of specific tokens or topics on Twitter. This tool finds discussions about cryptocurrencies, blockchain projects, or other topics of interest. It provides the tweets and mentions of smart accounts (only influential ones) and does not contain all tweets. Use this when you want to understand what influential people are saying about a particular token or topic on Twitter. Data comes from ELFA API and can search up to several weeks of historical tweets. The search keywords should be one word or phrase. Never use long sentences or phrases as keywords.",
+                    "description": "Search for mentions of specific tokens or topics on Twitter. This tool finds discussions about cryptocurrencies, blockchain projects, or other topics of interest. It provides the tweets and mentions of smart accounts (only influential ones) and does not contain all tweets. Use this when you want to understand what influential people are saying about a particular token or topic on Twitter. Each of the search keywords should be one word or phrase. A maximum of 5 keywords are allowed. One key word should be one concept. Never use long sentences or phrases as keywords.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -193,18 +194,34 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
     #                      API-SPECIFIC METHODS
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
-    async def search_mentions(self, keywords: List[str], days_ago: int = 30, limit: int = 20) -> Dict:
+    async def search_mentions(self, keywords: List[str], days_ago: int = 29, limit: int = 20) -> Dict:
         if limit < 20:
             limit = 20
-            # raise ValueError("Limit must be at least 20")
+        if days_ago > 29:
+            # The 'from' and 'to' timestamps must be within 30 days of each other and at least 1 day apart.
+            days_ago = 29
+        if len(keywords) > 5:
+            keywords = keywords[:5]
 
         try:
-            end_time = int(time.time())
-            start_time = int((datetime.now() - timedelta(days=days_ago)).timestamp())
+            end_time = int(time.time() - 60)  # Current time minus 60 seconds
+            start_time = int(end_time - (days_ago * 86400))  # end_time minus days_ago in seconds
 
             params = {"keywords": ",".join(keywords), "from": start_time, "to": end_time, "limit": limit}
 
             result = await self._make_request("mentions/search", params=params)
+            if "data" in result:
+                for tweet in result["data"]:
+                    if "id" in tweet:
+                        tweet.pop("id", None)
+                    if "twitter_id" in tweet:
+                        tweet.pop("twitter_id", None)
+                    if "twitter_user_id" in tweet:
+                        tweet.pop("twitter_user_id", None)
+
+            if "metadata" in result:
+                # remove metadata from result
+                result.pop("metadata", None)
             return {"status": "success", "data": result}
         except Exception as e:
             return {"status": "error", "error": str(e)}
@@ -219,7 +236,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             return {"status": "error", "error": str(e)}
 
     @with_cache(ttl_seconds=300)
-    async def search_account(self, username: str, days_ago: int = 30, limit: int = 20) -> Dict:
+    async def search_account(self, username: str, days_ago: int = 29, limit: int = 20) -> Dict:
         try:
             # Get account stats
             account_stats_result = await self.get_account_stats(username)
@@ -254,9 +271,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """Handle tool execution and optional LLM explanation"""
 
         if tool_name == "search_mentions":
@@ -271,23 +286,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         errors = self._handle_error(result)
         if errors:
             return errors
-
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await call_llm_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata["large_model_id"],
-            messages=[
-                {"role": "system", "content": self.get_system_prompt()},
-                {"role": "user", "content": query},
-                {"role": "tool", "content": str(result), "tool_call_id": tool_call_id},
-            ],
-            temperature=0.6,
-        )
-
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -306,13 +305,8 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -344,10 +338,21 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
         tool_call_name = tool_call.function.name
         tool_call_args = json.loads(tool_call.function.arguments)
 
-        return await self._handle_tool_logic(
-            tool_name=tool_call_name,
-            function_args=tool_call_args,
-            query=query,
-            tool_call_id=tool_call.id,
-            raw_data_only=raw_data_only,
+        data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+        if raw_data_only:
+            return {"response": "", "data": data}
+
+        explanation = await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata["large_model_id"],
+            messages=[
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call.id},
+            ],
+            temperature=0.6,
         )
+
+        return {"response": explanation, "data": data}

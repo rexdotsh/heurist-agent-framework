@@ -31,7 +31,7 @@ class PumpFunTokenAgent(MeshAgent):
         self.session = None
         self.metadata.update(
             {
-                "name": "PumpFun Token Analysis Agent",
+                "name": "PumpFun Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data.",
@@ -59,7 +59,8 @@ class PumpFunTokenAgent(MeshAgent):
                     {"name": "data", "description": "Structured token analysis data.", "type": "dict"},
                 ],
                 "external_apis": ["Bitquery"],
-                "tags": ["Solana", "Token Analysis"],
+                "tags": ["Solana", "Trading"],
+                "image_url": "",  # use the logo of pumpfun
             }
         )
 

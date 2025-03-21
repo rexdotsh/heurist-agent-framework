@@ -21,7 +21,7 @@ class MasaTwitterSearchAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "Masa Twitter Search Agent",
+                "name": "Masa Twitter Agent",
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -57,7 +57,8 @@ class MasaTwitterSearchAgent(MeshAgent):
                     {"name": "data", "description": "Structured Twitter search results data.", "type": "dict"},
                 ],
                 "external_apis": ["Masa"],
-                "tags": ["Social Media", "Data"],
+                "tags": ["Social", "Twitter"],
+                "image_url": "",  # use the logo of masa
             }
         )
 

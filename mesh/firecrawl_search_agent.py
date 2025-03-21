@@ -46,7 +46,9 @@ class FirecrawlSearchAgent(MeshAgent):
                     {"name": "data", "description": "Structured search results and metadata", "type": "dict"},
                 ],
                 "external_apis": ["Firecrawl"],
-                "tags": ["Internet Search"],
+                "tags": ["Search"],
+                "recommended": True,
+                "image_url": "",  # use the logo of firecrawl
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))
@@ -90,11 +92,11 @@ class FirecrawlSearchAgent(MeshAgent):
                             "urls": {
                                 "type": "array",
                                 "items": {"type": "string"},
-                                "description": "List of URLs to extract data from. Can include wildcards (e.g., 'example.com/*') to crawl entire domains."
+                                "description": "List of URLs to extract data from. Can include wildcards (e.g., 'example.com/*') to crawl entire domains.",
                             },
                             "extraction_prompt": {
                                 "type": "string",
-                                "description": "Natural language description of what data to extract from the pages."
+                                "description": "Natural language description of what data to extract from the pages.",
                             },
                             # "enable_web_search": {
                             #     "type": "boolean",
@@ -170,20 +172,18 @@ class FirecrawlSearchAgent(MeshAgent):
 
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def firecrawl_extract_web_data(self, urls: List[str], extraction_prompt: str, enable_web_search: bool = False) -> Dict:
+    async def firecrawl_extract_web_data(
+        self, urls: List[str], extraction_prompt: str, enable_web_search: bool = False
+    ) -> Dict:
         """Extract structured data from web pages using natural language instructions"""
         try:
             response = await asyncio.get_event_loop().run_in_executor(
-                None, 
+                None,
                 lambda: self.app.extract(
-                    urls=urls, 
-                    params={
-                        "prompt": extraction_prompt,
-                        "enableWebSearch": enable_web_search
-                    }
-                )
+                    urls=urls, params={"prompt": extraction_prompt, "enableWebSearch": enable_web_search}
+                ),
             )
-            
+
             if isinstance(response, dict):
                 if "data" in response:
                     return response
@@ -193,7 +193,7 @@ class FirecrawlSearchAgent(MeshAgent):
                     return {"error": "Extraction failed", "details": response}
             else:
                 return {"data": response}
-                
+
         except Exception as e:
             logger.error(f"Extraction error: {e}")
             return {"error": f"Failed to extract data: {str(e)}"}
@@ -216,12 +216,12 @@ class FirecrawlSearchAgent(MeshAgent):
             urls = function_args.get("urls")
             extraction_prompt = function_args.get("extraction_prompt")
             enable_web_search = function_args.get("enable_web_search", False)
-            
+
             if not urls:
                 return {"error": "Missing 'urls' in tool_arguments"}
             if not extraction_prompt:
                 return {"error": "Missing 'extraction_prompt' in tool_arguments"}
-                
+
             result = await self.firecrawl_extract_web_data(urls, extraction_prompt, enable_web_search)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}

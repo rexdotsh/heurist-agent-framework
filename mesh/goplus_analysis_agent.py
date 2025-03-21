@@ -19,7 +19,7 @@ class GoplusAnalysisAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "Goplus Analysis Agent",
+                "name": "GoPlus Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "description": "This agent can fetch and analyze security details of blockchain token contracts using GoPlus API.",
@@ -43,7 +43,8 @@ class GoplusAnalysisAgent(MeshAgent):
                     {"name": "data", "description": "The security details of the token contract", "type": "dict"},
                 ],
                 "external_apis": ["GoPlus"],
-                "tags": ["Security", "Data"],
+                "tags": ["Security"],
+                "image_url": "",  # use the logo of goplus
             }
         )
 

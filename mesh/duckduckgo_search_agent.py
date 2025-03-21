@@ -17,7 +17,7 @@ class DuckDuckGoSearchAgent(MeshAgent):
         super().__init__()
         self.metadata.update(
             {
-                "name": "DuckDuckGo Search Agent",
+                "name": "DuckDuckGo Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -51,7 +51,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
                     {"name": "data", "description": "The raw search results data", "type": "dict"},
                 ],
                 "external_apis": ["DuckDuckGo"],
-                "tags": ["Search", "Data"],
+                "tags": ["Search"],
+                "image_url": "",  # use a duckduckgo logo
             }
         )
 
@@ -155,8 +156,8 @@ class DuckDuckGoSearchAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Handle both direct tool calls and natural language queries"""
         query = params.get("query")
-        if not query:
-            raise ValueError("Query parameter is required")
+        if not query and not (params.get("tool") and params.get("tool_arguments", {}).get("search_term")):
+            raise ValueError("Query parameter or tool call is required")
 
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})

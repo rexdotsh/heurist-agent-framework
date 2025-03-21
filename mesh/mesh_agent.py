@@ -12,12 +12,13 @@ os.environ.clear()
 dotenv.load_dotenv()
 
 # By default, large and small models are the same
-DEFAULT_MODEL_ID = "anthropic/claude-3.5-haiku" #"nvidia/llama-3.1-nemotron-70b-instruct"
+DEFAULT_MODEL_ID = "anthropic/claude-3.5-haiku"  # "nvidia/llama-3.1-nemotron-70b-instruct"
 
 HEURIST_BASE_URL = os.getenv("HEURIST_BASE_URL")
 HEURIST_API_KEY = os.getenv("HEURIST_API_KEY")
 # HEURIST_BASE_URL = os.getenv('OPENROUTER_BASE_URL') #os.getenv('HEURIST_BASE_URL')
 # HEURIST_API_KEY = os.getenv('OPENROUTER_API_KEY')
+
 
 class MeshAgent(ABC):
     """Base class for all mesh agents"""
@@ -38,7 +39,9 @@ class MeshAgent(ABC):
             "tags": [],
             "large_model_id": DEFAULT_MODEL_ID,
             "small_model_id": DEFAULT_MODEL_ID,
-            "mcp_tool_name": None,
+            "hidden": False,
+            "recommended": False,
+            "image_url": "",
         }
         self.heurist_base_url = HEURIST_BASE_URL
         self.heurist_api_key = HEURIST_API_KEY

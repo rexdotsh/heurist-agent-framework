@@ -21,11 +21,11 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
         self.metadata.update(
             {
-                "name": "CoinGecko Token Info Agent",
+                "name": "CoinGecko Agent",
                 "version": "1.0.2",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can fetch token information, market data, and trending coins from CoinGecko. ",
+                "description": "This agent can fetch token information, market data, and trending coins from CoinGecko.",
                 "inputs": [
                     {
                         "name": "query",
@@ -54,7 +54,9 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["Coingecko"],
-                "tags": ["Trading", "Data"],
+                "tags": ["Trading"],
+                "recommended": True,
+                "image_url": "",  # use coingecko logo
             }
         )
 
