@@ -9,7 +9,7 @@ Heurist Mesh provides a powerful REST API that enables developers to seamlessly 
 You can install the Heurist Mesh client directly from GitHub:
 
 ```bash
-pip install git+https://github.com/heurist-network/heurist-agent-framework.git#subdirectory=api-client
+pip install git+https://github.com/heurist-network/heurist-agent-framework.git#subdirectory=heurist-mesh-client
 ```
 
 ### Authentication
