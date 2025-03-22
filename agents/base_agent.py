@@ -1,8 +1,7 @@
 import asyncio
 import os
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Tuple, List
-from pathlib import Path
+from typing import Any, Dict, Optional, Tuple
 
 import dotenv
 from loguru import logger
@@ -57,7 +56,7 @@ class BaseAgent(ABC):
         message_type: str = "user_message",
         source_interface: str = None,
         chat_id: str = None,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
         """Handle incoming messages and return (text_response, image_url, tool_result)"""
         pass
@@ -135,7 +134,7 @@ class BaseAgent(ABC):
     async def pre_process(self, message: str, **kwargs) -> bool:
         """Pre-process and validate incoming messages"""
         return True
-        
+
     async def post_process(self, response: Any, **kwargs) -> str:
         """Post-process agent responses"""
         return response if isinstance(response, str) else str(response)

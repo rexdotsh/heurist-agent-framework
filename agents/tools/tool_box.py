@@ -4,10 +4,10 @@ from typing import Any, Dict, Optional
 import aiohttp
 
 from core.imgen import generate_image_with_retry_smartgen
+from core.tools.tool_decorator import tool
+from core.tools.tools import ToolBox
 
-from .tool_decorator import tool
 from .tool_decorator_example import DECORATED_TOOLS_EXAMPLES
-from .tools import ToolBox
 
 logger = logging.getLogger(__name__)
 ## YOUR TOOLS GO HERE

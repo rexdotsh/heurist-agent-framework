@@ -36,17 +36,10 @@ class Tools:
         # Base tools configuration
         # Can be used to add tools by defining a function schema explicitly if needed
         self.tools_config = self.tool_box.tools_config
-
         # Base handlers
         # Can be used to add handlers for schemas that were defined explicitly
         self.tool_handlers = self.tool_box.tool_handlers
 
-        # List to store decorated tools
-        # self.decorated_tools = self.tool_box.decorated_tools
-
-        # Store decorated tools
-        # Not necessary to as it is already stored in the ToolBox class
-        # But explicitly storing it here for clarity
         self._decorated_tools: List[Callable] = []
 
         # Register the decorated tools
