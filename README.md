@@ -3,9 +3,8 @@
 </div>
 
 # Heurist Agent Framework
-*The Raspberry Pi of Agent Frameworks*
 
-A flexible multi-interface AI agent framework that can interact through various platforms including Telegram, Discord, Twitter, Farcaster, and REST API.
+A flexible multi-interface AI agent framework that can interact through various platforms including Telegram, Discord, Twitter, Farcaster, REST API, and MCP.
 
 Grab a Heurist API Key instantly for free by using the code 'agent' while submitting the form on https://heurist.ai/dev-access
 
@@ -37,10 +36,16 @@ The Heurist Agent Framework is built on a modular architecture that allows an AI
 </div>
 
 ## Heurist Mesh
+![mesh](https://github.com/user-attachments/assets/77a2ab3b-e35c-4313-8a5b-a0e751cac879)
 
-**Heurist Mesh** is an open network where AI agents can be contributed by the community and used modularly—similar to DeFi smart contracts. Each agent is a specialized unit that can process data, generate reports, or perform actions while collectively forming an intelligent swarm to tackle complex tasks. Each agent is accessible via a unified REST API interface, and can be used in conjunction with any agent framework or application.
+**Heurist Mesh** is an open network where AI agents are contributed by the community and used modularly—similar to DeFi smart contracts. Each agent is a specialized unit that can process data, generate reports, or perform actions while collectively forming an intelligent swarm to tackle complex tasks. Each agent is accessible via a unified REST API interface, and can be used in conjunction with any agent framework or application.
 
 Want to contribute your own agent? Check out the [Mesh README](./mesh/README.md) for detailed guidelines, examples, and best practices.
+
+### MCP Support
+**Just In:** All Heurist Mesh agents are accessible via MCP! This means you can access them from your favorite MCP client, including [Claude Desktop](https://claude.ai/download), [Cursor](https://www.cursor.com/), and [Windsurf](https://codeium.com/windsurf).
+
+Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mesh-mcp-server) to set up a server and give your AI assistant a powerup.
 
 ### Available Mesh Agents
 
