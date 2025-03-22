@@ -24,6 +24,27 @@ async def run_agent():
         agent_output_trending = await agent.handle_message(agent_input_trending)
         print(f"Result of handle_message (trending tokens): {agent_output_trending}")
 
+        # Test direct tool call for token trading info
+        agent_input_direct_tool = {
+            "tool": "get_token_trading_info",
+            "tool_arguments": {"token_address": "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"},
+        }
+        agent_output_direct_tool = await agent.handle_message(agent_input_direct_tool)
+        print(f"Result of direct tool call (token trading info): {agent_output_direct_tool}")
+
+        # Test direct tool call for top trending tokens
+        agent_input_direct_trending = {"tool": "get_top_trending_tokens", "tool_arguments": {}}
+        agent_output_direct_trending = await agent.handle_message(agent_input_direct_trending)
+        print(f"Result of direct tool call (trending tokens): {agent_output_direct_trending}")
+
+        # Test with raw_data_only flag
+        agent_input_raw_data = {
+            "query": "Get token info for HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC",
+            "raw_data_only": True,
+        }
+        agent_output_raw_data = await agent.handle_message(agent_input_raw_data)
+        print(f"Result with raw_data_only=True: {agent_output_raw_data}")
+
         # Save the test inputs and outputs to a YAML file for further inspection
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
@@ -35,6 +56,12 @@ async def run_agent():
             "output_by_token_address": agent_output,
             "input_trending": agent_input_trending,
             "output_trending": agent_output_trending,
+            "input_direct_tool": agent_input_direct_tool,
+            "output_direct_tool": agent_output_direct_tool,
+            "input_direct_trending": agent_input_direct_trending,
+            "output_direct_trending": agent_output_direct_trending,
+            "input_raw_data": agent_input_raw_data,
+            "output_raw_data": agent_output_raw_data,
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

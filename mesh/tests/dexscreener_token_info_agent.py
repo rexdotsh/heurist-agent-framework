@@ -14,16 +14,29 @@ load_dotenv()
 async def run_agent():
     agent = DexScreenerTokenInfoAgent()
     try:
-        # Test search_pairs tool
-        agent_input = {
+        # Example for natural language query with analysis
+        agent_input_query = {
+            "query": "Show me information about ETH on Uniswap",
+            "raw_data_only": False,
+        }
+        agent_output_query = await agent.handle_message(agent_input_query)
+
+        # Example for natural language query with raw data only
+        agent_input_query_raw = {
+            "query": "Tell me about ETH on Uniswap",
+            "raw_data_only": True,
+        }
+        agent_output_query_raw = await agent.handle_message(agent_input_query_raw)
+
+        # Test search_pairs tool - Direct tool call (no LLM analysis)
+        agent_input_search = {
             "tool": "search_pairs",
             "tool_arguments": {"search_term": "ETH"},
-            "raw_data_only": False,  # Set to True if you only want raw data without LLM analysis
         }
-        agent_output = await agent.handle_message(agent_input)
-        print(f"Result of search_pairs: {agent_output}")
+        agent_output_search = await agent.handle_message(agent_input_search)
+        print(f"Result of search_pairs: {agent_output_search}")
 
-        # Test get_specific_pair_info tool
+        # Test get_specific_pair_info tool - Direct tool call (no LLM analysis)
         agent_input_pair_info = {
             "tool": "get_specific_pair_info",
             "tool_arguments": {"chain": "solana", "pair_address": "7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp"},
@@ -31,7 +44,7 @@ async def run_agent():
         agent_output_pair_info = await agent.handle_message(agent_input_pair_info)
         print(f"Result of get_specific_pair_info: {agent_output_pair_info}")
 
-        # Test get_token_pairs tool
+        # Test get_token_pairs tool - Direct tool call (no LLM analysis)
         agent_input_pairs = {
             "tool": "get_token_pairs",
             "tool_arguments": {"chain": "solana", "token_address": "8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump"},
@@ -46,7 +59,9 @@ async def run_agent():
         output_file = script_dir / f"{base_filename}.yaml"
 
         yaml_content = {
-            "search_pairs_test": {"input": agent_input, "output": agent_output},
+            "natural_language_query_with_analysis": {"input": agent_input_query, "output": agent_output_query},
+            "natural_language_query_raw_data": {"input": agent_input_query_raw, "output": agent_output_query_raw},
+            "search_pairs_test": {"input": agent_input_search, "output": agent_output_search},
             "specific_pair_info_test": {"input": agent_input_pair_info, "output": agent_output_pair_info},
             "token_pairs_test": {"input": agent_input_pairs, "output": agent_output_pairs},
         }
