@@ -178,6 +178,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                             "vs_currencies": {
                                 "type": "string",
                                 "description": "Comma-separated target currencies (e.g., usd,eur,btc)",
+                                "default": "usd",
                             },
                             "include_market_cap": {
                                 "type": "boolean",
@@ -627,7 +628,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
                         Guidelines:
                         - Use appropriate tools to find and analyze cryptocurrency data
-                        - Format numbers clearly (e.g. $1.5M, 15.2%) 
+                        - Format numbers clearly (e.g. $1.5M, 15.2%)
                         - Keep response concise and focused on key insights
                         """
                 )
