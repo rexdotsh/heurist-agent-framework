@@ -31,10 +31,6 @@ The Heurist Agent Framework is built on a modular architecture that allows an AI
   - Farcaster integration
   - REST API
 
-<div align="center">
-<img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
-</div>
-
 ## Heurist Mesh
 ![mesh](https://github.com/user-attachments/assets/77a2ab3b-e35c-4313-8a5b-a0e751cac879)
 
@@ -153,6 +149,11 @@ Each interface inherits from the CoreAgent and implements platform-specific hand
 <img src="./docs/img/HFA_1.png" alt="Heurist Agent Framework" width="500">
 </div>
 
+### Main Loop
+
+<div align="center">
+<img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
+</div>
 
 ## Configuration
 
