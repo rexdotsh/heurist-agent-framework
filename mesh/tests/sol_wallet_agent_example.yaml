@@ -3,73 +3,79 @@ natural_language_query_with_analysis:
     query: Give me the holders of this J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
     raw_data_only: false
   output:
-    response: "**Token Holders for J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U (FLOYDAI)**\n\
-      \n* **Total Value:** $921,985.85\n* **Price per Token:** $0.00827786\n* **Top\
-      \ Holders:**\n\t1. **7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb**\n\t\t+ **Total\
-      \ Value:** $262,904.62 (28.5% of total)\n\t2. **992cATTrDzchVKDn1aRe5X36LSyzUPSVmGVEdwxaSQAX**\n\
-      \t\t+ **Total Value:** $210,084.57 (22.8% of total)\n\t3. **23j34JpiNCad3NFxgB55LcUiZu4hZ13fThoi12n8mPoS**\n\
-      \t\t+ **Total Value:** $137,299.97 (14.9% of total)\n\t4. **7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd**\n\
-      \t\t+ **Total Value:** $124,167.89 (13.5% of total)\n\t5. **4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5**\n\
-      \t\t+ **Total Value:** $101,684.77 (11.0% of total)\n\n**Pattern Observation:**\n\
-      The top two holders (7A2pGia... and 992cATTr...) collectively own approximately\
-      \ 51.3% of the total value, indicating a moderately concentrated holder distribution."
+    response: "**Holders of FLOYDAI (J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U)**\n\
+      \n**Total Value:** $1,719,034.70\n\n**Top 5 Holders by Total Value:**\n\n1.\
+      \ **3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq**\n\t* **Total Value:** $339,624.42\
+      \ (19.8% of total)\n2. **BsyFqmA8ys1EQ7KFPBcFCmT5r85YZsxfP9EhN9Bd8gRJ**\n\t\
+      * **Total Value:** $320,356.31 (18.6% of total)\n3. **7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb**\n\
+      \t* **Total Value:** $281,427.35 (16.4% of total)\n4. **3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r**\n\
+      \t* **Total Value:** $272,670.77 (15.9% of total)\n5. **GFJhtZuENEB9StZiacHUd1aoBoCtY2wWLskhgwcyfaYN**\n\
+      \t* **Total Value:** $238,571.42 (13.9% of total)\n\n**Anomaly/Pattern:** \n\
+      * **Concentration of Holdings:** The top 2 holders collectively own approximately\
+      \ 38.4% of the total value, indicating a relatively concentrated ownership structure.\n\
+      * **Overlap with Other Tokens:** Notably, **3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq**\
+      \ also holds significant amounts of other tokens listed (SOL, NiggaButt, N2),\
+      \ suggesting a potentially influential or large-scale investor across multiple\
+      \ assets."
     data: &id002
-    - token_address: So11111111111111111111111111111111111111112
-      token_img: ''
-      symbol: SOL
-      price_per_token: 128.93466186523438
-      total_price: 1238089.6868136935
-      holders:
-      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-        total_price: 902542.6361526197
-      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 326665.08940967405
-      - address: 3R5YS2RsFC8tX4dxbYtwDrQZTURmX5i4TWKfCX8JPsBC
-        total_price: 6605.576532530211
-      - address: 992cATTrDzchVKDn1aRe5X36LSyzUPSVmGVEdwxaSQAX
-        total_price: 2043.8209005702265
-      - address: 23j34JpiNCad3NFxgB55LcUiZu4hZ13fThoi12n8mPoS
-        total_price: 202.31334367059404
     - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
       symbol: FLOYDAI
-      price_per_token: 0.00827786
-      total_price: 921985.8486989196
+      price_per_token: 0.00886107
+      total_price: 1719034.6985044288
       holders:
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_price: 339624.41551897704
+      - address: BsyFqmA8ys1EQ7KFPBcFCmT5r85YZsxfP9EhN9Bd8gRJ
+        total_price: 320356.3095151633
       - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
-        total_price: 262904.6163345514
-      - address: 992cATTrDzchVKDn1aRe5X36LSyzUPSVmGVEdwxaSQAX
-        total_price: 210084.5733845109
-      - address: 23j34JpiNCad3NFxgB55LcUiZu4hZ13fThoi12n8mPoS
-        total_price: 137299.96644581418
-      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-        total_price: 124167.89308190346
-      - address: 4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5
-        total_price: 101684.7712922655
-    - token_address: BftUiGB2iDkNDa8AKdhtLuJHHXiUfqLvTNmiXaSopump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXgt6TEGac8Mx8EKKYR9mjjJLmvd9BBVdyRYJzw3kk3mu
-      symbol: ELON
-      price_per_token: 0.00095863
-      total_price: 6005.135475113389
+        total_price: 281427.35257105937
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_price: 272670.77192856575
+      - address: GFJhtZuENEB9StZiacHUd1aoBoCtY2wWLskhgwcyfaYN
+        total_price: 238571.41772095303
+    - token_address: So11111111111111111111111111111111111111112
+      token_img: ''
+      symbol: SOL
+      price_per_token: 128.684326171875
+      total_price: 333819.94119172124
       holders:
       - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 6005.135475113389
-    - token_address: 7CeVTQQs7UjNZGX1ZXAW5EUYJjsbpiDLuLDDZNwRKKCz
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmYDGx83JSQrefFowP7mbMaE7kYknoCtiPVpPvTfxtNs6p
-      symbol: NFT
-      price_per_token: 8.2665e-06
-      total_price: 369.29877425083987
+        total_price: 326030.8462164888
+      - address: 3R5YS2RsFC8tX4dxbYtwDrQZTURmX5i4TWKfCX8JPsBC
+        total_price: 6592.751342307539
+      - address: FTeVtYs3oqo1wFgGqgurWbzdRZ7x5qdhxBNdWK1mwSB
+        total_price: 955.9139197722224
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_price: 145.3240539724468
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_price: 72.82328890772462
+    - token_address: 8fZL148nnC168RAVCZh4PkjvMZmxMEfMLDhoziWVPnqf
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmPtqv19eyX3FBCTKyY6RFnAiECpM2wXSSGtp4phonFZTX
+      symbol: NiggaButt
+      price_per_token: 0.00145906
+      total_price: 36515.6452689321
       holders:
-      - address: 992cATTrDzchVKDn1aRe5X36LSyzUPSVmGVEdwxaSQAX
-        total_price: 369.29877425083987
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_price: 36515.6452689321
     - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmTD3YfytLW3jvAyr958RKEvhYHVdAzhgNqF1XxbvfPCjB
       symbol: N2
-      price_per_token: 0.000775856
-      total_price: 232.48905552193426
+      price_per_token: 0.00080729
+      total_price: 27252.25437125821
       holders:
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_price: 27010.345963901953
       - address: 3R5YS2RsFC8tX4dxbYtwDrQZTURmX5i4TWKfCX8JPsBC
-        total_price: 232.48905552193426
+        total_price: 241.90840735625633
+    - token_address: BftUiGB2iDkNDa8AKdhtLuJHHXiUfqLvTNmiXaSopump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXgt6TEGac8Mx8EKKYR9mjjJLmvd9BBVdyRYJzw3kk3mu
+      symbol: ELON
+      price_per_token: 0.000937159
+      total_price: 5870.634913057888
+      holders:
+      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_price: 5870.634913057888
 natural_language_query_raw_data:
   input:
     query: Show me the txs of this wallet DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
@@ -401,219 +407,107 @@ natural_language_query_raw_data:
       token_out_address: So11111111111111111111111111111111111111112
       token_out_amount: '7.388232513'
       type: SELL
-get_wallet_assets_test:
+get_sol_wallet_assets_test:
   input:
-    tool: get_wallet_assets
+    tool: get_sol_wallet_assets
     tool_arguments:
       owner_address: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
   output:
-    response: '**Wallet Token Holdings Summary**
-
-
-      **Total Value:** **$53.5M**
-
-
-      **Top 5 Valuable Tokens:**
-
-
-      1. **SOL** ($8.81M) - **Price per Token:** $128.93
-
-      2. **FLOYDAI** ($41.89M) - **Price per Token:** $0.0082
-
-      3. **N2** ($6.25M) - **Price per Token:** $0.0008
-
-      4. **FUJI** ($6.19M) - **Price per Token:** $0.0006
-
-      5. **FENT (ryPuf...)** ($909.31k) - **Price per Token:** $3.07e-05
-
-
-      **Low-Value Tokens (<$1k):**
-
-
-      * **#packwatch**: $120.50 (Price per Token: $6.03e-06)
-
-      * **core**: $220.59 (Price per Token: $7.35e-06)
-
-      * **CATJAK**: $664.24 (Price per Token: $1.97e-05)
-
-      * **AFFIRM**: $458.63 (Price per Token: $1.47e-05)
-
-      * **Adrian**: $765.26 (Price per Token: $0.0001)
-
-      * **GAC**: $268.71 (Price per Token: $8.84e-06)
-
-      * **COKE**: $530.57 (Price per Token: $0.0035)
-
-      * **MLKAI**: $537.42 (Price per Token: $1.54e-05)
-
-      * **DIDDYTRON**: $565.40 (Price per Token: $1.99e-05)
-
-      * **iFloydmini**: $513.72 (Price per Token: $4.60e-05)
-
-      * **FENT (AG7e5...)**: $330.70 (Price per Token: $2.85e-05)
-
-
-      **Anomalies/Patterns:**
-
-
-      * **Duplicate Symbol:** "FENT" appears twice with different token addresses
-      (ryPuf... and AG7e5...), indicating potential token fragmentation or differing
-      token types with the same symbol.
-
-      * **Extremely Low-Value Tokens:** Several tokens have very low prices per token
-      (<$1e-05), which might suggest low liquidity, low market interest, or'
+    response: ''
     data:
     - token_address: So11111111111111111111111111111111111111112
       token_img: ''
       symbol: SOL
-      price_per_token: 128.93466186523438
-      total_price: 8.813279171953276
+      price_per_token: 128.684326171875
+      total_price: 8.796167572012939
     - token_address: C8e4UBwf1XLLEP18dfhZRiQ3nMqWoy9vApcEZaJEpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmRcZ23g4LNSvA6QK8mQ8T1rTG6WgMgaAU3rjQprz5LZQz
       symbol: MLKAI
-      price_per_token: 1.53708e-05
-      total_price: 537.4197419600791
+      price_per_token: 1.53416e-05
+      total_price: 536.3987942440481
     - token_address: 6U2wHsT77exPvch1aZjKyjq8FUE1U4iYF88F86D5pump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmdB3Ek5HNeQtJKkkaCobkwhcrUR2P8XQLTbf6GxAAUhQK
       symbol: DIDDYTRON
-      price_per_token: 1.99059e-05
-      total_price: 565.3968061238199
+      price_per_token: 2.06339e-05
+      total_price: 586.0745270683183
     - token_address: 6QZFhw4197ne5T23K45K9PvHSdNMceLBKFrLE2n2pump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmcHZEjqGAV5cBHDDDefgcwkzyU8fmHiBBqFomoe5693pq
       symbol: iFloydmini
-      price_per_token: 4.60154e-05
-      total_price: 513.7242189688668
+      price_per_token: 4.60097e-05
+      total_price: 513.6605751846394
     - token_address: ryPufB9SKmUcnZBqzMHanaLEjCkbaSnFCcD1Ahxpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmatqZQT8G3BStDkzCBiTSd7ssGXLSdg8GRLVHncs9JiWA
       symbol: FENT
-      price_per_token: 3.07291e-05
-      total_price: 909.3131415912233
+      price_per_token: 3.10234e-05
+      total_price: 918.02179133148
     - token_address: C7LGTaqvbaBtgauWLEYQtk8AXhoPAUX43i7upDmNDisZ
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafkreib7j23bhpkdk4m3nt2qmmfjrbt6hfdihg3s7b6t4qga4z4jyntmxe.ipfs.nftstorage.link
       symbol: COKE
-      price_per_token: 0.003537165
-      total_price: 530.5747501552105
+      price_per_token: 0.0035308718
+      total_price: 529.6307732351124
     - token_address: 9XATau2q82SFwoGCj5Vkk3vZnDu21ukGQq73u2YQZiUM
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmeBoQ9jMxnPix5DUu36PeeBHvNcjQxuhqhT1g75JiR2U4
       symbol: GAC
-      price_per_token: 8.83812e-06
-      total_price: 268.71122445094073
+      price_per_token: 8.83607e-06
+      total_price: 268.648896910944
     - token_address: 3M1t49FpyULfGEiEWowHyHjthWyfL7RpHgQ7mDbBpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmQGLdWumiMQpYvSG99xKUzym8YSMfTvSgs2Y1Fed5AHCf
       symbol: AFFIRM
-      price_per_token: 1.47093e-05
-      total_price: 458.6251360938656
+      price_per_token: 1.46718e-05
+      total_price: 457.4559331505062
     - token_address: Crb3po4oD4NVahRQjR6fthD2Cyz3jNsz5MqPkAuUpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmSS2BLtQ6mA8kvXqPEz9FpDSyrpjRsbSUgRh9nXuTMB7Z
       symbol: core
-      price_per_token: 7.35303e-06
-      total_price: 220.590900426032
+      price_per_token: 7.34034e-06
+      total_price: 220.2101950388169
     - token_address: JyTYXrqcYkvRhotAaYBvFbm6zk7vimHc86hwLZzpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmVfn2UwcxsgPBWHrLrPAUaEnWHPquJheviB5TWgytgfMf
       symbol: CATJAK
-      price_per_token: 1.97138e-05
-      total_price: 664.2385253544467
+      price_per_token: 1.96495e-05
+      total_price: 662.0720137350189
     - token_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/Qme38EvvaXkToZpwWxC6SfdKYzzWdc5KXttmsS4DeERer5
       symbol: FUJI
-      price_per_token: 0.000586562
-      total_price: 6187.382215297901
+      price_per_token: 0.000582145
+      total_price: 6140.789536696324
     - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
       symbol: FLOYDAI
-      price_per_token: 0.00824299
-      total_price: 41890.836664764836
+      price_per_token: 0.00886107
+      total_price: 45031.91473826185
     - token_address: 5sYp2ygdJwbv1ETyrsn68yUyJKGSBPE4VLChxo4npump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXpbkoswrJbYaUQdSgnMWs7YFFkyV5AYunjEugJ2gmNp3
       symbol: '#packwatch'
-      price_per_token: 6.02515e-06
-      total_price: 120.50300028931814
+      price_per_token: 6.01332e-06
+      total_price: 120.26640433759896
     - token_address: 6Em4veHJFxfnEvu2cyQhkn2BszvHxycPba8fL3Psx4gY
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdRmace5TGP7L7dV2saxjnXJgfh43ZHUhLmuJryHqf9BF
       symbol: Adrian
-      price_per_token: 0.000101204
-      total_price: 765.2600672738138
+      price_per_token: 9.50864e-05
+      total_price: 719.0014461956213
     - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmTD3YfytLW3jvAyr958RKEvhYHVdAzhgNqF1XxbvfPCjB
       symbol: N2
-      price_per_token: 0.000775856
-      total_price: 6247.8054209097945
+      price_per_token: 0.000808358
+      total_price: 6509.537141901385
     - token_address: AG7e5ib8H5xJ4zAk4A4qNgtvSR9iNGWLrQDVc4YNK4jR
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafybeig77n2fiwdbbqat66ts6oztbyaz6srsmvirxq3qcvd63kceuhcleu.ipfs.nftstorage.link
       symbol: FENT
-      price_per_token: 2.8530714e-05
-      total_price: 330.70070286663514
-get_tx_history_test:
+      price_per_token: 2.8408083e-05
+      total_price: 329.2792840288823
+get_sol_tx_history_test:
   input:
-    tool: get_tx_history
+    tool: get_sol_tx_history
     tool_arguments:
       owner_address: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
   output:
-    response: 'It appears you''ve provided a dataset of transaction history for a
-      specific Solana wallet (`DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN`) without
-      a specific question or query related to the capabilities I outlined (Query wallet
-      token holdings, Analyze token holder patterns, View wallet swap transaction
-      history). To provide a meaningful response, I''ll offer an overview of the transaction
-      history and highlight some key observations. If you have a specific question,
-      please feel free to ask, and I''ll tailor my response accordingly.
-
-
-      ### Transaction History Overview:
-
-
-      **Timeframe:** The transactions span from timestamp 1739852771 to 1741136128,
-      which, assuming Unix timestamps, equates to approximately 9 days.
-
-
-      **Tokens Involved:**
-
-      - **SOL** (Solana native token)
-
-      - **FLOYDAI**
-
-      - **4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump** (Unidentified Token, possibly
-      a stablecoin given the context)
-
-      - **5erQKZrsPgemDfuLVDMNcB4J85pPmDD78Zp1gsiWpump**
-
-      - **65Z76ENVtuTVohmGeSMVAPW7ArRoUByZspCN3Yb7k7p** (FENTANYL)
-
-      - **creedYCqY4bRNvnR3eRw3Np61EWMXL2RZFqRNhfSUNw** (CREED)
-
-      - **35sWUF3kq2YNuiEU5YgPo5yVqg6av2snKmm5RaT3gqYe** (FA)
-
-      - **2EL8PFoJ54iYkgHhXuavFZbV6JXA8WRun2R3ZZXaDygv** (KOREA)
-
-      - **DsTkgW5pfv5SKEsw9wfWJbg1JZ5sXGXSdPEjcq1cmuGo** (tes1)
-
-      - **BCNT4t3rv5Hva8RnUtJUJLnxzeFAabcYp8CghC1SmWin** (BCNT)
-
-      - **57W'
+    response: ''
     data: *id001
-analyze_holders_test:
+analyze_sol_token_holders_test:
   input:
-    tool: analyze_holders
+    tool: analyze_sol_token_holders
     tool_arguments:
       token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
   output:
-    response: "**Wallet Asset Summary**\n\nBased on the provided Helius API data,\
-      \ here is a concise summary of the wallet's token holdings:\n\n### **Token Holdings**\n\
-      \n1. **SOL (Solana)**\n\t* **Total Value:** $1,238,089.69\n\t* **Top Holders:**\n\
-      \t\t+ `7pgAdJH1XKL3N...` ($902,542.64, ~73% of SOL holdings)\n\t\t+ `4J5rDTvRbzjuK...`\
-      \ ($326,665.09, ~26% of SOL holdings)\n\n2. **FLOYDAI**\n\t* **Total Value:**\
-      \ $921,985.85\n\t* **Top Holders:**\n\t\t+ `7A2pGiaLs3Pb...` ($262,904.62, ~28.5%\
-      \ of FLOYDAI holdings)\n\t\t+ `992cATTrDzch...` ($210,084.57, ~22.8% of FLOYDAI\
-      \ holdings)\n\n3. **ELON**\n\t* **Total Value:** $6,005.14\n\t* ** Sole Holder:**\
-      \ `4J5rDTvRbzjuK...` (100% of ELON holdings)\n\n4. **NFT**\n\t* **Total Value:**\
-      \ $369.30\n\t* **Sole Holder:** `992cATTrDzch...` (100% of NFT holdings)\n\n\
-      5. **N2**\n\t* **Total Value:** $232.49\n\t* **Sole Holder:** `3R5YS2RsFC8t...`\
-      \ (100% of N2 holdings)\n\n**Notable Patterns:**\n\n- **Diversified SOL Holdings:**\
-      \ While `7pgAdJH1XKL3N...` holds a significant majority of SOL, the distribution\
-      \ among other holders is notable, indicating a less concentrated ownership.\n\
-      \  \n- **Concentrated Holdings in Other Tokens:** Tokens like ELON, NFT, and\
-      \ N2 are held by single addresses, suggesting highly concentrated ownership\
-      \ or potential centralization in these assets.\n\n- **Shared Holdings:** `992cATTrDzch...`\
-      \ is a common holder across FLOYDAI and NFT, and `4J5rDTvRbzjuK...` holds both\
-      \ SOL and the entirety of ELON, indicating diversified portfolios for these\
-      \ addresses"
+    response: ''
     data: *id002
