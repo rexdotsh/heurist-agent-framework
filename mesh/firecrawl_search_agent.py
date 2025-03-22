@@ -138,11 +138,11 @@ class FirecrawlSearchAgent(MeshAgent):
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def firecrawl_web_search(self, query: str) -> Dict:
+    async def firecrawl_web_search(self, search_term: str) -> Dict:
         """Execute a search with error handling"""
         try:
             response = await asyncio.get_event_loop().run_in_executor(
-                None, lambda: self.app.search(query=query, params={"scrapeOptions": {"formats": ["markdown"]}})
+                None, lambda: self.app.search(query=search_term, params={"scrapeOptions": {"formats": ["markdown"]}})
             )
 
             if isinstance(response, dict) and "data" in response:
@@ -199,12 +199,10 @@ class FirecrawlSearchAgent(MeshAgent):
             return {"error": f"Failed to extract data: {str(e)}"}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
-        """Handle execution of specific tools and format responses"""
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
+        """Handle execution of specific tools and return the raw data"""
 
         if tool_name == "firecrawl_web_search":
             search_term = function_args.get("search_term")
@@ -230,12 +228,7 @@ class FirecrawlSearchAgent(MeshAgent):
         if errors:
             return errors
 
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(query=query, tool_call_id=tool_call_id, data=result, temperature=0.7)
-
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -244,8 +237,10 @@ class FirecrawlSearchAgent(MeshAgent):
         Handle incoming messages, supporting both direct tool calls and natural language queries.
 
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -256,13 +251,8 @@ class FirecrawlSearchAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -280,20 +270,31 @@ class FirecrawlSearchAgent(MeshAgent):
 
             if not response:
                 return {"error": "Failed to process query"}
-            if not response.get("tool_calls"):
-                return {"response": response["content"], "data": {}}
 
-            tool_call = response["tool_calls"]
+            # Check if tool_calls exists and is not None
+            tool_calls = response.get("tool_calls")
+            if not tool_calls:
+                return {"response": response.get("content", "No response content"), "data": {}}
+
+            # Make sure we're accessing the first tool call correctly
+            if isinstance(tool_calls, list) and len(tool_calls) > 0:
+                tool_call = tool_calls[0]
+            else:
+                tool_call = tool_calls  # If it's not a list, use it directly
+
+            # Safely extract function name and arguments
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

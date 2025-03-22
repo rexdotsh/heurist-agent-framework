@@ -1,28 +1,27 @@
-search_pairs_test:
+natural_language_query_with_analysis:
   input:
-    tool: search_pairs
-    tool_arguments:
-      search_term: ETH
+    query: Show me information about ETH on Uniswap
     raw_data_only: false
   output:
-    response: "Based on the provided JSON data, I will present the information in\
-      \ the requested format, adhering to the specified rules and hierarchy. Please\
-      \ note that due to the large amount of data, I'll provide a condensed version,\
-      \ focusing on key elements for the first few pairs. For brevity, not all pairs\
-      \ will be fully detailed, but I'll outline the structure for the first few and\
-      \ then summarize the rest.\n\n### **Core Token Information**\n\n#### **Pair\
-      \ 1: Osmosis - ETH/USDC**\n- **Chain/DEX Platform:** Osmosis\n- **Base Token:**\n\
-      \  - **Name:** Ethereum\n  - **Symbol:** ETH\n  - **Address:** factory/osmo1k6c8jln7ejuqwtqmay3yvzrg3kueaczl96pk067ldg8u835w0yhsw27twm/alloyed/allETH\n\
-      - **Quote Token:**\n  - **Name:** USDC\n  - **Symbol:** USDC\n  - **Address:**\
-      \ ibc/498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4\n- **Pair\
-      \ Address:** 1948\n- **URL:** https://dexscreener.com/osmosis/1948\n\n#### **Pair\
-      \ 2: Base - ETH/USDC (Uniswap)**\n- **Chain/DEX Platform:** Base (Uniswap)\n\
-      - **Base Token:**\n  - **Name:** Ether\n  - **Symbol:** ETH\n  - **Address:**\
-      \ 0x0000000000000000000000000000000000000000\n- **Quote Token:**\n  - **Name:**\
-      \ USD Coin\n  - **Symbol:** USDC\n  - **Address:** 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913\n\
-      - **Pair Address:** 0x96d4b53a38337a5733179751781178a2613306063c511b78cd02684739288c0a\n\
-      - **URL:** https://dexscreener.com/base/0x96d4b53a38337a5733179751781178a2613306063c511b78cd02684739288c0"
-    data:
+    response: "Based on the provided data, here is the structured information for\
+      \ **ETH on Uniswap** (since you specifically requested this pair):\n\n**Core\
+      \ Token Information**\n* **Base Token:**\n\t+ **Name:** Ether\n\t+ **Symbol:**\
+      \ ETH\n\t+ **Address:** 0x0000000000000000000000000000000000000000\n* **Quote\
+      \ Token:**\n\t+ **Name:** USD Coin\n\t+ **Symbol:** USDC\n\t+ **Address:** 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\n\
+      * **Chain/DEX Platform:** Ethereum / Uniswap\n* **Contract Address (Full Format):**\
+      \ 0x21c67e77068de97969ba93d4aab21826d33ca12bb9f565d8496e8fda8a82ca27\n\n**Market\
+      \ Metrics**\n* **Price (USD):** $2008.10\n* **Price (Native):** 2008.1044 USDC\n\
+      * **24h Volume:** 2,667,007.95\n* **Liquidity (USD):** 1,168,631.42\n* **Market\
+      \ Cap/FDV:** Not explicitly labeled as either, but closest match is **FDV:**\
+      \ 981,904,049 (Note: Typically, FDV is Fully Diluted Valuation, which might\
+      \ not directly equate to Market Cap. For accuracy, consider this as FDV unless\
+      \ otherwise confirmed.)\n\n**Trading Activity**\n* **Price Change (24h):** 3.89%\n\
+      * **Transaction Ratio (24h Buy/Sell):** 1428 buys / 2034 sells (ratio: approximately\
+      \ 0.702)\n\n**Project Links**\n* **URL:** https://dexscreener.com/ethereum/0x21c67e77068de97969ba93d4aab21826d33ca12bb9f565d8496e8fda8a82ca27\
+      \ \n\n(Note: Other sections like 'Project Links' > 'Website', 'Social media\
+      \ links' are not provided in the data for this specific ETH/USDC pair on Uniswap,\
+      \ hence omitted as per the rules.)"
+    data: &id001
       status: success
       data:
         pairs:
@@ -38,37 +37,36 @@ search_pairs_test:
             address: ibc/498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4
             name: USDC
             symbol: USDC
-          priceNative: '1937.5052'
-          priceUsd: '1937.50'
+          priceNative: '2008.8984'
+          priceUsd: '2008.89'
           txns:
             m5:
-              buys: 15
+              buys: 0
               sells: 0
             h1:
-              buys: 136
-              sells: 42
+              buys: 73
+              sells: 81
             h6:
-              buys: 514
-              sells: 485
+              buys: 441
+              sells: 329
             h24:
-              buys: 2237
-              sells: 2245
+              buys: 2954
+              sells: 2915
           volume:
-            h24: 477412.09
-            h6: 152653.12
-            h1: 85351.03
-            m5: 588.71
+            h24: 830977.51
+            h6: 51748.93
+            h1: 9190.99
+            m5: 0
           priceChange:
-            m5: 0.05
-            h1: 0.29
-            h6: 0.28
-            h24: 1.6
+            h1: -0.18
+            h6: -0.91
+            h24: 3.9
           liquidity:
-            usd: 326334.04
-            base: 135.6622
-            quote: 63487
-          fdv: 2243397
-          marketCap: 2243397
+            usd: 336576.65
+            base: 126.3574
+            quote: 82737
+          fdv: 2326062
+          marketCap: 2326062
         - chainId: base
           dexId: uniswap
           url: https://dexscreener.com/base/0x96d4b53a38337a5733179751781178a2613306063c511b78cd02684739288c0a
@@ -83,36 +81,36 @@ search_pairs_test:
             address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
             name: USD Coin
             symbol: USDC
-          priceNative: '1938.4241'
-          priceUsd: '1938.42'
+          priceNative: '2008.05958'
+          priceUsd: '2008.059'
           txns:
             m5:
-              buys: 22
-              sells: 2
+              buys: 11
+              sells: 34
             h1:
-              buys: 329
-              sells: 133
+              buys: 148
+              sells: 178
             h6:
-              buys: 1236
-              sells: 1368
+              buys: 908
+              sells: 1455
             h24:
-              buys: 4093
-              sells: 6275
+              buys: 5142
+              sells: 6221
           volume:
-            h24: 767053.53
-            h6: 284428.56
-            h1: 81903.78
-            m5: 1582.16
+            h24: 3038828.96
+            h6: 261156.92
+            h1: 36140.94
+            m5: 3130.19
           priceChange:
-            m5: 0.12
-            h1: 0.28
-            h6: 0.33
-            h24: 1.57
+            m5: -0.11
+            h1: -0.3
+            h6: -0.93
+            h24: 3.91
           liquidity:
-            usd: 1444515.95
-            base: 680.514
-            quote: 125391
-          marketCap: 11568015224951
+            usd: 1507691.74
+            base: 658.1255
+            quote: 186136
+          marketCap: 11991588596539
           pairCreatedAt: 1737558457000
         - chainId: bsc
           dexId: pancakeswap
@@ -128,128 +126,38 @@ search_pairs_test:
             address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
             name: Wrapped BNB
             symbol: WBNB
-          priceNative: '3.1365'
-          priceUsd: '1939.36'
+          priceNative: '3.2097'
+          priceUsd: '2006.97'
           txns:
             m5:
-              buys: 12
-              sells: 21
+              buys: 13
+              sells: 24
             h1:
-              buys: 104
-              sells: 208
+              buys: 279
+              sells: 200
             h6:
-              buys: 818
-              sells: 1790
+              buys: 1468
+              sells: 1010
             h24:
-              buys: 3918
-              sells: 7127
+              buys: 5424
+              sells: 6895
           volume:
-            h24: 4992282.79
-            h6: 1316230.39
-            h1: 97264.74
-            m5: 25113.93
+            h24: 6028503.1
+            h6: 1018207.46
+            h1: 47763.66
+            m5: 4701.86
           priceChange:
-            m5: 0.18
-            h1: 0.3
-            h6: 0.41
-            h24: 1.68
+            m5: -0.19
+            h1: -0.33
+            h6: -0.97
+            h24: 3.85
           liquidity:
-            usd: 554310.04
-            base: 260.7708
-            quote: 78.5694
-          fdv: 1173285527
-          marketCap: 1173285527
+            usd: 547768.98
+            base: 243.5754
+            quote: 94.2282
+          fdv: 1214187402
+          marketCap: 1214187402
           pairCreatedAt: 1681625414000
-        - chainId: bsc
-          dexId: pancakeswap
-          url: https://dexscreener.com/bsc/0x9f599f3d64a9d99ea21e68127bb6ce99f893da61
-          pairAddress: '0x9F599F3D64a9D99eA21e68127Bb6CE99f893DA61'
-          labels:
-          - v3
-          baseToken:
-            address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
-            name: Ethereum Token
-            symbol: ETH
-          quoteToken:
-            address: '0x55d398326f99059fF775485246999027B3197955'
-            name: Tether USD
-            symbol: USDT
-          priceNative: '1938.4203'
-          priceUsd: '1938.42'
-          txns:
-            m5:
-              buys: 9
-              sells: 8
-            h1:
-              buys: 120
-              sells: 54
-            h6:
-              buys: 856
-              sells: 563
-            h24:
-              buys: 3719
-              sells: 2958
-          volume:
-            h24: 2965954.93
-            h6: 1211315.13
-            h1: 243030.34
-            m5: 1452.99
-          priceChange:
-            m5: 0.09
-            h1: 0.28
-            h6: 0.31
-            h24: 1.62
-          liquidity:
-            usd: 280265.75
-            base: 127.5998
-            quote: 32923
-          fdv: 1172713222
-          marketCap: 1172713222
-          pairCreatedAt: 1683365205000
-        - chainId: starknet
-          dexId: ekubo
-          url: https://dexscreener.com/starknet/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-170141183460469235273462165868118016-1000-0x0
-          pairAddress: 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-170141183460469235273462165868118016-1000-0x0
-          baseToken:
-            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
-            name: USD Coin
-            symbol: USDC
-          priceNative: '1936.6615'
-          priceUsd: '1936.66'
-          txns:
-            m5:
-              buys: 1
-              sells: 15
-            h1:
-              buys: 73
-              sells: 126
-            h6:
-              buys: 345
-              sells: 744
-            h24:
-              buys: 1525
-              sells: 2746
-          volume:
-            h24: 492662.65
-            h6: 68160.51
-            h1: 5739.74
-            m5: 447.11
-          priceChange:
-            m5: 0.05
-            h1: 0.24
-            h6: 0.26
-            h24: 1.55
-          liquidity:
-            usd: 787557.6
-            base: 320.1966
-            quote: 167445
-          fdv: 93193351
-          marketCap: 93193351
-          pairCreatedAt: 1693052952000
         - chainId: pulsechain
           dexId: pulsex
           url: https://dexscreener.com/pulsechain/0x77e4e36e9ab013e6d48b34836b61441c328b1738
@@ -264,41 +172,42 @@ search_pairs_test:
             address: '0xA1077a294dDE1B09bB078844df40758a5D0f9a27'
             name: Wrapped Pulse
             symbol: WPLS
-          priceNative: '5.1032'
-          priceUsd: '0.0001559'
+          priceNative: '8.8961'
+          priceUsd: '0.0002621'
           txns:
             m5:
               buys: 0
-              sells: 0
+              sells: 1
             h1:
-              buys: 26
-              sells: 11
+              buys: 10
+              sells: 22
             h6:
-              buys: 70
-              sells: 54
+              buys: 164
+              sells: 63
             h24:
-              buys: 146
-              sells: 143
+              buys: 1002
+              sells: 920
           volume:
-            h24: 13402.82
-            h6: 4824.39
-            h1: 1083.92
-            m5: 0
+            h24: 111161.63
+            h6: 10885.18
+            h1: 747.52
+            m5: 46.56
           priceChange:
-            h1: -7.79
-            h6: -3.43
-            h24: 13.45
+            m5: -0.3
+            h1: 2.04
+            h6: -27.65
+            h24: 64.44
           liquidity:
-            usd: 29587.41
-            base: 94845341
-            quote: 484021201
-          fdv: 155977
-          marketCap: 155977
+            usd: 37856.77
+            base: 72191420
+            quote: 642225661
+          fdv: 262197
+          marketCap: 262197
           pairCreatedAt: 1738481605000
           info:
             imageUrl: https://dd.dexscreener.com/ds-data/tokens/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94.png?key=11d6a8
             header: https://dd.dexscreener.com/ds-data/tokens/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94/header.png?key=11d6a8
-            openGraph: https://cdn.dexscreener.com/token-images/og/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94?timestamp=1742362800000
+            openGraph: https://cdn.dexscreener.com/token-images/og/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94?timestamp=1742457600000
             websites:
             - label: Website
               url: https://gopulse.com/token/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94
@@ -307,152 +216,10 @@ search_pairs_test:
               url: https://x.com/RichardHeartWin
             - type: telegram
               url: https://t.me/rhcoins
-        - chainId: solana
-          dexId: raydium
-          url: https://dexscreener.com/solana/9fa29os48yhdim2qgt51c18dpsn16xgc3q6jgmek3gft
-          pairAddress: 9FA29os48YhDim2qgT51c18dPsN16xgc3q6jGMEk3GfT
-          baseToken:
-            address: 2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump
-            name: ETH
-            symbol: ETH
-          quoteToken:
-            address: So11111111111111111111111111111111111111112
-            name: Wrapped SOL
-            symbol: SOL
-          priceNative: '0.000001028'
-          priceUsd: '0.0001295'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 0
-              sells: 1
-            h6:
-              buys: 3
-              sells: 2
-            h24:
-              buys: 17
-              sells: 16
-          volume:
-            h24: 4309.94
-            h6: 1198.13
-            h1: 105.01
-            m5: 0
-          priceChange:
-            h1: -0.54
-            h6: 9.07
-            h24: 7.15
-          liquidity:
-            usd: 50978.3
-            base: 196938501
-            quote: 202.2592
-          fdv: 129522
-          marketCap: 129522
-          pairCreatedAt: 1729904248000
-          info:
-            imageUrl: https://dd.dexscreener.com/ds-data/tokens/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump.png?key=d50ef7
-            header: https://dd.dexscreener.com/ds-data/tokens/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump/header.png?key=d50ef7
-            openGraph: https://cdn.dexscreener.com/token-images/og/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump?timestamp=1742362800000
-            websites:
-            - label: Website
-              url: https://thetickeriseth.xyz/
-            socials:
-            - type: twitter
-              url: https://x.com/TheTickerIs_ETH
-            - type: telegram
-              url: https://t.me/thetickeris_eth
-        - chainId: solana
-          dexId: raydium
-          url: https://dexscreener.com/solana/8iqfhwycegreswnlm8nkg9gc8dvzungzymzuyuscgkmk
-          pairAddress: 8iQFhWyceGREsWnLM8NkG9GC8DvZunGZyMzuyUScgkMK
-          baseToken:
-            address: 2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk
-            name: Wrapped Ethereum (Sollet)
-            symbol: ETH
-          quoteToken:
-            address: 4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R
-            name: Raydium
-            symbol: RAY
-          priceNative: '312.1389'
-          priceUsd: '588.34'
-          txns:
-            m5:
-              buys: 7
-              sells: 0
-            h1:
-              buys: 36
-              sells: 26
-            h6:
-              buys: 536
-              sells: 485
-            h24:
-              buys: 1257
-              sells: 1378
-          volume:
-            h24: 35363.09
-            h6: 10259.54
-            h1: 418.03
-            m5: 38.27
-          priceChange:
-            m5: 0.18
-            h1: -0.61
-            h6: -2.19
-            h24: 11.61
-          liquidity:
-            usd: 773475.36
-            base: 658.2432
-            quote: 204894
-          fdv: 284464463
-          marketCap: 284464463
-          pairCreatedAt: 1669602384000
-        - chainId: osmosis
-          dexId: osmosis
-          url: https://dexscreener.com/osmosis/1982
-          pairAddress: '1982'
-          baseToken:
-            address: factory/osmo1k6c8jln7ejuqwtqmay3yvzrg3kueaczl96pk067ldg8u835w0yhsw27twm/alloyed/allETH
-            name: Ethereum
-            symbol: ETH
-          quoteToken:
-            address: factory/osmo1z6r6qdknhgsc0zeracktgpcxf43j6sekq07nw8sxduc9lg0qjjlqfu25e3/alloyed/allBTC
-            name: Bitcoin
-            symbol: BTC
-          priceNative: '0.02336'
-          priceUsd: '1937.71'
-          txns:
-            m5:
-              buys: 3
-              sells: 2
-            h1:
-              buys: 17
-              sells: 28
-            h6:
-              buys: 113
-              sells: 158
-            h24:
-              buys: 654
-              sells: 579
-          volume:
-            h24: 24874.41
-            h6: 9234.24
-            h1: 5404.33
-            m5: 59.42
-          priceChange:
-            m5: 0.09
-            h1: 0.21
-            h6: 0.21
-            h24: 1.55
-          liquidity:
-            usd: 113472.38
-            base: 54.09541
-            quote: 0.1043
-          fdv: 2243635
-          marketCap: 2243635
         - chainId: starknet
           dexId: ekubo
-          url: https://dexscreener.com/starknet/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-34028236692093847977029636859101184-200-0x0
-          pairAddress: 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-34028236692093847977029636859101184-200-0x0
+          url: https://dexscreener.com/starknet/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-170141183460469235273462165868118016-1000-0x0
+          pairAddress: 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-170141183460469235273462165868118016-1000-0x0
           baseToken:
             address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
             name: Ether
@@ -461,349 +228,8 @@ search_pairs_test:
             address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
             name: USD Coin
             symbol: USDC
-          priceNative: '1935.4137'
-          priceUsd: '1935.41'
-          txns:
-            m5:
-              buys: 2
-              sells: 1
-            h1:
-              buys: 29
-              sells: 136
-            h6:
-              buys: 113
-              sells: 294
-            h24:
-              buys: 481
-              sells: 836
-          volume:
-            h24: 6455.1
-            h6: 2346.13
-            h1: 1336.24
-            m5: 11.6
-          priceChange:
-            m5: 0.03
-            h1: 0.22
-            h6: 0.29
-            h24: 1.48
-          liquidity:
-            usd: 157224.26
-            base: 78.3417
-            quote: 5600.603
-          fdv: 93133307
-          marketCap: 93133307
-          pairCreatedAt: 1693472835000
-        - chainId: solana
-          dexId: raydium
-          url: https://dexscreener.com/solana/9hm8qx7zhe9ub8l2archmmagzzbtbmnzbbpfxzkqp85d
-          pairAddress: 9Hm8QX7ZhE9uB8L2arChmmagZZBtBmnzBbpfxzkQp85D
-          baseToken:
-            address: 2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk
-            name: Wrapped Ethereum (Sollet)
-            symbol: ETH
-          quoteToken:
-            address: So11111111111111111111111111111111111111112
-            name: Wrapped SOL
-            symbol: SOL
-          priceNative: '4.6724'
-          priceUsd: '586.066'
-          txns:
-            m5:
-              buys: 0
-              sells: 2
-            h1:
-              buys: 13
-              sells: 15
-            h6:
-              buys: 224
-              sells: 220
-            h24:
-              buys: 612
-              sells: 632
-          volume:
-            h24: 26517.1
-            h6: 7949.38
-            h1: 340.76
-            m5: 24.42
-          priceChange:
-            m5: -0.31
-            h1: -0.89
-            h6: -2.46
-            h24: 10.95
-          liquidity:
-            usd: 103696.7
-            base: 88.3677
-            quote: 413.8351
-          fdv: 283362877
-          marketCap: 283362877
-          pairCreatedAt: 1669603260000
-        - chainId: starknet
-          dexId: ekubo
-          url: https://dexscreener.com/starknet/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-0-1003-0x0
-          pairAddress: 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-0-1003-0x0
-          baseToken:
-            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
-            name: USD Coin
-            symbol: USDC
-          priceNative: '1932.01592'
-          priceUsd: '1932.015'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 2
-              sells: 2
-            h6:
-              buys: 20
-              sells: 31
-            h24:
-              buys: 147
-              sells: 157
-          volume:
-            h24: 235.26
-            h6: 15.23
-            h1: 0.53
-            m5: 0
-          priceChange:
-            h1: -0.04
-            h6: 0.07
-            h24: 1.48
-          liquidity:
-            usd: 1401449.85
-            base: 306.05867
-            quote: 810139
-          fdv: 92969803
-          marketCap: 92969803
-          pairCreatedAt: 1721722934000
-        - chainId: starknet
-          dexId: jediswap
-          url: https://dexscreener.com/starknet/0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a
-          pairAddress: '0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a'
-          baseToken:
-            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
-            name: USD Coin
-            symbol: USDC
-          priceNative: '1935.8403'
-          priceUsd: '1935.84'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 0
-              sells: 2
-            h6:
-              buys: 13
-              sells: 7
-            h24:
-              buys: 115
-              sells: 51
-          volume:
-            h24: 11613.23
-            h6: 1403.21
-            h1: 80.34
-            m5: 0
-          priceChange:
-            h1: -0.07
-            h6: 0.52
-            h24: 1.81
-          liquidity:
-            usd: 487900.16
-            base: 126.01766
-            quote: 243950
-          fdv: 171440053
-          marketCap: 171440053
-        - chainId: conflux
-          dexId: swappi
-          url: https://dexscreener.com/conflux/0x8ea70966e8f14337657bff7f40cfb9648f79530b
-          pairAddress: '0x8ea70966e8F14337657BFF7f40cFB9648f79530b'
-          baseToken:
-            address: '0xa47f43DE2f9623aCb395CA4905746496D2014d57'
-            name: Ethereum Token
-            symbol: ETH
-          quoteToken:
-            address: '0x14b2D3bC65e74DAE1030EAFd8ac30c533c976A9b'
-            name: Wrapped Conflux
-            symbol: WCFX
-          priceNative: '21475.1871'
-          priceUsd: '1932.29'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 5
-              sells: 0
-            h6:
-              buys: 46
-              sells: 35
-            h24:
-              buys: 141
-              sells: 132
-          volume:
-            h24: 45329.47
-            h6: 13769.27
-            h1: 834.66
-            m5: 0
-          priceChange:
-            h1: 0.02
-            h6: 0.01
-            h24: 1.23
-          liquidity:
-            usd: 1112250.36
-            base: 287.8053
-            quote: 6180673
-          fdv: 1612155
-          marketCap: 1611951
-        - chainId: fantom
-          dexId: spookyswap
-          url: https://dexscreener.com/fantom/0xf0702249f4d3a25cd3ded7859a165693685ab577
-          pairAddress: '0xf0702249F4D3A25cD3DED7859a165693685Ab577'
-          baseToken:
-            address: '0x74b23882a30290451A17c44f4F05243b6b58C76d'
-            name: Ethereum
-            symbol: ETH
-          quoteToken:
-            address: '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'
-            name: Wrapped Fantom
-            symbol: WFTM
-          priceNative: '114.9418'
-          priceUsd: '57.45'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 0
-              sells: 2
-            h6:
-              buys: 0
-              sells: 12
-            h24:
-              buys: 10
-              sells: 54
-          volume:
-            h24: 508.37
-            h6: 6.11
-            h1: 0.2
-            m5: 0
-          priceChange:
-            h1: -0.26
-            h6: 2.27
-            h24: 3.73
-          liquidity:
-            usd: 143577.86
-            base: 1249.3848
-            quote: 143606
-          fdv: 1539065
-          marketCap: 1539065
-        - chainId: near
-          dexId: rhea-finance
-          url: https://dexscreener.com/near/refv1-5992
-          pairAddress: refv1-5992
-          baseToken:
-            address: aurora
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: wrap.near
-            name: Wrapped NEAR fungible token
-            symbol: wNEAR
-          priceNative: '746.7515'
-          priceUsd: '1934.83'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 3
-              sells: 0
-            h6:
-              buys: 4
-              sells: 1
-            h24:
-              buys: 55
-              sells: 37
-          volume:
-            h24: 14195.9
-            h6: 3.68
-            h1: 0.01
-            m5: 0
-          priceChange:
-            h1: -0.21
-            h6: 0.06
-            h24: 1.99
-          liquidity:
-            usd: 150872.63
-            base: 43.8705
-            quote: 25469
-          fdv: 5244156
-          marketCap: 5244156
-          pairCreatedAt: 1740403015000
-        - chainId: conflux
-          dexId: swappi
-          url: https://dexscreener.com/conflux/0xa6943647f22cb9de7a80d1f447db48b0209a812a
-          pairAddress: '0xa6943647F22Cb9De7a80D1f447dB48B0209a812A'
-          baseToken:
-            address: '0xa47f43DE2f9623aCb395CA4905746496D2014d57'
-            name: Ethereum Token
-            symbol: ETH
-          quoteToken:
-            address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE'
-            name: Tether USD
-            symbol: USDT
-          priceNative: '1934.8901'
-          priceUsd: '1934.89'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 0
-              sells: 0
-            h6:
-              buys: 10
-              sells: 20
-            h24:
-              buys: 79
-              sells: 67
-          volume:
-            h24: 19157
-            h6: 3055.2
-            h1: 0
-            m5: 0
-          priceChange:
-            h6: 0.34
-            h24: 1.45
-          liquidity:
-            usd: 827089.08
-            base: 213.7302
-            quote: 413544
-          fdv: 1614319
-          marketCap: 1614114
-        - chainId: starknet
-          dexId: ekubo
-          url: https://dexscreener.com/starknet/0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b-0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-170141183460469235273462165868118016-1000-0x0
-          pairAddress: 0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b-0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-170141183460469235273462165868118016-1000-0x0
-          baseToken:
-            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: '0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b'
-            name: Wrapped Staked Ether
-            symbol: wstETH
-          priceNative: '0.8362'
-          priceUsd: '1914.18'
+          priceNative: '2040.5067'
+          priceUsd: '2040.50'
           txns:
             m5:
               buys: 0
@@ -815,108 +241,68 @@ search_pairs_test:
               buys: 0
               sells: 0
             h24:
-              buys: 3
-              sells: 12
+              buys: 2144
+              sells: 3639
           volume:
-            h24: 243.27
+            h24: 714442.82
             h6: 0
             h1: 0
             m5: 0
           priceChange:
-            h24: 1.06
+            h24: 5.64
           liquidity:
-            usd: 155680.63
-            base: 56.8401
-            quote: 20.4786
-          fdv: 92111755
-          marketCap: 92111755
-          pairCreatedAt: 1738587350000
-        - chainId: xrpl
-          dexId: xrpl
-          url: https://dexscreener.com/xrpl/eth.rvyafwj5gh67ov6fw32zzp3aw4eubs59b_xrp
-          pairAddress: ETH.rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B_XRP
+            usd: 808518.72
+            base: 308.7586
+            quote: 178494
+          fdv: 98190449
+          marketCap: 98190449
+          pairCreatedAt: 1693052952000
+        - chainId: bsc
+          dexId: pancakeswap
+          url: https://dexscreener.com/bsc/0x9f599f3d64a9d99ea21e68127bb6ce99f893da61
+          pairAddress: '0x9F599F3D64a9D99eA21e68127Bb6CE99f893DA61'
+          labels:
+          - v3
           baseToken:
-            address: ETH.rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B
-            name: ETH
+            address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
+            name: Ethereum Token
             symbol: ETH
           quoteToken:
-            address: XRP
-            name: XRP
-            symbol: XRP
-          priceNative: '846.4381'
-          priceUsd: '1942.66'
+            address: '0x55d398326f99059fF775485246999027B3197955'
+            name: Tether USD
+            symbol: USDT
+          priceNative: '2007.3018'
+          priceUsd: '2007.30'
           txns:
             m5:
-              buys: 0
-              sells: 0
+              buys: 16
+              sells: 12
             h1:
-              buys: 0
-              sells: 0
+              buys: 177
+              sells: 83
             h6:
-              buys: 0
-              sells: 1
+              buys: 826
+              sells: 417
             h24:
-              buys: 0
-              sells: 9
+              buys: 3908
+              sells: 3118
           volume:
-            h24: 690.6
-            h6: 87.26
-            h1: 0
-            m5: 0
+            h24: 2621278.63
+            h6: 345911.2
+            h1: 27915.78
+            m5: 2742.85
           priceChange:
-            h6: 1.1
-            h24: 1.51
+            m5: -0.12
+            h1: -0.31
+            h6: -0.93
+            h24: 3.89
           liquidity:
-            usd: 232972.16
-            base: 59.9621
-            quote: 50754
-          fdv: 1065827
-          marketCap: 1065827
-          pairCreatedAt: 1361216760000
-        - chainId: near
-          dexId: rhea-finance
-          url: https://dexscreener.com/near/refv1-1207
-          pairAddress: refv1-1207
-          baseToken:
-            address: aurora
-            name: Ether
-            symbol: ETH
-          quoteToken:
-            address: wrap.near
-            name: Wrapped NEAR fungible token
-            symbol: wNEAR
-          priceNative: '746.3626'
-          priceUsd: '1937.55'
-          txns:
-            m5:
-              buys: 0
-              sells: 1
-            h1:
-              buys: 6
-              sells: 5
-            h6:
-              buys: 14
-              sells: 10
-            h24:
-              buys: 159
-              sells: 57
-          volume:
-            h24: 2706.81
-            h6: 217.28
-            h1: 89.7
-            m5: 5.2
-          priceChange:
-            m5: -0.02
-            h1: 0.38
-            h6: 0.35
-            h24: 0.96
-          liquidity:
-            usd: 96466.81
-            base: 24.8551
-            quote: 18608
-          fdv: 5251540
-          marketCap: 5251540
-          pairCreatedAt: 1717641361000
+            usd: 299901.38
+            base: 130.4893
+            quote: 37969
+          fdv: 1214385462
+          marketCap: 1214385462
+          pairCreatedAt: 1683365205000
         - chainId: bsc
           dexId: pancakeswap
           url: https://dexscreener.com/bsc/0xbe141893e4c6ad9272e8c04bab7e6a10604501a5
@@ -931,38 +317,135 @@ search_pairs_test:
             address: '0x55d398326f99059fF775485246999027B3197955'
             name: Tether USD
             symbol: USDT
-          priceNative: '1938.4967'
-          priceUsd: '1938.49'
+          priceNative: '2006.9401'
+          priceUsd: '2006.94'
           txns:
             m5:
-              buys: 5
-              sells: 2
+              buys: 2
+              sells: 5
             h1:
-              buys: 30
-              sells: 12
+              buys: 80
+              sells: 43
             h6:
-              buys: 413
-              sells: 336
+              buys: 396
+              sells: 262
             h24:
-              buys: 1903
-              sells: 1864
+              buys: 2979
+              sells: 2854
           volume:
-            h24: 8358531.91
-            h6: 2346741.27
-            h1: 64472.9
-            m5: 10827.44
+            h24: 14695222.95
+            h6: 1222505.01
+            h1: 182343.42
+            m5: 19075.58
           priceChange:
-            m5: 0.07
-            h1: 0.27
-            h6: 0.33
-            h24: 1.57
+            m5: -0.15
+            h1: -0.33
+            h6: -0.95
+            h24: 3.88
           liquidity:
-            usd: 4783455.49
-            base: 1917.8888
-            quote: 1065634
-          fdv: 1172759493
-          marketCap: 1172759493
+            usd: 4926533.24
+            base: 1805.8907
+            quote: 1302218
+          fdv: 1214166651
+          marketCap: 1214166651
           pairCreatedAt: 1681214432000
+        - chainId: solana
+          dexId: raydium
+          url: https://dexscreener.com/solana/9fa29os48yhdim2qgt51c18dpsn16xgc3q6jgmek3gft
+          pairAddress: 9FA29os48YhDim2qgT51c18dPsN16xgc3q6jGMEk3GfT
+          baseToken:
+            address: 2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump
+            name: ETH
+            symbol: ETH
+          quoteToken:
+            address: So11111111111111111111111111111111111111112
+            name: Wrapped SOL
+            symbol: SOL
+          priceNative: '0.0000009125'
+          priceUsd: '0.0001226'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 2
+            h6:
+              buys: 1
+              sells: 4
+            h24:
+              buys: 12
+              sells: 16
+          volume:
+            h24: 3632.04
+            h6: 1046.56
+            h1: 1000.96
+            m5: 0
+          priceChange:
+            h1: -6.67
+            h6: -7.03
+            h24: -5.68
+          liquidity:
+            usd: 51267.47
+            base: 208674205
+            quote: 190.8769
+          fdv: 122689
+          marketCap: 122689
+          pairCreatedAt: 1729904248000
+          info:
+            imageUrl: https://dd.dexscreener.com/ds-data/tokens/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump.png?key=d50ef7
+            header: https://dd.dexscreener.com/ds-data/tokens/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump/header.png?key=d50ef7
+            openGraph: https://cdn.dexscreener.com/token-images/og/solana/2kaRSuDcz1V1kqq1sDmP23Wy98jutHQQgr5fGDWRpump?timestamp=1742457600000
+            websites:
+            - label: Website
+              url: https://thetickeriseth.xyz/
+            socials:
+            - type: twitter
+              url: https://x.com/TheTickerIs_ETH
+            - type: telegram
+              url: https://t.me/thetickeris_eth
+        - chainId: osmosis
+          dexId: osmosis
+          url: https://dexscreener.com/osmosis/1982
+          pairAddress: '1982'
+          baseToken:
+            address: factory/osmo1k6c8jln7ejuqwtqmay3yvzrg3kueaczl96pk067ldg8u835w0yhsw27twm/alloyed/allETH
+            name: Ethereum
+            symbol: ETH
+          quoteToken:
+            address: factory/osmo1z6r6qdknhgsc0zeracktgpcxf43j6sekq07nw8sxduc9lg0qjjlqfu25e3/alloyed/allBTC
+            name: Bitcoin
+            symbol: BTC
+          priceNative: '0.02345'
+          priceUsd: '2010.10'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 7
+              sells: 16
+            h6:
+              buys: 57
+              sells: 108
+            h24:
+              buys: 825
+              sells: 853
+          volume:
+            h24: 241689.45
+            h6: 2584.47
+            h1: 326.17
+            m5: 0
+          priceChange:
+            h1: -0.09
+            h6: -0.81
+            h24: 3.94
+          liquidity:
+            usd: 117415.54
+            base: 53.9756
+            quote: 0.104
+          fdv: 2327455
+          marketCap: 2327455
         - chainId: bsc
           dexId: pancakeswap
           url: https://dexscreener.com/bsc/0xd0e226f674bbf064f54ab47f42473ff80db98cba
@@ -977,38 +460,505 @@ search_pairs_test:
             address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
             name: Wrapped BNB
             symbol: WBNB
-          priceNative: '3.1363'
-          priceUsd: '1939.31'
+          priceNative: '3.2081'
+          priceUsd: '2006.016'
           txns:
             m5:
-              buys: 10
-              sells: 3
+              buys: 3
+              sells: 5
             h1:
-              buys: 53
+              buys: 188
+              sells: 56
+            h6:
+              buys: 632
+              sells: 372
+            h24:
+              buys: 2787
+              sells: 3278
+          volume:
+            h24: 8989503.43
+            h6: 1179945.39
+            h1: 194054.93
+            m5: 12557.64
+          priceChange:
+            m5: -0.2
+            h1: -0.38
+            h6: -1.07
+            h24: 3.81
+          liquidity:
+            usd: 3179555.44
+            base: 1331.7041
+            quote: 812.6474
+          fdv: 1213608102
+          marketCap: 1213608102
+          pairCreatedAt: 1680536288000
+        - chainId: solana
+          dexId: raydium
+          url: https://dexscreener.com/solana/8iqfhwycegreswnlm8nkg9gc8dvzungzymzuyuscgkmk
+          pairAddress: 8iQFhWyceGREsWnLM8NkG9GC8DvZunGZyMzuyUScgkMK
+          baseToken:
+            address: 2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk
+            name: Wrapped Ethereum (Sollet)
+            symbol: ETH
+          quoteToken:
+            address: 4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R
+            name: Raydium
+            symbol: RAY
+          priceNative: '311.7149'
+          priceUsd: '602.036'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 3
+              sells: 1
+            h6:
+              buys: 74
+              sells: 88
+            h24:
+              buys: 538
+              sells: 470
+          volume:
+            h24: 10929.81
+            h6: 1239.9
+            h1: 70.51
+            m5: 0
+          priceChange:
+            h1: -0.47
+            h6: 0.92
+            h24: 3.99
+          liquidity:
+            usd: 792045.08
+            base: 658.5763
+            quote: 204807
+          fdv: 291084500
+          marketCap: 291084500
+          pairCreatedAt: 1669602384000
+        - chainId: fantom
+          dexId: spookyswap
+          url: https://dexscreener.com/fantom/0xf0702249f4d3a25cd3ded7859a165693685ab577
+          pairAddress: '0xf0702249F4D3A25cD3DED7859a165693685Ab577'
+          baseToken:
+            address: '0x74b23882a30290451A17c44f4F05243b6b58C76d'
+            name: Ethereum
+            symbol: ETH
+          quoteToken:
+            address: '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'
+            name: Wrapped Fantom
+            symbol: WFTM
+          priceNative: '119.09313'
+          priceUsd: '63.70'
+          txns:
+            m5:
+              buys: 5
+              sells: 42
+            h1:
+              buys: 5
               sells: 42
             h6:
-              buys: 414
-              sells: 588
+              buys: 29
+              sells: 157
             h24:
-              buys: 1943
-              sells: 2373
+              buys: 38
+              sells: 222
           volume:
-            h24: 5989117.06
-            h6: 1239253.63
-            h1: 93746.28
-            m5: 18704.32
+            h24: 2930.24
+            h6: 2381.96
+            h1: 414.81
+            m5: 414.81
           priceChange:
-            m5: 0.16
-            h1: 0.3
-            h6: 0.36
-            h24: 1.6
+            m5: 0.39
+            h1: 0.39
+            h6: 3.57
+            h24: 9.59
           liquidity:
-            usd: 3134741.01
-            base: 1323.7129
-            quote: 918.0136
-          fdv: 1173255662
-          marketCap: 1173255662
-          pairCreatedAt: 1680536288000
+            usd: 156386.43
+            base: 1227.4668
+            quote: 146182
+          fdv: 1706299
+          marketCap: 1706299
+        - chainId: solana
+          dexId: raydium
+          url: https://dexscreener.com/solana/9hm8qx7zhe9ub8l2archmmagzzbtbmnzbbpfxzkqp85d
+          pairAddress: 9Hm8QX7ZhE9uB8L2arChmmagZZBtBmnzBbpfxzkQp85D
+          baseToken:
+            address: 2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk
+            name: Wrapped Ethereum (Sollet)
+            symbol: ETH
+          quoteToken:
+            address: So11111111111111111111111111111111111111112
+            name: Wrapped SOL
+            symbol: SOL
+          priceNative: '4.4787'
+          priceUsd: '602.61'
+          txns:
+            m5:
+              buys: 0
+              sells: 1
+            h1:
+              buys: 1
+              sells: 3
+            h6:
+              buys: 39
+              sells: 30
+            h24:
+              buys: 241
+              sells: 260
+          volume:
+            h24: 6810.85
+            h6: 883.01
+            h1: 23.26
+            m5: 13.16
+          priceChange:
+            m5: -0.37
+            h1: -0.16
+            h6: 0.87
+            h24: 4.38
+          liquidity:
+            usd: 108926.87
+            base: 90.2758
+            quote: 405.2433
+          fdv: 291363077
+          marketCap: 291363077
+          pairCreatedAt: 1669603260000
+        - chainId: near
+          dexId: rhea-finance
+          url: https://dexscreener.com/near/refv1-1207
+          pairAddress: refv1-1207
+          baseToken:
+            address: aurora
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: wrap.near
+            name: Wrapped NEAR fungible token
+            symbol: wNEAR
+          priceNative: '736.1958'
+          priceUsd: '2013.49'
+          txns:
+            m5:
+              buys: 0
+              sells: 1
+            h1:
+              buys: 2
+              sells: 2
+            h6:
+              buys: 37
+              sells: 13
+            h24:
+              buys: 244
+              sells: 89
+          volume:
+            h24: 17682.14
+            h6: 366.14
+            h1: 78.07
+            m5: 28.17
+          priceChange:
+            m5: -0.14
+            h1: -0.23
+            h6: -0.35
+            h24: 4.6
+          liquidity:
+            usd: 100949.71
+            base: 25.02362
+            quote: 18488
+          fdv: 5457362
+          marketCap: 5457362
+          pairCreatedAt: 1717641361000
+        - chainId: starknet
+          dexId: ekubo
+          url: https://dexscreener.com/starknet/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-0-1003-0x0
+          pairAddress: 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8-0-1003-0x0
+          baseToken:
+            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+            name: USD Coin
+            symbol: USDC
+          priceNative: '2041.3448'
+          priceUsd: '2041.34'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 0
+            h6:
+              buys: 0
+              sells: 0
+            h24:
+              buys: 209
+              sells: 207
+          volume:
+            h24: 13151.47
+            h6: 0
+            h1: 0
+            m5: 0
+          priceChange:
+            h24: 5.77
+          liquidity:
+            usd: 1354910.53
+            base: 306.05162
+            quote: 730153
+          fdv: 98230779
+          marketCap: 98230779
+          pairCreatedAt: 1721722934000
+        - chainId: starknet
+          dexId: jediswap
+          url: https://dexscreener.com/starknet/0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a
+          pairAddress: '0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a'
+          baseToken:
+            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+            name: USD Coin
+            symbol: USDC
+          priceNative: '2012.7711'
+          priceUsd: '2012.77'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 8
+            h6:
+              buys: 1
+              sells: 22
+            h24:
+              buys: 94
+              sells: 94
+          volume:
+            h24: 27301.17
+            h6: 1140.84
+            h1: 54.77
+            m5: 0
+          priceChange:
+            h1: -0.04
+            h6: -0.9
+            h24: 3.99
+          liquidity:
+            usd: 497245.33
+            base: 123.5225
+            quote: 248622
+          fdv: 178253128
+          marketCap: 178253128
+        - chainId: conflux
+          dexId: swappi
+          url: https://dexscreener.com/conflux/0xa6943647f22cb9de7a80d1f447db48b0209a812a
+          pairAddress: '0xa6943647F22Cb9De7a80D1f447dB48B0209a812A'
+          baseToken:
+            address: '0xa47f43DE2f9623aCb395CA4905746496D2014d57'
+            name: Ethereum Token
+            symbol: ETH
+          quoteToken:
+            address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE'
+            name: Tether USD
+            symbol: USDT
+          priceNative: '2012.2315'
+          priceUsd: '2012.23'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 1
+              sells: 1
+            h6:
+              buys: 11
+              sells: 7
+            h24:
+              buys: 125
+              sells: 182
+          volume:
+            h24: 52798.47
+            h6: 2132.51
+            h1: 333.86
+            m5: 0
+          priceChange:
+            h1: -0.13
+            h6: -0.86
+            h24: 3.97
+          liquidity:
+            usd: 843590.3
+            base: 209.6156
+            quote: 421795
+          fdv: 1679775
+          marketCap: 1678634
+        - chainId: conflux
+          dexId: swappi
+          url: https://dexscreener.com/conflux/0x8ea70966e8f14337657bff7f40cfb9648f79530b
+          pairAddress: '0x8ea70966e8F14337657BFF7f40cFB9648f79530b'
+          baseToken:
+            address: '0xa47f43DE2f9623aCb395CA4905746496D2014d57'
+            name: Ethereum Token
+            symbol: ETH
+          quoteToken:
+            address: '0x14b2D3bC65e74DAE1030EAFd8ac30c533c976A9b'
+            name: Wrapped Conflux
+            symbol: WCFX
+          priceNative: '22142.6727'
+          priceUsd: '2017.24'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 1
+            h6:
+              buys: 6
+              sells: 17
+            h24:
+              buys: 132
+              sells: 139
+          volume:
+            h24: 44711.9
+            h6: 3355.47
+            h1: 36.44
+            m5: 0
+          priceChange:
+            h1: 0.16
+            h6: -1.07
+            h24: 4.37
+          liquidity:
+            usd: 1143635.78
+            base: 283.4647
+            quote: 6276667
+          fdv: 1683960
+          marketCap: 1682816
+        - chainId: near
+          dexId: rhea-finance
+          url: https://dexscreener.com/near/refv1-5992
+          pairAddress: refv1-5992
+          baseToken:
+            address: aurora
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: wrap.near
+            name: Wrapped NEAR fungible token
+            symbol: wNEAR
+          priceNative: '735.7978'
+          priceUsd: '2012.40'
+          txns:
+            m5:
+              buys: 2
+              sells: 0
+            h1:
+              buys: 6
+              sells: 0
+            h6:
+              buys: 22
+              sells: 3
+            h24:
+              buys: 80
+              sells: 60
+          volume:
+            h24: 12559.94
+            h6: 7730.6
+            h1: 183.06
+            m5: 57.67
+          priceChange:
+            m5: -0.11
+            h1: -0.43
+            h6: -2.06
+            h24: 3.95
+          liquidity:
+            usd: 157956.52
+            base: 40.8046
+            quote: 27729
+          fdv: 5454412
+          marketCap: 5454412
+          pairCreatedAt: 1740403015000
+        - chainId: starknet
+          dexId: ekubo
+          url: https://dexscreener.com/starknet/0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b-0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-170141183460469235273462165868118016-1000-0x0
+          pairAddress: 0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b-0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7-170141183460469235273462165868118016-1000-0x0
+          baseToken:
+            address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: '0x0057912720381af14b0e5c87aa4718ed5e527eab60b3801ebf702ab09139e38b'
+            name: Wrapped Staked Ether
+            symbol: wstETH
+          priceNative: '0.8362'
+          priceUsd: '2040.77'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 0
+            h6:
+              buys: 0
+              sells: 0
+            h24:
+              buys: 3
+              sells: 8
+          volume:
+            h24: 38.09
+            h6: 0
+            h1: 0
+            m5: 0
+          priceChange:
+            h24: 5.7
+          liquidity:
+            usd: 165976.6
+            base: 56.8507
+            quote: 20.4698
+          fdv: 98203466
+          marketCap: 98203466
+          pairCreatedAt: 1738587350000
+        - chainId: xrpl
+          dexId: xrpl
+          url: https://dexscreener.com/xrpl/eth.rvyafwj5gh67ov6fw32zzp3aw4eubs59b_xrp
+          pairAddress: ETH.rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B_XRP
+          baseToken:
+            address: ETH.rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B
+            name: ETH
+            symbol: ETH
+          quoteToken:
+            address: XRP
+            name: XRP
+            symbol: XRP
+          priceNative: '809.8837'
+          priceUsd: '2046.25'
+          txns:
+            m5:
+              buys: 0
+              sells: 0
+            h1:
+              buys: 0
+              sells: 0
+            h6:
+              buys: 0
+              sells: 0
+            h24:
+              buys: 0
+              sells: 12
+          volume:
+            h24: 1679.76
+            h6: 0
+            h1: 0
+            m5: 0
+          priceChange:
+            h24: 0.72
+          liquidity:
+            usd: 250940.24
+            base: 61.317
+            quote: 49659
+          fdv: 1122640
+          marketCap: 1122640
+          pairCreatedAt: 1361216760000
         - chainId: bsc
           dexId: pancakeswap
           url: https://dexscreener.com/bsc/0x531febfeb9a61d948c384acfbe6dcc51057aea7e
@@ -1023,38 +973,82 @@ search_pairs_test:
             address: '0x55d398326f99059fF775485246999027B3197955'
             name: Tether USD
             symbol: USDT
-          priceNative: '1940.7610'
-          priceUsd: '1940.76'
+          priceNative: '2006.2570'
+          priceUsd: '2006.25'
           txns:
             m5:
-              buys: 17
-              sells: 17
+              buys: 8
+              sells: 4
             h1:
-              buys: 115
-              sells: 133
+              buys: 110
+              sells: 89
             h6:
-              buys: 445
-              sells: 483
+              buys: 514
+              sells: 480
             h24:
-              buys: 1565
-              sells: 1635
+              buys: 1853
+              sells: 1857
           volume:
-            h24: 152071.89
-            h6: 28173.98
-            h1: 5786.48
-            m5: 782.7
+            h24: 184497.21
+            h6: 39677.74
+            h1: 8106.87
+            m5: 321.34
           priceChange:
-            m5: 0.25
-            h1: 0.18
-            h6: 0.41
-            h24: 1.49
+            m5: 0.09
+            h1: -0.47
+            h6: -0.87
+            h24: 3.63
           liquidity:
-            usd: 526479.51
-            base: 135.662
-            quote: 263191
-          fdv: 1174129313
-          marketCap: 1174129313
+            usd: 535774
+            base: 133.5257
+            quote: 267887
+          fdv: 1213753378
+          marketCap: 1213753378
           pairCreatedAt: 1619277331000
+        - chainId: ethereum
+          dexId: uniswap
+          url: https://dexscreener.com/ethereum/0x21c67e77068de97969ba93d4aab21826d33ca12bb9f565d8496e8fda8a82ca27
+          pairAddress: '0x21c67e77068de97969ba93d4aab21826d33ca12bb9f565d8496e8fda8a82ca27'
+          labels:
+          - v4
+          baseToken:
+            address: '0x0000000000000000000000000000000000000000'
+            name: Ether
+            symbol: ETH
+          quoteToken:
+            address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+            name: USD Coin
+            symbol: USDC
+          priceNative: '2008.1044'
+          priceUsd: '2008.10'
+          txns:
+            m5:
+              buys: 2
+              sells: 5
+            h1:
+              buys: 48
+              sells: 57
+            h6:
+              buys: 279
+              sells: 315
+            h24:
+              buys: 1428
+              sells: 2034
+          volume:
+            h24: 2667007.95
+            h6: 118776.48
+            h1: 22262.25
+            m5: 1769.86
+          priceChange:
+            m5: -0.09
+            h1: -0.28
+            h6: -0.9
+            h24: 3.89
+          liquidity:
+            usd: 1168631.42
+            base: 384.03889
+            quote: 397441
+          pairCreatedAt: 1737651611000
         - chainId: starknet
           dexId: jediswap
           url: https://dexscreener.com/starknet/0x045e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6
@@ -1067,8 +1061,8 @@ search_pairs_test:
             address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8'
             name: Tether USD
             symbol: USDT
-          priceNative: '1938.5308'
-          priceUsd: '1938.53'
+          priceNative: '2013.2030'
+          priceUsd: '2013.20'
           txns:
             m5:
               buys: 0
@@ -1077,25 +1071,25 @@ search_pairs_test:
               buys: 0
               sells: 0
             h6:
-              buys: 9
-              sells: 2
+              buys: 1
+              sells: 12
             h24:
-              buys: 66
-              sells: 16
+              buys: 70
+              sells: 89
           volume:
-            h24: 1526.94
-            h6: 231.11
+            h24: 3920.08
+            h6: 219.84
             h1: 0
             m5: 0
           priceChange:
-            h6: 0.61
-            h24: 1.71
+            h6: -0.94
+            h24: 3.97
           liquidity:
-            usd: 89721.47
-            base: 23.1416
-            quote: 44860
-          fdv: 171678322
-          marketCap: 171678322
+            usd: 91242.19
+            base: 22.6609
+            quote: 45621
+          fdv: 178291371
+          marketCap: 178291371
         - chainId: pulsechain
           dexId: 9mm
           url: https://dexscreener.com/pulsechain/0xbf8caa1a651cd0f0b16384f077996901fcbd4278
@@ -1110,41 +1104,41 @@ search_pairs_test:
             address: '0xA1077a294dDE1B09bB078844df40758a5D0f9a27'
             name: Wrapped Pulse
             symbol: WPLS
-          priceNative: '5.2163'
-          priceUsd: '0.0001588'
+          priceNative: '8.7508'
+          priceUsd: '0.0002570'
           txns:
             m5:
               buys: 0
               sells: 0
             h1:
-              buys: 0
-              sells: 3
-            h6:
               buys: 3
-              sells: 4
+              sells: 0
+            h6:
+              buys: 7
+              sells: 17
             h24:
-              buys: 11
-              sells: 9
+              buys: 66
+              sells: 88
           volume:
-            h24: 198.21
-            h6: 47.75
-            h1: 16.75
+            h24: 7067.14
+            h6: 880.91
+            h1: 20.84
             m5: 0
           priceChange:
-            h1: -6.27
-            h6: -0.49
-            h24: 23.53
+            h1: 3.01
+            h6: -30.44
+            h24: 57.55
           liquidity:
-            usd: 3440.8
-            base: 20992311
-            quote: 3456828
-          fdv: 158892
-          marketCap: 158892
+            usd: 5438.58
+            base: 17702312
+            quote: 30203879
+          fdv: 257096
+          marketCap: 257096
           pairCreatedAt: 1738568795000
           info:
             imageUrl: https://dd.dexscreener.com/ds-data/tokens/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94.png?key=11d6a8
             header: https://dd.dexscreener.com/ds-data/tokens/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94/header.png?key=11d6a8
-            openGraph: https://cdn.dexscreener.com/token-images/og/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94?timestamp=1742362800000
+            openGraph: https://cdn.dexscreener.com/token-images/og/pulsechain/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94?timestamp=1742457600000
             websites:
             - label: Website
               url: https://gopulse.com/token/0xbfcfa52225baa5feec5fbb54e6458957d53ddd94
@@ -1165,82 +1159,38 @@ search_pairs_test:
             address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
             name: Wrapped BNB
             symbol: WBNB
-          priceNative: '3.1358'
-          priceUsd: '1933.73'
+          priceNative: '3.2106'
+          priceUsd: '1997.67'
           txns:
             m5:
-              buys: 5
-              sells: 2
-            h1:
-              buys: 27
-              sells: 28
-            h6:
-              buys: 242
-              sells: 391
-            h24:
-              buys: 882
-              sells: 1241
-          volume:
-            h24: 632025.31
-            h6: 395703.02
-            h1: 35446.65
-            m5: 4711.4
-          priceChange:
-            m5: 0.17
-            h1: 0.51
-            h6: 0.33
-            h24: 1.86
-          liquidity:
-            usd: 1499573.74
-            base: 705.2855
-            quote: 220.1193
-          fdv: 1169878251
-          marketCap: 1169878251
-          pairCreatedAt: 1678911207000
-        - chainId: base
-          dexId: uniswap
-          url: https://dexscreener.com/base/0x33b3bc9575216919c873380b2c39cc54bd7dacd1
-          pairAddress: '0x33b3BC9575216919c873380b2c39cC54bD7DaCD1'
-          labels:
-          - v3
-          baseToken:
-            address: '0xd9F741D2b08E7bb745628Fe73aDbb8da4a27f6C4'
-            name: ETH (Monad Test)
-            symbol: ETH
-          quoteToken:
-            address: '0x4200000000000000000000000000000000000006'
-            name: Wrapped Ether
-            symbol: WETH
-          priceNative: '0.0002747'
-          priceUsd: '0.5307'
-          txns:
-            m5:
-              buys: 0
-              sells: 0
-            h1:
-              buys: 0
-              sells: 0
-            h6:
-              buys: 0
-              sells: 1
-            h24:
               buys: 2
               sells: 1
+            h1:
+              buys: 55
+              sells: 34
+            h6:
+              buys: 291
+              sells: 247
+            h24:
+              buys: 1690
+              sells: 2155
           volume:
-            h24: 0.13
-            h6: 0
-            h1: 0
-            m5: 0
+            h24: 3076700.65
+            h6: 371545.17
+            h1: 63755.2
+            m5: 2577.01
           priceChange:
-            h6: 2.82
-            h24: 2.84
+            m5: -0.08
+            h1: -0.42
+            h6: -1.39
+            h24: 3.54
           liquidity:
-            usd: 77137.51
-            base: 145343
-            quote: 7.064e-05
-          fdv: 11145199
-          marketCap: 11145199
-          pairCreatedAt: 1739864499000
+            usd: 1521168.1
+            base: 656.5441
+            quote: 336.8853
+          fdv: 1208558586
+          marketCap: 1208558586
+          pairCreatedAt: 1678911207000
         - chainId: bsc
           dexId: thena
           url: https://dexscreener.com/bsc/0x1123e75b71019962cd4d21b0f3018a6412edb63c
@@ -1253,83 +1203,37 @@ search_pairs_test:
             address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
             name: Wrapped BNB
             symbol: WBNB
-          priceNative: '3.1325'
-          priceUsd: '1931.72'
-          txns:
-            m5:
-              buys: 9
-              sells: 0
-            h1:
-              buys: 11
-              sells: 2
-            h6:
-              buys: 178
-              sells: 114
-            h24:
-              buys: 740
-              sells: 534
-          volume:
-            h24: 5656144.68
-            h6: 1407871.7
-            h1: 56906.51
-            m5: 44707.43
-          priceChange:
-            m5: 0.17
-            h1: 0.35
-            h6: 0.21
-            h24: 1.71
-          liquidity:
-            usd: 4534249.98
-            base: 1321.5563
-            quote: 3213.0507
-          fdv: 1168665497
-          marketCap: 1168665497
-        - chainId: bsc
-          dexId: pancakeswap
-          url: https://dexscreener.com/bsc/0x539e0ebfffd39e54a0f7e5f8fec40ade7933a664
-          pairAddress: '0x539e0EBfffd39e54A0f7E5F8FEc40ade7933A664'
-          labels:
-          - v3
-          baseToken:
-            address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
-            name: Ethereum Token
-            symbol: ETH
-          quoteToken:
-            address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'
-            name: USD Coin
-            symbol: USDC
-          priceNative: '1937.2387'
-          priceUsd: '1937.23'
+          priceNative: '3.2076'
+          priceUsd: '1995.77'
           txns:
             m5:
               buys: 2
               sells: 0
             h1:
-              buys: 9
-              sells: 11
+              buys: 13
+              sells: 20
             h6:
-              buys: 94
-              sells: 133
+              buys: 74
+              sells: 179
             h24:
-              buys: 705
-              sells: 703
+              buys: 877
+              sells: 993
           volume:
-            h24: 171230.98
-            h6: 20005.21
-            h1: 12835.92
-            m5: 52.97
+            h24: 10251078.09
+            h6: 1371304.78
+            h1: 158653.86
+            m5: 13684.39
           priceChange:
-            m5: 0.05
-            h1: 0.18
-            h6: 0.22
-            h24: 1.56
+            m5: -0.06
+            h1: -0.47
+            h6: -1.37
+            h24: 3.5
           liquidity:
-            usd: 99940.63
-            base: 30.6659
-            quote: 40533
-          fdv: 1171998395
-          marketCap: 1171998395
-          pairCreatedAt: 1680356039000
+            usd: 4654042.78
+            base: 1205.4694
+            quote: 3613.3102
+          fdv: 1207413247
+          marketCap: 1207413247
         - chainId: bsc
           dexId: pancakeswap
           url: https://dexscreener.com/bsc/0xcec31052610aaf0693d6b4d34e055687af3aeee6
@@ -1344,38 +1248,139 @@ search_pairs_test:
             address: '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c'
             name: BTCB Token
             symbol: BTCB
-          priceNative: '0.02330'
-          priceUsd: '1939.11'
+          priceNative: '0.02338'
+          priceUsd: '2006.90'
           txns:
             m5:
-              buys: 2
-              sells: 5
+              buys: 3
+              sells: 6
             h1:
-              buys: 24
-              sells: 27
+              buys: 44
+              sells: 29
             h6:
-              buys: 214
-              sells: 235
+              buys: 207
+              sells: 155
             h24:
-              buys: 753
-              sells: 948
+              buys: 1364
+              sells: 1259
           volume:
-            h24: 379421.3
-            h6: 96102.56
-            h1: 5179.94
-            m5: 643.82
+            h24: 662223.21
+            h6: 64675.59
+            h1: 9243.49
+            m5: 1586.34
           priceChange:
-            m5: 0.13
-            h1: 0.32
-            h6: 0.35
-            h24: 1.57
+            m5: -0.12
+            h1: -0.31
+            h6: -0.98
+            h24: 3.82
           liquidity:
-            usd: 1069900.44
-            base: 498.9592
-            quote: 1.2304
-          fdv: 1173131073
-          marketCap: 1173131073
+            usd: 1106855.28
+            base: 499.4871
+            quote: 1.2169
+          fdv: 1214145085
+          marketCap: 1214145085
           pairCreatedAt: 1682072920000
+        - chainId: bsc
+          dexId: thena
+          url: https://dexscreener.com/bsc/0xa60a504d92a1c95bda729c3f745b361ca822d6dd
+          pairAddress: '0xa60a504d92a1C95bda729C3F745B361cA822d6dd'
+          baseToken:
+            address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
+            name: Ethereum Token
+            symbol: ETH
+          quoteToken:
+            address: '0x55d398326f99059fF775485246999027B3197955'
+            name: Tether USD
+            symbol: USDT
+          priceNative: '2008.8567'
+          priceUsd: '2008.85'
+          txns:
+            m5:
+              buys: 0
+              sells: 1
+            h1:
+              buys: 8
+              sells: 14
+            h6:
+              buys: 57
+              sells: 85
+            h24:
+              buys: 908
+              sells: 1045
+          volume:
+            h24: 4501687.48
+            h6: 239158.93
+            h1: 32698.03
+            m5: 192.06
+          priceChange:
+            h1: -0.18
+            h6: -0.83
+            h24: 3.93
+          liquidity:
+            usd: 806277.31
+            base: 169.5703
+            quote: 465634
+          fdv: 1215326139
+          marketCap: 1215326139
+        - chainId: bsc
+          dexId: uniswap
+          url: https://dexscreener.com/bsc/0xf9878a5dd55edc120fde01893ea713a4f032229c
+          pairAddress: '0xF9878A5dD55EdC120Fde01893ea713a4f032229c'
+          baseToken:
+            address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
+            name: Ethereum Token
+            symbol: ETH
+          quoteToken:
+            address: '0x55d398326f99059fF775485246999027B3197955'
+            name: Tether USD
+            symbol: USDT
+          priceNative: '2007.9697'
+          priceUsd: '2007.96'
+          txns:
+            m5:
+              buys: 0
+              sells: 2
+            h1:
+              buys: 18
+              sells: 16
+            h6:
+              buys: 109
+              sells: 84
+            h24:
+              buys: 899
+              sells: 1005
+          volume:
+            h24: 152019.17
+            h6: 9975.92
+            h1: 1595.01
+            m5: 125.97
+          priceChange:
+            m5: -0.08
+            h1: -0.24
+            h6: -0.87
+            h24: 3.93
+          liquidity:
+            usd: 120024.26
+            base: 45.4623
+            quote: 28737
+          fdv: 1214789538
+          marketCap: 1214789538
+          pairCreatedAt: 1680238062000
+natural_language_query_raw_data:
+  input:
+    query: Tell me about ETH on Uniswap
+    raw_data_only: true
+  output:
+    response: ''
+    data: *id001
+search_pairs_test:
+  input:
+    tool: search_pairs
+    tool_arguments:
+      search_term: ETH
+  output:
+    response: ''
+    data: *id001
 specific_pair_info_test:
   input:
     tool: get_specific_pair_info
@@ -1383,22 +1388,7 @@ specific_pair_info_test:
       chain: solana
       pair_address: 7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp
   output:
-    response: "Based on the provided data and the specified formatting rules, here\
-      \ is the structured output:\n\n**Core Token Information**\n- **Chain/DEX Platform**:\
-      \ Solana / Raydium\n- **Pair Address**: 7QsDV1YR4yra9FjAZCCRwhBjPYkVPCBi3158U1QcjuXp\n\
-      - **Pair URL**: https://dexscreener.com/solana/7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp\n\
-      - **Base Token**:\n  - **Name**: Elyra\n  - **Symbol**: Elyra\n  - **Address**:\
-      \ 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump\n- **Quote Token**:\n  - **Name**:\
-      \ Wrapped SOL\n  - **Symbol**: SOL\n  - **Address**: So11111111111111111111111111111111111111112\n\
-      \n**Market Metrics**\n- **Price**:\n  - **Native**: 0.0000001958\n  - **USD**:\
-      \ $0.00002462\n- **24h Volume**: $51.97\n- **Liquidity**:\n  - **USD**: $16,344.07\n\
-      \  - **Base**: 331,632,139\n  - **Quote**: 65.0152\n- **Fully Diluted Valuation\
-      \ (FDV)**: $24,623\n- **Market Cap**: $24,623\n\n**Trading Activity**\n- **Price\
-      \ Change**:\n  - **1h**: 0.8%\n  - **6h**: 0.8%\n  - **24h**: 0.8%\n- **Transaction\
-      \ Ratio (24h)**: \n  - **Buys**: 0\n  - **Sells**: 2\n- **Volume Distribution**:\n\
-      \  - **1h**: $11.89\n  - **6h**: $11.89\n  - **24h**: $51.97\n\n**Project Links**\n\
-      - **Website**: https://elyra.fun/\n- **Docs**: https://docs.elyra.fun/\n- **Social\
-      \ Media**:\n  - **Twitter**: https://x.com/elyrafun\n  - **Telegram**: https://t"
+    response: ''
     data:
       status: success
       data:
@@ -1415,41 +1405,40 @@ specific_pair_info_test:
             address: So11111111111111111111111111111111111111112
             name: Wrapped SOL
             symbol: SOL
-          priceNative: '0.0000001958'
-          priceUsd: '0.00002462'
+          priceNative: '0.0000001948'
+          priceUsd: '0.00002603'
           txns:
             m5:
               buys: 0
               sells: 0
             h1:
               buys: 0
-              sells: 1
+              sells: 0
             h6:
               buys: 0
               sells: 1
             h24:
               buys: 0
-              sells: 2
+              sells: 3
           volume:
-            h24: 51.97
-            h6: 11.89
-            h1: 11.89
+            h24: 14.88
+            h6: 0.21
+            h1: 0
             m5: 0
           priceChange:
-            h1: 0.8
-            h6: 0.8
-            h24: 0.8
+            h6: 2.18
+            h24: 1.39
           liquidity:
-            usd: 16344.07
-            base: 331632139
-            quote: 65.0152
-          fdv: 24623
-          marketCap: 24623
+            usd: 17318.99
+            base: 332213223
+            quote: 64.9017
+          fdv: 26027
+          marketCap: 26027
           pairCreatedAt: 1737036564000
           info:
             imageUrl: https://dd.dexscreener.com/ds-data/tokens/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump.png?key=946663
             header: https://dd.dexscreener.com/ds-data/tokens/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump/header.png?key=946663
-            openGraph: https://cdn.dexscreener.com/token-images/og/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump?timestamp=1742363100000
+            openGraph: https://cdn.dexscreener.com/token-images/og/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump?timestamp=1742457600000
             websites:
             - label: Website
               url: https://elyra.fun/
@@ -1469,22 +1458,7 @@ token_pairs_test:
       chain: solana
       token_address: 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump
   output:
-    response: "**Core Token Information**\n\n* **Base Token:**\n\t+ **Name:** Elyra\n\
-      \t+ **Symbol:** Elyra\n\t+ **Address:** 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump\n\
-      * **Quote Token:**\n\t+ **Name:** Wrapped SOL\n\t+ **Symbol:** SOL\n\t+ **Address:**\
-      \ So11111111111111111111111111111111111111112\n* **Chain/DEX Platform:**\n\t\
-      + **Chain:** Solana\n\t+ **DEX:** Raydium\n* **Contract Addresses:**\n\t+ **Pair\
-      \ Address:** 7QsDV1YR4yra9FjAZCCRwhBjPYkVPCBi3158U1QcjuXp\n\t+ **DEX Screener\
-      \ URL:** https://dexscreener.com/solana/7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp\n\
-      \n**Market Metrics**\n\n* **Price:**\n\t+ **Native:** 0.0000001958 Elyra/SOL\n\
-      \t+ **USD:** $0.00002462\n* **24h Volume:** 51.97 SOL\n* **Liquidity:**\n\t\
-      + **USD:** $16,344.07\n\t+ **Base:** 331,632,139 Elyra\n\t+ **Quote:** 65.0152\
-      \ SOL\n* **Market Cap/FDV:** $24,623\n\n**Trading Activity**\n\n* **Price Change:**\n\
-      \t+ **1h:** 0.8%\n\t+ **6h:** 0.8%\n\t+ **24h:** 0.8%\n* **Transaction Ratio\
-      \ (24h):**\n\t+ **Buys:** 0\n\t+ **Sells:** 2\n* **Volume Distribution:**\n\t\
-      + **24h:** 51.97 SOL\n\t+ **6h:** 11.89 SOL\n\t+ **1h:** 11.89 SOL\n\t+ **5m:**\
-      \ 0 SOL\n\n**Project Links**\n\n* **Website:**\n\t+ **Elyra:** https://elyra.fun/\n\
-      \t+ **Docs:** https://docs.elyra.fun/\n* **Social Media:**\n\t+"
+    response: ''
     data:
       status: success
       data:
@@ -1501,41 +1475,40 @@ token_pairs_test:
             address: So11111111111111111111111111111111111111112
             name: Wrapped SOL
             symbol: SOL
-          priceNative: '0.0000001958'
-          priceUsd: '0.00002462'
+          priceNative: '0.0000001948'
+          priceUsd: '0.00002603'
           txns:
             m5:
               buys: 0
               sells: 0
             h1:
               buys: 0
-              sells: 1
+              sells: 0
             h6:
               buys: 0
               sells: 1
             h24:
               buys: 0
-              sells: 2
+              sells: 3
           volume:
-            h24: 51.97
-            h6: 11.89
-            h1: 11.89
+            h24: 14.88
+            h6: 0.21
+            h1: 0
             m5: 0
           priceChange:
-            h1: 0.8
-            h6: 0.8
-            h24: 0.8
+            h6: 2.18
+            h24: 1.39
           liquidity:
-            usd: 16344.07
-            base: 331632139
-            quote: 65.0152
-          fdv: 24623
-          marketCap: 24623
+            usd: 17318.99
+            base: 332213223
+            quote: 64.9017
+          fdv: 26027
+          marketCap: 26027
           pairCreatedAt: 1737036564000
           info:
             imageUrl: https://dd.dexscreener.com/ds-data/tokens/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump.png?key=946663
             header: https://dd.dexscreener.com/ds-data/tokens/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump/header.png?key=946663
-            openGraph: https://cdn.dexscreener.com/token-images/og/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump?timestamp=1742363100000
+            openGraph: https://cdn.dexscreener.com/token-images/og/solana/8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump?timestamp=1742457600000
             websites:
             - label: Website
               url: https://elyra.fun/
