@@ -4,13 +4,19 @@ import os
 from typing import Any, Dict, List
 
 import requests
+from dotenv import load_dotenv
+from smolagents import ToolCallingAgent, tool
+from smolagents.memory import SystemPromptStep
 
-from core.llm import call_llm_async, call_llm_with_tools_async
+from core.custom_smolagents import OpenAIServerModel
+from core.llm import call_llm_async
 from decorators import monitor_execution, with_cache, with_retry
 
 from .mesh_agent import MeshAgent
 
+load_dotenv()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class CoinGeckoTokenInfoAgent(MeshAgent):
@@ -29,17 +35,10 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "inputs": [
                     {
                         "name": "query",
-                        "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins. ",
+                        "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins.",
                         "type": "str",
                         "required": False,
-                    },
-                    {
-                        "name": "raw_data_only",
-                        "description": "If true, the agent will only return the raw or base structured data without additional LLM explanation.",
-                        "type": "bool",
-                        "required": False,
-                        "default": False,
-                    },
+                    }
                 ],
                 "outputs": [
                     {
@@ -56,9 +55,42 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "external_apis": ["Coingecko"],
                 "tags": ["Trading"],
                 "recommended": True,
+                "large_model_id": "google/gemini-2.0-flash-001",
+                "small_model_id": "google/gemini-2.0-flash-001",
                 "image_url": "",  # use coingecko logo
             }
         )
+
+        # Initialize SmolaAgents setup
+        self.model = OpenAIServerModel(
+            model_id=self.metadata["large_model_id"],
+            api_key=self.heurist_api_key,
+            api_base=self.heurist_base_url,
+        )
+
+        tools = [
+            self.get_coingecko_id_tool(),
+            self.get_token_info_tool(),
+            self.get_trending_coins_tool(),
+            self.get_token_price_multi_tool(),
+        ]
+
+        max_steps = 6
+        self.agent = ToolCallingAgent(tools=tools, model=self.model, max_steps=max_steps)
+
+        self.agent.prompt_templates["system_prompt"] = self.get_system_prompt()
+        self.agent.system_prompt = self.agent.prompt_templates["system_prompt"]
+        self.agent.memory.system_prompt = SystemPromptStep(system_prompt=self.agent.system_prompt)
+
+        self.agent.step_callbacks.append(self._step_callback)
+        self.current_message = {}
+
+    def _step_callback(self, step_log):
+        logger.info(f"Step: {step_log}")
+        if step_log.tool_calls:
+            msg = f"Calling function {step_log.tool_calls[0].name} with args {step_log.tool_calls[0].arguments}"
+            logger.info(msg)
+            self.push_update(self.current_message, msg)
 
     def get_system_prompt(self) -> str:
         return """
@@ -69,6 +101,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     - Search and retrieve token details
     - Get current trending coins
     - Analyze token market data
+    - Compare multiple tokens using the token price multi tool
 
     RESPONSE GUIDELINES:
     - Keep responses focused on what was specifically asked
@@ -78,15 +111,17 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     DOMAIN-SPECIFIC RULES:
     For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name or symbol. Coingecko ID is lowercase string and may contain dashes. If the user doesn't explicity say the input is the CoinGecko ID, you should use get_coingecko_id to search for the token. Do not make up CoinGecko IDs.
     For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies.
+    For token comparisons or when needing to fetch multiple token prices at once, use the get_token_price_multi tool which is more efficient than making multiple individual calls.
 
     When selecting tokens from search results, apply these criteria in order:
     1. First priority: Select the token where name or symbol perfectly matches the query
     2. If multiple matches exist, select the token with the highest market cap rank (lower number = higher rank)
-    3. If market cap ranks are not available, prefer the token with the most complete informatio
+    3. If market cap ranks are not available, prefer the token with the most complete information
 
     IMPORTANT:
     - Never invent or assume CoinGecko IDs
-    - Keep responses concise and relevant"""
+    - Keep responses concise and relevant
+    - Use multiple tool calls when needed to get comprehensive information"""
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
@@ -94,7 +129,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_coingecko_id",
-                    "description": "Search for a token by name to get its CoinGecko ID. This tool helps you find the correct CoinGecko ID for any cryptocurrency when you only know its name or symbol. The CoinGecko ID is required for fetching detailed token information using other CoinGecko tools. Use this when you need to look up a token's identifier before requesting more detailed information. You can skip this tool if you have the CoinGecko ID already.",
+                    "description": "Search for a token by name to get its CoinGecko ID. This tool helps you find the correct CoinGecko ID for any cryptocurrency when you only know its name or symbol. The CoinGecko ID is required for fetching detailed token information using other CoinGecko tools.",
                     "parameters": {
                         "type": "object",
                         "properties": {"token_name": {"type": "string", "description": "The token name to search for"}},
@@ -106,7 +141,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_token_info",
-                    "description": "Get detailed token information and market data using CoinGecko ID. This tool provides comprehensive cryptocurrency data including current price, market cap, trading volume, price changes, supply information, and more. Use this when you need up-to-date information of a specific cryptocurrency. Note that you must use the token's CoinGecko ID (not its symbol or address) - you can find this ID using the get_coingecko_id tool if needed.",
+                    "description": "Get detailed token information and market data using CoinGecko ID. This tool provides comprehensive cryptocurrency data including current price, market cap, trading volume, price changes, and more.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -120,7 +155,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_trending_coins",
-                    "description": "Get the current top trending cryptocurrencies on CoinGecko. This tool retrieves a list of the most popular cryptocurrencies based on trading volume and social media mentions. It provides key information about each trending coin such as name, symbol, market cap rank, and price data. Use this when you want to discover which cryptocurrencies are currently gaining the most attention in the market. Data is sourced directly from CoinGecko and represents real-time trends.",
+                    "description": "Get the current top trending cryptocurrencies on CoinGecko. This tool retrieves a list of the most popular cryptocurrencies based on trading volume and social media mentions.",
                     "parameters": {
                         "type": "object",
                         "properties": {},
@@ -128,7 +163,236 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     },
                 },
             },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_token_price_multi",
+                    "description": "Fetch price data for multiple tokens at once using CoinGecko IDs. Efficiently retrieves current prices and optional market data for multiple cryptocurrencies in a single API call.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "ids": {
+                                "type": "string",
+                                "description": "Comma-separated CoinGecko IDs of the tokens to query",
+                            },
+                            "vs_currencies": {
+                                "type": "string",
+                                "description": "Comma-separated target currencies (e.g., usd,eur,btc)",
+                                "default": "usd",
+                            },
+                            "include_market_cap": {
+                                "type": "boolean",
+                                "description": "Include market capitalization data",
+                                "default": False,
+                            },
+                            "include_24hr_vol": {
+                                "type": "boolean",
+                                "description": "Include 24hr trading volume data",
+                                "default": False,
+                            },
+                            "include_24hr_change": {
+                                "type": "boolean",
+                                "description": "Include 24hr price change percentage",
+                                "default": False,
+                            },
+                            "include_last_updated_at": {
+                                "type": "boolean",
+                                "description": "Include timestamp of when the data was last updated",
+                                "default": False,
+                            },
+                            "precision": {
+                                "type": "string",
+                                "description": "Decimal precision for currency values (e.g., 'full' for maximum precision)",
+                                "default": False,
+                            },
+                        },
+                        "required": ["ids", "vs_currencies"],
+                    },
+                },
+            },
         ]
+
+    # Tool definitions using smolagents tool decorator
+    def get_coingecko_id_tool(self):
+        @tool
+        def get_coingecko_id(token_name: str) -> Dict[str, Any]:
+            """Search for a token by name to get its CoinGecko ID.
+
+            Args:
+                token_name: The token name to search for
+
+            Returns:
+                Dictionary with the CoinGecko ID or error message
+            """
+            logger.info(f"Searching for token: {token_name}")
+            try:
+                response = requests.get(f"{self.api_url}/search?query={token_name}", headers=self.headers)
+                response.raise_for_status()
+                search_results = response.json()
+
+                if search_results.get("coins") and len(search_results["coins"]) == 1:
+                    first_coin = search_results["coins"][0]
+                    return {"coingecko_id": first_coin["id"]}
+                elif (search_results.get("coins") and len(search_results["coins"]) == 0) or (
+                    search_results.get("coins") is None
+                ):
+                    return {"error": f"No token found for {token_name}"}
+                else:
+                    valid_tokens = [
+                        token for token in search_results["coins"] if token.get("market_cap_rank") is not None
+                    ]
+
+                    if not valid_tokens:
+                        return {"error": f"No valid tokens found for {token_name}"}
+
+                    exact_matches = [
+                        token
+                        for token in valid_tokens
+                        if token["name"].lower() == token_name.lower() or token["symbol"].lower() == token_name.lower()
+                    ]
+
+                    if exact_matches:
+                        exact_matches.sort(key=lambda x: x.get("market_cap_rank", float("inf")))
+                        return {"coingecko_id": exact_matches[0]["id"]}
+
+                    valid_tokens.sort(key=lambda x: x.get("market_cap_rank", float("inf")))
+                    return {"coingecko_id": valid_tokens[0]["id"]}
+
+            except requests.RequestException as e:
+                logger.error(f"Error searching for token: {e}")
+                return {"error": f"Failed to search for token: {str(e)}"}
+
+        return get_coingecko_id
+
+    def get_token_info_tool(self):
+        @tool
+        def get_token_info(coingecko_id: str) -> Dict[str, Any]:
+            """Get detailed token information and market data using CoinGecko ID.
+
+            Args:
+                coingecko_id: The CoinGecko ID of the token
+
+            Returns:
+                Dictionary with token information or error message
+            """
+            logger.info(f"Getting token info for: {coingecko_id}")
+            try:
+                response = requests.get(f"{self.api_url}/coins/{coingecko_id}", headers=self.headers)
+
+                if response.status_code != 200:
+                    search_response = requests.get(f"{self.api_url}/search?query={coingecko_id}", headers=self.headers)
+                    search_response.raise_for_status()
+                    search_results = search_response.json()
+
+                    if search_results.get("coins") and len(search_results["coins"]) > 0:
+                        valid_tokens = [
+                            token for token in search_results["coins"] if token.get("market_cap_rank") is not None
+                        ]
+                        if valid_tokens:
+                            valid_tokens.sort(key=lambda x: x.get("market_cap_rank", float("inf")))
+                            fallback_id = valid_tokens[0]["id"]
+                            response = requests.get(f"{self.api_url}/coins/{fallback_id}", headers=self.headers)
+                            response.raise_for_status()
+                            return self.format_token_info(response.json())
+
+                    return {"error": "Failed to fetch token info and fallback search failed"}
+
+                response.raise_for_status()
+                return self.format_token_info(response.json())
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting token info: {e}")
+                return {"error": f"Failed to fetch token info: {str(e)}"}
+
+        return get_token_info
+
+    def get_trending_coins_tool(self):
+        @tool
+        def get_trending_coins() -> Dict[str, Any]:
+            """Get the current top trending cryptocurrencies on CoinGecko.
+
+            Returns:
+                Dictionary with trending coins data or error message
+            """
+            logger.info("Getting trending coins")
+            try:
+                response = requests.get(f"{self.api_url}/search/trending", headers=self.headers)
+                response.raise_for_status()
+                trending_data = response.json()
+                formatted_trending = []
+                for coin in trending_data.get("coins", [])[:10]:
+                    coin_info = coin["item"]
+                    formatted_trending.append(
+                        {
+                            "name": coin_info["name"],
+                            "symbol": coin_info["symbol"],
+                            "market_cap_rank": coin_info.get("market_cap_rank", "N/A"),
+                            "price_usd": coin_info["data"].get("price", "N/A"),
+                        }
+                    )
+                return {"trending_coins": formatted_trending}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting trending coins: {e}")
+                return {"error": f"Failed to fetch trending coins: {str(e)}"}
+
+        return get_trending_coins
+
+    def get_token_price_multi_tool(self):
+        @tool
+        def get_token_price_multi(
+            ids: str,
+            vs_currencies: str,
+            include_market_cap: bool = False,
+            include_24hr_vol: bool = False,
+            include_24hr_change: bool = False,
+            include_last_updated_at: bool = False,
+            precision: str = None,
+        ) -> Dict[str, Any]:
+            """Fetch price data for multiple tokens at once using the simple/price endpoint.
+
+            Args:
+                ids: Comma-separated CoinGecko IDs of the tokens to query
+                vs_currencies: Comma-separated target currencies (e.g., usd,eur,btc)
+                include_market_cap: Include market capitalization data
+                include_24hr_vol: Include 24hr trading volume data
+                include_24hr_change: Include 24hr price change percentage
+                include_last_updated_at: Include timestamp of when the data was last updated
+                precision: Decimal precision for currency values (e.g., 'full' for maximum precision)
+
+            Returns:
+                Dictionary with price data for the requested tokens or error message
+            """
+            logger.info(f"Getting multi-token price data for: {ids} in {vs_currencies}")
+            try:
+                params = {
+                    "ids": ids,
+                    "vs_currencies": vs_currencies,
+                    "include_market_cap": str(include_market_cap).lower(),
+                    "include_24hr_vol": str(include_24hr_vol).lower(),
+                    "include_24hr_change": str(include_24hr_change).lower(),
+                    "include_last_updated_at": str(include_last_updated_at).lower(),
+                }
+
+                if precision:
+                    params["precision"] = precision
+
+                response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+                response.raise_for_status()
+                price_data = response.json()
+
+                # Format the response in a more readable structure
+                formatted_data = {}
+                for token_id, data in price_data.items():
+                    formatted_data[token_id] = data
+
+                return {"price_data": formatted_data}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting multi-token price data: {e}")
+                return {"error": f"Failed to fetch price data: {str(e)}"}
+
+        return get_token_price_multi
 
     async def select_best_token_match(self, search_results: Dict, query: str) -> str:
         """
@@ -145,8 +409,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
         if not valid_tokens:
             return None
-
-        logger.info(f"valid_tokens: {valid_tokens}")
 
         # Create prompt for token selection
         token_selection_prompt = f"""Given the search query "{query}" and these token results:
@@ -183,39 +445,10 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         return None
 
     # ------------------------------------------------------------------------
-    #                       SHARED / UTILITY METHODS
-    # ------------------------------------------------------------------------
-    async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
-        """
-        Reusable helper to ask the LLM to generate a user-friendly explanation
-        given a piece of data from a tool call.
-        """
-        return await call_llm_async(
-            base_url=self.heurist_base_url,
-            api_key=self.heurist_api_key,
-            model_id=self.metadata["large_model_id"],
-            messages=[
-                {"role": "system", "content": self.get_system_prompt()},
-                {"role": "user", "content": query},
-                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id},
-            ],
-            temperature=temperature,
-        )
-
-    def _handle_error(self, maybe_error: dict) -> dict:
-        """
-        Small helper to return the error if present in
-        a dictionary with the 'error' key.
-        """
-        if "error" in maybe_error:
-            return {"error": maybe_error["error"]}
-        return {}
-
-    # ------------------------------------------------------------------------
     #                      COINGECKO API-SPECIFIC METHODS
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=300)  # Cache for 5 minutes
-    async def get_trending_coins(self) -> dict:
+    async def _get_trending_coins(self) -> dict:
         try:
             response = requests.get(f"{self.api_url}/search/trending", headers=self.headers)
             response.raise_for_status()
@@ -236,11 +469,11 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             return {"trending_coins": formatted_trending}
 
         except requests.RequestException as e:
-            print(f"error: {e}")
+            logger.error(f"Error: {e}")
             return {"error": f"Failed to fetch trending coins: {str(e)}"}
 
     @with_cache(ttl_seconds=3600)
-    async def get_coingecko_id(self, token_name: str) -> dict | str:
+    async def _get_coingecko_id(self, token_name: str) -> dict | str:
         try:
             response = requests.get(f"{self.api_url}/search?query={token_name}", headers=self.headers)
             response.raise_for_status()
@@ -258,17 +491,17 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 return selected_token_id or None
 
         except requests.RequestException as e:
-            print(f"error: {e}")
+            logger.error(f"Error: {e}")
             return {"error": f"Failed to search for token: {str(e)}"}
 
     @with_cache(ttl_seconds=3600)
-    async def get_token_info(self, coingecko_id: str) -> dict:
+    async def _get_token_info(self, coingecko_id: str) -> dict:
         try:
             response = requests.get(f"{self.api_url}/coins/{coingecko_id}", headers=self.headers)
 
             # if response fails, try to search for the token and use first result
             if response.status_code != 200:
-                fallback_id = await self.get_coingecko_id(coingecko_id)
+                fallback_id = await self._get_coingecko_id(coingecko_id)
                 if isinstance(fallback_id, str):  # ensure we got a valid id back
                     response = requests.get(f"{self.api_url}/coins/{fallback_id}", headers=self.headers)
                     response.raise_for_status()
@@ -278,14 +511,46 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            print(f"error: {e}")
+            logger.error(f"Error: {e}")
             return {"error": f"Failed to fetch token info: {str(e)}"}
+
+    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
+    async def _get_token_price_multi(
+        self,
+        ids: str,
+        vs_currencies: str,
+        include_market_cap: bool = False,
+        include_24hr_vol: bool = False,
+        include_24hr_change: bool = False,
+        include_last_updated_at: bool = False,
+        precision: str = None,
+    ) -> dict:
+        try:
+            params = {
+                "ids": ids,
+                "vs_currencies": vs_currencies,
+                "include_market_cap": str(include_market_cap).lower(),
+                "include_24hr_vol": str(include_24hr_vol).lower(),
+                "include_24hr_change": str(include_24hr_change).lower(),
+                "include_last_updated_at": str(include_last_updated_at).lower(),
+            }
+
+            if precision:
+                params["precision"] = precision
+
+            response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error(f"Error: {e}")
+            return {"error": f"Failed to fetch multi-token price data: {str(e)}"}
 
     def format_token_info(self, data: Dict) -> Dict:
         """Format token information in a structured way"""
         market_data = data.get("market_data", {})
         return {
             "token_info": {
+                "id": data.get("id", "N/A"),
                 "name": data.get("name", "N/A"),
                 "symbol": data.get("symbol", "N/A").upper(),
                 "market_cap_rank": data.get("market_cap_rank", "N/A"),
@@ -302,107 +567,89 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             }
         }
 
-    # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
-    # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
-        """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
-        """
-        if tool_name == "get_trending_coins":
-            result = await self.get_trending_coins()
-        elif tool_name == "get_token_info":
-            result = await self.get_token_info(function_args["coingecko_id"])
-        elif tool_name == "get_coingecko_id":
-            result = await self.get_coingecko_id(function_args["token_name"])
-            if isinstance(result, str):
-                result = {"coingecko_id": result}
-            elif result is None:
-                result = {"error": f"No token found for {function_args['token_name']}"}
-        else:
-            return {"error": f"Unsupported tool: {tool_name}"}
-
-        error = self._handle_error(result)
-        if error:
-            return error
-
-        # Format the token information if we're returning token info
-        if tool_name == "get_token_info":
-            result = self.format_token_info(result)
-
-        # If raw data only is requested, return just the data
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        # Default temperature: higher for more creative responses
-        temp = 0.7
-
-        # Generate an explanation using the LLM
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=result, temperature=temp
-        )
-
-        return {"response": explanation, "data": result}
-
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
           - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+          - If 'query' is provided, route via SmolaAgents for dynamic tool selection.
         """
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
-        raw_data_only = params.get("raw_data_only", False)
+        self.current_message = params
 
-        # ---------------------
-        # 1) DIRECT TOOL CALL
-        # ---------------------
-        if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+        try:
+            # ---------------------
+            # 1) DIRECT TOOL CALL
+            # ---------------------
+            if tool_name:
+                logger.info(f"Direct tool call: {tool_name} with args {tool_args}")
 
-        # ---------------------
-        # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
-        # ---------------------
-        if query:
-            response = await call_llm_with_tools_async(
-                base_url=self.heurist_base_url,
-                api_key=self.heurist_api_key,
-                model_id=self.metadata["large_model_id"],
-                system_prompt=self.get_system_prompt(),
-                user_prompt=query,
-                temperature=0.1,
-                tools=self.get_tool_schemas(),
-            )
+                if tool_name == "get_trending_coins":
+                    result = await self._get_trending_coins()
+                elif tool_name == "get_token_info":
+                    result = await self._get_token_info(tool_args["coingecko_id"])
+                    if not isinstance(result, dict) or "error" not in result:
+                        result = self.format_token_info(result)
+                elif tool_name == "get_coingecko_id":
+                    result = await self._get_coingecko_id(tool_args["token_name"])
+                    if isinstance(result, str):
+                        result = {"coingecko_id": result}
+                    elif result is None:
+                        result = {"error": f"No token found for {tool_args['token_name']}"}
+                elif tool_name == "get_token_price_multi":
+                    result = await self._get_token_price_multi(
+                        ids=tool_args["ids"],
+                        vs_currencies=tool_args["vs_currencies"],
+                        include_market_cap=tool_args.get("include_market_cap", False),
+                        include_24hr_vol=tool_args.get("include_24hr_vol", False),
+                        include_24hr_change=tool_args.get("include_24hr_change", False),
+                        include_last_updated_at=tool_args.get("include_last_updated_at", False),
+                        precision=tool_args.get("precision", None),
+                    )
+                    if "error" not in result:
+                        result = {"price_data": result}
+                else:
+                    return {"error": f"Unsupported tool: {tool_name}"}
 
-            if not response:
-                return {"error": "Failed to process query"}
+                # For direct tool calls, just return the data
+                return {"response": "", "data": result}
 
-            if not response.get("tool_calls"):
-                # No tool calls => the LLM just answered
-                return {"response": response["content"], "data": {}}
+            # ---------------------
+            # 2) NATURAL LANGUAGE QUERY (using SmolaAgents)
+            # ---------------------
+            if query:
+                logger.info(f"Processing natural language query: {query}")
 
-            tool_call = response["tool_calls"]
-            tool_call_name = tool_call.function.name
-            tool_call_args = json.loads(tool_call.function.arguments)
+                result = self.agent.run(
+                    f"""Analyze this query and provide insights: {query}
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
-            )
+                        Guidelines:
+                        - Use appropriate tools to find and analyze cryptocurrency data
+                        - Format numbers clearly (e.g. $1.5M, 15.2%)
+                        - Keep response concise and focused on key insights
+                        """
+                )
+                response_text = result.to_string()
 
-        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
+                return {
+                    "response": response_text,
+                    "data": {},
+                }
+
+            # ---------------------
+            # 3) NEITHER query NOR tool
+            # ---------------------
+            return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
+
+        except Exception as e:
+            logger.error(f"Agent execution failed: {str(e)}")
+            return {"error": str(e)}
+        finally:
+            self.current_message = {}
+
+    async def cleanup(self):
+        """Clean up any resources or connections"""
+        pass
