@@ -9,16 +9,19 @@ from typing import Dict, Optional, Tuple
 import dotenv
 
 from agents.base_agent import BaseAgent
-from agents.components.conversation_manager import ConversationManager
-from agents.components.knowledge_provider import KnowledgeProvider
-from agents.components.llm_provider import LLMProvider
-from agents.components.media_handler import MediaHandler
-from agents.components.personality_provider import PersonalityProvider
-from agents.components.validation_manager import ValidationManager
-from agents.tools_mcp import Tools
-from agents.workflows.augmented_llm import AugmentedLLMCall
-from agents.workflows.chain_of_thought import ChainOfThoughtReasoning
+from clients.firecrawl_client import Firecrawl
+from core.components.conversation_manager import ConversationManager
+from core.components.knowledge_provider import KnowledgeProvider
+from core.components.llm_provider import LLMProvider
+from core.components.media_handler import MediaHandler
+from core.components.personality_provider import PersonalityProvider
+from core.components.validation_manager import ValidationManager
 from core.embedding import MessageStore, PostgresConfig, PostgresVectorStorage, SQLiteConfig, SQLiteVectorStorage
+from core.workflows.augmented_llm import AugmentedLLMCall
+from core.workflows.chain_of_thought import ChainOfThoughtReasoning
+from core.workflows.deep_research import ResearchWorkflow
+
+from .tools.tools_mcp import Tools
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -524,8 +527,6 @@ class CoreAgent(BaseAgent):
         """
         try:
             # Import here to avoid circular imports
-            from agents.workflows.deep_research import ResearchWorkflow
-            from clients.firecrawl_client import Firecrawl
 
             # Initialize Firecrawl client if not already available
             firecrawl_client = kwargs.get("firecrawl_client") or Firecrawl(

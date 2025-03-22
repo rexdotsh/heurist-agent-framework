@@ -1,6 +1,6 @@
 import asyncio
 
-from agents.core_agent_refactor import CoreAgent
+from agents.core_agent import CoreAgent
 
 # from agents.core_agent import CoreAgent
 
@@ -15,8 +15,6 @@ async def main():
     print("Welcome to the Heurist Agent Console!")
     print("Type 'exit' to quit")
     print("-" * 50)
-
-    await agent.initialize("http://localhost:8000/sse")
 
     while True:
         # Get user input

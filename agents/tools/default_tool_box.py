@@ -6,16 +6,19 @@ import aiohttp
 from core.imgen import generate_image_with_retry_smartgen
 
 from .tool_decorator import tool
+from .tool_decorator_example import DECORATED_TOOLS_EXAMPLES
+from .tools import ToolBox
 
 logger = logging.getLogger(__name__)
 ## YOUR TOOLS GO HERE
 
 
-class ToolBox:
+class DefaultToolBox(ToolBox):
     """Base class containing tool configurations and handlers"""
 
     def __init__(self):
         # Base tools configuration
+        super().__init__()
         # Can be used to add tools by defining a function schema explicitly if needed
         self.tools_config = [
             # {
@@ -46,6 +49,8 @@ class ToolBox:
             self.generate_image_prompt_for_posts,
             self.get_current_time,
         ]
+
+        self.decorated_tools.extend(DECORATED_TOOLS_EXAMPLES)
 
     @staticmethod
     @tool("Generate an image based on a text prompt")
