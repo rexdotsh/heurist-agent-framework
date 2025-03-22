@@ -260,7 +260,7 @@ class ZkIgniteAnalystAgent(MeshAgent):
                 "external_apis": ["Merkl", "DefiLlama"],
                 "tags": ["DeFi", "Yield Farming", "ZKsync"],
                 "image_url": "",
-                "hidden": True
+                "hidden": True,
             }
         )
 

@@ -44,7 +44,7 @@ class GoplusAnalysisAgent(MeshAgent):
                 ],
                 "external_apis": ["GoPlus"],
                 "tags": ["Security"],
-                "image_url": "" # use the logo of goplus
+                "image_url": "",  # use the logo of goplus
             }
         )
 
@@ -295,9 +295,7 @@ class GoplusAnalysisAgent(MeshAgent):
             logger.error(f"Unexpected error: {e}")
             return {"error": f"Unexpected error: {str(e)}"}
 
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """Handle direct tool calls with proper error handling and response formatting"""
 
         if tool_name != "fetch_security_details":
@@ -319,11 +317,7 @@ class GoplusAnalysisAgent(MeshAgent):
         if errors:
             return errors
 
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(query=query, tool_call_id=tool_call_id, data=result, temperature=0.3)
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
@@ -341,13 +335,8 @@ class GoplusAnalysisAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -374,10 +363,19 @@ class GoplusAnalysisAgent(MeshAgent):
 
             if not response:
                 return {"error": "Failed to process query"}
-            if not response.get("tool_calls"):
-                return {"response": response["content"], "data": {}}
 
-            tool_call = response["tool_calls"]
+            # Check if tool_calls exists and is not None
+            tool_calls = response.get("tool_calls")
+            if not tool_calls:
+                return {"response": response.get("content", "No response content"), "data": {}}
+
+            # Make sure we're accessing the first tool call correctly
+            if isinstance(tool_calls, list) and len(tool_calls) > 0:
+                tool_call = tool_calls[0]
+            else:
+                tool_call = tool_calls  # If it's not a list, use it directly
+
+            # Safely extract function name and arguments
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
@@ -385,13 +383,15 @@ class GoplusAnalysisAgent(MeshAgent):
             if "solana" in query.lower() and tool_call_name == "fetch_security_details":
                 tool_call_args["chain_id"] = "solana"
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.3
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

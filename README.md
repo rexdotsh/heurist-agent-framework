@@ -3,9 +3,8 @@
 </div>
 
 # Heurist Agent Framework
-*The Raspberry Pi of Agent Frameworks*
 
-A flexible multi-interface AI agent framework that can interact through various platforms including Telegram, Discord, Twitter, Farcaster, and REST API.
+A flexible multi-interface AI agent framework that can interact through various platforms including Telegram, Discord, Twitter, Farcaster, REST API, and MCP.
 
 Grab a Heurist API Key instantly for free by using the code 'agent' while submitting the form on https://heurist.ai/dev-access
 
@@ -32,34 +31,37 @@ The Heurist Agent Framework is built on a modular architecture that allows an AI
   - Farcaster integration
   - REST API
 
-<div align="center">
-<img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
-</div>
-
 ## Heurist Mesh
+![mesh](https://github.com/user-attachments/assets/77a2ab3b-e35c-4313-8a5b-a0e751cac879)
 
-**Heurist Mesh** is an open network where AI agents can be contributed by the community and used modularly—similar to DeFi smart contracts. Each agent is a specialized unit that can process data, generate reports, or perform actions while collectively forming an intelligent swarm to tackle complex tasks. Each agent is accessible via a unified REST API interface, and can be used in conjunction with any agent framework or application.
+**Heurist Mesh** is an open network where AI agents are contributed by the community and used modularly—similar to DeFi smart contracts. Each agent is a specialized unit that can process data, generate reports, or perform actions while collectively forming an intelligent swarm to tackle complex tasks. Each agent is accessible via a unified REST API interface, and can be used in conjunction with any agent framework or application.
 
 Want to contribute your own agent? Check out the [Mesh README](./mesh/README.md) for detailed guidelines, examples, and best practices.
+
+### MCP Support
+**Just In:** All Heurist Mesh agents are accessible via MCP! This means you can access them from your favorite MCP client, including [Claude Desktop](https://claude.ai/download), [Cursor](https://www.cursor.com/), and [Windsurf](https://codeium.com/windsurf).
+
+Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mesh-mcp-server) to set up a server and give your AI assistant a powerup.
 
 ### Available Mesh Agents
 
 | Agent ID | Description | Available Tools | Source Code | External APIs |
 |----------|-------------|-----------------|-------------|---------------|
-| AaveAgent | This agent can fetch reserve data from Aave v3 protocols with details on liquidity, borrowing rates, and more | • get_aave_reserves | [Source](./mesh/aave_agent.py) | Aave v3 |
-| AlloraPricePredictionAgent | This agent can fetch price predictions for ETH/BTC with confidence intervals from Allora price prediction API | • get_allora_prediction | [Source](./mesh/allora_price_prediction_agent.py) | Allora |
-| BitquerySolanaTokenInfoAgent | This agent can fetch Solana token trading data and trending tokens from Bitquery. | • get_token_trading_info<br>• get_top_trending_tokens | [Source](./mesh/bitquery_solana_token_info_agent.py) | Bitquery |
+| AaveAgent | This agent can report the status of Aave v3 protocols deployed on Ethereum, Polygon, Avalanche, and Arbitrum with details on liquidity, borrowing rates, and more | • get_aave_reserves | [Source](./mesh/aave_agent.py) | Aave |
+| AlloraPricePredictionAgent | This agent can predict the price of ETH/BTC with confidence intervals using Allora price prediction API | • get_allora_prediction | [Source](./mesh/allora_price_prediction_agent.py) | Allora |
+| BitquerySolanaTokenInfoAgent | This agent can analyze the market data of any Solana token, and get trending tokens on Solana | • get_token_trading_info<br>• get_top_trending_tokens | [Source](./mesh/bitquery_solana_token_info_agent.py) | Bitquery |
 | CarvOnchainDataAgent | This agent can query on-chain data from multiple blockchains using natural language through the CARV API. | • query_onchain_data | [Source](./mesh/carv_onchain_data_agent.py) | CARV |
-| CoinGeckoTokenInfoAgent | This agent can fetch token information, market data, and trending coins from CoinGecko.  | • get_coingecko_id<br>• get_token_info<br>• get_trending_coins | [Source](./mesh/coingecko_token_info_agent.py) | Coingecko |
+| CoinGeckoTokenInfoAgent | This agent can fetch token information, market data, and trending coins from CoinGecko. | • get_coingecko_id<br>• get_token_info<br>• get_trending_coins | [Source](./mesh/coingecko_token_info_agent.py) | Coingecko |
 | DeepResearchAgent | Advanced research agent with recursive exploration and comprehensive reporting | • deep_research | [Source](./mesh/deep_research_agent.py) | Firecrawl |
-| DexScreenerTokenInfoAgent | This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API | • search_pairs<br>• get_specific_pair_info<br>• get_token_pairs<br>• get_token_profiles | [Source](./mesh/dexscreener_token_info_agent.py) | DexScreener |
+| DexScreenerTokenInfoAgent | This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API | • search_pairs<br>• get_specific_pair_info<br>• get_token_pairs | [Source](./mesh/dexscreener_token_info_agent.py) | DexScreener |
 | DuckDuckGoSearchAgent | This agent can fetch and analyze web search results using DuckDuckGo API and provide intelligent summaries. | • search_web | [Source](./mesh/duckduckgo_search_agent.py) | DuckDuckGo |
-| ElfaTwitterIntelligenceAgent | This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart influencers. | • search_mentions<br>• search_account<br>• get_trending_tokens | [Source](./mesh/elfa_twitter_intelligence_agent.py) | ELFA |
-| ExaSearchAgent | This agent can search the web using Exa's API and provide direct answers to questions. | • exa_web_search<br>• exa_answer_question<br>• exa_search_and_answer | [Source](./mesh/exa_search_agent.py) | Exa.ai |
+| ElfaTwitterIntelligenceAgent | This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart influencers. | • search_mentions<br>• search_account<br>• get_trending_tokens | [Source](./mesh/elfa_twitter_intelligence_agent.py) | Elfa |
+| ExaSearchAgent | This agent can search the web using Exa's API and provide direct answers to questions. | • exa_web_search<br>• exa_answer_question | [Source](./mesh/exa_search_agent.py) | Exa |
 | FirecrawlSearchAgent | Advanced search agent that uses Firecrawl to perform research with intelligent query generation and content analysis. | • firecrawl_web_search<br>• firecrawl_extract_web_data | [Source](./mesh/firecrawl_search_agent.py) | Firecrawl |
 | FundingRateAgent | This agent can fetch funding rate data and identify arbitrage opportunities across cryptocurrency exchanges. | • get_all_funding_rates<br>• get_symbol_funding_rates<br>• find_cross_exchange_opportunities<br>• find_spot_futures_opportunities | [Source](./mesh/funding_rate_agent.py) | Coinsider |
 | GoplusAnalysisAgent | This agent can fetch and analyze security details of blockchain token contracts using GoPlus API. | • fetch_security_details | [Source](./mesh/goplus_analysis_agent.py) | GoPlus |
 | MasaTwitterSearchAgent | This agent can search Twitter through Masa API and analyze the results. | • search_twitter | [Source](./mesh/masa_twitter_search_agent.py) | Masa |
+| MetaSleuthSolTokenWalletClusterAgent | This agent can analyze Solana token wallets and their clusters using the MetaSleuth API. | • fetch_token_clusters<br>• fetch_cluster_details | [Source](./mesh/metasleuth_sol_token_wallet_cluster_agent.py) | MetaSleuth |
 | PumpFunTokenAgent | This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data. | • query_recent_token_creation<br>• query_token_metrics<br>• query_token_holders<br>• query_token_buyers<br>• query_holder_status<br>• query_top_traders | [Source](./mesh/pumpfun_token_agent.py) | Bitquery |
 | ZerionWalletAnalysisAgent | This agent can fetch and analyze the token and NFT holdings of a crypto wallet (must be EVM chain) | • fetch_wallet_tokens<br>• fetch_wallet_nfts | [Source](./mesh/zerion_wallet_analysis_agent.py) | Zerion |
 | ZkIgniteAnalystAgent | This agent analyzes zkSync Era DeFi opportunities in the zkIgnite program and has access to real-time yield and TVL data | - | [Source](./mesh/zkignite_analyst_agent.py) | Merkl, DefiLlama |
@@ -147,6 +149,11 @@ Each interface inherits from the CoreAgent and implements platform-specific hand
 <img src="./docs/img/HFA_1.png" alt="Heurist Agent Framework" width="500">
 </div>
 
+### Main Loop
+
+<div align="center">
+<img src="./docs/img/HFA_2.png" alt="Heurist Agent Framework" width="500">
+</div>
 
 ## Configuration
 

@@ -52,7 +52,7 @@ class AaveAgent(MeshAgent):
                 ],
                 "external_apis": ["Aave"],
                 "tags": ["DeFi", "Lending"],
-                "image_url": "" # use aave logo
+                "image_url": "",  # use aave logo
             }
         )
 

@@ -53,7 +53,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "" # use solana logo
+                "image_url": "",  # use solana logo
             }
         )
 
@@ -171,15 +171,10 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
+        A single method that calls the appropriate function, handles errors/formatting
         """
-        temp = 0.7
-
         if tool_name == "get_token_trading_info":
             result = await self.get_token_trading_info(function_args["token_address"])
         elif tool_name == "get_top_trending_tokens":
@@ -191,40 +186,26 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         if errors:
             return errors
 
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=result, temperature=temp
-        )
-
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        Handle both direct tool calls and natural language queries.
+        Either 'query' or 'tool' must be provided in params.
         """
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
-        query = params.get("query")
 
         # ---------------------
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -243,22 +224,34 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             if not response:
                 return {"error": "Failed to process query"}
 
-            if not response.get("tool_calls"):
-                # No tool calls => the LLM just answered
-                return {"response": response["content"], "data": {}}
+            # Check if tool_calls exists and is not None
+            tool_calls = response.get("tool_calls")
+            if not tool_calls:
+                return {"response": response.get("content", "No response content"), "data": {}}
 
-            tool_call = response["tool_calls"]
+            # Make sure we're accessing the first tool call correctly
+            if isinstance(tool_calls, list) and len(tool_calls) > 0:
+                tool_call = tool_calls[0]
+            else:
+                tool_call = tool_calls  # If it's not a list, use it directly
+
+            # Safely extract function name and arguments
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
 
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
+            )
+            return {"response": explanation, "data": data}
+
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
 
 
@@ -396,10 +389,6 @@ def top_ten_trending_tokens():
     Raises:
         Exception: If the API request fails or the returned data format is not as expected.
     """
-    import datetime
-    import os
-
-    import requests
 
     # Calculate the time one hour ago in ISO format.
     time_since = (datetime.datetime.utcnow() - datetime.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")

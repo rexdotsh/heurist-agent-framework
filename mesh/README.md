@@ -1,6 +1,10 @@
 # Heurist Mesh
 
-**Heurist Mesh** is a new open network of AI agents designed to work together like DeFi smart contracts—modular, composable, and contributed by the community. Each agent is a specialized unit that can process data, generate reports, or engage in conversations, while collectively forming an intelligent swarm to tackle complex tasks. Built on decentralized compute and powered by diverse open-source AI models, Mesh agents can be combined into powerful workflows for cost-efficient and highly flexible solutions.
+![mesh-2](https://github.com/user-attachments/assets/ae8987db-f009-4cbb-9e8d-1ebc828f1810)
+
+**Heurist Mesh** is a new open network of modular and purpose-built AI agents. Each agent is a specialized unit that can process data, generate reports, or engage in conversations, while collectively forming an intelligent swarm to tackle complex tasks. Built on decentralized compute and powered by diverse open-source AI models, Mesh agents can be combined into powerful workflows for cost-efficient and highly flexible solutions. Once a Mesh agent is added to this Github main branch, it's automatically deployed and instantly available via REST API and MCP.
+
+Visit [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mesh-mcp-server/blob/main/README.md) to use the agents with MCP.
 
 ## Table of Contents
 1. [How It Works](#how-it-works)

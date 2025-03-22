@@ -51,7 +51,7 @@ class AlloraPricePredictionAgent(MeshAgent):
                 ],
                 "external_apis": ["Allora"],
                 "tags": ["Trading", "Prediction"],
-                "image_url": "" # use allora logo
+                "image_url": "",  # use allora logo
             }
         )
 

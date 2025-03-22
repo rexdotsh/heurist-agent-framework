@@ -58,7 +58,7 @@ class CarvOnchainDataAgent(MeshAgent):
                 ],
                 "external_apis": ["CARV"],
                 "tags": ["Onchain Data"],
-                "image_url": "" # use carv logo
+                "image_url": "",  # use carv logo
             }
         )
 
@@ -73,7 +73,7 @@ class CarvOnchainDataAgent(MeshAgent):
 
     def get_system_prompt(self) -> str:
         return """You are a blockchain data analyst that can access on-chain data from various blockchain networks.
-        
+
         IMPORTANT GUIDELINES:
         - You can only analyze data from Ethereum, Base, Bitcoin, and Solana blockchains.
         - Always ensure the user specifies which blockchain they want data from.
@@ -81,9 +81,9 @@ class CarvOnchainDataAgent(MeshAgent):
         - Parse the user's query to identify the requested blockchain and the specific data they want.
         - Formulate your responses in a clear, concise manner with relevant on-chain metrics.
         - When possible, explain patterns or trends that might explain the data.
-        
+
         For example query "What's the most active address on Ethereum during the past 24 hours?" clearly specifies Ethereum blockchain.
-        
+
         Ensure your query is specific enough to return meaningful data. Include time periods when relevant.
         """
 

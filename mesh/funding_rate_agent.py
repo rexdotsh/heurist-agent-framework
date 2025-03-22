@@ -53,7 +53,7 @@ class FundingRateAgent(MeshAgent):
                 ],
                 "external_apis": ["Coinsider"],
                 "tags": ["Trading", "Arbitrage"],
-                "image_url": "" # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
+                "image_url": "",  # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
             }
         )
 
@@ -250,7 +250,12 @@ class FundingRateAgent(MeshAgent):
                 if symbol not in symbols_map:
                     symbols_map[symbol] = []
 
-                symbols_map[symbol].append(item)
+                exchange_id = item.get("exchange")
+                item_copy = item.copy()
+                if isinstance(exchange_id, dict) and "id" in exchange_id:
+                    item_copy["exchange"] = exchange_id.get("id")
+
+                symbols_map[symbol].append(item_copy)
 
             # Filter out trading pairs with arbitrage opportunities
             opportunities = []
@@ -349,7 +354,6 @@ class FundingRateAgent(MeshAgent):
                 if not symbol or symbol in excluded_symbols:
                     continue
 
-                # Get funding rate for the specified period
                 if (
                     "rates" not in item
                     or funding_rate_period not in item["rates"]
@@ -358,13 +362,14 @@ class FundingRateAgent(MeshAgent):
                     continue
                 funding_rate = item["rates"][funding_rate_period]
 
-                # Skip if funding rate is empty or not positive
                 if not funding_rate or funding_rate <= 0:
                     continue
 
-                # If funding rate exceeds the threshold, consider it an arbitrage opportunity
                 if funding_rate >= min_funding_rate:
                     exchange_id = item.get("exchange")
+                    if isinstance(exchange_id, dict) and "id" in exchange_id:
+                        exchange_id = exchange_id.get("id")
+
                     if exchange_id is None:
                         continue
 
@@ -393,11 +398,21 @@ class FundingRateAgent(MeshAgent):
         formatted_rates = []
 
         for rate in data:
+            exchange_id = rate.get("exchange")
+            exchange_name = "Unknown"
+            if isinstance(exchange_id, int):
+                exchange_name = self.exchange_map.get(exchange_id, "Unknown")
+            elif isinstance(exchange_id, dict) and "id" in exchange_id:
+                exchange_id_value = exchange_id.get("id")
+                if isinstance(exchange_id_value, int):
+                    exchange_name = self.exchange_map.get(exchange_id_value, "Unknown")
+                    exchange_id = exchange_id_value
+
             formatted_rate = {
                 "symbol": rate.get("symbol", "N/A"),
                 "exchange": {
-                    "id": rate.get("exchange", "N/A"),
-                    "name": self.exchange_map.get(rate.get("exchange"), "Unknown"),
+                    "id": exchange_id,
+                    "name": exchange_name,
                 },
                 "rates": {
                     "1h": rate.get("rates", {}).get("1h", "N/A"),

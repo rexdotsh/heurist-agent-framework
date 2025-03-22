@@ -55,7 +55,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "external_apis": ["DexScreener"],
                 "tags": ["DeFi", "Trading"],
                 "recommended": True,
-                "image_url": "" # use dexscreener logo
+                "image_url": "",  # use dexscreener logo
             }
         )
 
@@ -157,13 +157,6 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                         },
                         "required": ["chain", "token_address"],
                     },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_token_profiles",
-                    "description": "Get the basic info of the latest tokens from DexScreener. This tool is useful when you want to get a list of recently launched tokens.",
                 },
             },
         ]
@@ -283,47 +276,39 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         except Exception as e:
             return {"status": "error", "error": f"Failed to get token pairs: {str(e)}", "data": None}
 
-    @with_cache(ttl_seconds=300)
-    async def get_token_profiles(self) -> Dict:
-        """
-        Get the latest token profiles from DexScreener.
-
-        Returns:
-            Dict: Latest token profiles with status
-        """
-        try:
-            result = fetch_token_profiles()
-
-            if result["status"] == "success":
-                return {"status": "success", "data": {"profiles": result["profiles"]}}
-
-            return {"status": result["status"], "error": result.get("error", "Unknown error occurred"), "data": None}
-
-        except Exception as e:
-            return {"status": "error", "error": f"Failed to get token profiles: {str(e)}", "data": None}
-
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
+        Handle execution of specific tools and return raw data.
         """
-        temp = 0.7
-
         if tool_name == "search_pairs":
-            result = await self.search_pairs(function_args["search_term"])
+            search_term = function_args.get("search_term")
+            if not search_term:
+                return {"error": "Missing 'search_term' in tool_arguments"}
+
+            result = await self.search_pairs(search_term)
         elif tool_name == "get_specific_pair_info":
-            result = await self.get_specific_pair_info(
-                function_args["chain"], function_args["pair_address"]
-            )
+            chain = function_args.get("chain")
+            pair_address = function_args.get("pair_address")
+
+            if not chain:
+                return {"error": "Missing 'chain' in tool_arguments"}
+            if not pair_address:
+                return {"error": "Missing 'pair_address' in tool_arguments"}
+
+            result = await self.get_specific_pair_info(chain, pair_address)
         elif tool_name == "get_token_pairs":
-            result = await self.get_token_pairs(function_args["chain"], function_args["token_address"])
-        elif tool_name == "get_token_profiles":
-            result = await self.get_token_profiles()
+            chain = function_args.get("chain")
+            token_address = function_args.get("token_address")
+
+            if not chain:
+                return {"error": "Missing 'chain' in tool_arguments"}
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+
+            result = await self.get_token_pairs(chain, token_address)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 
@@ -331,22 +316,19 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         if errors:
             return errors
 
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=result, temperature=temp
-        )
-
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -357,13 +339,8 @@ class DexScreenerTokenInfoAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -382,22 +359,34 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             if not response:
                 return {"error": "Failed to process query"}
 
-            if not response.get("tool_calls"):
-                # No tool calls => the LLM just answered
-                return {"response": response["content"], "data": {}}
+            # Check if tool_calls exists and is not None
+            tool_calls = response.get("tool_calls")
+            if not tool_calls:
+                return {"response": response.get("content", "No response content"), "data": {}}
 
-            tool_call = response["tool_calls"]
+            # Make sure we're accessing the first tool call correctly
+            if isinstance(tool_calls, list) and len(tool_calls) > 0:
+                tool_call = tool_calls[0]
+            else:
+                tool_call = tool_calls  # If it's not a list, use it directly
+
+            # Safely extract function name and arguments
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
 
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
+            )
+            return {"response": explanation, "data": data}
+
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
 
 
@@ -486,25 +475,3 @@ def fetch_token_pairs(chain: str, token_address: str) -> Dict:
 
     except requests.RequestException as e:
         return {"status": "error", "error": f"API request failed: {str(e)}", "pairs": []}
-
-
-def fetch_token_profiles() -> Dict:
-    """
-    Fetch the latest token profiles from DexScreener.
-
-    Returns:
-        Dict: Status and profiles data or error message
-    """
-    try:
-        url = "https://api.dexscreener.com/latest/dex/tokens"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-
-        data = response.json()
-        if "profiles" in data and data["profiles"]:
-            return {"status": "success", "profiles": data["profiles"]}
-        else:
-            return {"status": "no_data", "error": "No token profiles available", "profiles": []}
-
-    except requests.RequestException as e:
-        return {"status": "error", "error": f"API request failed: {str(e)}", "profiles": []}

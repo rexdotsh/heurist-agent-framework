@@ -4,10 +4,12 @@ import os
 import re
 import sys
 import time
+
 try:
     from datetime import UTC, datetime
 except ImportError:
-    from datetime import timezone, datetime
+    from datetime import datetime, timezone
+
     UTC = timezone.utc
 from importlib import import_module
 from pathlib import Path

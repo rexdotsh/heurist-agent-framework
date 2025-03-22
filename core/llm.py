@@ -73,7 +73,6 @@ def call_llm(
                 max_tokens=max_tokens,
             )
             return _handle_tool_response(result.choices[0].message)
-             
 
         except (requests.exceptions.RequestException, KeyError, IndexError, json.JSONDecodeError, Exception) as e:
             logger.warning(f"{type(e).__name__} (attempt {attempt + 1}/{max_retries}): {str(e)}")

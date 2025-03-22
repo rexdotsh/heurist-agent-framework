@@ -37,7 +37,9 @@ class MeshAgent(ABC):
             "tags": [],
             "large_model_id": DEFAULT_MODEL_ID,
             "small_model_id": DEFAULT_MODEL_ID,
-            "mcp_tool_name": None,
+            "hidden": False,
+            "recommended": False,
+            "image_url": "",
         }
         self.heurist_base_url = HEURIST_BASE_URL
         self.heurist_api_key = HEURIST_API_KEY

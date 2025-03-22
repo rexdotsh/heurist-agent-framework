@@ -16,7 +16,6 @@ load_dotenv()
 async def run_agent():
     agent = ZerionWalletAnalysisAgent()
     try:
-
         # Example for direct fetch_wallet_tokens tool
         agent_input_tokens = {
             "tool": "fetch_wallet_tokens",
@@ -33,13 +32,6 @@ async def run_agent():
         }
         agent_output_nfts = await agent.handle_message(agent_input_nfts)
 
-        # Example for natural language query - comprehensive analysis
-        agent_input = {
-            "query": "Give me a comprehensive analysis of wallet 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-            "raw_data_only": False,
-        }
-        agent_output = await agent.handle_message(agent_input)
-
         # Example with raw data only
         agent_input_raw = {
             "query": "What tokens does 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D hold?",
@@ -55,8 +47,7 @@ async def run_agent():
         yaml_content = {
             "token_holdings": {"input": agent_input_tokens, "output": agent_output_tokens},
             "nft_holdings": {"input": agent_input_nfts, "output": agent_output_nfts},
-            "comprehensive_analysis": {"input": agent_input, "output": agent_output},
-            "raw_data_query": {"input": agent_input_raw, "output": agent_output_raw}
+            "raw_data_query": {"input": agent_input_raw, "output": agent_output_raw},
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

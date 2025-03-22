@@ -70,7 +70,7 @@ class DeepResearchAgent(MeshAgent):
                 ],
                 "external_apis": ["Firecrawl"],
                 "tags": ["Search", "Research", "Analysis"],
-                "image_url": "" # use an emoji of 🔍
+                "image_url": "",  # use an emoji of 🔍
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))

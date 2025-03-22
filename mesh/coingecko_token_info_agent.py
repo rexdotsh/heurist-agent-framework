@@ -577,7 +577,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
-
         self.current_message = params
 
         try:

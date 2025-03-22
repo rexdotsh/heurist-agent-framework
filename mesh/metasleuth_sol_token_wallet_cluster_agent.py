@@ -45,11 +45,11 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
                 ],
                 "external_apis": ["MetaSleuth"],
                 "tags": ["Solana", "Onchain Data"],
-                "image_url": "" # use the logo of metasleuth
+                "image_url": "",  # use the logo of metasleuth
             }
         )
         self.base_url = "https://bot.metasleuth.io"
-        self.ms_bot_api_key = os.getenv("MS_BOT_API_KEY") # get from environment variable
+        self.ms_bot_api_key = os.getenv("MS_BOT_API_KEY")  # get from environment variable
 
     def get_system_prompt(self) -> str:
         return """You are a blockchain wallet cluster analyzer that provides factual analysis of Solana token holders based on MetaSleuth API data.
@@ -94,25 +94,22 @@ Note: Currently only Solana chain is supported.
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "address": {
-                                "type": "string",
-                                "description": "The Solana token address to analyze"
-                            },
+                            "address": {"type": "string", "description": "The Solana token address to analyze"},
                             "page": {
                                 "type": "integer",
                                 "description": "Page number for paginated results",
-                                "default": 1
+                                "default": 1,
                             },
                             "page_size": {
                                 "type": "integer",
                                 "description": "Number of clusters to return per page",
-                                "default": 20
+                                "default": 20,
                             },
                             "query_id": {
                                 "type": "string",
                                 "description": "Optional query ID for historical analysis",
-                                "default": ""
-                            }
+                                "default": "",
+                            },
                         },
                         "required": ["address"],
                     },
@@ -126,25 +123,22 @@ Note: Currently only Solana chain is supported.
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "cluster_uuid": {
-                                "type": "string",
-                                "description": "The unique identifier of the cluster"
-                            },
+                            "cluster_uuid": {"type": "string", "description": "The unique identifier of the cluster"},
                             "page": {
                                 "type": "integer",
                                 "description": "Page number for paginated results",
-                                "default": 1
+                                "default": 1,
                             },
                             "page_size": {
                                 "type": "integer",
                                 "description": "Number of holders to return per page",
-                                "default": 20
-                            }
+                                "default": 20,
+                            },
                         },
                         "required": ["cluster_uuid"],
                     },
                 },
-            }
+            },
         ]
 
     async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
@@ -173,33 +167,20 @@ Note: Currently only Solana chain is supported.
     async def fetch_token_clusters(self, address: str, page: int = 1, page_size: int = 20, query_id: str = "") -> Dict:
         """Fetch token wallet clusters from MetaSleuth API"""
         try:
-            headers = {
-                "MS-Bot-Api-Key": self.ms_bot_api_key,
-                "Content-Type": "application/json"
-            }
-            
-            payload = {
-                "chain": "solana",
-                "address": address,
-                "page": page,
-                "pageSize": page_size,
-                "queryID": query_id
-            }
-            
-            response = requests.post(
-                f"{self.base_url}/api/v1/tgbot/cluster",
-                headers=headers,
-                json=payload
-            )
+            headers = {"MS-Bot-Api-Key": self.ms_bot_api_key, "Content-Type": "application/json"}
+
+            payload = {"chain": "solana", "address": address, "page": page, "pageSize": page_size, "queryID": query_id}
+
+            response = requests.post(f"{self.base_url}/api/v1/tgbot/cluster", headers=headers, json=payload)
             response.raise_for_status()
             data = response.json()
-            
+
             if data.get("code", -1) != 0:
                 logger.error(f"API error: {data.get('message')}")
                 return {"error": data.get("message", "API Error")}
-                
+
             return data
-            
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching token clusters: {e}")
             return {"error": f"Failed to fetch token clusters: {str(e)}"}
@@ -213,35 +194,24 @@ Note: Currently only Solana chain is supported.
     async def fetch_cluster_details(self, cluster_uuid: str, page: int = 1, page_size: int = 20) -> Dict:
         """Fetch detailed information about a specific wallet cluster"""
         try:
-            headers = {
-                "MS-Bot-Api-Key": self.ms_bot_api_key,
-                "Content-Type": "application/json"
-            }
-            
-            payload = {
-                "clusterUUID": cluster_uuid,
-                "page": page,
-                "pageSize": page_size
-            }
-            
-            response = requests.post(
-                f"{self.base_url}/api/v1/tgbot/cluster-detail",
-                headers=headers,
-                json=payload
-            )
+            headers = {"MS-Bot-Api-Key": self.ms_bot_api_key, "Content-Type": "application/json"}
+
+            payload = {"clusterUUID": cluster_uuid, "page": page, "pageSize": page_size}
+
+            response = requests.post(f"{self.base_url}/api/v1/tgbot/cluster-detail", headers=headers, json=payload)
             response.raise_for_status()
             data = response.json()
-            
+
             if data.get("code", -1) != 0:
                 logger.error(f"API error: {data.get('message')}")
                 return {"error": data.get("message", "API Error")}
-            
+
             # Format the fundFlowLink as specified
             if data.get("fundFlowLink"):
                 data["fundFlowUrl"] = f"@https://metasleuth.io/result/{data['fundFlowLink']}"
-                
+
             return data
-            
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching cluster details: {e}")
             return {"error": f"Failed to fetch cluster details: {str(e)}"}
@@ -259,27 +229,27 @@ Note: Currently only Solana chain is supported.
             page = function_args.get("page", 1)
             page_size = function_args.get("page_size", 20)
             query_id = function_args.get("query_id", "")
-            
+
             if not address:
                 return {"error": "Missing 'address' in tool arguments"}
-                
+
             logger.info(f"Fetching token clusters for {address}")
             result = await self.fetch_token_clusters(address, page, page_size, query_id)
-            
+
         elif tool_name == "fetch_cluster_details":
             cluster_uuid = function_args.get("cluster_uuid")
             page = function_args.get("page", 1)
             page_size = function_args.get("page_size", 20)
-            
+
             if not cluster_uuid:
                 return {"error": "Missing 'cluster_uuid' in tool arguments"}
-                
+
             logger.info(f"Fetching cluster details for {cluster_uuid}")
             result = await self.fetch_cluster_details(cluster_uuid, page, page_size)
-            
+
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
-            
+
         errors = self._handle_error(result)
         if errors:
             return errors
@@ -348,4 +318,4 @@ Note: Currently only Solana chain is supported.
         # ---------------------
         # 3) NEITHER query NOR tool
         # ---------------------
-        return {"error": "Either 'query' or 'tool' must be provided in the parameters."} 
+        return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
