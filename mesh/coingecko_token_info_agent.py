@@ -57,7 +57,13 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "recommended": True,
                 "large_model_id": "google/gemini-2.0-flash-001",
                 "small_model_id": "google/gemini-2.0-flash-001",
-                "image_url": "",  # use coingecko logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Coingecko.png",
+                "examples": [
+                    "Top 5 crypto by market cap",
+                    "24-hr price change of ETH",
+                    "Get information about HEU",
+                    "Analyze AI16Z token",
+                ],
             }
         )
 

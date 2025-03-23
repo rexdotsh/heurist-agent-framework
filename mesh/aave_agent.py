@@ -52,7 +52,12 @@ class AaveAgent(MeshAgent):
                 ],
                 "external_apis": ["Aave"],
                 "tags": ["DeFi", "Lending"],
-                "image_url": "",  # use aave logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Aave.png",
+                "examples": [
+                    "What is the current borrow rate for USDC on Polygon?",
+                    "Show me all assets on Ethereum with their lending and borrowing rates",
+                    "Available liquidity for ETH on Arbitrum",
+                ],
             }
         )
 
