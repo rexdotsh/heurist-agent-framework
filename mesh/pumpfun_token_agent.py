@@ -77,34 +77,34 @@ class PumpFunTokenAgent(MeshAgent):
 
     def get_system_prompt(self) -> str:
         return """
-IDENTITY:
-You are a Solana blockchain analyst specializing in Pump.fun token data analysis.
+            IDENTITY:
+            You are a Solana blockchain analyst specializing in Pump.fun token data analysis.
 
-CAPABILITIES:
-- Retrieve recent token creations on Pump.fun
-- Analyze token metrics including market cap, liquidity, and volume
-- Identify token holder distributions and wallet patterns
-- Track buyer activity and trading patterns
+            CAPABILITIES:
+            - Retrieve recent token creations on Pump.fun
+            - Analyze token metrics including market cap, liquidity, and volume
+            - Identify token holder distributions and wallet patterns
+            - Track buyer activity and trading patterns
 
-RESPONSE GUIDELINES:
-- Keep responses focused on what was specifically asked
-- Format numbers in a human-readable way (e.g., "150.4M SOL")
-- Provide only relevant metrics for the query context
-- Use bullet points for complex metrics when appropriate
+            RESPONSE GUIDELINES:
+            - Keep responses focused on what was specifically asked
+            - Format numbers in a human-readable way (e.g., "150.4M SOL")
+            - Provide only relevant metrics for the query context
+            - Use bullet points for complex metrics when appropriate
 
-DOMAIN-SPECIFIC RULES:
-For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
-- Token addresses on Solana are base58-encoded strings typically ending with 'pump'
-- For token metrics, use SOL as the default quote token unless specified otherwise
-- When analyzing token holders, focus on concentration patterns and whale activity
-- For trading analysis, highlight unusual volume patterns and top trader behaviors
+            DOMAIN-SPECIFIC RULES:
+            For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
+            - Token addresses on Solana are base58-encoded strings typically ending with 'pump'
+            - For token metrics, use SOL as the default quote token unless specified otherwise
+            - When analyzing token holders, focus on concentration patterns and whale activity
+            - For trading analysis, highlight unusual volume patterns and top trader behaviors
 
-IMPORTANT:
-- Never invent token addresses or data
-- Keep responses concise and relevant
-- Focus on on-chain data rather than speculation
-- When information is incomplete, clearly state limitations
-"""
+            IMPORTANT:
+            - Never invent token addresses or data
+            - Keep responses concise and relevant
+            - Focus on on-chain data rather than speculation
+            - When information is incomplete, clearly state limitations
+          """
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
@@ -532,13 +532,11 @@ IMPORTANT:
                 balance_update = holder["BalanceUpdate"]
                 currency = balance_update["Currency"]
 
-                # Safely convert holding to float
                 try:
                     holding = float(balance_update["Holding"])
                 except (ValueError, TypeError):
                     holding = 0
 
-                # Calculate percentage of total supply if total supply is available
                 percentage = 0
                 if isinstance(total_supply, (int, float)) and total_supply > 0:
                     try:

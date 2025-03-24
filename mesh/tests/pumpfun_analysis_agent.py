@@ -82,7 +82,6 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
             "unique_buyer_count": agent_output.get("data", {}).get("unique_buyer_count", 0),
         }
     elif query_name == "holder_status":
-        # Updated to match the expected format in your example
         base_result["output"]["data"] = {
             "holder_statuses": [
                 {
@@ -96,15 +95,12 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
             "summary": agent_output.get("data", {}).get("summary", {}),
         }
     elif query_name == "top_traders":
-        # Updated to match the expected format in your example
         base_result["output"]["data"] = {
             "traders": agent_output.get("data", {}).get("traders", []),
             "markets": agent_output.get("data", {}).get("markets", []),
         }
     elif query_name.startswith("metrics"):
-        # Handle all metrics query types
         base_result["output"]["data"] = agent_output.get("data", {})
-        # Check if fallback was used
         if "fallback_used" in agent_output.get("data", {}):
             base_result["output"]["fallback_used"] = agent_output["data"]["fallback_used"]
 
