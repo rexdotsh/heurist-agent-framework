@@ -560,17 +560,28 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 "name": data.get("name", "N/A"),
                 "symbol": data.get("symbol", "N/A").upper(),
                 "market_cap_rank": data.get("market_cap_rank", "N/A"),
-                "current_price": market_data.get("current_price", {}).get("usd", "N/A"),
-                "market_cap": market_data.get("market_cap", {}).get("usd", "N/A"),
-                "total_volume": market_data.get("total_volume", {}).get("usd", "N/A"),
-                "high_24h": market_data.get("high_24h", {}).get("usd", "N/A"),
-                "low_24h": market_data.get("low_24h", {}).get("usd", "N/A"),
+                "categories": data.get("categories", []),
+            },
+            "market_metrics": {
+                "current_price_usd": market_data.get("current_price", {}).get("usd", "N/A"),
+                "market_cap_usd": market_data.get("market_cap", {}).get("usd", "N/A"),
+                "fully_diluted_valuation_usd": market_data.get("fully_diluted_valuation", {}).get("usd", "N/A"),
+                "total_volume_usd": market_data.get("total_volume", {}).get("usd", "N/A"),
+            },
+            "price_metrics": {
+                "ath_usd": market_data.get("ath", {}).get("usd", "N/A"),
+                "ath_change_percentage": market_data.get("ath_change_percentage", {}).get("usd", "N/A"),
+                "ath_date": market_data.get("ath_date", {}).get("usd", "N/A"),
+                "high_24h_usd": market_data.get("high_24h", {}).get("usd", "N/A"),
+                "low_24h_usd": market_data.get("low_24h", {}).get("usd", "N/A"),
                 "price_change_24h": market_data.get("price_change_24h", "N/A"),
                 "price_change_percentage_24h": market_data.get("price_change_percentage_24h", "N/A"),
-                "circulating_supply": market_data.get("circulating_supply", "N/A"),
+            },
+            "supply_info": {
                 "total_supply": market_data.get("total_supply", "N/A"),
                 "max_supply": market_data.get("max_supply", "N/A"),
-            }
+                "circulating_supply": market_data.get("circulating_supply", "N/A"),
+            },
         }
 
     @monitor_execution()
@@ -598,6 +609,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 elif tool_name == "get_token_info":
                     result = await self._get_token_info(tool_args["coingecko_id"])
                     if not isinstance(result, dict) or "error" not in result:
+                        print(f"Result of get_token_info: {result}")
                         result = self.format_token_info(result)
                 elif tool_name == "get_coingecko_id":
                     result = await self._get_coingecko_id(tool_args["token_name"])
