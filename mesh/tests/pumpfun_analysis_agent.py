@@ -21,15 +21,15 @@ QUERIES = {
         "query": "Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump using SOL pair"
     },
     "metrics_virtual": {
-        "query": "Get market cap, liquidity and trade volume for 2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump using Virtual pair"
+        "query": "Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump using Virtual pair"
     },
-    "holders": {"query": "Show me the top token holders of 2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump"},
+    "holders": {"query": "Show me the top token holders of EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"},
     "buyers": {"query": "Show me the first 100 buyers of 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump"},
     "holder_status": {
-        "query": "Check if these addresses are still holding 2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump: ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n and 9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6"
+        "query": "Check if address 'Z9y8X7w6V5u4T3s2R1q0P9o8N7m6L5k4J3i2H1g0F9e8' still holds token 'A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8S9t0U1v2'"
     },
     "top_traders": {
-        "query": "Show me the top traders for FbhypAF9LL93bCZy9atRRfbdBMyJAwBarULfCK3roP93 on Pump Fun DEX"
+        "query": "List the top traders of token 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' on Pump Fun DEX"
     },
 }
 
@@ -82,6 +82,7 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
             "unique_buyer_count": agent_output.get("data", {}).get("unique_buyer_count", 0),
         }
     elif query_name == "holder_status":
+        # Updated to match the expected format in your example
         base_result["output"]["data"] = {
             "holder_statuses": [
                 {
@@ -95,19 +96,9 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
             "summary": agent_output.get("data", {}).get("summary", {}),
         }
     elif query_name == "top_traders":
+        # Updated to match the expected format in your example
         base_result["output"]["data"] = {
-            "traders": [
-                {
-                    "owner": trader["owner"],
-                    "bought": trader["bought"],
-                    "sold": trader["sold"],
-                    "buy_sell_ratio": trader.get("buy_sell_ratio", 0),
-                    "total_volume": trader["total_volume"],
-                    "volume_usd": trader["volume_usd"],
-                    "transaction_count": trader.get("transaction_count", 0),
-                }
-                for trader in agent_output.get("data", {}).get("traders", [])[:100]
-            ],
+            "traders": agent_output.get("data", {}).get("traders", []),
             "markets": agent_output.get("data", {}).get("markets", []),
         }
     elif query_name.startswith("metrics"):

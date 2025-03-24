@@ -520,7 +520,10 @@ IMPORTANT:
             if total_supply_data and len(total_supply_data) > 0:
                 total_supply_update = total_supply_data[0].get("TokenSupplyUpdate", {})
                 if "PostBalance" in total_supply_update:
-                    total_supply = total_supply_update["PostBalance"]
+                    try:
+                        total_supply = float(total_supply_update["PostBalance"])
+                    except (ValueError, TypeError):
+                        total_supply = 0
 
             for holder in holders:
                 if "BalanceUpdate" not in holder:
@@ -528,12 +531,20 @@ IMPORTANT:
 
                 balance_update = holder["BalanceUpdate"]
                 currency = balance_update["Currency"]
-                holding = balance_update["Holding"]
+
+                # Safely convert holding to float
+                try:
+                    holding = float(balance_update["Holding"])
+                except (ValueError, TypeError):
+                    holding = 0
 
                 # Calculate percentage of total supply if total supply is available
                 percentage = 0
-                if total_supply > 0:
-                    percentage = (holding / total_supply) * 100
+                if isinstance(total_supply, (int, float)) and total_supply > 0:
+                    try:
+                        percentage = (holding / total_supply) * 100
+                    except (TypeError, ZeroDivisionError):
+                        percentage = 0
 
                 formatted_holder = {
                     "address": balance_update["Account"]["Address"],
