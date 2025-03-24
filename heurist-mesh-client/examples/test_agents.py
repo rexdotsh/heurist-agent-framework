@@ -44,9 +44,25 @@ def execute_test(
         result = client.sync_request(agent_id=agent_id, tool=tool_name, tool_arguments=inputs, raw_data_only=True)
         elapsed = time.time() - start_time
 
-        if isinstance(result, dict) and (
-            error := result.get("error") or result.get("errorMessage") or result.get("message")
-        ):
+        error = None
+        if isinstance(result, dict):
+            if "error" in result:
+                error = result["error"]
+            elif "errorMessage" in result:
+                error = result["errorMessage"]
+            elif "message" in result and isinstance(result["message"], str) and "error" in result["message"].lower():
+                error = result["message"]
+            elif "data" in result and isinstance(result["data"], dict):
+                if "error" in result["data"]:
+                    error = result["data"]["error"]
+                elif "errorMessage" in result["data"]:
+                    error = result["data"]["errorMessage"]
+
+            if not error and "response" in result:
+                if not result["response"] and isinstance(result.get("data"), dict) and result["data"].get("error"):
+                    error = result["data"]["error"]
+
+        if error:
             console.print(
                 Panel(str(error), title=f"[red]{agent_id} - {tool_name} Error[/red]", border_style="red", expand=False)
             )
@@ -133,24 +149,66 @@ def list_agents():
     agents_metadata = fetch_agents_metadata()
 
     table = Table(show_header=True)
-    table.add_column("Agent Name")
-    table.add_column("Tools")
-    table.add_column("Has Test Data")
+    table.add_column("Agent Name", style="cyan")
+    table.add_column("Tools", style="green")
+    table.add_column("Test Data", justify="center")
+
+    orphaned_test_agents = set(TOOL_TEST_INPUTS.keys()) - set(agents_metadata["agents"].keys())
+    orphaned_tools = {}
 
     for agent_id, agent_data in agents_metadata["agents"].items():
-        tools = [tool["function"]["name"] for tool in agent_data.get("tools", [])]
+        tools = {tool["function"]["name"] for tool in agent_data.get("tools", [])}
+
+        styled_name = f"[cyan]{agent_id}"
+        if agent_id in DISABLED_AGENTS:
+            styled_name = f"[dim]{agent_id} [red](disabled)[/]"
+
         if not tools:
-            table.add_row(agent_id, "No tools", "✗")
+            table.add_row(styled_name, "[dim italic]No tools[/]", "[dim]-[/]")
             continue
 
         tool_names = []
+        has_any_test = False
         tool_test_status = []
-        for tool in tools:
-            tool_names.append(tool)
-            has_test = agent_id in TOOL_TEST_INPUTS and tool in TOOL_TEST_INPUTS[agent_id]
-            tool_test_status.append("✓" if has_test else "✗")
 
-        table.add_row(agent_id, "\n".join(tool_names), "\n".join(tool_test_status))
+        if agent_id in TOOL_TEST_INPUTS:
+            test_tools = set(TOOL_TEST_INPUTS[agent_id].keys())
+            missing_tools = test_tools - tools
+            if missing_tools:
+                orphaned_tools[agent_id] = missing_tools
+
+        for tool in sorted(tools):
+            has_test = agent_id in TOOL_TEST_INPUTS and tool in TOOL_TEST_INPUTS[agent_id]
+            if has_test:
+                has_any_test = True
+                tool_names.append(f"[green]{tool}[/]")
+                tool_test_status.append("[green]✓[/]")
+            else:
+                tool_names.append(f"[dim]{tool}[/]")
+                tool_test_status.append("[red]✗[/]")
+
+        table.add_row(
+            styled_name if has_any_test else f"[dim]{agent_id}[/]", "\n".join(tool_names), "\n".join(tool_test_status)
+        )
+
+    if orphaned_test_agents:
+        table.add_section()
+        for agent_id in sorted(orphaned_test_agents):
+            tools = list(TOOL_TEST_INPUTS[agent_id].keys())
+            table.add_row(
+                f"[yellow]{agent_id} [red](missing agent)[/]",
+                "\n".join(f"[yellow]{tool}[/]" for tool in tools),
+                "[yellow]![/]",
+            )
+
+    if orphaned_tools:
+        table.add_section()
+        for agent_id, missing_tools in sorted(orphaned_tools.items()):
+            table.add_row(
+                f"[yellow]{agent_id} [red](has orphaned tools)[/]",
+                "\n".join(f"[yellow]{tool} [red](missing tool)[/]" for tool in sorted(missing_tools)),
+                "[yellow]![/]",
+            )
 
     Console().print(table)
 
