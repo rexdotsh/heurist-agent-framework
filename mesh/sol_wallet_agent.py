@@ -162,6 +162,8 @@ class SolWalletAgent(MeshAgent):
                     Do NOT use this tool for tokens with extremely high holder counts (>50,000) as results may be incomplete.
                     The analysis excludes certain protocol wallets (like Raydium) that would skew the results and focuses on actual user wallets.
                     Results include the percentage of total supply held by each address, interconnections between major holders, and common tokens held across these wallets.
+                    For each holder, a GMGN explorer link (gmgn_link_owner_address) is provided for easy access to detailed wallet information.
+                    The response also includes a GMGN referral link that can be used for further exploration of Solana data.
                     These insights help identify investment patterns and potential coordinated activity among major token holders.""",
                     "parameters": {
                         "type": "object",
@@ -380,7 +382,7 @@ class SolWalletAgent(MeshAgent):
         wait=wait_exponential(multiplier=0.1, min=0, max=10),
         stop=stop_after_attempt(5),
     )
-    async def analyze_holders(self, token_address: str, top_n: int = 20) -> Dict:
+    async def analyze_holders(self, token_address: str, top_n: int = 20) -> List[Dict]:
         """
         Analyze the token holders and find what they also hold most.
         """
@@ -388,7 +390,7 @@ class SolWalletAgent(MeshAgent):
             holders = await self._get_holders(token_address, top_n)
 
             if not holders:
-                return {"error": "No holders found"}
+                return []
 
             raydium_address = "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1"
             top_holders = [h for h in holders if h["address"] != raydium_address]
@@ -415,15 +417,21 @@ class SolWalletAgent(MeshAgent):
 
                     token_map[token_address]["total_holding_value"] += token["total_price"]
                     token_map[token_address]["holders"].append(
-                        {"address": holder["address"], "total_price": token["total_price"]}
+                        {
+                            "address": holder["address"], 
+                            "total_price": token["total_price"],
+                            "gmgn_link_owner_address": f"https://gmgn.ai/sol/address/{holder['address']}"
+                        }
                     )
 
-            # sort by total_holding_value and get top 5
+            # Sort by total_holding_value and get top 5
             sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_holding_value"], reverse=True)[:5]
 
-            # sort each token's holders by total_price and get top 5
+            # Sort each token's holders by total_price and get top 5 
             for token in sorted_tokens:
                 token["holders"] = sorted(token["holders"], key=lambda x: x["total_price"], reverse=True)[:5]
+                # Add referral link to each token
+                token["gmgn_referral_link"] = "https://gmgn.ai/?ref=WtaAO4Jn&chain=sol"
 
             logger.info(f"Successfully analyzed holders for token: {token_address}")
             return sorted_tokens

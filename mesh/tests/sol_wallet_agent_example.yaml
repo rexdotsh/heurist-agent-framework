@@ -3,79 +3,92 @@ natural_language_query_with_analysis:
     query: Give me the holders of this J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
     raw_data_only: false
   output:
-    response: "**Holders of FLOYDAI (J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U)**\n\
-      \n**Total Value:** $1,719,034.70\n\n**Top 5 Holders by Total Value:**\n\n1.\
-      \ **3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq**\n\t* **Total Value:** $339,624.42\
-      \ (19.8% of total)\n2. **BsyFqmA8ys1EQ7KFPBcFCmT5r85YZsxfP9EhN9Bd8gRJ**\n\t\
-      * **Total Value:** $320,356.31 (18.6% of total)\n3. **7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb**\n\
-      \t* **Total Value:** $281,427.35 (16.4% of total)\n4. **3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r**\n\
-      \t* **Total Value:** $272,670.77 (15.9% of total)\n5. **GFJhtZuENEB9StZiacHUd1aoBoCtY2wWLskhgwcyfaYN**\n\
-      \t* **Total Value:** $238,571.42 (13.9% of total)\n\n**Anomaly/Pattern:** \n\
-      * **Concentration of Holdings:** The top 2 holders collectively own approximately\
-      \ 38.4% of the total value, indicating a relatively concentrated ownership structure.\n\
-      * **Overlap with Other Tokens:** Notably, **3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq**\
-      \ also holds significant amounts of other tokens listed (SOL, NiggaButt, N2),\
-      \ suggesting a potentially influential or large-scale investor across multiple\
-      \ assets."
+    response: "**Holder Information for Token: FLOYDAI (J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U)**\n\
+      \n* **Total Holding Value:** $883,127.29\n* **Price per Token:** $0.00815809\n\
+      * **Top Holders:**\n\n1. **7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb**\n\t\
+      * **Total Value:** $259,100.73 (29.3% of total holdings)\n\t* **GMGN Link:**\
+      \ https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb\n\
+      2. **7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ**\n\t* **Total Value:** $205,247.48\
+      \ (23.2% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ\n\
+      3. **7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd**\n\t* **Total Value:** $122,371.34\
+      \ (13.9% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd\n\
+      4. **4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5**\n\t* **Total Value:** $100,213.52\
+      \ (11.3% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA"
     data: &id002
-    - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
-      symbol: FLOYDAI
-      price_per_token: 0.00886107
-      total_price: 1719034.6985044288
-      holders:
-      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
-        total_price: 339624.41551897704
-      - address: BsyFqmA8ys1EQ7KFPBcFCmT5r85YZsxfP9EhN9Bd8gRJ
-        total_price: 320356.3095151633
-      - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
-        total_price: 281427.35257105937
-      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
-        total_price: 272670.77192856575
-      - address: GFJhtZuENEB9StZiacHUd1aoBoCtY2wWLskhgwcyfaYN
-        total_price: 238571.41772095303
     - token_address: So11111111111111111111111111111111111111112
       token_img: ''
       symbol: SOL
-      price_per_token: 128.684326171875
-      total_price: 333819.94119172124
+      price_per_token: 139.1567840576172
+      total_holding_value: 1280941.5648921318
+      holders:
+      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
+        total_price: 974097.491744753
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
+      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_price: 306641.5113362513
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+        total_price: 140.1557908886804
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+        total_price: 27.835679299549838
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+      - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
+        total_price: 18.732957442355698
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
+      symbol: FLOYDAI
+      price_per_token: 0.00815809
+      total_holding_value: 883127.293047854
+      holders:
+      - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
+        total_price: 259100.72578944103
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
+      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+        total_price: 205247.47523674183
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
+        total_price: 122371.34389579298
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
+      - address: 4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5
+        total_price: 100213.52386613376
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5
+      - address: 9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+        total_price: 99948.45519776027
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: Cqc5qH8kRqU4ASorJF2fiH9t1BSU4a7StagJiyexpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXu8LE1w5uvhkxrEUjpTdW4tNS32B9EyaorYgzsnnBFGL
+      symbol: Downald
+      price_per_token: 0.000826889
+      total_holding_value: 10768.247180174309
       holders:
       - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 326030.8462164888
-      - address: 3R5YS2RsFC8tX4dxbYtwDrQZTURmX5i4TWKfCX8JPsBC
-        total_price: 6592.751342307539
-      - address: FTeVtYs3oqo1wFgGqgurWbzdRZ7x5qdhxBNdWK1mwSB
-        total_price: 955.9139197722224
-      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
-        total_price: 145.3240539724468
-      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
-        total_price: 72.82328890772462
-    - token_address: 8fZL148nnC168RAVCZh4PkjvMZmxMEfMLDhoziWVPnqf
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmPtqv19eyX3FBCTKyY6RFnAiECpM2wXSSGtp4phonFZTX
-      symbol: NiggaButt
-      price_per_token: 0.00145906
-      total_price: 36515.6452689321
+        total_price: 10768.247180174309
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: 7TM7nzyhef5WJfsSjFFuoU2KnP3cocBcXpY1VP8jpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmUosKmHX3NvgoVqTkZ3dN8u4wzmz5n8hCnge2wS8EuPRh
+      symbol: NIGGA
+      price_per_token: 0.0009182
+      total_holding_value: 7632.491663940782
       holders:
-      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
-        total_price: 36515.6452689321
-    - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmTD3YfytLW3jvAyr958RKEvhYHVdAzhgNqF1XxbvfPCjB
-      symbol: N2
-      price_per_token: 0.00080729
-      total_price: 27252.25437125821
-      holders:
-      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
-        total_price: 27010.345963901953
-      - address: 3R5YS2RsFC8tX4dxbYtwDrQZTURmX5i4TWKfCX8JPsBC
-        total_price: 241.90840735625633
+      - address: 9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+        total_price: 7632.491663940782
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
     - token_address: BftUiGB2iDkNDa8AKdhtLuJHHXiUfqLvTNmiXaSopump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXgt6TEGac8Mx8EKKYR9mjjJLmvd9BBVdyRYJzw3kk3mu
       symbol: ELON
-      price_per_token: 0.000937159
-      total_price: 5870.634913057888
+      price_per_token: 0.00101876
+      total_holding_value: 6381.807349458875
       holders:
       - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 5870.634913057888
+        total_price: 6381.807349458875
+        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
 natural_language_query_raw_data:
   input:
     query: Show me the txs of this wallet DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
@@ -418,83 +431,83 @@ get_sol_wallet_assets_test:
     - token_address: So11111111111111111111111111111111111111112
       token_img: ''
       symbol: SOL
-      price_per_token: 128.684326171875
-      total_price: 8.796167572012939
+      price_per_token: 139.1567840576172
+      total_price: 9.51200839889656
     - token_address: C8e4UBwf1XLLEP18dfhZRiQ3nMqWoy9vApcEZaJEpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmRcZ23g4LNSvA6QK8mQ8T1rTG6WgMgaAU3rjQprz5LZQz
       symbol: MLKAI
-      price_per_token: 1.53416e-05
-      total_price: 536.3987942440481
+      price_per_token: 1.46827e-05
+      total_price: 513.36120093173
     - token_address: 6U2wHsT77exPvch1aZjKyjq8FUE1U4iYF88F86D5pump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmdB3Ek5HNeQtJKkkaCobkwhcrUR2P8XQLTbf6GxAAUhQK
       symbol: DIDDYTRON
-      price_per_token: 2.06339e-05
-      total_price: 586.0745270683183
-    - token_address: 6QZFhw4197ne5T23K45K9PvHSdNMceLBKFrLE2n2pump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmcHZEjqGAV5cBHDDDefgcwkzyU8fmHiBBqFomoe5693pq
-      symbol: iFloydmini
-      price_per_token: 4.60097e-05
-      total_price: 513.6605751846394
+      price_per_token: 2.22606e-05
+      total_price: 632.2784781455042
     - token_address: ryPufB9SKmUcnZBqzMHanaLEjCkbaSnFCcD1Ahxpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmatqZQT8G3BStDkzCBiTSd7ssGXLSdg8GRLVHncs9JiWA
       symbol: FENT
-      price_per_token: 3.10234e-05
-      total_price: 918.02179133148
-    - token_address: C7LGTaqvbaBtgauWLEYQtk8AXhoPAUX43i7upDmNDisZ
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafkreib7j23bhpkdk4m3nt2qmmfjrbt6hfdihg3s7b6t4qga4z4jyntmxe.ipfs.nftstorage.link
-      symbol: COKE
-      price_per_token: 0.0035308718
-      total_price: 529.6307732351124
-    - token_address: 9XATau2q82SFwoGCj5Vkk3vZnDu21ukGQq73u2YQZiUM
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmeBoQ9jMxnPix5DUu36PeeBHvNcjQxuhqhT1g75JiR2U4
-      symbol: GAC
-      price_per_token: 8.83607e-06
-      total_price: 268.648896910944
-    - token_address: 3M1t49FpyULfGEiEWowHyHjthWyfL7RpHgQ7mDbBpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmQGLdWumiMQpYvSG99xKUzym8YSMfTvSgs2Y1Fed5AHCf
-      symbol: AFFIRM
-      price_per_token: 1.46718e-05
-      total_price: 457.4559331505062
-    - token_address: Crb3po4oD4NVahRQjR6fthD2Cyz3jNsz5MqPkAuUpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmSS2BLtQ6mA8kvXqPEz9FpDSyrpjRsbSUgRh9nXuTMB7Z
-      symbol: core
-      price_per_token: 7.34034e-06
-      total_price: 220.2101950388169
-    - token_address: JyTYXrqcYkvRhotAaYBvFbm6zk7vimHc86hwLZzpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmVfn2UwcxsgPBWHrLrPAUaEnWHPquJheviB5TWgytgfMf
-      symbol: CATJAK
-      price_per_token: 1.96495e-05
-      total_price: 662.0720137350189
-    - token_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/Qme38EvvaXkToZpwWxC6SfdKYzzWdc5KXttmsS4DeERer5
-      symbol: FUJI
-      price_per_token: 0.000582145
-      total_price: 6140.789536696324
-    - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
-      symbol: FLOYDAI
-      price_per_token: 0.00886107
-      total_price: 45031.91473826185
-    - token_address: 5sYp2ygdJwbv1ETyrsn68yUyJKGSBPE4VLChxo4npump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXpbkoswrJbYaUQdSgnMWs7YFFkyV5AYunjEugJ2gmNp3
-      symbol: '#packwatch'
-      price_per_token: 6.01332e-06
-      total_price: 120.26640433759896
-    - token_address: 6Em4veHJFxfnEvu2cyQhkn2BszvHxycPba8fL3Psx4gY
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdRmace5TGP7L7dV2saxjnXJgfh43ZHUhLmuJryHqf9BF
-      symbol: Adrian
-      price_per_token: 9.50864e-05
-      total_price: 719.0014461956213
+      price_per_token: 3.29055e-05
+      total_price: 973.7155527760799
     - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmTD3YfytLW3jvAyr958RKEvhYHVdAzhgNqF1XxbvfPCjB
       symbol: N2
-      price_per_token: 0.000808358
-      total_price: 6509.537141901385
+      price_per_token: 0.000720804
+      total_price: 5804.482846316376
+    - token_address: 6QZFhw4197ne5T23K45K9PvHSdNMceLBKFrLE2n2pump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmcHZEjqGAV5cBHDDDefgcwkzyU8fmHiBBqFomoe5693pq
+      symbol: iFloydmini
+      price_per_token: 5.37617e-05
+      total_price: 600.2053181305824
+    - token_address: C7LGTaqvbaBtgauWLEYQtk8AXhoPAUX43i7upDmNDisZ
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafkreib7j23bhpkdk4m3nt2qmmfjrbt6hfdihg3s7b6t4qga4z4jyntmxe.ipfs.nftstorage.link
+      symbol: COKE
+      price_per_token: 0.003823768
+      total_price: 573.5652172006667
+    - token_address: 9XATau2q82SFwoGCj5Vkk3vZnDu21ukGQq73u2YQZiUM
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmeBoQ9jMxnPix5DUu36PeeBHvNcjQxuhqhT1g75JiR2U4
+      symbol: GAC
+      price_per_token: 9.86677e-06
+      total_price: 299.98593415224065
+    - token_address: 3M1t49FpyULfGEiEWowHyHjthWyfL7RpHgQ7mDbBpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmQGLdWumiMQpYvSG99xKUzym8YSMfTvSgs2Y1Fed5AHCf
+      symbol: AFFIRM
+      price_per_token: 1.58134e-05
+      total_price: 493.0501957711918
+    - token_address: Crb3po4oD4NVahRQjR6fthD2Cyz3jNsz5MqPkAuUpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmSS2BLtQ6mA8kvXqPEz9FpDSyrpjRsbSUgRh9nXuTMB7Z
+      symbol: core
+      price_per_token: 7.93709e-06
+      total_price: 238.11270693840925
+    - token_address: JyTYXrqcYkvRhotAaYBvFbm6zk7vimHc86hwLZzpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmVfn2UwcxsgPBWHrLrPAUaEnWHPquJheviB5TWgytgfMf
+      symbol: CATJAK
+      price_per_token: 2.27525e-05
+      total_price: 766.6247546750373
+    - token_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/Qme38EvvaXkToZpwWxC6SfdKYzzWdc5KXttmsS4DeERer5
+      symbol: FUJI
+      price_per_token: 0.000639532
+      total_price: 6746.139462581877
+    - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
+      symbol: FLOYDAI
+      price_per_token: 0.00815809
+      total_price: 41459.37374522185
+    - token_address: 5sYp2ygdJwbv1ETyrsn68yUyJKGSBPE4VLChxo4npump
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXpbkoswrJbYaUQdSgnMWs7YFFkyV5AYunjEugJ2gmNp3
+      symbol: '#packwatch'
+      price_per_token: 6.92867e-06
+      total_price: 138.57339581591074
+    - token_address: 6Em4veHJFxfnEvu2cyQhkn2BszvHxycPba8fL3Psx4gY
+      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdRmace5TGP7L7dV2saxjnXJgfh43ZHUhLmuJryHqf9BF
+      symbol: Adrian
+      price_per_token: 0.000106205
+      total_price: 803.0754145489778
     - token_address: AG7e5ib8H5xJ4zAk4A4qNgtvSR9iNGWLrQDVc4YNK4jR
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafybeig77n2fiwdbbqat66ts6oztbyaz6srsmvirxq3qcvd63kceuhcleu.ipfs.nftstorage.link
       symbol: FENT
-      price_per_token: 2.8408083e-05
-      total_price: 329.2792840288823
+      price_per_token: 3.2507236e-05
+      total_price: 376.7927340147576
 get_sol_tx_history_test:
   input:
     tool: get_sol_tx_history
