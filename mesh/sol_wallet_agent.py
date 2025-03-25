@@ -137,11 +137,16 @@ class SolWalletAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_sol_wallet_assets",
-                    "description": "Query and retrieve all token holdings for a specific Solana wallet address. This tool helps you get detailed information about each asset including SOL balance, token amounts, current prices and total values. Use this when you need to analyze a wallet's portfolio or track significant token holdings on Solana.",
+                    "description": """Query and retrieve all token holdings for a specific Solana wallet address with comprehensive details about each asset.
+                    This tool provides a detailed breakdown of wallet contents including SOL balance, token quantities, current market prices, and total value in USD.
+                    Use this tool when you need to analyze a wallet's complete portfolio composition, assess the total value of holdings, or identify significant token positions.
+                    This tool will NOT provide historical holding data, transaction history, or price predictions - only current snapshot of assets.
+                    The results are ordered by value, with more valuable assets appearing first. Some small-value tokens or dust amounts might be excluded from results.
+                    The returned data includes token addresses, symbols, images, current price per token, and total value in USD.""",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "owner_address": {"type": "string", "description": "The Solana wallet address to query"}
+                            "owner_address": {"type": "string", "description": "The Solana wallet address to query (must be a valid Solana public key in base58 format)"}
                         },
                         "required": ["owner_address"],
                     },
@@ -151,17 +156,23 @@ class SolWalletAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "analyze_sol_token_holders",
-                    "description": "Analyze the distribution and behavior patterns of top token holders on Solana. This tool provides insights into who holds the most tokens and what other assets these holders commonly own. Use this when you need to understand token concentration, whale behavior, or common investment patterns among major holders.",
+                    "description": """Analyze the distribution and behavior patterns of top token holders for a specific Solana token.
+                    This tool examines concentration of ownership by identifying the largest holders of a token and what other assets these major holders commonly own.
+                    Use this when investigating token distribution, whale behavior patterns, correlated investments, or potential market manipulation by major holders.
+                    Do NOT use this tool for tokens with extremely high holder counts (>50,000) as results may be incomplete.
+                    The analysis excludes certain protocol wallets (like Raydium) that would skew the results and focuses on actual user wallets.
+                    Results include the percentage of total supply held by each address, interconnections between major holders, and common tokens held across these wallets.
+                    These insights help identify investment patterns and potential coordinated activity among major token holders.""",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "token_address": {
                                 "type": "string",
-                                "description": "The Solana token mint address to analyze",
+                                "description": "The Solana token mint address to analyze (must be a valid SPL token mint address in base58 format)"
                             },
                             "top_n": {
                                 "type": "integer",
-                                "description": "Number of top holders to analyze (default: 20)",
+                                "description": "Number of top holders to analyze - higher values provide more comprehensive analysis but increase processing time (default: 20, max: 100)",
                                 "default": 20,
                             },
                         },
@@ -173,13 +184,19 @@ class SolWalletAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_sol_tx_history",
-                    "description": "Fetch and analyze recent SWAP transactions for a Solana wallet. This tool helps you track trading activity by providing detailed information about token swaps, including amounts, prices, and transaction types (BUY/SELL). Use this when you need to understand a wallet's trading behavior or monitor specific swap activities.",
+                    "description": """Fetch and analyze the most recent SWAP transactions for a specific Solana wallet address.
+                    This tool provides a chronological record of token swaps, including detailed information about tokens exchanged, amounts, and transaction types (BUY/SELL/SWAP).
+                    Use this when you need to understand a wallet's recent trading behavior, identify patterns in swap frequency, analyze asset allocation changes over time, or track specific swapping activities.
+                    The tool will NOT return other transaction types like NFT trades, transfers, or staking - it focuses exclusively on token swaps.
+                    Results are limited to the 100 most recent swap transactions and include timestamp, transaction type, input/output token addresses, and token amounts.
+                    A transaction is classified as BUY when SOL is used to purchase another token, SELL when a token is converted to SOL, and SWAP for token-to-token exchanges.
+                    This detailed swap history helps identify trading strategies, entry/exit points, and token preferences of the wallet owner.""",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "owner_address": {
                                 "type": "string",
-                                "description": "The Solana wallet address to query transaction history for",
+                                "description": "The Solana wallet address to query transaction history for (must be a valid Solana public key in base58 format)"
                             }
                         },
                         "required": ["owner_address"],
