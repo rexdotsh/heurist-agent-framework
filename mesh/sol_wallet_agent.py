@@ -59,12 +59,12 @@ class SolWalletAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["Helius"],
-                "tags": ["Onchain Data"],
-                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/helius.png",  # Add Helius or custom logo if needed
+                "tags": ["Solana"],
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Solana.png",
                 "examples": [
-                    "Give me the holders of this J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U",
-                    "Show me the txs of this wallet DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN",
-                    "What tokens does DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN hold?"
+                    "Give me the holders of this token: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U",
+                    "Show me the txs of this wallet: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN",
+                    "What tokens does DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN hold?",
                 ],
             }
         )
@@ -151,7 +151,10 @@ class SolWalletAgent(MeshAgent):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "owner_address": {"type": "string", "description": "The Solana wallet address to query (must be a valid Solana public key in base58 format)"}
+                            "owner_address": {
+                                "type": "string",
+                                "description": "The Solana wallet address to query (must be a valid Solana public key in base58 format)",
+                            }
                         },
                         "required": ["owner_address"],
                     },
@@ -175,7 +178,7 @@ class SolWalletAgent(MeshAgent):
                         "properties": {
                             "token_address": {
                                 "type": "string",
-                                "description": "The Solana token mint address to analyze (must be a valid SPL token mint address in base58 format)"
+                                "description": "The Solana token mint address to analyze (must be a valid SPL token mint address in base58 format)",
                             },
                             "top_n": {
                                 "type": "integer",
@@ -203,7 +206,7 @@ class SolWalletAgent(MeshAgent):
                         "properties": {
                             "owner_address": {
                                 "type": "string",
-                                "description": "The Solana wallet address to query transaction history for (must be a valid Solana public key in base58 format)"
+                                "description": "The Solana wallet address to query transaction history for (must be a valid Solana public key in base58 format)",
                             }
                         },
                         "required": ["owner_address"],
@@ -423,16 +426,16 @@ class SolWalletAgent(MeshAgent):
                     token_map[token_address]["total_holding_value"] += token["total_price"]
                     token_map[token_address]["holders"].append(
                         {
-                            "address": holder["address"], 
+                            "address": holder["address"],
                             "total_price": token["total_price"],
-                            "gmgn_link_owner_address": f"https://gmgn.ai/sol/address/{holder['address']}"
+                            "gmgn_link_owner_address": f"https://gmgn.ai/sol/address/{holder['address']}",
                         }
                     )
 
             # Sort by total_holding_value and get top 5
             sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_holding_value"], reverse=True)[:5]
 
-            # Sort each token's holders by total_price and get top 5 
+            # Sort each token's holders by total_price and get top 5
             for token in sorted_tokens:
                 token["holders"] = sorted(token["holders"], key=lambda x: x["total_price"], reverse=True)[:5]
                 # Add referral link to each token

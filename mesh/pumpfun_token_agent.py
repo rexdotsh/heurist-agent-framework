@@ -60,12 +60,12 @@ class PumpFunTokenAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/pumpfun.png",  # use the logo of pumpfun
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Pumpfun.png",
                 "examples": [
-                    "What is the latest news on Bitcoin?",
-                    "Find information about the Ethereum blockchain",
-                    "Search for articles about the latest trends in AI",
-                    "Get the latest stock prices for Tesla"
+                    "Latest token launched on Pump.fun in the last 24 hours",
+                    "Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
+                    "Show me the first 100 buyers of 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
+                    "List the top traders of token 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
                 ],
             }
         )

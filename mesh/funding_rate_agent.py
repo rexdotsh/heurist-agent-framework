@@ -57,8 +57,8 @@ class FundingRateAgent(MeshAgent):
                 "examples": [
                     "What is the funding rate for BTC on Binance?",
                     "Find arbitrage opportunities between Binance and Bybit",
-                    "Analyze recent funding rate trends for ETH",
-                    "Get the latest funding rates for SOL across all exchanges"
+                    "Best opportunities for arbitraging funding rates of SOL",
+                    "Get the latest funding rates for SOL across all exchanges",
                 ],
             }
         )

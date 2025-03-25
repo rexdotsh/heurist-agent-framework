@@ -53,15 +53,14 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     {"name": "data", "description": "Structured token/pair data from DexScreener", "type": "dict"},
                 ],
                 "external_apis": ["DexScreener"],
-                "tags": ["DeFi", "Trading"],
+                "tags": ["Trading"],
                 "recommended": True,
-                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/dexscreener.png",
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Dexscreener.png",
                 "examples": [
-                    "Show me information about ETH on Uniswap",
-                    "Search for trading pairs for ETH",
-                    "What are the trading statistics for Elyra token on Solana?",
-                    "Get Solana pair details for address 7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp",
-                    "Find all trading pairs for the token 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump on Solana"
+                    "Show me information about UNI on Uniswap",
+                    "Recent price movement for HEU",
+                    "Recent trading activity for TRUMP token on Solana?",
+                    "Analyze JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN on Solana",
                 ],
             }
         )
