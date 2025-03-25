@@ -409,17 +409,17 @@ class SolWalletAgent(MeshAgent):
                             "token_img": token["token_img"],
                             "symbol": token["symbol"],
                             "price_per_token": token["price_per_token"],
-                            "total_price": 0,
+                            "total_holding_value": 0,
                             "holders": [],
                         }
 
-                    token_map[token_address]["total_price"] += token["total_price"]
+                    token_map[token_address]["total_holding_value"] += token["total_price"]
                     token_map[token_address]["holders"].append(
                         {"address": holder["address"], "total_price": token["total_price"]}
                     )
 
-            # sort by total_price and get top 5
-            sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_price"], reverse=True)[:5]
+            # sort by total_holding_value and get top 5
+            sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_holding_value"], reverse=True)[:5]
 
             # sort each token's holders by total_price and get top 5
             for token in sorted_tokens:
