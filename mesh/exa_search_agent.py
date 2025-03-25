@@ -53,7 +53,12 @@ class ExaSearchAgent(MeshAgent):
                 "external_apis": ["Exa"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "",  # use the logo of exa
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Exa.png",
+                "examples": [
+                    "What is the latest news on Bitcoin?",
+                    "Recent developments in quantum computing",
+                    "Search for articles about the latest trends in AI",
+                ],
             }
         )
 

@@ -48,7 +48,13 @@ class FirecrawlSearchAgent(MeshAgent):
                 "external_apis": ["Firecrawl"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "",  # use the logo of firecrawl
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Firecrawl.png",  # use the logo of firecrawl
+                "examples": [
+                    "What are the most bizarre crypto projects that actually succeeded?",
+                    "Find stories of people who became millionaires from meme coins",
+                    "The biggest scams in crypto history",
+                    "Search for the weirdest NFT collections that sold for huge amounts",
+                ],
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))

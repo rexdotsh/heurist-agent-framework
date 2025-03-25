@@ -25,7 +25,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             {
                 "name": "DexScreener Agent",
                 "version": "1.0.0",
-                "author": "dyt9qc",
+                "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
                 "created_at": "2025-02-13 07:43:15",
                 "description": "This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API",
@@ -53,9 +53,15 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                     {"name": "data", "description": "Structured token/pair data from DexScreener", "type": "dict"},
                 ],
                 "external_apis": ["DexScreener"],
-                "tags": ["DeFi", "Trading"],
+                "tags": ["Trading"],
                 "recommended": True,
-                "image_url": "",  # use dexscreener logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Dexscreener.png",
+                "examples": [
+                    "Show me information about UNI on Uniswap",
+                    "Recent price movement for HEU",
+                    "Recent trading activity for TRUMP token on Solana?",
+                    "Analyze JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN on Solana",
+                ],
             }
         )
 

@@ -51,7 +51,11 @@ class AlloraPricePredictionAgent(MeshAgent):
                 ],
                 "external_apis": ["Allora"],
                 "tags": ["Trading", "Prediction"],
-                "image_url": "",  # use allora logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Allora.png",
+                "examples": [
+                    "What is the price prediction for BTC in the next 5 minutes?",
+                    "Price prediction for ETH in the next 8 hours",
+                ],
             }
         )
 

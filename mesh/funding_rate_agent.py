@@ -53,7 +53,13 @@ class FundingRateAgent(MeshAgent):
                 ],
                 "external_apis": ["Coinsider"],
                 "tags": ["Trading", "Arbitrage"],
-                "image_url": "",  # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/funding_rate.png",  # crop this pic https://coinpedia.org/price-analysis/crypto-market-trends-why-prices-are-up-but-activity-slows/
+                "examples": [
+                    "What is the funding rate for BTC on Binance?",
+                    "Find arbitrage opportunities between Binance and Bybit",
+                    "Best opportunities for arbitraging funding rates of SOL",
+                    "Get the latest funding rates for SOL across all exchanges",
+                ],
             }
         )
 

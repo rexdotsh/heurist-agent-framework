@@ -31,7 +31,7 @@ class DeepResearchAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "Advanced research agent with recursive exploration and comprehensive reporting",
+                "description": "Advanced research agent that performs multi-level web searches with recursive exploration, analyzes content across sources, and produces comprehensive research reports with key insights",
                 "inputs": [
                     {"name": "query", "description": "Research query or topic", "type": "str", "required": True},
                     {
@@ -69,8 +69,14 @@ class DeepResearchAgent(MeshAgent):
                     },
                 ],
                 "external_apis": ["Firecrawl"],
-                "tags": ["Search", "Research", "Analysis"],
-                "image_url": "",  # use an emoji of 🔍
+                "tags": ["Research"],
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/deep_research.png",  # use an emoji of 🔍
+                "examples": [
+                    "What is the latest news on Bitcoin?",
+                    "Find information about the Ethereum blockchain",
+                    "Search for articles about the latest trends in AI",
+                    "What are the latest developments in zero knowledge proofs?",
+                ],
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))
@@ -391,7 +397,7 @@ class DeepResearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "deep_research",
-                    "description": "Perform deep research on a topic by searching the web and analyzing the results",
+                    "description": "Perform comprehensive multi-level web research on a topic with recursive exploration. This function analyzes content across multiple sources, explores various research paths, and synthesizes findings into a structured report. It's slow and expensive, so use it sparingly and only when you need to explore a broad topic in depth.",
                     "parameters": {
                         "type": "object",
                         "properties": {

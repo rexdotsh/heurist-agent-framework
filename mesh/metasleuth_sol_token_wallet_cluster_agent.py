@@ -44,8 +44,12 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
                     {"name": "data", "description": "The token wallet cluster details", "type": "dict"},
                 ],
                 "external_apis": ["MetaSleuth"],
-                "tags": ["Solana", "Onchain Data"],
-                "image_url": "",  # use the logo of metasleuth
+                "tags": ["Solana"],
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Metasleuth.png",  # use the logo of metasleuth
+                "examples": [
+                    "Analyze the wallet clusters of this Solana token: 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+                    "Get token cluster data for 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+                ],
             }
         )
         self.base_url = "https://bot.metasleuth.io"
