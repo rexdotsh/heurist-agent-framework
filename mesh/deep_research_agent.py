@@ -70,7 +70,14 @@ class DeepResearchAgent(MeshAgent):
                 ],
                 "external_apis": ["Firecrawl"],
                 "tags": ["Search", "Research", "Analysis"],
-                "image_url": "",  # use an emoji of 🔍
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/deep_research.png",  # use an emoji of 🔍
+                "examples": [
+                    "What is the latest news on Bitcoin?",
+                    "Find information about the Ethereum blockchain",
+                    "Search for articles about the latest trends in AI",
+                    "Get the latest stock prices for Tesla",
+                    "What are the latest developments in zero knowledge proofs?"
+                ],
             }
         )
         self.app = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_KEY", ""))

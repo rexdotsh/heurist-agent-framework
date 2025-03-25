@@ -53,7 +53,12 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "",  # use solana logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Solana.png",
+                "examples": [
+                    "Analyze trending tokens on Solana",
+                    "Get token info for HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC",
+                    "Show top 10 most active tokens on Solana network"
+                ],
             }
         )
 

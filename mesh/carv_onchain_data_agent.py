@@ -58,7 +58,13 @@ class CarvOnchainDataAgent(MeshAgent):
                 ],
                 "external_apis": ["CARV"],
                 "tags": ["Onchain Data"],
-                "image_url": "",  # use carv logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/carv.png",
+                "examples": [
+                    "What's the most active address on Ethereum during the last 24 hours?",
+                    "What is the total transaction volume on Ethereum in the past week?",
+                    "Which Ethereum address has the highest balance right now?",
+                    "What are the top 5 most popular smart contracts on Ethereum?",
+                ], # use carv logo
             }
         )
 

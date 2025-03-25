@@ -60,7 +60,12 @@ class SolWalletAgent(MeshAgent):
                 ],
                 "external_apis": ["Helius"],
                 "tags": ["Onchain Data"],
-                "image_url": "",  # Add Helius or custom logo if needed
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/helius.png",  # Add Helius or custom logo if needed
+                "examples": [
+                    "Give me the holders of this J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U",
+                    "Show me the txs of this wallet DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN",
+                    "What tokens does DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN hold?"
+                ],
             }
         )
 

@@ -52,7 +52,13 @@ class DuckDuckGoSearchAgent(MeshAgent):
                 ],
                 "external_apis": ["DuckDuckGo"],
                 "tags": ["Search"],
-                "image_url": "",  # use a duckduckgo logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/duckduckgo.png",  # use a duckduckgo logo
+                "examples": [
+                    "What happens if you put a mirror in front of a black hole?",
+                    "Could octopuses be considered alien life forms?",
+                    "Why don't birds get electrocuted when sitting on power lines?",
+                    "How do fireflies produce light?"
+                ],
             }
         )
 

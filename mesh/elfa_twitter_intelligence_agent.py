@@ -66,7 +66,13 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "external_apis": ["Elfa"],
                 "tags": ["Social", "Twitter"],
                 "recommended": True,
-                "image_url": "",  # use the logo of elfa
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/elfa.png",  # use the logo of elfa
+                "examples": [
+                    "Search for mentions of Heurist, HEU, and heurist_ai in the last 30 days",
+                    "Analyze the Twitter account @heurist_ai",
+                    "Get trending tokens in the last 24 hours",
+                    "What are people saying about ETH and SOL this week?"
+                ],
             }
         )
 

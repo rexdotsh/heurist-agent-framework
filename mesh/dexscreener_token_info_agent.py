@@ -25,7 +25,7 @@ class DexScreenerTokenInfoAgent(MeshAgent):
             {
                 "name": "DexScreener Agent",
                 "version": "1.0.0",
-                "author": "dyt9qc",
+                "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
                 "created_at": "2025-02-13 07:43:15",
                 "description": "This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API",
@@ -55,7 +55,14 @@ class DexScreenerTokenInfoAgent(MeshAgent):
                 "external_apis": ["DexScreener"],
                 "tags": ["DeFi", "Trading"],
                 "recommended": True,
-                "image_url": "",  # use dexscreener logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/dexscreener.png",
+                "examples": [
+                    "Show me information about ETH on Uniswap",
+                    "Search for trading pairs for ETH",
+                    "What are the trading statistics for Elyra token on Solana?",
+                    "Get Solana pair details for address 7qsdv1yr4yra9fjazccrwhbjpykvpcbi3158u1qcjuxp",
+                    "Find all trading pairs for the token 8TE8oxirpnriy9CKCd6dyjtff2vvP3n6hrSMqX58pump on Solana"
+                ],
             }
         )
 

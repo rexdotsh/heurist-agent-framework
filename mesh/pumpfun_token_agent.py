@@ -60,7 +60,13 @@ class PumpFunTokenAgent(MeshAgent):
                 ],
                 "external_apis": ["Bitquery"],
                 "tags": ["Solana", "Trading"],
-                "image_url": "",  # use the logo of pumpfun
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/pumpfun.png",  # use the logo of pumpfun
+                "examples": [
+                    "What is the latest news on Bitcoin?",
+                    "Find information about the Ethereum blockchain",
+                    "Search for articles about the latest trends in AI",
+                    "Get the latest stock prices for Tesla"
+                ],
             }
         )
 
