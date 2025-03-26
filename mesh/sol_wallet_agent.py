@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+from copy import deepcopy
 from typing import Any, Dict, List
 
 import aiohttp
@@ -142,12 +143,10 @@ class SolWalletAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_sol_wallet_assets",
-                    "description": """Query and retrieve all token holdings for a specific Solana wallet address with comprehensive details about each asset.
-                    This tool provides a detailed breakdown of wallet contents including SOL balance, token quantities, current market prices, and total value in USD.
+                    "description": """Get all token holdings for a specific Solana wallet address with comprehensive details about each asset.
+                    This tool returns a detailed breakdown of wallet holdings including SOL balance, token address and amount, current USD price per token, and total value of each token in USD (total_holding_value field).
                     Use this tool when you need to analyze a wallet's complete portfolio composition, assess the total value of holdings, or identify significant token positions.
-                    This tool will NOT provide historical holding data, transaction history, or price predictions - only current snapshot of assets.
-                    The results are ordered by value, with more valuable assets appearing first. Some small-value tokens or dust amounts might be excluded from results.
-                    The returned data includes token addresses, symbols, images, current price per token, and total value in USD.""",
+                    This tool will NOT provide historical data - only current snapshot of assets.""",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -164,19 +163,14 @@ class SolWalletAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "analyze_sol_token_holders",
-                    "description": """Analyze the distribution and behavior patterns of top token holders for a specific Solana token.
-                    This tool examines concentration of ownership by identifying the largest holders of a token and what other assets these major holders commonly own.
+                    "description": """This tool examines concentration of ownership by identifying the largest holders of a Solana token, and what other assets these major holders commonly own.
                     Use this when investigating token distribution, whale behavior patterns, correlated investments, or potential market manipulation by major holders.
-                    Do NOT use this tool for tokens with extremely high holder counts (>50,000) as results may be incomplete.
                     The analysis excludes certain protocol wallets (like Raydium) that would skew the results and focuses on actual user wallets.
                     Results include:
                     - The percentage of total supply held by each address
-                    - Total value of holdings in USD
+                    - Total value of holdings in USD of each token (total_holding_value field)
                     - Interconnections between major holders
-                    - Common tokens held across these wallets
-                    For each holder, a GMGN explorer link (gmgn_link_owner_address) is provided for easy access to detailed wallet information.
-                    The response also includes a GMGN referral link that can be used for further exploration of Solana data.
-                    These insights help identify investment patterns and potential coordinated activity among major token holders.""",
+                    - Common tokens held across these wallets""",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -357,10 +351,10 @@ class SolWalletAgent(MeshAgent):
                 hold_tokens.append(
                     {
                         "token_address": sol_address,
-                        "token_img": "",
+                        # "token_img": "",
                         "symbol": "SOL",
                         "price_per_token": native_balance.get("price_per_sol", 0),
-                        "total_price": native_balance.get("total_price", 0),
+                        "total_holding_value": native_balance.get("total_price", 0),
                     }
                 )
 
@@ -369,14 +363,14 @@ class SolWalletAgent(MeshAgent):
                 [
                     {
                         "token_address": asset["id"],
-                        "token_img": (
-                            asset.get("content", {}).get("files", [{}])[0]
-                            if asset.get("content", {}).get("files")
-                            else {}
-                        ).get("cdn_uri", ""),
+                        # "token_img": (
+                        #     asset.get("content", {}).get("files", [{}])[0]
+                        #     if asset.get("content", {}).get("files")
+                        #     else {}
+                        # ).get("cdn_uri", ""),
                         "symbol": asset.get("token_info", {}).get("symbol", ""),
                         "price_per_token": asset.get("token_info", {}).get("price_info", {}).get("price_per_token", 0),
-                        "total_price": asset.get("token_info", {}).get("price_info", {}).get("total_price", 0),
+                        "total_holding_value": asset.get("token_info", {}).get("price_info", {}).get("total_price", 0),
                     }
                     for asset in non_mutable_assets
                 ]
@@ -420,27 +414,29 @@ class SolWalletAgent(MeshAgent):
                     if token_address not in token_map:
                         token_map[token_address] = {
                             "token_address": token_address,
-                            "token_img": token["token_img"],
+                            # "token_img": token["token_img"],
                             "symbol": token["symbol"],
                             "price_per_token": token["price_per_token"],
                             "total_holding_value": 0,
                             "holders": [],
                         }
 
-                    token_map[token_address]["total_holding_value"] += token["total_price"]
-                    token_map[token_address]["holders"].append({
-                        "address": holder["address"], 
-                        "total_price": token["total_price"],
-                        "percentage": holder["percentage"],
-                        "gmgn_link_owner_address": f"https://gmgn.ai/sol/address/{holder['address']}"
-                    })
+                    token_map[token_address]["total_holding_value"] += token["total_holding_value"]
+                    token_map[token_address]["holders"].append(
+                        {
+                            "address": holder["address"],
+                            "total_holding_value": token["total_holding_value"],
+                            # what does this mean?
+                            # "percentage": holder["percentage"],
+                        }
+                    )
 
             # Sort by total_holding_value and get top 5
             sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_holding_value"], reverse=True)[:5]
 
             # Sort each token's holders by total_price and get top 5
             for token in sorted_tokens:
-                token["holders"] = sorted(token["holders"], key=lambda x: x["total_price"], reverse=True)[:5]
+                token["holders"] = sorted(token["holders"], key=lambda x: x["total_holding_value"], reverse=True)[:5]
                 # Add referral link to each token
                 token["gmgn_referral_link"] = "https://gmgn.ai/?ref=WtaAO4Jn&chain=sol"
 
@@ -596,7 +592,7 @@ class SolWalletAgent(MeshAgent):
             # ---------------------
             if tool_name:
                 data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
-                return {"response": "", "data": data}
+                return {"response": "", "data": deepcopy(data)}
 
             # ---------------------
             # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -626,12 +622,12 @@ class SolWalletAgent(MeshAgent):
                 data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
 
                 if raw_data_only:
-                    return {"response": "", "data": data}
+                    return {"response": "", "data": deepcopy(data)}
 
                 explanation = await self._respond_with_llm(
                     query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
                 )
-                return {"response": explanation, "data": data}
+                return {"response": explanation, "data": deepcopy(data)}
 
             return {"error": "Either 'query' or 'tool' must be provided in the parameters."}
         except Exception as e:

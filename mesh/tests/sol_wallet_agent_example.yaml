@@ -3,91 +3,72 @@ natural_language_query_with_analysis:
     query: Give me the holders of this J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
     raw_data_only: false
   output:
-    response: "**Holder Information for Token: FLOYDAI (J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U)**\n\
-      \n* **Total Holding Value:** $883,127.29\n* **Price per Token:** $0.00815809\n\
-      * **Top Holders:**\n\n1. **7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb**\n\t\
-      * **Total Value:** $259,100.73 (29.3% of total holdings)\n\t* **GMGN Link:**\
-      \ https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb\n\
-      2. **7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ**\n\t* **Total Value:** $205,247.48\
-      \ (23.2% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ\n\
-      3. **7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd**\n\t* **Total Value:** $122,371.34\
-      \ (13.9% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd\n\
-      4. **4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5**\n\t* **Total Value:** $100,213.52\
-      \ (11.3% of total holdings)\n\t* **GMGN Link:** https://gmgn.ai/sol/address/4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA"
-    data: &id002
-    - token_address: So11111111111111111111111111111111111111112
-      token_img: ''
-      symbol: SOL
-      price_per_token: 139.1567840576172
-      total_holding_value: 1280941.5648921318
-      holders:
-      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-        total_price: 974097.491744753
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 306641.5113362513
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
-        total_price: 140.1557908886804
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
-      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
-        total_price: 27.835679299549838
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
-      - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
-        total_price: 18.732957442355698
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
-      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    response: "**Holder Information for `J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U\
+      \ (FLOYDAI)`**\n\n* **Total Holders:** 5\n* **Total Holding Value:** **$991,868.49**\n\
+      * **Price per Token:** **$0.00844934**\n* **Top Holders by Value:**\n\t1. **3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq**:\
+      \ **$323,843.78** (32.7% of total)\n\t2. **3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r**:\
+      \ **$260,001.13** (26.2% of total)\n\t3. **7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ**:\
+      \ **$212,574.98** (21.4% of total)\n\t4. **6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB**:\
+      \ **$99,681.82** (10.1% of total)\n\t5. **Am4aTP7AJ1B5jXMq6vdmwbxDhZoSHN4LsE9W8BKBvyQc**:\
+      \ **$95,766.77** (9.7% of total)\n\n**No significant anomalies detected in the\
+      \ holder distribution. The top two holders combined own approximately 58.9%\
+      \ of the total holding value, indicating a moderately concentrated ownership.**"
+    data:
     - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
       symbol: FLOYDAI
-      price_per_token: 0.00815809
-      total_holding_value: 883127.293047854
+      price_per_token: 0.00844934
+      total_holding_value: 991868.4910045199
       holders:
-      - address: 7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
-        total_price: 259100.72578944103
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7A2pGiaLs3Pb6ye5yzuxQ58ZvfgUvD6yNRqDiTC438pb
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 323843.7773666241
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_holding_value: 260001.13279219155
       - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
-        total_price: 205247.47523674183
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
-      - address: 7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-        total_price: 122371.34389579298
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/7pgAdJH1XKL3N2331zeCXHnaxe8S3ijntAdxKdFxSDPd
-      - address: 4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5
-        total_price: 100213.52386613376
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/4qGtdeFtnUvtS3ZUkbYQ5npWqbCfMXUQ5Pq8xeBVhbA5
-      - address: 9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
-        total_price: 99948.45519776027
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+        total_holding_value: 212574.9823809322
+      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+        total_holding_value: 99681.8238031513
+      - address: Am4aTP7AJ1B5jXMq6vdmwbxDhZoSHN4LsE9W8BKBvyQc
+        total_holding_value: 95766.77466162067
       gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
-    - token_address: Cqc5qH8kRqU4ASorJF2fiH9t1BSU4a7StagJiyexpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXu8LE1w5uvhkxrEUjpTdW4tNS32B9EyaorYgzsnnBFGL
-      symbol: Downald
-      price_per_token: 0.000826889
-      total_holding_value: 10768.247180174309
+    - token_address: So11111111111111111111111111111111111111112
+      symbol: SOL
+      price_per_token: 143.73333740234375
+      total_holding_value: 317155.606519208
       holders:
       - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 10768.247180174309
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_holding_value: 316726.26030383934
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 162.31900110662684
+      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+        total_holding_value: 144.76519931902186
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_holding_value: 81.3396212786792
+      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+        total_holding_value: 28.75113212539514
       gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
-    - token_address: 7TM7nzyhef5WJfsSjFFuoU2KnP3cocBcXpY1VP8jpump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmUosKmHX3NvgoVqTkZ3dN8u4wzmz5n8hCnge2wS8EuPRh
-      symbol: NIGGA
-      price_per_token: 0.0009182
-      total_holding_value: 7632.491663940782
+    - token_address: CniPCE4b3s8gSUPhUiyMjXnytrEqUrMfSsnbBjLCpump
+      symbol: pwease
+      price_per_token: 0.013261
+      total_holding_value: 102745.21876582445
       holders:
-      - address: 9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
-        total_price: 7632.491663940782
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/9kz1JaxBA4vuSDoKsYVWs6HRgYAVNMXmuyp5X6Rcy8S7
+      - address: Am4aTP7AJ1B5jXMq6vdmwbxDhZoSHN4LsE9W8BKBvyQc
+        total_holding_value: 102745.21876582445
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
+      symbol: N2
+      price_per_token: 0.000677221
+      total_holding_value: 22658.49034590565
+      holders:
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 22658.49034590565
       gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
     - token_address: BftUiGB2iDkNDa8AKdhtLuJHHXiUfqLvTNmiXaSopump
-      token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXgt6TEGac8Mx8EKKYR9mjjJLmvd9BBVdyRYJzw3kk3mu
       symbol: ELON
-      price_per_token: 0.00101876
-      total_holding_value: 6381.807349458875
+      price_per_token: 0.00102533
+      total_holding_value: 6422.963823546773
       holders:
       - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
-        total_price: 6381.807349458875
-        gmgn_link_owner_address: https://gmgn.ai/sol/address/4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_holding_value: 6422.963823546773
       gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
 natural_language_query_raw_data:
   input:
@@ -95,7 +76,7 @@ natural_language_query_raw_data:
     raw_data_only: true
   output:
     response: ''
-    data: &id001
+    data:
     - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
       timestamp: 1741136128
       description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 9.4905 SOL
@@ -431,83 +412,83 @@ get_sol_wallet_assets_test:
     - token_address: So11111111111111111111111111111111111111112
       token_img: ''
       symbol: SOL
-      price_per_token: 139.1567840576172
-      total_price: 9.51200839889656
+      price_per_token: 143.73333740234375
+      total_holding_value: 9.824836940802307
     - token_address: C8e4UBwf1XLLEP18dfhZRiQ3nMqWoy9vApcEZaJEpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmRcZ23g4LNSvA6QK8mQ8T1rTG6WgMgaAU3rjQprz5LZQz
       symbol: MLKAI
-      price_per_token: 1.46827e-05
-      total_price: 513.36120093173
+      price_per_token: 1.5149e-05
+      total_holding_value: 529.6647877021859
     - token_address: 6U2wHsT77exPvch1aZjKyjq8FUE1U4iYF88F86D5pump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmdB3Ek5HNeQtJKkkaCobkwhcrUR2P8XQLTbf6GxAAUhQK
       symbol: DIDDYTRON
-      price_per_token: 2.22606e-05
-      total_price: 632.2784781455042
+      price_per_token: 2.3205e-05
+      total_holding_value: 659.1027555144996
     - token_address: ryPufB9SKmUcnZBqzMHanaLEjCkbaSnFCcD1Ahxpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmatqZQT8G3BStDkzCBiTSd7ssGXLSdg8GRLVHncs9JiWA
       symbol: FENT
-      price_per_token: 3.29055e-05
-      total_price: 973.7155527760799
+      price_per_token: 3.39614e-05
+      total_holding_value: 1004.9610202307265
     - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmTD3YfytLW3jvAyr958RKEvhYHVdAzhgNqF1XxbvfPCjB
       symbol: N2
-      price_per_token: 0.000720804
-      total_price: 5804.482846316376
+      price_per_token: 0.000677221
+      total_holding_value: 5453.518223492398
     - token_address: 6QZFhw4197ne5T23K45K9PvHSdNMceLBKFrLE2n2pump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmcHZEjqGAV5cBHDDDefgcwkzyU8fmHiBBqFomoe5693pq
       symbol: iFloydmini
-      price_per_token: 5.37617e-05
-      total_price: 600.2053181305824
+      price_per_token: 5.15178e-05
+      total_holding_value: 575.1539955602351
     - token_address: C7LGTaqvbaBtgauWLEYQtk8AXhoPAUX43i7upDmNDisZ
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafkreib7j23bhpkdk4m3nt2qmmfjrbt6hfdihg3s7b6t4qga4z4jyntmxe.ipfs.nftstorage.link
       symbol: COKE
-      price_per_token: 0.003823768
-      total_price: 573.5652172006667
+      price_per_token: 0.003948433
+      total_holding_value: 592.2649288550019
     - token_address: 9XATau2q82SFwoGCj5Vkk3vZnDu21ukGQq73u2YQZiUM
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmeBoQ9jMxnPix5DUu36PeeBHvNcjQxuhqhT1g75JiR2U4
       symbol: GAC
-      price_per_token: 9.86677e-06
-      total_price: 299.98593415224065
+      price_per_token: 1.01771e-05
+      total_holding_value: 309.42111808185405
     - token_address: 3M1t49FpyULfGEiEWowHyHjthWyfL7RpHgQ7mDbBpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmQGLdWumiMQpYvSG99xKUzym8YSMfTvSgs2Y1Fed5AHCf
       symbol: AFFIRM
-      price_per_token: 1.58134e-05
-      total_price: 493.0501957711918
+      price_per_token: 1.6396e-05
+      total_holding_value: 511.21519313335796
     - token_address: Crb3po4oD4NVahRQjR6fthD2Cyz3jNsz5MqPkAuUpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmSS2BLtQ6mA8kvXqPEz9FpDSyrpjRsbSUgRh9nXuTMB7Z
       symbol: core
-      price_per_token: 7.93709e-06
-      total_price: 238.11270693840925
+      price_per_token: 8.11325e-06
+      total_holding_value: 243.3975078020012
     - token_address: JyTYXrqcYkvRhotAaYBvFbm6zk7vimHc86hwLZzpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmVfn2UwcxsgPBWHrLrPAUaEnWHPquJheviB5TWgytgfMf
       symbol: CATJAK
-      price_per_token: 2.27525e-05
-      total_price: 766.6247546750373
+      price_per_token: 2.35803e-05
+      total_holding_value: 794.516730115986
     - token_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/Qme38EvvaXkToZpwWxC6SfdKYzzWdc5KXttmsS4DeERer5
       symbol: FUJI
-      price_per_token: 0.000639532
-      total_price: 6746.139462581877
+      price_per_token: 0.000655636
+      total_holding_value: 6916.013656081149
     - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdWKLtcFaqKVS2VSPFzFnJEF6R71hEHJ2rxfSbfoSLb2R
       symbol: FLOYDAI
-      price_per_token: 0.00815809
-      total_price: 41459.37374522185
+      price_per_token: 0.00844934
+      total_holding_value: 42939.50818761322
     - token_address: 5sYp2ygdJwbv1ETyrsn68yUyJKGSBPE4VLChxo4npump
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmXpbkoswrJbYaUQdSgnMWs7YFFkyV5AYunjEugJ2gmNp3
       symbol: '#packwatch'
-      price_per_token: 6.92867e-06
-      total_price: 138.57339581591074
+      price_per_token: 7.16152e-06
+      total_holding_value: 143.23039977170993
     - token_address: 6Em4veHJFxfnEvu2cyQhkn2BszvHxycPba8fL3Psx4gY
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://cf-ipfs.com/ipfs/QmdRmace5TGP7L7dV2saxjnXJgfh43ZHUhLmuJryHqf9BF
       symbol: Adrian
-      price_per_token: 0.000106205
-      total_price: 803.0754145489778
+      price_per_token: 0.000105844
+      total_holding_value: 800.3457170300827
     - token_address: AG7e5ib8H5xJ4zAk4A4qNgtvSR9iNGWLrQDVc4YNK4jR
       token_img: https://cdn.helius-rpc.com/cdn-cgi/image//https://bafybeig77n2fiwdbbqat66ts6oztbyaz6srsmvirxq3qcvd63kceuhcleu.ipfs.nftstorage.link
       symbol: FENT
-      price_per_token: 3.2507236e-05
-      total_price: 376.7927340147576
+      price_per_token: 3.3723903e-05
+      total_holding_value: 390.895177285858
 get_sol_tx_history_test:
   input:
     tool: get_sol_tx_history
@@ -515,7 +496,331 @@ get_sol_tx_history_test:
       owner_address: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
   output:
     response: ''
-    data: *id001
+    data:
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1741136128
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 9.4905 SOL
+        for 101219.349473 FLOYDAI
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '9.4905'
+      token_out_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_out_amount: '101219.349473'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1741136105
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 30708413.357487999
+        5erQKZrsPgemDfuLVDMNcB4J85pPmDD78Zp1gsiWpump for 9.518201146 SOL
+      token_in_address: 5erQKZrsPgemDfuLVDMNcB4J85pPmDD78Zp1gsiWpump
+      token_in_amount: '30708413.357488'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '9.518201146'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1741135148
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 1.8981 SOL
+        for 30708413.357487999 5erQKZrsPgemDfuLVDMNcB4J85pPmDD78Zp1gsiWpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '1.8981'
+      token_out_address: 5erQKZrsPgemDfuLVDMNcB4J85pPmDD78Zp1gsiWpump
+      token_out_amount: '30708413.357488'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1741135131
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 20000 FLOYDAI
+        for 1.862702673 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '20000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '1.862702673'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740836760
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 5.994 SOL
+        for 1005844.90837 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '5.994'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '1005844.90837'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740836725
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 50000 FLOYDAI
+        for 6.096977727 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '50000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '6.096977727'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740801313
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 1.998 SOL
+        for 310975.071871 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '1.998'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '310975.071871'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740801044
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 0.999 SOL
+        for 157191.055683 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '0.999'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '157191.055683'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740790967
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 100000 FLOYDAI
+        for 10.96525221 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '100000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '10.96525221'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740739580
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 8.7912 SOL
+        for 1544586.520624 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '8.7912'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '1544586.520624'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740739561
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 100000 FLOYDAI
+        for 8.809237983 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '100000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '8.809237983'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740739471
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 5.74425 SOL
+        for 1051831.758345 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '5.74425'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '1051831.758345'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740739438
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 100206003.100403056
+        FENTANYL for 3.997721875 SOL
+      token_in_address: 65Z76ENVtuTVohmGeSMVAPW7ArRoUByZspCN3Yb7k7p
+      token_in_amount: '100206003.10040306'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '3.997721875'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740739403
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 30000000 CREED
+        for 1.752051853 SOL
+      token_in_address: creedYCqY4bRNvnR3eRw3Np61EWMXL2RZFqRNhfSUNw
+      token_in_amount: '30000000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '1.752051853'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740632220
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 8.1918 SOL
+        for 1447121.134754 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '8.1918'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '1447121.134754'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740632200
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 100000 FLOYDAI
+        for 8.196257717 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '100000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '8.196257717'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740428617
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4.4955 SOL
+        for 956171.547237 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '4.4955'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '956171.547237'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740428475
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 25455944.396386001
+        FA for 4.553174943 SOL
+      token_in_address: 35sWUF3kq2YNuiEU5YgPo5yVqg6av2snKmm5RaT3gqYe
+      token_in_amount: '25455944.396386'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '4.553174943'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740321292
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 3.84615 SOL
+        for 599839.52372 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '3.84615'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '599839.52372'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740321270
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4235685.776956292
+        KOREA for 3.837326562 SOL
+      token_in_address: 2EL8PFoJ54iYkgHhXuavFZbV6JXA8WRun2R3ZZXaDygv
+      token_in_amount: '4235685.776956292'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '3.837326562'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740319172
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4.995 SOL
+        for 797709.609518 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '4.995'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '797709.609518'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740319146
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 31639955.576924
+        tes1 for 4.944476013 SOL
+      token_in_address: DsTkgW5pfv5SKEsw9wfWJbg1JZ5sXGXSdPEjcq1cmuGo
+      token_in_amount: '31639955.576924'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '4.944476013'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740314640
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4.8951 SOL
+        for 4235685.776956292 KOREA
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '4.8951'
+      token_out_address: 2EL8PFoJ54iYkgHhXuavFZbV6JXA8WRun2R3ZZXaDygv
+      token_out_amount: '4235685.776956292'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740314596
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4201783.909009567
+        KOREA for 4.962096637 SOL
+      token_in_address: 2EL8PFoJ54iYkgHhXuavFZbV6JXA8WRun2R3ZZXaDygv
+      token_in_amount: '4201783.909009567'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '4.962096637'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740313901
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4.84515 SOL
+        for 4201783.909009567 KOREA
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '4.84515'
+      token_out_address: 2EL8PFoJ54iYkgHhXuavFZbV6JXA8WRun2R3ZZXaDygv
+      token_out_amount: '4201783.909009567'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740313888
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 50000 FLOYDAI
+        for 4.870750745 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '50000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '4.870750745'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740299801
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 14.86512 SOL
+        for 2461176.041992 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '14.86512'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '2461176.041992'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740299777
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 162000 FLOYDAI
+        for 14.870055565 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '162000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '14.870055565'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740297308
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 1.24875 SOL
+        for 216109.465173 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '1.24875'
+      token_out_address: 4M79Qjv2Jfjmcq19M41V8QFYohBv2KrgEn9dJhVtpump
+      token_out_amount: '216109.465173'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740297165
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 12014482.458269
+        FNCP for 1.081574645 SOL
+      token_in_address: A6bCsh37hM4FybN4MXstnup6WEcichSQNK8AGvXDpump
+      token_in_amount: '12014482.458269'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '1.081574645'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1740291325
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4000 BCNT4t3rv5Hva8RnUtJUJLnxzeFAabcYp8CghC1SmWin
+        for 0.098350385 SOL
+      token_in_address: BCNT4t3rv5Hva8RnUtJUJLnxzeFAabcYp8CghC1SmWin
+      token_in_amount: '4000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '0.098350385'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1739935601
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 4967554.175602
+        57Wdx3uikKcAt2w8F9GMwgGeEvkaU6pXacYScW1hpump for 180776.080606 FLOYDAI
+      token_in_address: 57Wdx3uikKcAt2w8F9GMwgGeEvkaU6pXacYScW1hpump
+      token_in_amount: '4967554.175602'
+      token_out_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_out_amount: '180776.080606'
+      type: SWAP
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1739927896
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 19.98 SOL
+        for 4967554.175602 57Wdx3uikKcAt2w8F9GMwgGeEvkaU6pXacYScW1hpump
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '19.98'
+      token_out_address: 57Wdx3uikKcAt2w8F9GMwgGeEvkaU6pXacYScW1hpump
+      token_out_amount: '4967554.175602'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1739927884
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 190000 FLOYDAI
+        for 20.131787767 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '190000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '20.131787767'
+      type: SELL
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1739852799
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 7.4925 SOL
+        for 31639955.576924 tes1
+      token_in_address: So11111111111111111111111111111111111111112
+      token_in_amount: '7.4925'
+      token_out_address: DsTkgW5pfv5SKEsw9wfWJbg1JZ5sXGXSdPEjcq1cmuGo
+      token_out_amount: '31639955.576924'
+      type: BUY
+    - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
+      timestamp: 1739852771
+      description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 70000 FLOYDAI
+        for 7.388232513 SOL
+      token_in_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      token_in_amount: '70000.0'
+      token_out_address: So11111111111111111111111111111111111111112
+      token_out_amount: '7.388232513'
+      type: SELL
 analyze_sol_token_holders_test:
   input:
     tool: analyze_sol_token_holders
@@ -523,4 +828,60 @@ analyze_sol_token_holders_test:
       token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
   output:
     response: ''
-    data: *id002
+    data:
+    - token_address: J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U
+      symbol: FLOYDAI
+      price_per_token: 0.00844934
+      total_holding_value: 991868.4910045199
+      holders:
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 323843.7773666241
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_holding_value: 260001.13279219155
+      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+        total_holding_value: 212574.9823809322
+      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+        total_holding_value: 99681.8238031513
+      - address: Am4aTP7AJ1B5jXMq6vdmwbxDhZoSHN4LsE9W8BKBvyQc
+        total_holding_value: 95766.77466162067
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: So11111111111111111111111111111111111111112
+      symbol: SOL
+      price_per_token: 143.73333740234375
+      total_holding_value: 317155.606519208
+      holders:
+      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_holding_value: 316726.26030383934
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 162.31900110662684
+      - address: 6amH1DX1AY9e5Eyz37HtZFRtNXrPM61uKwtvzx6LFTXB
+        total_holding_value: 144.76519931902186
+      - address: 3tRRuBExcjAZ1Gb8tXf9g9EHJ1LRAZTcTTaXLdgEad2r
+        total_holding_value: 81.3396212786792
+      - address: 7JNwtbzxCz5kn41yFVwztEQHaXu7iAfxrLdBWzNeGiDZ
+        total_holding_value: 28.75113212539514
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: CniPCE4b3s8gSUPhUiyMjXnytrEqUrMfSsnbBjLCpump
+      symbol: pwease
+      price_per_token: 0.013261
+      total_holding_value: 102745.21876582445
+      holders:
+      - address: Am4aTP7AJ1B5jXMq6vdmwbxDhZoSHN4LsE9W8BKBvyQc
+        total_holding_value: 102745.21876582445
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: 3t4yhNHfy5jZ9skJw9ZMRHvLJw1WUPouJ4TSxatTpump
+      symbol: N2
+      price_per_token: 0.000677221
+      total_holding_value: 22658.49034590565
+      holders:
+      - address: 3Mug4XRX29yZVsNfYyex6y2QQeVqUMv5HkVQixJ4cMUq
+        total_holding_value: 22658.49034590565
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
+    - token_address: BftUiGB2iDkNDa8AKdhtLuJHHXiUfqLvTNmiXaSopump
+      symbol: ELON
+      price_per_token: 0.00102533
+      total_holding_value: 6422.963823546773
+      holders:
+      - address: 4J5rDTvRbzjuKkB4B9rvNEvDz6f1BEBzUVT5mdctKHoT
+        total_holding_value: 6422.963823546773
+      gmgn_referral_link: https://gmgn.ai/?ref=WtaAO4Jn&chain=sol
