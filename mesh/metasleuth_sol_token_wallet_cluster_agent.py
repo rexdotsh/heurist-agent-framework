@@ -23,7 +23,7 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
                 "name": "MetaSleuth Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
-                "description": "This agent can analyze Solana token wallets and their clusters using the MetaSleuth API.",
+                "description": "This agent can analyze the wallet clusters holding a specific Solana token, and identify top holder behavior, concentration, and potential market manipulation.",
                 "inputs": [
                     {
                         "name": "query",
@@ -45,10 +45,10 @@ class MetaSleuthSolTokenWalletClusterAgent(MeshAgent):
                 ],
                 "external_apis": ["MetaSleuth"],
                 "tags": ["Solana"],
-                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Metasleuth.png",  # use the logo of metasleuth
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/MetaSleuth.png",  # use the logo of metasleuth
                 "examples": [
                     "Analyze the wallet clusters of this Solana token: 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
-                    "Get token cluster data for 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+                    "What percentage of the supply of 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN is held by the top wallet clusters?",
                 ],
             }
         )
@@ -94,7 +94,7 @@ Note: Currently only Solana chain is supported.
                 "type": "function",
                 "function": {
                     "name": "fetch_token_clusters",
-                    "description": "Fetch token wallet clusters for a Solana token",
+                    "description": "Fetch wallet clusters that hold a specific Solana token. A cluster means a group of wallets that have transacted with each other. The results contain the wallets in the cluster with their individual holdings and percentages. Use this to analyze the holder behavior of a token and identify potential market manipulation.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -123,7 +123,7 @@ Note: Currently only Solana chain is supported.
                 "type": "function",
                 "function": {
                     "name": "fetch_cluster_details",
-                    "description": "Fetch detailed information about a specific wallet cluster",
+                    "description": "Fetch detailed information about a specific wallet cluster. You must obtain the cluster UUID from the fetch_token_clusters tool. It's expensive to fetch cluster details, so only use this tool when there's a particular reason to deep dive into a cluster, otherwise the results from fetch_token_clusters tool are sufficient.",
                     "parameters": {
                         "type": "object",
                         "properties": {
