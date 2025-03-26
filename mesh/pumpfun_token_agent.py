@@ -221,6 +221,23 @@ class PumpFunTokenAgent(MeshAgent):
                     },
                 },
             },
+            {
+                "type": "function",
+                "function": {
+                    "name": "query_latest_graduated_tokens",
+                    "description": "Fetch recently graduated tokens from Pump.fun with their latest prices and market caps",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "timeframe": {
+                                "type": "number",
+                                "description": "Timeframe in hours to look back for graduated tokens",
+                                "default": 24,
+                            },
+                        },
+                    },
+                },
+            },
         ]
 
     @monitor_execution()
@@ -884,6 +901,184 @@ class PumpFunTokenAgent(MeshAgent):
 
         return {"traders": [], "markets": []}
 
+    @monitor_execution()
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def query_latest_graduated_tokens(self, timeframe: int = 24) -> Dict:
+        """
+        Query tokens that have recently graduated on Pump.fun with their prices and market caps.
+        
+        Args:
+            timeframe (int): Number of hours to look back for graduated tokens
+            
+        Returns:
+            Dict: Dictionary containing graduated tokens with price and market cap data
+        """
+        # Calculate the start time as the beginning of the day (00:00 UTC), timeframe hours ago
+        now = datetime.now(timezone.utc)
+        start_time = datetime(now.year, now.month, now.day, 0, 0, 0, tzinfo=timezone.utc) - timedelta(hours=timeframe)
+        start_time_str = start_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        
+        # First query to get graduated tokens
+        graduated_query = """
+        query ($since: DateTime!) {
+          Solana {
+            DEXPools(
+              where: {
+                Block: {
+                  Time: {
+                    since: $since
+                  }
+                }
+                Pool: {
+                  Dex: { ProtocolName: { is: "pump" } }
+                  Base: { PostAmount: { eq: "206900000" } }  # This is a specific amount that indicates graduation
+                }
+                Transaction: { Result: { Success: true } }
+              }
+              orderBy: { descending: Block_Time }
+            ) {
+              Block {
+                Time
+              }
+              Pool {
+                Market {
+                  BaseCurrency {
+                    Name
+                    Symbol
+                    MintAddress
+                  }
+                  QuoteCurrency {
+                    Name
+                    Symbol
+                  }
+                }
+              }
+            }
+          }
+        }
+        """
+        
+        variables = {"since": start_time_str}
+        
+        first_result = await self._execute_query(graduated_query, variables)
+        
+        if "data" not in first_result or "Solana" not in first_result["data"]:
+            return {"graduated_tokens": [], "error": "Failed to fetch graduated tokens"}
+            
+        # Extract token addresses from the first query
+        graduated_pools = first_result["data"]["Solana"]["DEXPools"]
+        token_addresses = []
+        
+        for pool in graduated_pools:
+            if "Pool" in pool and "Market" in pool["Pool"] and "BaseCurrency" in pool["Pool"]["Market"]:
+                mint_address = pool["Pool"]["Market"]["BaseCurrency"].get("MintAddress")
+                if mint_address:
+                    token_addresses.append(mint_address)
+                    
+        if not token_addresses:
+            return {"graduated_tokens": [], "message": "No graduated tokens found in the specified timeframe"}
+            
+        # Second query to get price data for the graduated tokens from pump swap dex
+        price_query = """
+        query ($since: DateTime!, $token_addresses: [String!]) {
+          Solana {
+            DEXTrades(
+              limitBy: { by: Trade_Buy_Currency_MintAddress, count: 1 }
+              orderBy: { descending: Trade_Buy_Price }
+              where: {
+                Trade: {
+                  Dex: { 
+                    ProgramAddress: { in: ["pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"] }
+                  },
+                  Buy: {
+                    Currency: {
+                      MintAddress: { in: $token_addresses }
+                    }
+                  },
+                  PriceAsymmetry: { le: 0.1 },
+                  Sell: { AmountInUSD: { gt: "10" } }
+                },
+                Transaction: { Result: { Success: true } },
+                Block: { Time: { since: $since } }
+              }
+            ) {
+              Trade {
+                Buy {
+                  Price(maximum: Block_Time)
+                  PriceInUSD(maximum: Block_Time)
+                  Currency {
+                    Name
+                    Symbol
+                    MintAddress
+                    Decimals
+                    Fungible
+                    Uri
+                  }
+                }
+              }
+            }
+          }
+        }
+        """
+        
+        price_variables = {
+            "since": start_time_str,
+            "token_addresses": token_addresses
+        }
+        
+        second_result = await self._execute_query(price_query, price_variables)
+        
+        if "data" not in second_result or "Solana" not in second_result["data"]:
+            return {
+                "graduated_tokens": [],
+                "token_addresses": token_addresses,
+                "error": "Failed to fetch price data for graduated tokens"
+            }
+            
+        # Process and format the results
+        price_trades = second_result["data"]["Solana"]["DEXTrades"]
+        graduated_tokens_with_price = []
+        
+        for trade in price_trades:
+            if "Trade" in trade and "Buy" in trade["Trade"]:
+                buy = trade["Trade"]["Buy"]
+                price_usd = buy.get("PriceInUSD", 0)
+                
+                try:
+                    price_usd_float = float(price_usd) if price_usd else 0
+                    market_cap = price_usd_float * 1_000_000_000  # 1 billion as specified
+                except (ValueError, TypeError):
+                    price_usd_float = 0
+                    market_cap = 0
+                
+                currency = buy.get("Currency", {})
+                
+                token_data = {
+                    "price_usd": price_usd_float,
+                    "market_cap_usd": market_cap,
+                    "token_info": {
+                        "name": currency.get("Name", "Unknown"),
+                        "symbol": currency.get("Symbol", "Unknown"),
+                        "mint_address": currency.get("MintAddress", ""),
+                        "decimals": currency.get("Decimals", 0),
+                        "fungible": currency.get("Fungible", True),
+                        "uri": currency.get("Uri", "")
+                    }
+                }
+                graduated_tokens_with_price.append(token_data)
+        
+        # Find addresses that have graduated but don't have price data
+        addresses_with_price = {token["token_info"]["mint_address"] for token in graduated_tokens_with_price if token["token_info"]["mint_address"]}
+        addresses_without_price = [addr for addr in token_addresses if addr not in addresses_with_price]
+        
+        return {
+            "graduated_tokens": graduated_tokens_with_price,
+            "tokens_without_price_data": addresses_without_price,
+            "timeframe_hours": timeframe,
+            "start_time": start_time_str
+        }
+
     async def _execute_query(self, query: str, variables: Dict = None) -> Dict:
         """
         Execute a GraphQL query against the Bitquery API with improved error handling.
@@ -1071,6 +1266,22 @@ class PumpFunTokenAgent(MeshAgent):
                 return {"error": "Missing 'token_address' in tool_arguments"}
 
             result = await self.query_top_traders(token_address=token_address, limit=limit)
+            errors = self._handle_error(result)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": result}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
+            )
+            return {"response": explanation, "data": result}
+
+        elif tool_name == "query_latest_graduated_tokens":
+            timeframe = function_args.get("timeframe", 24)
+
+            result = await self.query_latest_graduated_tokens(timeframe=timeframe)
             errors = self._handle_error(result)
             if errors:
                 return errors
