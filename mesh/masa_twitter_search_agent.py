@@ -100,7 +100,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_twitter",
-                    "description": "Search on Twitter to identify what people are saying about a topic. The search term must be a single word or a short phrase, or an account name or hashtag. Never use a search term that is longer than 3 words. The results contain the tweet content and the impression metrics of the tweet.",
+                    "description": "Search on Twitter to identify what people are saying about a topic. The search term must be a single word or a short phrase, or an account name or hashtag. Never use a search term that is longer than 2 words. The results contain the tweet content and the impression metrics of the tweet.",
                     "parameters": {
                         "type": "object",
                         "properties": {
