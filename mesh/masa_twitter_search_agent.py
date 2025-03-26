@@ -25,7 +25,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can search Twitter through Masa API and analyze the results.",
+                "description": "This agent can search on Twitter through Masa API and analyze the results by identifying trending topics and sentiment related to a topic.",
                 "inputs": [
                     {
                         "name": "query",
@@ -38,7 +38,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                         "description": "Maximum number of results to return.",
                         "type": "int",
                         "required": False,
-                        "default": 100,
+                        "default": 25,
                     },
                     {
                         "name": "raw_data_only",
@@ -91,7 +91,6 @@ class MasaTwitterSearchAgent(MeshAgent):
     4. Sentiment trends if apparent from the content
 
     IMPORTANT:
-    - Respect user privacy by not emphasizing personal information
     - Do not make claims about data that isn't present in the search results
     - Keep responses concise and relevant"""
 
@@ -101,14 +100,14 @@ class MasaTwitterSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_twitter",
-                    "description": "Search Twitter for tweets containing specific keywords or phrases",
+                    "description": "Search on Twitter to identify what people are saying about a topic. The search term must be a single word or a short phrase, or an account name or hashtag. Never use a search term that is longer than 3 words. The results contain the tweet content and the impression metrics of the tweet.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "search_term": {"type": "string", "description": "The search term to find tweets"},
                             "max_results": {
                                 "type": "number",
-                                "description": "Maximum number of results to return (default: 100)",
+                                "description": "Maximum number of results to return (default: 25)",
                             },
                         },
                         "required": ["search_term"],
@@ -150,7 +149,7 @@ class MasaTwitterSearchAgent(MeshAgent):
     #                      MASA API-SPECIFIC METHODS
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=3600)
-    async def search_twitter(self, search_term: str, max_results: int = 100) -> dict:
+    async def search_twitter(self, search_term: str, max_results: int = 25) -> dict:
         try:
             # Note: The API still expects 'query' as the parameter name
             payload = {"query": search_term, "max_results": max_results}
@@ -202,7 +201,7 @@ class MasaTwitterSearchAgent(MeshAgent):
             metrics = metadata.get("public_metrics", {}) if metadata else {}
 
             formatted_tweet = {
-                "id": tweet.get("ExternalID"),
+                # "id": tweet.get("ExternalID"),
                 "content": tweet.get("Content"),
                 "created_at": created_at,
                 "language": metadata.get("lang") if metadata else None,
@@ -213,8 +212,8 @@ class MasaTwitterSearchAgent(MeshAgent):
                     "quotes": metrics.get("QuoteCount", 0),
                     "bookmarks": metrics.get("BookmarkCount", 0),
                 },
-                "author_id": metadata.get("user_id") if metadata else None,
-                "conversation_id": metadata.get("conversation_id") if metadata else None,
+                # "author_id": metadata.get("user_id") if metadata else None,
+                # "conversation_id": metadata.get("conversation_id") if metadata else None,
             }
 
             formatted_results["tweets"].append(formatted_tweet)
@@ -235,7 +234,7 @@ class MasaTwitterSearchAgent(MeshAgent):
 
         if tool_name == "search_twitter":
             search_term = function_args.get("search_term")
-            max_results = function_args.get("max_results", 100)
+            max_results = function_args.get("max_results", 25)
 
             if not search_term:
                 return {"error": "Missing 'search_term' in tool_arguments"}
@@ -288,7 +287,7 @@ class MasaTwitterSearchAgent(MeshAgent):
         if query:
             # For Twitter search, we'll directly map the query to the search_twitter tool
             # without requiring LLM to decide, since this is a specialized agent
-            search_args = {"search_term": query, "max_results": params.get("max_results", 100)}
+            search_args = {"search_term": query, "max_results": params.get("max_results", 25)}
 
             return await self._handle_tool_logic(
                 tool_name="search_twitter",
