@@ -223,10 +223,8 @@ Note: Currently only Solana chain is supported.
             logger.error(f"Unexpected error: {e}")
             return {"error": f"Unexpected error: {str(e)}"}
 
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
-        """Handle direct tool calls with proper error handling and response formatting"""
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
+        """Handle execution of specific tools and return the raw data"""
 
         if tool_name == "fetch_token_clusters":
             address = function_args.get("address")
@@ -258,18 +256,17 @@ Note: Currently only Solana chain is supported.
         if errors:
             return errors
 
-        if raw_data_only:
-            return {"response": "", "data": result}
-
-        explanation = await self._respond_with_llm(query=query, tool_call_id=tool_call_id, data=result, temperature=0.3)
-        return {"response": explanation, "data": result}
+        return result
 
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Handle both direct tool calls and natural language queries.
-        Either 'query' or 'tool' must be provided in params.
+        Either 'query' or 'tool' is required in params.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -280,13 +277,8 @@ Note: Currently only Solana chain is supported.
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -305,19 +297,23 @@ Note: Currently only Solana chain is supported.
             if not response:
                 return {"error": "Failed to process query"}
             if not response.get("tool_calls"):
+                # No tool calls => the LLM just answered
                 return {"response": response["content"], "data": {}}
 
+            # LLM provided a single tool call (or the first if multiple).
             tool_call = response["tool_calls"]
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.3
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

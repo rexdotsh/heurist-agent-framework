@@ -57,7 +57,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "examples": [
                     "Analyze trending tokens on Solana",
                     "Get token info for HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC",
-                    "Show top 10 most active tokens on Solana network"
+                    "Show top 10 most active tokens on Solana network",
                 ],
             }
         )
@@ -174,7 +174,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             return {"error": f"Failed to fetch top trending tokens: {str(e)}"}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """

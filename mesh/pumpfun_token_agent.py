@@ -907,10 +907,10 @@ class PumpFunTokenAgent(MeshAgent):
     async def query_latest_graduated_tokens(self, timeframe: int = 24) -> Dict:
         """
         Query tokens that have recently graduated on Pump.fun with their prices and market caps.
-        
+
         Args:
             timeframe (int): Number of hours to look back for graduated tokens
-            
+
         Returns:
             Dict: Dictionary containing graduated tokens with price and market cap data
         """
@@ -918,7 +918,7 @@ class PumpFunTokenAgent(MeshAgent):
         now = datetime.now(timezone.utc)
         start_time = datetime(now.year, now.month, now.day, 0, 0, 0, tzinfo=timezone.utc) - timedelta(hours=timeframe)
         start_time_str = start_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-        
+
         # First query to get graduated tokens
         graduated_query = """
         query ($since: DateTime!) {
@@ -958,27 +958,27 @@ class PumpFunTokenAgent(MeshAgent):
           }
         }
         """
-        
+
         variables = {"since": start_time_str}
-        
+
         first_result = await self._execute_query(graduated_query, variables)
-        
+
         if "data" not in first_result or "Solana" not in first_result["data"]:
             return {"graduated_tokens": [], "error": "Failed to fetch graduated tokens"}
-            
+
         # Extract token addresses from the first query
         graduated_pools = first_result["data"]["Solana"]["DEXPools"]
         token_addresses = []
-        
+
         for pool in graduated_pools:
             if "Pool" in pool and "Market" in pool["Pool"] and "BaseCurrency" in pool["Pool"]["Market"]:
                 mint_address = pool["Pool"]["Market"]["BaseCurrency"].get("MintAddress")
                 if mint_address:
                     token_addresses.append(mint_address)
-                    
+
         if not token_addresses:
             return {"graduated_tokens": [], "message": "No graduated tokens found in the specified timeframe"}
-            
+
         # Second query to get price data for the graduated tokens from pump swap dex
         price_query = """
         query ($since: DateTime!, $token_addresses: [String!]) {
@@ -988,7 +988,7 @@ class PumpFunTokenAgent(MeshAgent):
               orderBy: { descending: Trade_Buy_Price }
               where: {
                 Trade: {
-                  Dex: { 
+                  Dex: {
                     ProgramAddress: { in: ["pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"] }
                   },
                   Buy: {
@@ -1021,39 +1021,36 @@ class PumpFunTokenAgent(MeshAgent):
           }
         }
         """
-        
-        price_variables = {
-            "since": start_time_str,
-            "token_addresses": token_addresses
-        }
-        
+
+        price_variables = {"since": start_time_str, "token_addresses": token_addresses}
+
         second_result = await self._execute_query(price_query, price_variables)
-        
+
         if "data" not in second_result or "Solana" not in second_result["data"]:
             return {
                 "graduated_tokens": [],
                 "token_addresses": token_addresses,
-                "error": "Failed to fetch price data for graduated tokens"
+                "error": "Failed to fetch price data for graduated tokens",
             }
-            
+
         # Process and format the results
         price_trades = second_result["data"]["Solana"]["DEXTrades"]
         graduated_tokens_with_price = []
-        
+
         for trade in price_trades:
             if "Trade" in trade and "Buy" in trade["Trade"]:
                 buy = trade["Trade"]["Buy"]
                 price_usd = buy.get("PriceInUSD", 0)
-                
+
                 try:
                     price_usd_float = float(price_usd) if price_usd else 0
                     market_cap = price_usd_float * 1_000_000_000  # 1 billion as specified
                 except (ValueError, TypeError):
                     price_usd_float = 0
                     market_cap = 0
-                
+
                 currency = buy.get("Currency", {})
-                
+
                 token_data = {
                     "price_usd": price_usd_float,
                     "market_cap_usd": market_cap,
@@ -1063,20 +1060,24 @@ class PumpFunTokenAgent(MeshAgent):
                         "mint_address": currency.get("MintAddress", ""),
                         "decimals": currency.get("Decimals", 0),
                         "fungible": currency.get("Fungible", True),
-                        "uri": currency.get("Uri", "")
-                    }
+                        "uri": currency.get("Uri", ""),
+                    },
                 }
                 graduated_tokens_with_price.append(token_data)
-        
+
         # Find addresses that have graduated but don't have price data
-        addresses_with_price = {token["token_info"]["mint_address"] for token in graduated_tokens_with_price if token["token_info"]["mint_address"]}
+        addresses_with_price = {
+            token["token_info"]["mint_address"]
+            for token in graduated_tokens_with_price
+            if token["token_info"]["mint_address"]
+        }
         addresses_without_price = [addr for addr in token_addresses if addr not in addresses_with_price]
-        
+
         return {
             "graduated_tokens": graduated_tokens_with_price,
             "tokens_without_price_data": addresses_without_price,
             "timeframe_hours": timeframe,
-            "start_time": start_time_str
+            "start_time": start_time_str,
         }
 
     async def _execute_query(self, query: str, variables: Dict = None) -> Dict:
@@ -1123,7 +1124,7 @@ class PumpFunTokenAgent(MeshAgent):
             # Network-related errors
             raise Exception(f"Network error when calling Bitquery: {str(e)}")
         except Exception as e:
-            # Any other unexpected errors
+            # Unexpected errors
             raise Exception(f"Unexpected error during query execution: {str(e)}")
 
     def _handle_error(self, maybe_error: dict) -> dict:
@@ -1151,31 +1152,14 @@ class PumpFunTokenAgent(MeshAgent):
             temperature=temperature,
         )
 
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _execute_specific_tool(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        Process tool calls, handle errors/formatting, and optionally call the LLM to explain the result.
+        Execute a specific tool without LLM explanation. Used for direct tool calls.
         """
-        # Set temperature for explanation
-        temp_for_explanation = 0.7
-
         if tool_name == "query_recent_token_creation":
             interval = function_args.get("interval", "hours")
             offset = function_args.get("offset", 1)
-
-            result = await self.query_recent_token_creation(interval=interval, offset=offset)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_recent_token_creation(interval=interval, offset=offset)
 
         elif tool_name == "query_token_metrics":
             token_address = function_args.get("token_address")
@@ -1184,18 +1168,7 @@ class PumpFunTokenAgent(MeshAgent):
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
 
-            result = await self.query_token_metrics(token_address=token_address, quote_token=quote_token)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_token_metrics(token_address=token_address, quote_token=quote_token)
 
         elif tool_name == "query_token_holders":
             token_address = function_args.get("token_address")
@@ -1203,18 +1176,7 @@ class PumpFunTokenAgent(MeshAgent):
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
 
-            result = await self.query_token_holders(token_address=token_address)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_token_holders(token_address=token_address)
 
         elif tool_name == "query_token_buyers":
             token_address = function_args.get("token_address")
@@ -1223,18 +1185,7 @@ class PumpFunTokenAgent(MeshAgent):
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
 
-            result = await self.query_token_buyers(token_address=token_address, limit=limit)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_token_buyers(token_address=token_address, limit=limit)
 
         elif tool_name == "query_holder_status":
             token_address = function_args.get("token_address")
@@ -1245,18 +1196,7 @@ class PumpFunTokenAgent(MeshAgent):
             if not buyer_addresses:
                 return {"error": "Missing 'buyer_addresses' in tool_arguments"}
 
-            result = await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
 
         elif tool_name == "query_top_traders":
             token_address = function_args.get("token_address")
@@ -1265,34 +1205,11 @@ class PumpFunTokenAgent(MeshAgent):
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
 
-            result = await self.query_top_traders(token_address=token_address, limit=limit)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_top_traders(token_address=token_address, limit=limit)
 
         elif tool_name == "query_latest_graduated_tokens":
             timeframe = function_args.get("timeframe", 24)
-
-            result = await self.query_latest_graduated_tokens(timeframe=timeframe)
-            errors = self._handle_error(result)
-            if errors:
-                return errors
-
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+            return await self.query_latest_graduated_tokens(timeframe=timeframe)
 
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
@@ -1301,9 +1218,13 @@ class PumpFunTokenAgent(MeshAgent):
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -1314,13 +1235,12 @@ class PumpFunTokenAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            # Execute tool directly without LLM processing
+            data = await self._execute_specific_tool(tool_name=tool_name, function_args=tool_args)
+            errors = self._handle_error(data)
+            if errors:
+                return errors
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -1347,13 +1267,18 @@ class PumpFunTokenAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._execute_specific_tool(tool_name=tool_call_name, function_args=tool_call_args)
+            errors = self._handle_error(data)
+            if errors:
+                return errors
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

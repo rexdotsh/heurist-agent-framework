@@ -38,7 +38,14 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                         "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins.",
                         "type": "str",
                         "required": False,
-                    }
+                    },
+                    {
+                        "name": "raw_data_only",
+                        "description": "If true, return only raw data without natural language response",
+                        "type": "bool",
+                        "required": False,
+                        "default": False,
+                    },
                 ],
                 "outputs": [
                     {
@@ -588,13 +595,18 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via SmolaAgents for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
+        raw_data_only = params.get("raw_data_only", False)
         self.current_message = params
 
         try:
@@ -609,7 +621,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 elif tool_name == "get_token_info":
                     result = await self._get_token_info(tool_args["coingecko_id"])
                     if not isinstance(result, dict) or "error" not in result:
-                        print(f"Result of get_token_info: {result}")
                         result = self.format_token_info(result)
                 elif tool_name == "get_coingecko_id":
                     result = await self._get_coingecko_id(tool_args["token_name"])
@@ -632,7 +643,7 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 else:
                     return {"error": f"Unsupported tool: {tool_name}"}
 
-                # For direct tool calls, just return the data
+                # For direct tool calls, just return the data without LLM response
                 return {"response": "", "data": result}
 
             # ---------------------
@@ -650,11 +661,28 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                         - Keep response concise and focused on key insights
                         """
                 )
-                response_text = result.to_string()
 
+                tool_data = {}
+                for step in reversed(self.agent.memory.steps):
+                    if (
+                        hasattr(step, "tool_calls")
+                        and step.tool_calls
+                        and hasattr(step, "tool_outputs")
+                        and step.tool_outputs
+                    ):
+                        tool_data = step.tool_outputs[0]
+                        break
+                if raw_data_only and tool_data:
+                    logger.info("Returning raw tool data without LLM explanation")
+                    return {
+                        "response": "",
+                        "data": tool_data,
+                    }
+
+                response_text = result.to_string()
                 return {
                     "response": response_text,
-                    "data": {},
+                    "data": tool_data,
                 }
 
             # ---------------------

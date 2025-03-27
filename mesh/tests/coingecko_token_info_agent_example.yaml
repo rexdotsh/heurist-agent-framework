@@ -1,45 +1,104 @@
 input_by_id:
   query: Get information about MONA
 output_by_id:
-  response: "**Monavale (MONA)**\n- **Current Price:** $25.35\n- **Market Cap:** $263,449\n\
-    - **Market Cap Rank:** 5027\n- **Total Volume (24h):** $281.53\n- **24h High/Low:**\
-    \ $25.35 / $24.39\n- **Price Change (24h):** +$0.88 (3.60%)\n- **Circulating Supply:**\
-    \ 10,456.13 MONA\n- **Total Supply:** 11,300 MONA\n- **Max Supply:** 11,300 MONA\
-    \ \n\nMonavale has shown a positive price movement in the last 24 hours with a\
-    \ notable increase of 3.60%. Despite its lower market cap rank, it has a defined\
-    \ total and circulating supply which could be important for future evaluations."
+  response: '### Monavale (MONA) Insights
+
+    - **Current Price:** $23.96
+
+    - **Market Cap:** $250.5K
+
+    - **Fully Diluted Valuation:** $270.7K
+
+    - **24h Trading Volume:** $66.22
+
+
+    **Price Metrics:**
+
+    - **All-Time High:** $2,843.59 (decreased by 99.16% since March 20, 2021)
+
+    - **24h Price Range:** $23.18 - $24.27
+
+    - **24h Price Change:** -$0.14 (-0.60%)
+
+
+    **Supply Information:**
+
+    - **Total Supply:** 11,300 MONA
+
+    - **Circulating Supply:** 10,456.13 MONA
+
+
+    **Categories:** NFT, Metaverse, Polygon Ecosystem, Ethereum Ecosystem'
   data: {}
 input_by_name:
   query: analyze HEU
 output_by_name:
-  response: "**Heurist (HEU)**\n- **Current Price:** $0.0162\n- **Market Cap:** $1.9M\
-    \  \n- **Market Cap Rank:** 2774\n- **24h Trading Volume:** $71.4K  \n- **24h\
-    \ High/Low:** $0.0165 / $0.0153\n- **Price Change (24h):** +$0.00066 (+4.24%)\n\
-    - **Circulating Supply:** 117.0M HEU\n- **Total Supply:** 1.0B HEU\n\n**Insights:**\
-    \ Heurist is currently trading with a low market cap and has seen a moderate price\
-    \ increase in the last 24 hours. With its circulating supply being a significant\
-    \ portion of its total supply, any future price movements could be influenced\
-    \ by market demand."
+  response: '### Heurist (HEU) Analysis
+
+    - **Current Price:** $0.0165
+
+    - **Market Cap:** $1.96M
+
+    - **Market Cap Rank:** 2800
+
+    - **Total Volume (24h):** $91,105
+
+    - **All-Time High (ATH):** $0.4611 (achieved on December 28, 2024)
+
+    - **ATH Change Percentage:** -96.41%
+
+    - **24h Price Change:** -$0.0003 (-1.58%)
+
+    - **Supply Information:** 118,149,998 HEU circulating out of a total supply of
+    1,000,000,000 HEU
+
+
+    ### Categories:
+
+    - Artificial Intelligence (AI)
+
+    - Ethereum Ecosystem
+
+    - ZkSync Ecosystem
+
+    - DePIN
+
+    - Base Ecosystem
+
+    - AI Agents
+
+    - AI Framework
+
+    - Made in USA
+
+
+    ### Insights:
+
+    Heurist is currently ranked low in market capitalization, with a significant decline
+    from its all-time high, suggesting it may be undervalued or facing challenges
+    in gaining traction. Cognitive categories indicate potential growth in the AI
+    and Ethereum sectors. Monitoring price patterns and engagement within these ecosystems
+    could provide further investment insights.'
   data: {}
 input_by_trending:
   query: Get information about trending coins
 output_by_trending:
-  response: "### Trending Coins Insights\nHere are the current trending cryptocurrencies\
-    \ along with their market cap ranks and prices:\n\n1. **Bitcoin (BTC)**  \n  \
-    \ - **Market Cap Rank:** 1  \n   - **Price:** $85,897.48  \n\n2. **Ethereum (ETH)**\
-    \  \n   - **Market Cap Rank:** 2  \n   - **Price:** $2,013.77  \n\n3. **XRP (XRP)**\
-    \  \n   - **Market Cap Rank:** 4  \n   - **Price:** $2.45  \n\n4. **Pi Network\
-    \ (PI)**  \n   - **Market Cap Rank:** 21  \n   - **Price:** $1.18  \n\n5. **Sui\
-    \ (SUI)**  \n   - **Market Cap Rank:** 22  \n   - **Price:** $2.43  \n\n6. **Ondo\
-    \ (ONDO)**  \n   - **Market Cap Rank:** 48  \n   - **Price:** $0.87  \n\n7. **PancakeSwap\
-    \ (CAKE)**  \n   - **Market Cap Rank:** 109  \n   - **Price:** $2.54  \n\n8. **Plume\
-    \ (PLUME)**  \n   - **Market Cap Rank:** 154  \n   - **Price:** $0.22  \n\n9.\
-    \ **Tutorial (TUT)**  \n   - **Market Cap Rank:** 643  \n   - **Price:** $0.05\
-    \  \n\n10. **Koma Inu (KOMA)**  \n    - **Market Cap Rank:** 958  \n    - **Price:**\
-    \ $0.04  \n\n### Summary\nBitcoin and Ethereum remain dominant in the market,\
-    \ showcasing their stability and continued interest from investors. Other coins\
-    \ like Pi Network and Sui are gaining attention, indicating potential growth areas\
-    \ in the market."
+  response: "Here are the current trending coins:\n\n1. **Nillion (NIL)**  \n   -\
+    \ Market Cap Rank: 392  \n   - Price: $0.65  \n\n2. **Particle Network (PARTI)**\
+    \  \n   - Market Cap Rank: 512  \n   - Price: $0.36  \n\n3. **Cronos (CRO)** \
+    \ \n   - Market Cap Rank: 47  \n   - Price: $0.11  \n\n4. **Movement (MOVE)**\
+    \  \n   - Market Cap Rank: 76  \n   - Price: $0.55  \n\n5. **Pi Network (PI)**\
+    \  \n   - Market Cap Rank: 29  \n   - Price: $0.84  \n\n6. **Sonic (previously\
+    \ FTM) (S)**  \n   - Market Cap Rank: 64  \n   - Price: $0.62  \n\n7. **Berachain\
+    \ (BERA)**  \n   - Market Cap Rank: 100  \n   - Price: $7.90  \n\n8. **Solana\
+    \ (SOL)**  \n   - Market Cap Rank: 6  \n   - Price: $144.09  \n\n9. **Curve DAO\
+    \ (CRV)**  \n   - Market Cap Rank: 114  \n   - Price: $0.56  \n\n10. **Pepe (PEPE)**\
+    \  \n    - Market Cap Rank: 39  \n    - Price: $0.0000085\n\n### Key Insights:\n\
+    - **High Performer**: Solana (SOL) has a significantly higher price at $144.09,\
+    \ indicating strong market interest.\n- **Emerging Tokens**: Nillion (NIL) and\
+    \ Particle Network (PARTI) are gaining attention but have lower market caps.\n\
+    - **Diverse Price Range**: The prices range from less than a cent (Pepe) to over\
+    \ $7 (Berachain), showcasing varying investor interests."
   data: {}
 input_direct_tool:
   tool: get_token_info
@@ -54,16 +113,32 @@ output_direct_tool:
       name: Bitcoin
       symbol: BTC
       market_cap_rank: 1
-      current_price: 85845
-      market_cap: 1702696269673
-      total_volume: 38694633327
-      high_24h: 87431
-      low_24h: 83176
-      price_change_24h: 2532
-      price_change_percentage_24h: 3.03955
-      circulating_supply: 19839309.0
-      total_supply: 19839337.0
+      categories:
+      - Smart Contract Platform
+      - Layer 1 (L1)
+      - FTX Holdings
+      - Proof of Work (PoW)
+      - Bitcoin Ecosystem
+      - GMCI 30 Index
+      - GMCI Index
+      - Coinbase 50 Index
+    market_metrics:
+      current_price_usd: 87808
+      market_cap_usd: 1742726929256
+      fully_diluted_valuation_usd: 1742726929256
+      total_volume_usd: 28724526573
+    price_metrics:
+      ath_usd: 108786
+      ath_change_percentage: -19.22879
+      ath_date: '2025-01-20T09:11:54.494Z'
+      high_24h_usd: 88430
+      low_24h_usd: 86358
+      price_change_24h: 1249
+      price_change_percentage_24h: 1.44352
+    supply_info:
+      total_supply: 19842137.0
       max_supply: 21000000.0
+      circulating_supply: 19842137.0
 input_price_multi:
   tool: get_token_price_multi
   tool_arguments:
@@ -77,71 +152,52 @@ output_price_multi:
   data:
     price_data:
       bitcoin:
-        usd: 85839
-        usd_market_cap: 1702696269673.3582
-        usd_24h_vol: 38646179297.04689
-        usd_24h_change: 3.0323614891835136
+        usd: 87808
+        usd_market_cap: 1742726929255.6775
+        usd_24h_vol: 28579377573.10777
+        usd_24h_change: 1.4436369939917872
       ethereum:
-        usd: 2011.63
-        usd_market_cap: 243518829179.4357
-        usd_24h_vol: 21297943766.31841
-        usd_24h_change: 3.7109333094668564
+        usd: 2064.95
+        usd_market_cap: 249295998152.72043
+        usd_24h_vol: 11711801015.966518
+        usd_24h_change: 0.31551789254491036
       solana:
-        usd: 134.42
-        usd_market_cap: 68289937842.27508
-        usd_24h_vol: 4290256382.080711
-        usd_24h_change: 6.336729156910368
+        usd: 143.87
+        usd_market_cap: 73589671587.03325
+        usd_24h_vol: 4074030606.7474337
+        usd_24h_change: 2.809031777291209
 input_comparison:
   query: Compare Bitcoin and Ethereum
 output_comparison:
-  response: 'The agent encountered rate limiting issues and could only retrieve full
-    data for Bitcoin. However, here''s a comparison based on available information
-    and general knowledge:
+  response: 'Due to repeated API request failures, I am unable to provide real-time
+    price or market data for Bitcoin and Ethereum. However, I can offer a general
+    comparison based on publicly available knowledge:
 
 
-    **Bitcoin (BTC):**
+    *   **Bitcoin (BTC):** Primarily designed as a decentralized digital currency
+    and a store of value. It has a limited supply of 21 million coins. Its main use
+    case is peer-to-peer transactions.
+
+    *   **Ethereum (ETH):** A decentralized platform that enables the creation and
+    execution of smart contracts and decentralized applications (dApps). Ether (ETH)
+    is the cryptocurrency used on the Ethereum network. Ethereum''s use cases extend
+    beyond simple transactions, including DeFi, NFTs, and more.
 
 
-    *   **Purpose:** Primarily designed as a decentralized digital currency and store
-    of value.
-
-    *   **Market Cap:** $1.7 Trillion (Rank 1)
-
-    *   **Price:** $85,845
-
-    *   **24h Volume:** $38.7 Billion
-
-    *   **Supply:** Limited to 21 million. Circulating supply is currently 19.84 million.
-
-    *   **Technology:** First generation blockchain; focuses on security and decentralization.
+    **Key Distinctions (General):**
 
 
-    **Ethereum (ETH):**
+    *   **Purpose:** BTC is primarily a store of value and digital currency, while
+    ETH is a platform for decentralized applications.
+
+    *   **Technology:** BTC uses a proof-of-work (PoW) consensus mechanism. Ethereum
+    has transitioned to a proof-of-stake (PoS) consensus mechanism, which is more
+    energy-efficient.
+
+    *   **Supply:** BTC has a fixed supply of 21 million. ETH does not have a hard
+    cap on its supply, but its issuance rate is managed.
 
 
-    *   **Purpose:** A platform for decentralized applications (dApps) and smart contracts.
-    While also a cryptocurrency, its main strength lies in its utility.
-
-    *   **Technology:** Second generation blockchain; introduces smart contract functionality.
-
-
-    **Key Differences and Insights (Based on general knowledge):**
-
-
-    *   **Functionality:** Bitcoin''s primary use is as digital gold, while Ethereum
-    is a platform for a wide range of applications.
-
-    *   **Technology:** Bitcoin uses Proof-of-Work (PoW), consuming significant energy.
-    Ethereum has transitioned to Proof-of-Stake (PoS), which is more energy-efficient.
-
-    *   **Use Cases:** Bitcoin is largely for store of value and peer-to-peer payments.
-    Ethereum supports DeFi, NFTs, and other dApps.
-
-    *   **Supply:** While Bitcoin has a hard cap, Ethereum''s supply is not strictly
-    capped.
-
-
-    Unfortunately, due to API limitations, I can''t provide current price and market
-    cap data for Ethereum at this time. However, the high-level comparison above should
-    be helpful.'
+    For up-to-date information on prices, market capitalization, and other real-time
+    data, please consult reliable cryptocurrency data providers.'
   data: {}

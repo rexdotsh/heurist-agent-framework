@@ -217,7 +217,7 @@ class ExaSearchAgent(MeshAgent):
             return {"error": f"Failed to get answer: {str(e)}"}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         if tool_name == "exa_web_search":
