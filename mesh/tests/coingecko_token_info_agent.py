@@ -58,6 +58,41 @@ async def run_agent():
         agent_output_compare = await agent.handle_message(agent_input_compare)
         print(f"Result of token comparison query: {agent_output_compare}")
 
+        # NEW: Test with categories list
+        agent_input_categories = {"query": "List all cryptocurrency categories"}
+        agent_output_categories = await agent.handle_message(agent_input_categories)
+
+        # NEW: Test with category data
+        agent_input_category_data = {"query": "Show me market data for all cryptocurrency categories"}
+        agent_output_category_data = await agent.handle_message(agent_input_category_data)
+
+        # NEW: Test with tokens by category
+        agent_input_category_tokens = {"query": "Show me all tokens in the layer-1 category"}
+        agent_output_category_tokens = await agent.handle_message(agent_input_category_tokens)
+
+        # NEW: Test direct tool calls for each new category function
+        agent_input_direct_categories = {"tool": "get_categories_list", "tool_arguments": {}, "raw_data_only": True}
+        agent_output_direct_categories = await agent.handle_message(agent_input_direct_categories)
+
+        agent_input_direct_category_data = {
+            "tool": "get_category_data",
+            "tool_arguments": {"order": "market_cap_desc"},
+            "raw_data_only": True,
+        }
+        agent_output_direct_category_data = await agent.handle_message(agent_input_direct_category_data)
+
+        agent_input_direct_category_tokens = {
+            "tool": "get_tokens_by_category",
+            "tool_arguments": {
+                "category_id": "layer-1",
+                "vs_currency": "usd",
+                "order": "market_cap_desc",
+                "per_page": 10,
+                "page": 1,
+            },
+            "raw_data_only": True,
+        }
+
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
         base_filename = f"{current_file}_example"
@@ -76,6 +111,18 @@ async def run_agent():
             "output_price_multi": agent_output_price_multi,
             "input_comparison": agent_input_compare,
             "output_comparison": agent_output_compare,
+            # Updated Data
+            "input_categories_list": agent_input_categories,
+            "output_categories_list": agent_output_categories,
+            "input_category_data": agent_input_category_data,
+            "output_category_data": agent_output_category_data,
+            "input_category_tokens": agent_input_category_tokens,
+            "output_category_tokens": agent_output_category_tokens,
+            "input_direct_categories": agent_input_direct_categories,
+            "output_direct_categories": agent_output_direct_categories,
+            "input_direct_category_data": agent_input_direct_category_data,
+            "output_direct_category_data": agent_output_direct_category_data,
+            "input_direct_category_tokens": agent_input_direct_category_tokens,
         }
 
         with open(output_file, "w", encoding="utf-8") as f:

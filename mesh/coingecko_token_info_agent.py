@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import requests
 from dotenv import load_dotenv
@@ -28,17 +28,24 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
         self.metadata.update(
             {
                 "name": "CoinGecko Agent",
-                "version": "1.0.2",
+                "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can fetch token information, market data, and trending coins from CoinGecko.",
+                "description": "This agent can fetch token information, market data, trending coins, and category data from CoinGecko.",
                 "inputs": [
                     {
                         "name": "query",
                         "description": "Natural language query about a token (you can use the token name or symbol or ideally the CoinGecko ID if you have it, but NOT the token address), or a request for trending coins.",
                         "type": "str",
                         "required": False,
-                    }
+                    },
+                    {
+                        "name": "raw_data_only",
+                        "description": "If true, the agent will only return the raw or base structured data without additional LLM explanation.",
+                        "type": "bool",
+                        "required": False,
+                        "default": False,
+                    },
                 ],
                 "outputs": [
                     {
@@ -48,12 +55,12 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     },
                     {
                         "name": "data",
-                        "description": "Structured token information or trending coins data.",
+                        "description": "Structured token information, trending coins data, or category data.",
                         "type": "dict",
                     },
                 ],
                 "external_apis": ["Coingecko"],
-                "tags": ["Trading"],
+                "tags": ["Trading", "Data"],
                 "recommended": True,
                 "large_model_id": "google/gemini-2.0-flash-001",
                 "small_model_id": "google/gemini-2.0-flash-001",
@@ -63,6 +70,8 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     "24-hr price change of ETH",
                     "Get information about HEU",
                     "Analyze AI16Z token",
+                    "List crypto categories",
+                    "Compare DeFi tokens",
                 ],
             }
         )
@@ -79,6 +88,9 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             self.get_token_info_tool(),
             self.get_trending_coins_tool(),
             self.get_token_price_multi_tool(),
+            self.get_categories_list_tool(),
+            self.get_category_data_tool(),
+            self.get_tokens_by_category_tool(),
         ]
 
         max_steps = 6
@@ -101,13 +113,16 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
     def get_system_prompt(self) -> str:
         return """
     IDENTITY:
-    You are a crypto data specialist that can fetch token information from CoinGecko.
+    You are a crypto data specialist that can fetch token information and category data from CoinGecko.
 
     CAPABILITIES:
     - Search and retrieve token details
     - Get current trending coins
     - Analyze token market data
     - Compare multiple tokens using the token price multi tool
+    - List crypto categories
+    - Get tokens within specific categories
+    - Compare tokens across categories
 
     RESPONSE GUIDELINES:
     - Keep responses focused on what was specifically asked
@@ -116,16 +131,25 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
     DOMAIN-SPECIFIC RULES:
     For specific token queries, identify whether the user provided a CoinGecko ID directly or needs to search by token name or symbol. Coingecko ID is lowercase string and may contain dashes. If the user doesn't explicity say the input is the CoinGecko ID, you should use get_coingecko_id to search for the token. Do not make up CoinGecko IDs.
+
     For trending coins requests, use the get_trending_coins tool to fetch the current top trending cryptocurrencies.
+
     For token comparisons or when needing to fetch multiple token prices at once, use the get_token_price_multi tool which is more efficient than making multiple individual calls.
+
+    For category-related requests:
+    - Use get_categories_list to fetch all available categories
+    - Use get_category_data to get market data for all categories
+    - Use get_tokens_by_category to fetch tokens within a specific category
 
     When selecting tokens from search results, apply these criteria in order:
     1. First priority: Select the token where name or symbol perfectly matches the query
     2. If multiple matches exist, select the token with the highest market cap rank (lower number = higher rank)
     3. If market cap ranks are not available, prefer the token with the most complete information
 
+    For comparison queries across tokens or categories, extract the relevant metrics and provide a comparative analysis.
+
     IMPORTANT:
-    - Never invent or assume CoinGecko IDs
+    - Never invent or assume CoinGecko IDs or category IDs
     - Keep responses concise and relevant
     - Use multiple tool calls when needed to get comprehensive information"""
 
@@ -213,6 +237,91 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                             },
                         },
                         "required": ["ids", "vs_currencies"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_categories_list",
+                    "description": "Get a list of all available cryptocurrency categories from CoinGecko. This tool retrieves all the category IDs and names that can be used for further category-specific queries.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "required": [],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_category_data",
+                    "description": "Get market data for all cryptocurrency categories from CoinGecko. This tool retrieves comprehensive information about all categories including market cap, volume, market cap change, top coins in each category, and more.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "order": {
+                                "type": "string",
+                                "description": "Sort order for categories (default: market_cap_desc)",
+                                "enum": [
+                                    "market_cap_desc",
+                                    "market_cap_asc",
+                                    "name_desc",
+                                    "name_asc",
+                                    "market_cap_change_24h_desc",
+                                    "market_cap_change_24h_asc",
+                                ],
+                            }
+                        },
+                        "required": [],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_tokens_by_category",
+                    "description": "Get a list of tokens within a specific category. This tool retrieves token data for all cryptocurrencies that belong to a particular category, including price, market cap, volume, and price changes.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "category_id": {
+                                "type": "string",
+                                "description": "The CoinGecko category ID (e.g., 'layer-1')",
+                            },
+                            "vs_currency": {
+                                "type": "string",
+                                "description": "The currency to show results in (default: usd)",
+                                "default": "usd",
+                            },
+                            "order": {
+                                "type": "string",
+                                "description": "Sort order for tokens (default: market_cap_desc)",
+                                "enum": [
+                                    "market_cap_desc",
+                                    "market_cap_asc",
+                                    "volume_desc",
+                                    "volume_asc",
+                                    "id_asc",
+                                    "id_desc",
+                                ],
+                                "default": "market_cap_desc",
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "description": "Number of results per page (1-250, default: 100)",
+                                "default": 100,
+                                "minimum": 1,
+                                "maximum": 250,
+                            },
+                            "page": {
+                                "type": "integer",
+                                "description": "Page number (default: 1)",
+                                "default": 1,
+                                "minimum": 1,
+                            },
+                        },
+                        "required": ["category_id"],
                     },
                 },
             },
@@ -400,6 +509,95 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
         return get_token_price_multi
 
+    def get_categories_list_tool(self):
+        @tool
+        def get_categories_list() -> Dict[str, Any]:
+            """Get a list of all available cryptocurrency categories from CoinGecko.
+
+            Returns:
+                Dictionary with categories list or error message
+            """
+            logger.info("Getting categories list")
+            try:
+                response = requests.get(f"{self.api_url}/coins/categories/list", headers=self.headers)
+                response.raise_for_status()
+                return {"categories": response.json()}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting categories list: {e}")
+                return {"error": f"Failed to fetch categories list: {str(e)}"}
+
+        return get_categories_list
+
+    def get_category_data_tool(self):
+        @tool
+        def get_category_data(order: str = "market_cap_desc") -> Dict[str, Any]:
+            """Get market data for all cryptocurrency categories from CoinGecko.
+
+            Args:
+                order: Sort order for categories (default: market_cap_desc)
+
+            Returns:
+                Dictionary with category data or error message
+            """
+            logger.info(f"Getting category data with order: {order}")
+            try:
+                params = {}
+                if order:
+                    params["order"] = order
+
+                response = requests.get(f"{self.api_url}/coins/categories", headers=self.headers, params=params)
+                response.raise_for_status()
+                return {"category_data": response.json()}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting category data: {e}")
+                return {"error": f"Failed to fetch category data: {str(e)}"}
+
+        return get_category_data
+
+    def get_tokens_by_category_tool(self):
+        @tool
+        def get_tokens_by_category(
+            category_id: str,
+            vs_currency: str = "usd",
+            order: str = "market_cap_desc",
+            per_page: int = 100,
+            page: int = 1,
+        ) -> Dict[str, Any]:
+            """Get a list of tokens within a specific category.
+
+            Args:
+                category_id: The CoinGecko category ID (e.g., 'layer-1')
+                vs_currency: The currency to show results in (default: usd)
+                order: Sort order for tokens (default: market_cap_desc)
+                per_page: Number of results per page (1-250, default: 100)
+                page: Page number (default: 1)
+
+            Returns:
+                Dictionary with category tokens or error message
+            """
+            logger.info(f"Getting tokens for category: {category_id}")
+            try:
+                params = {
+                    "vs_currency": vs_currency,
+                    "category": category_id,
+                    "order": order,
+                    "per_page": per_page,
+                    "page": page,
+                    "sparkline": "false",
+                }
+
+                response = requests.get(f"{self.api_url}/coins/markets", headers=self.headers, params=params)
+                response.raise_for_status()
+                return {"category_tokens": {"category_id": category_id, "tokens": response.json()}}
+
+            except requests.RequestException as e:
+                logger.error(f"Error getting tokens for category: {e}")
+                return {"error": f"Failed to fetch tokens for category '{category_id}': {str(e)}"}
+
+        return get_tokens_by_category
+
     async def select_best_token_match(self, search_results: Dict, query: str) -> str:
         """
         Select best matching token using the following criteria:
@@ -520,36 +718,58 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             logger.error(f"Error: {e}")
             return {"error": f"Failed to fetch token info: {str(e)}"}
 
-    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
-    async def _get_token_price_multi(
-        self,
-        ids: str,
-        vs_currencies: str,
-        include_market_cap: bool = False,
-        include_24hr_vol: bool = False,
-        include_24hr_change: bool = False,
-        include_last_updated_at: bool = False,
-        precision: str = None,
-    ) -> dict:
+    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
+    async def _get_categories_list(self) -> dict:
+        """Get a list of all CoinGecko categories"""
         try:
-            params = {
-                "ids": ids,
-                "vs_currencies": vs_currencies,
-                "include_market_cap": str(include_market_cap).lower(),
-                "include_24hr_vol": str(include_24hr_vol).lower(),
-                "include_24hr_change": str(include_24hr_change).lower(),
-                "include_last_updated_at": str(include_last_updated_at).lower(),
-            }
-
-            if precision:
-                params["precision"] = precision
-
-            response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+            response = requests.get(f"{self.api_url}/coins/categories/list", headers=self.headers)
             response.raise_for_status()
-            return response.json()
+            return {"categories": response.json()}
         except requests.RequestException as e:
             logger.error(f"Error: {e}")
-            return {"error": f"Failed to fetch multi-token price data: {str(e)}"}
+            return {"error": f"Failed to fetch categories list: {str(e)}"}
+
+    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
+    async def _get_category_data(self, order: Optional[str] = "market_cap_desc") -> dict:
+        """Get market data for all cryptocurrency categories"""
+        try:
+            params = {}
+            if order:
+                params["order"] = order
+
+            response = requests.get(f"{self.api_url}/coins/categories", headers=self.headers, params=params)
+            response.raise_for_status()
+            return {"category_data": response.json()}
+        except requests.RequestException as e:
+            logger.error(f"Error: {e}")
+            return {"error": f"Failed to fetch category data: {str(e)}"}
+
+    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
+    async def _get_tokens_by_category(
+        self,
+        category_id: str,
+        vs_currency: str = "usd",
+        order: str = "market_cap_desc",
+        per_page: int = 100,
+        page: int = 1,
+    ) -> dict:
+        """Get tokens within a specific category"""
+        try:
+            params = {
+                "vs_currency": vs_currency,
+                "category": category_id,
+                "order": order,
+                "per_page": per_page,
+                "page": page,
+                "sparkline": "false",
+            }
+
+            response = requests.get(f"{self.api_url}/coins/markets", headers=self.headers, params=params)
+            response.raise_for_status()
+            return {"category_tokens": {"category_id": category_id, "tokens": response.json()}}
+        except requests.RequestException as e:
+            logger.error(f"Error: {e}")
+            return {"error": f"Failed to fetch tokens for category '{category_id}': {str(e)}"}
 
     def format_token_info(self, data: Dict) -> Dict:
         """Format token information in a structured way"""
@@ -584,17 +804,44 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             },
         }
 
+    async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
+        """
+        Reusable helper to ask the LLM to generate a user-friendly explanation
+        given a piece of data from a tool call.
+        """
+        return await call_llm_async(
+            base_url=self.heurist_base_url,
+            api_key=self.heurist_api_key,
+            model_id=self.metadata["large_model_id"],
+            messages=[
+                {"role": "system", "content": self.get_system_prompt()},
+                {"role": "user", "content": query},
+                {"role": "tool", "content": str(data), "tool_call_id": tool_call_id},
+            ],
+            temperature=temperature,
+        )
+
+    def _handle_error(self, maybe_error: dict) -> dict:
+        """
+        Small helper to return the error if present in
+        a dictionary with the 'error' key.
+        """
+        if "error" in maybe_error:
+            return {"error": maybe_error["error"]}
+        return {}
+
     @monitor_execution()
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via SmolaAgents for dynamic tool selection.
+        - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
+        - If 'query' is provided, route via SmolaAgents for dynamic tool selection.
         """
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
+        raw_data_only = params.get("raw_data_only", False)
         self.current_message = params
 
         try:
@@ -609,7 +856,6 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                 elif tool_name == "get_token_info":
                     result = await self._get_token_info(tool_args["coingecko_id"])
                     if not isinstance(result, dict) or "error" not in result:
-                        print(f"Result of get_token_info: {result}")
                         result = self.format_token_info(result)
                 elif tool_name == "get_coingecko_id":
                     result = await self._get_coingecko_id(tool_args["token_name"])
@@ -629,10 +875,30 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
                     )
                     if "error" not in result:
                         result = {"price_data": result}
+                elif tool_name == "get_categories_list":
+                    result = await self._get_categories_list()
+                elif tool_name == "get_category_data":
+                    order = tool_args.get("order", "market_cap_desc")
+                    result = await self._get_category_data(order)
+                elif tool_name == "get_tokens_by_category":
+                    category_id = tool_args["category_id"]
+                    vs_currency = tool_args.get("vs_currency", "usd")
+                    order = tool_args.get("order", "market_cap_desc")
+                    per_page = tool_args.get("per_page", 100)
+                    page = tool_args.get("page", 1)
+                    result = await self._get_tokens_by_category(category_id, vs_currency, order, per_page, page)
                 else:
                     return {"error": f"Unsupported tool: {tool_name}"}
 
-                # For direct tool calls, just return the data
+                if raw_data_only:
+                    return {"response": "", "data": result}
+                if query:
+                    explanation = await self._respond_with_llm(
+                        query=query, tool_call_id="direct_tool", data=result, temperature=0.7
+                    )
+                    return {"response": explanation, "data": result}
+
+                # For direct tool calls without query, just return the data
                 return {"response": "", "data": result}
 
             # ---------------------
