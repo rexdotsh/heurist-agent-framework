@@ -548,7 +548,17 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
                 response = requests.get(f"{self.api_url}/coins/categories", headers=self.headers, params=params)
                 response.raise_for_status()
-                return {"category_data": response.json()}
+
+                category_data = response.json()
+                for category in category_data:
+                    if "top_3_coins" in category:
+                        del category["top_3_coins"]
+                    if "updated_at" in category:
+                        del category["updated_at"]
+                    if "top_3_coins_id" in category:
+                        del category["top_3_coins_id"]
+
+                return {"category_data": category_data}
 
             except requests.RequestException as e:
                 logger.error(f"Error getting category data: {e}")
@@ -739,7 +749,18 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
 
             response = requests.get(f"{self.api_url}/coins/categories", headers=self.headers, params=params)
             response.raise_for_status()
-            return {"category_data": response.json()}
+
+            # Process the response to remove specified fields
+            category_data = response.json()
+            for category in category_data:
+                if "top_3_coins" in category:
+                    del category["top_3_coins"]
+                if "updated_at" in category:
+                    del category["updated_at"]
+                if "top_3_coins_id" in category:
+                    del category["top_3_coins_id"]
+
+            return {"category_data": category_data}
         except requests.RequestException as e:
             logger.error(f"Error: {e}")
             return {"error": f"Failed to fetch category data: {str(e)}"}
