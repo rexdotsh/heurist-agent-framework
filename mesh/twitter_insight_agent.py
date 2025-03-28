@@ -1,8 +1,6 @@
-import asyncio
 import json
 import logging
 import os
-import time
 from typing import Any, Dict, List
 
 import aiohttp
@@ -17,37 +15,16 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 
-class RateLimiter:
-    """Simple rate limiter to ensure minimum time between API calls"""
-
-    def __init__(self, min_interval=5.0):
-        self.min_interval = min_interval
-        self.last_call_time = 0
-
-    async def wait(self):
-        """Wait if needed to maintain minimum interval between calls"""
-        now = time.time()
-        elapsed = now - self.last_call_time
-
-        if elapsed < self.min_interval and self.last_call_time > 0:
-            wait_time = self.min_interval - elapsed
-            logger.info(f"Rate limiting: Waiting {wait_time:.2f} seconds before next API call")
-            await asyncio.sleep(wait_time)
-
-        self.last_call_time = time.time()
-
-
-class MoniTwitterProfileAgent(MeshAgent):
+class TwitterInsightAgent(MeshAgent):
     def __init__(self):
         super().__init__()
         self.session = None
         self.base_url = "https://api.discover.getmoni.io"
         self.api_key = os.getenv("MONI_API_KEY")
-        self.rate_limiter = RateLimiter(min_interval=5.0)
 
         self.metadata.update(
             {
-                "name": "Moni Twitter Intelligence Agent",
+                "name": "Moni Twitter Insight Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
@@ -81,7 +58,12 @@ class MoniTwitterProfileAgent(MeshAgent):
                 ],
                 "external_apis": ["Moni"],
                 "tags": ["Twitter", "Social Media", "Intelligence"],
-                "image_url": "",  # use moni logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Moni.png",
+                "examples": [
+                    "Show me the follower growth trends for heurist_ai over the last week",
+                    "What categories of followers does heurist_ai have",
+                    "Show me the recent smart mentions for ethereum",
+                ],
             }
         )
 
@@ -105,9 +87,7 @@ class MoniTwitterProfileAgent(MeshAgent):
         You are a Twitter intelligence specialist that can analyze Twitter accounts and mentions.
 
         CAPABILITIES:
-        - Analyze Twitter profiles to understand their audience, engagement, and influence
         - Track smart follower metrics and trends for any Twitter account
-        - Monitor mentions of specific accounts over time
         - Analyze smart followers by categories
         - Provide insights on Twitter account feed and smart mentions
 
@@ -116,7 +96,6 @@ class MoniTwitterProfileAgent(MeshAgent):
         - Highlight key trends and patterns
         - Format numbers in a readable way (e.g., "2.5K followers" instead of "2500 followers")
         - Provide concise, actionable insights
-        - For account analysis, focus on audience quality, engagement patterns, and growth trends
 
         IMPORTANT:
         - Always ensure you have a valid Twitter username (without the @ symbol)
@@ -127,23 +106,6 @@ class MoniTwitterProfileAgent(MeshAgent):
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_smart_profile",
-                    "description": "Get detailed information about a Twitter account including profile data and smart metrics",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "username": {
-                                "type": "string",
-                                "description": "Twitter username without the @ symbol",
-                            }
-                        },
-                        "required": ["username"],
-                    },
-                },
-            },
             {
                 "type": "function",
                 "function": {
@@ -170,29 +132,6 @@ class MoniTwitterProfileAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "get_smart_mentions_history",
-                    "description": "Get historical data on smart mentions count for a Twitter account",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "username": {
-                                "type": "string",
-                                "description": "Twitter username without the @ symbol",
-                            },
-                            "timeframe": {
-                                "type": "string",
-                                "description": "Time range for the data (H1=Last hour, H24=Last 24 hours, D7=Last 7 days, D30=Last 30 days, Y1=Last year)",
-                                "enum": ["H1", "H24", "D7", "D30", "Y1"],
-                                "default": "H24",
-                            },
-                        },
-                        "required": ["username"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
                     "name": "get_smart_followers_categories",
                     "description": "Get categories of smart followers for a Twitter account",
                     "parameters": {
@@ -202,45 +141,6 @@ class MoniTwitterProfileAgent(MeshAgent):
                                 "type": "string",
                                 "description": "Twitter username without the @ symbol",
                             }
-                        },
-                        "required": ["username"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_smart_followers_full",
-                    "description": "Get detailed information about all smart followers of a Twitter account",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "username": {
-                                "type": "string",
-                                "description": "Twitter username without the @ symbol",
-                            },
-                            "limit": {
-                                "type": "integer",
-                                "description": "Maximum number of items to return",
-                                "default": 100,
-                            },
-                            "offset": {
-                                "type": "integer",
-                                "description": "Starting index of the first followers to return",
-                                "default": 0,
-                            },
-                            "orderBy": {
-                                "type": "string",
-                                "description": "Sorting criteria for followers",
-                                "enum": ["CREATED_AT", "SCORE", "FOLLOWERS_COUNT", "SMART_FOLLOWERS_COUNT"],
-                                "default": "CREATED_AT",
-                            },
-                            "orderByDirection": {
-                                "type": "string",
-                                "description": "Sorting direction",
-                                "enum": ["ASC", "DESC"],
-                                "default": "DESC",
-                            },
                         },
                         "required": ["username"],
                     },
@@ -271,23 +171,6 @@ class MoniTwitterProfileAgent(MeshAgent):
                                 "type": "integer",
                                 "description": "Unix timestamp of the most recent post to include",
                             },
-                        },
-                        "required": ["username"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_account_full_info",
-                    "description": "Get full information about a Twitter account",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "username": {
-                                "type": "string",
-                                "description": "Twitter username without the @ symbol",
-                            }
                         },
                         "required": ["username"],
                     },
@@ -336,37 +219,6 @@ class MoniTwitterProfileAgent(MeshAgent):
 
     @with_cache(ttl_seconds=3600)  # Cache for 1 hour
     @with_retry(max_retries=3)
-    async def get_smart_profile(self, username: str) -> Dict:
-        """Get detailed profile information for a Twitter account"""
-        should_close = False
-        if not self.session:
-            self.session = aiohttp.ClientSession()
-            should_close = True
-
-        try:
-            await self.rate_limiter.wait()
-
-            clean_username = self._clean_username(username)
-            url = f"{self.base_url}/api/v2/twitters/{clean_username}/info/full/"
-
-            headers = {"accept": "application/json", "Api-Key": self.api_key}
-
-            async with self.session.get(url, headers=headers) as response:
-                if response.status != 200:
-                    return {"error": f"Failed to get profile for {clean_username}: {response.status}"}
-
-                data = await response.json()
-                return data
-        except Exception as e:
-            logger.error(f"Error getting smart profile: {str(e)}")
-            return {"error": f"Failed to fetch smart profile: {str(e)}"}
-        finally:
-            if should_close and self.session:
-                await self.session.close()
-                self.session = None
-
-    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
-    @with_retry(max_retries=3)
     async def get_smart_followers_history(self, username: str, timeframe: str = "D7") -> Dict:
         """Get historical data on smart followers count"""
         should_close = False
@@ -375,8 +227,6 @@ class MoniTwitterProfileAgent(MeshAgent):
             should_close = True
 
         try:
-            await self.rate_limiter.wait()
-
             clean_username = self._clean_username(username)
             url = f"{self.base_url}/api/v2/twitters/{clean_username}/history/smart_followers_count/"
             params = {"timeframe": timeframe}
@@ -399,39 +249,6 @@ class MoniTwitterProfileAgent(MeshAgent):
 
     @with_cache(ttl_seconds=3600)  # Cache for 1 hour
     @with_retry(max_retries=3)
-    async def get_smart_mentions_history(self, username: str, timeframe: str = "H24") -> Dict:
-        """Get historical data on smart mentions count"""
-        should_close = False
-        if not self.session:
-            self.session = aiohttp.ClientSession()
-            should_close = True
-
-        try:
-            await self.rate_limiter.wait()
-
-            clean_username = self._clean_username(username)
-            url = f"{self.base_url}/api/v2/twitters/{clean_username}/history/smart_mentions_count/"
-
-            params = {"timeframe": timeframe}
-
-            headers = {"accept": "application/json", "Api-Key": self.api_key}
-
-            async with self.session.get(url, headers=headers, params=params) as response:
-                if response.status != 200:
-                    return {"error": f"Failed to get mentions history for {clean_username}: {response.status}"}
-
-                data = await response.json()
-                return data
-        except Exception as e:
-            logger.error(f"Error getting smart mentions history: {str(e)}")
-            return {"error": f"Failed to fetch smart mentions history: {str(e)}"}
-        finally:
-            if should_close and self.session:
-                await self.session.close()
-                self.session = None
-
-    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
-    @with_retry(max_retries=3)
     async def get_smart_followers_categories(self, username: str) -> Dict:
         """Get categories of smart followers"""
         should_close = False
@@ -440,8 +257,6 @@ class MoniTwitterProfileAgent(MeshAgent):
             should_close = True
 
         try:
-            await self.rate_limiter.wait()
-
             clean_username = self._clean_username(username)
             url = f"{self.base_url}/api/v2/twitters/{clean_username}/smart_followers/categories/"
 
@@ -461,45 +276,6 @@ class MoniTwitterProfileAgent(MeshAgent):
                 await self.session.close()
                 self.session = None
 
-    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
-    @with_retry(max_retries=3)
-    async def get_smart_followers_full(
-        self,
-        username: str,
-        limit: int = 100,
-        offset: int = 0,
-        orderBy: str = "CREATED_AT",
-        orderByDirection: str = "DESC",
-    ) -> Dict:
-        """Get detailed information about all smart followers"""
-        should_close = False
-        if not self.session:
-            self.session = aiohttp.ClientSession()
-            should_close = True
-
-        try:
-            await self.rate_limiter.wait()
-
-            clean_username = self._clean_username(username)
-            url = f"{self.base_url}/api/v2/twitters/{clean_username}/smart_followers/full/"
-            params = {"limit": limit, "offset": offset, "orderBy": orderBy, "orderByDirection": orderByDirection}
-
-            headers = {"accept": "application/json", "Api-Key": self.api_key}
-
-            async with self.session.get(url, headers=headers, params=params) as response:
-                if response.status != 200:
-                    return {"error": f"Failed to get full follower data for {clean_username}: {response.status}"}
-
-                data = await response.json()
-                return data
-        except Exception as e:
-            logger.error(f"Error getting smart followers full data: {str(e)}")
-            return {"error": f"Failed to fetch smart followers full data: {str(e)}"}
-        finally:
-            if should_close and self.session:
-                await self.session.close()
-                self.session = None
-
     @with_cache(ttl_seconds=1800)  # Cache for 30 minutes
     @with_retry(max_retries=3)
     async def get_smart_mentions_feed(
@@ -512,8 +288,6 @@ class MoniTwitterProfileAgent(MeshAgent):
             should_close = True
 
         try:
-            await self.rate_limiter.wait()
-
             clean_username = self._clean_username(username)
             url = f"{self.base_url}/api/v2/twitters/{clean_username}/feed/smart_mentions/"
 
@@ -539,37 +313,6 @@ class MoniTwitterProfileAgent(MeshAgent):
                 await self.session.close()
                 self.session = None
 
-    @with_cache(ttl_seconds=3600)  # Cache for 1 hour
-    @with_retry(max_retries=3)
-    async def get_account_full_info(self, username: str) -> Dict:
-        """Get full account information"""
-        should_close = False
-        if not self.session:
-            self.session = aiohttp.ClientSession()
-            should_close = True
-
-        try:
-            await self.rate_limiter.wait()
-
-            clean_username = self._clean_username(username)
-            url = f"{self.base_url}/api/v2/twitters/{clean_username}/info/full/"
-
-            headers = {"accept": "application/json", "Api-Key": self.api_key}
-
-            async with self.session.get(url, headers=headers) as response:
-                if response.status != 200:
-                    return {"error": f"Failed to get full info for {clean_username}: {response.status}"}
-
-                data = await response.json()
-                return data
-        except Exception as e:
-            logger.error(f"Error getting account full info: {str(e)}")
-            return {"error": f"Failed to fetch account full info: {str(e)}"}
-        finally:
-            if should_close and self.session:
-                await self.session.close()
-                self.session = None
-
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
@@ -585,29 +328,16 @@ class MoniTwitterProfileAgent(MeshAgent):
             return {"error": "Username is required for all Twitter intelligence tools"}
 
         # Call the appropriate tool based on tool_name
-        if tool_name == "get_smart_profile":
-            result = await self.get_smart_profile(username)
-        elif tool_name == "get_smart_followers_history":
+        if tool_name == "get_smart_followers_history":
             timeframe = function_args.get("timeframe", "D7")
             result = await self.get_smart_followers_history(username, timeframe)
-        elif tool_name == "get_smart_mentions_history":
-            timeframe = function_args.get("timeframe", "H24")
-            result = await self.get_smart_mentions_history(username, timeframe)
         elif tool_name == "get_smart_followers_categories":
             result = await self.get_smart_followers_categories(username)
-        elif tool_name == "get_smart_followers_full":
-            limit = function_args.get("limit", 100)
-            offset = function_args.get("offset", 0)
-            orderBy = function_args.get("orderBy", "CREATED_AT")
-            orderByDirection = function_args.get("orderByDirection", "DESC")
-            result = await self.get_smart_followers_full(username, limit, offset, orderBy, orderByDirection)
         elif tool_name == "get_smart_mentions_feed":
             limit = function_args.get("limit", 100)
             fromDate = function_args.get("fromDate", None)
             toDate = function_args.get("toDate", None)
             result = await self.get_smart_mentions_feed(username, limit, fromDate, toDate)
-        elif tool_name == "get_account_full_info":
-            result = await self.get_account_full_info(username)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 
