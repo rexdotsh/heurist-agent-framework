@@ -106,6 +106,31 @@ async def run_agent():
         print("Direct tool call result for token buyers:")
         print(yaml.dump(buyers_direct_output, allow_unicode=True, sort_keys=False))
 
+        # Test top traders functionality
+        test_token = "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"  # Example token address
+        print("\nTesting top traders functionality:")
+        
+        # Test via natural language query
+        traders_input = {
+            "query": f"List the top traders of {test_token}"
+        }
+        traders_output = await agent.handle_message(traders_input)
+        print("Natural language query result for top traders:")
+        print(yaml.dump(traders_output, allow_unicode=True, sort_keys=False))
+        
+        # Test via direct tool call
+        traders_direct_input = {
+            "tool": "query_top_traders",
+            "tool_arguments": {
+                "token_address": test_token,
+                "limit": 100
+            },
+            "raw_data_only": True
+        }
+        traders_direct_output = await agent.handle_message(traders_direct_input)
+        print("Direct tool call result for top traders:")
+        print(yaml.dump(traders_direct_output, allow_unicode=True, sort_keys=False))
+
         # Test with a query for trending tokens
         agent_input_trending = {"query": "Get trending tokens"}
         agent_output_trending = await agent.handle_message(agent_input_trending)
@@ -163,6 +188,16 @@ async def run_agent():
                 "direct_tool_call": {
                     "input": buyers_direct_input,
                     "output": buyers_direct_output
+                }
+            },
+            "top_traders": {
+                "natural_language_query": {
+                    "input": traders_input,
+                    "output": traders_output
+                },
+                "direct_tool_call": {
+                    "input": traders_direct_input,
+                    "output": traders_direct_output
                 }
             },
             "input_trending": agent_input_trending,

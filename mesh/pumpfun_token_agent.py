@@ -26,7 +26,7 @@ class PumpFunTokenAgent(MeshAgent):
                 "name": "PumpFun Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
-                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, and top traders data.",
+                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, and liquidity data.",
                 "inputs": [
                     {
                         "name": "query",
@@ -55,7 +55,6 @@ class PumpFunTokenAgent(MeshAgent):
                 "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Pumpfun.png",
                 "examples": [
                     "Latest token launched on Pump.fun in the last 24 hours",
-                    "List the top traders of token 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
                 ],
             }
         )
@@ -143,21 +142,6 @@ class PumpFunTokenAgent(MeshAgent):
                             },
                         },
                         "required": ["token_address", "buyer_addresses"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "query_top_traders",
-                    "description": "Fetch top traders for a specific token",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "number", "description": "Number of traders to fetch", "default": 100},
-                        },
-                        "required": ["token_address"],
                     },
                 },
             },
@@ -377,98 +361,6 @@ class PumpFunTokenAgent(MeshAgent):
             "summary": status_counts,
             "total_addresses_checked": len(buyer_addresses),
         }
-
-    @monitor_execution()
-    @with_cache(ttl_seconds=300)
-    @with_retry(max_retries=3)
-    async def query_top_traders(self, token_address: str, limit: int = 100) -> Dict:
-        """
-        Query top traders for a specific token on Pump Fun DEX.
-
-        Args:
-            token_address (str): The mint address of the token
-            limit (int): Number of traders to return
-
-        Returns:
-            Dict: Dictionary containing top trader information
-        """
-        # Directly query for top traders, without relying on Markets query
-        query = """
-        query ($token: String!, $limit: Int!) {
-          Solana {
-            DEXTradeByTokens(
-              orderBy: {descendingByField: "volumeUsd"}
-              limit: {count: $limit}
-              where: {
-                Trade: {
-                  Currency: {
-                    MintAddress: {is: $token}
-                  }
-                },
-                Transaction: {
-                  Result: {Success: true}
-                }
-              }
-            ) {
-              Trade {
-                Account {
-                  Owner
-                }
-                Side {
-                  Account {
-                    Address
-                  }
-                  Currency {
-                    Symbol
-                  }
-                }
-              }
-              bought: sum(of: Trade_Amount)
-              sold: sum(of: Trade_Amount)
-              volume: sum(of: Trade_Amount)
-              volumeUsd: sum(of: Trade_Side_AmountInUSD)
-              count: count
-            }
-          }
-        }
-        """
-
-        variables = {"token": token_address, "limit": limit}
-
-        result = await self._execute_query(query, variables)
-
-        if "data" in result and "Solana" in result["data"]:
-            trades = result["data"]["Solana"]["DEXTradeByTokens"]
-            formatted_traders = []
-
-            for trade in trades:
-                buy_sell_ratio = 0
-                if float(trade["sold"]) > 0:
-                    buy_sell_ratio = float(trade["bought"]) / float(trade["sold"])
-
-                formatted_trader = {
-                    "owner": trade["Trade"]["Account"]["Owner"],
-                    "bought": trade["bought"],
-                    "sold": trade["sold"],
-                    "buy_sell_ratio": buy_sell_ratio,
-                    "total_volume": trade["volume"],
-                    "volume_usd": trade["volumeUsd"],
-                    "transaction_count": trade["count"],
-                    "side_currency_symbol": trade["Trade"]["Side"]["Currency"]["Symbol"]
-                    if "Currency" in trade["Trade"]["Side"]
-                    else "Unknown",
-                }
-                formatted_traders.append(formatted_trader)
-
-            # We can't get market information since the Markets query is failing
-            result_with_info = {
-                "traders": formatted_traders,
-                "markets": [],  # Empty list since we can't query markets
-            }
-
-            return result_with_info
-
-        return {"traders": [], "markets": []}
 
     @monitor_execution()
     @with_cache(ttl_seconds=300)
@@ -740,15 +632,6 @@ class PumpFunTokenAgent(MeshAgent):
                 return {"error": "Missing 'buyer_addresses' in tool_arguments"}
 
             return await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
-
-        elif tool_name == "query_top_traders":
-            token_address = function_args.get("token_address")
-            limit = function_args.get("limit", 100)
-
-            if not token_address:
-                return {"error": "Missing 'token_address' in tool_arguments"}
-
-            return await self.query_top_traders(token_address=token_address, limit=limit)
 
         elif tool_name == "query_latest_graduated_tokens":
             timeframe = function_args.get("timeframe", 24)
