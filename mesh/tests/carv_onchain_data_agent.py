@@ -16,7 +16,7 @@ async def run_agent():
     agent = CarvOnchainDataAgent()
     try:
         # Test with a natural language query
-        ethereum_query = {"query": "What's the most active address on Ethereum during the last 24 hours?"}
+        ethereum_query = {"query": "Identify the biggest transaction of ETH in the past 30 days"}
         ethereum_result = await agent.handle_message(ethereum_query)
         print(f"Ethereum Query Result: {ethereum_result}")
 
@@ -24,8 +24,8 @@ async def run_agent():
         direct_input = {
             "tool": "query_onchain_data",
             "tool_arguments": {
-                "blockchain": "solana",
-                "query": "What's the most active address on Bitcoin during the last 24 hours?",
+                "blockchain": "bitcoin",
+                "query": "How many Bitcoins have been mined since the beginning of 2025?",
             },
         }
         direct_result = await agent.handle_message(direct_input)
@@ -33,7 +33,7 @@ async def run_agent():
 
         # Test with raw data only
         raw_input = {
-            "query": "What's the most active address on Solana during the last 24 hours?",
+            "query": "What are the top 5 most popular smart contracts on Ethereum in the past 30 days?",
             "raw_data_only": True,
         }
         raw_result = await agent.handle_message(raw_input)
