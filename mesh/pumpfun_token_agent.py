@@ -99,7 +99,7 @@ Guidelines:
                 "type": "function",
                 "function": {
                     "name": "query_recent_token_creation",
-                    "description": "Fetch data of tokens recently created on Pump.fun",
+                    "description": "Fetch data of tokens recently created on Pump.fun on Solana. Results include the basic info like name, symbol, mint address.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -124,7 +124,7 @@ Guidelines:
                 "type": "function",
                 "function": {
                     "name": "query_latest_graduated_tokens",
-                    "description": "Fetch recently graduated tokens from Pump.fun with their latest prices and market caps",
+                    "description": "Fetch recently graduated tokens from Pump.fun on Solana with their latest prices and market caps. Graduation means that the token hits a certain market cap threshold, and that it has gained traction and liquidity.",
                     "parameters": {
                         "type": "object",
                         "properties": {

@@ -3,9 +3,9 @@ import json
 import os
 from typing import Any, Dict, List
 
+import aiohttp
 import requests
 from dotenv import load_dotenv
-import aiohttp
 
 from core.llm import call_llm_async, call_llm_with_tools_async
 from decorators import monitor_execution, with_cache, with_retry
@@ -115,7 +115,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "query_token_metrics",
-                    "description": "Get detailed token trading metrics using Solana mint address. This tool fetches trading data including volume, price movements, and liquidity for any Solana token. Use this when you need to analyze a specific Solana token's market performance. Data comes from Bitquery API and only works with valid Solana token addresses.",
+                    "description": "Get detailed token trading metrics using Solana mint address. This tool fetches trading data including volume, price movements, and liquidity for any Solana token. Use this when you need to analyze a specific Solana token's performance.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -123,8 +123,8 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                             "quote_token": {
                                 "type": "string",
                                 "description": "Quote token to use ('usdc', 'sol', 'virtual', or the token address)",
-                                "default": "sol"
-                            }
+                                "default": "sol",
+                            },
                         },
                         "required": ["token_address"],
                     },
@@ -148,12 +148,12 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "query_token_buyers",
-                    "description": "Fetch first buyers of a token (only last 8 hours of data, try for a token which is recent)",
+                    "description": "Fetch first buyers of a Solana token since its launch. This tool is useful to identify the early buyers who are likely insiders or smart money.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "number", "description": "Number of buyers to fetch", "default": 100},
+                            "limit": {"type": "number", "description": "Number of buyers to fetch", "default": 30},
                         },
                         "required": ["token_address"],
                     },
@@ -163,12 +163,12 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "query_top_traders",
-                    "description": "Fetch top traders for a specific token",
+                    "description": "Fetch top traders (based on volume) for a Solana token. The top traders might include the whales actively trading the token, and arbitrage bots.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "number", "description": "Number of traders to fetch", "default": 100},
+                            "limit": {"type": "number", "description": "Number of traders to fetch", "default": 30},
                         },
                         "required": ["token_address"],
                     },
@@ -178,7 +178,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "query_holder_status",
-                    "description": "Check if buyers are still holding, sold, or bought more",
+                    "description": "Check if a list of token buyers are still holding, sold, or bought more for a specific Solana token. Use this tool to analyze the behavior of token buyers",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -197,7 +197,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "get_top_trending_tokens",
-                    "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem. Data comes from Bitquery API and is updated regularly.",
+                    "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem.",
                     "parameters": {
                         "type": "object",
                         "properties": {},
@@ -259,7 +259,9 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             else:
                 quote_token_address = quote_token  # Assume it's a direct address if not a key
 
-            time_1h_ago = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+            time_1h_ago = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=1)).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            )
 
             query = """
             query ($time_1h_ago: DateTime, $token: String, $quote_token: String) {
@@ -596,7 +598,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def query_token_buyers(self, token_address: str, limit: int = 100) -> Dict:
+    async def query_token_buyers(self, token_address: str, limit: int = 30) -> Dict:
         """
         Query first buyers of a specific token.
 
@@ -695,7 +697,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
     @monitor_execution()
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
-    async def query_top_traders(self, token_address: str, limit: int = 100) -> Dict:
+    async def query_top_traders(self, token_address: str, limit: int = 30) -> Dict:
         """
         Query top traders for a specific token on Solana DEXs.
 
@@ -884,7 +886,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                         "status": status,
                         "last_update": {
                             "time": update["Block"]["Time"],
-                        }
+                        },
                     }
                     all_holder_statuses.append(holder_status)
 
@@ -892,12 +894,9 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 for address in address_chunk:
                     if address not in found_addresses:
                         status_counts["not_found"] += 1
-                        all_holder_statuses.append({
-                            "address": address,
-                            "current_balance": 0,
-                            "status": "not_found",
-                            "last_update": None
-                        })
+                        all_holder_statuses.append(
+                            {"address": address, "current_balance": 0, "status": "not_found", "last_update": None}
+                        )
 
         return {
             "holder_statuses": all_holder_statuses,
@@ -926,12 +925,12 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             token_address = function_args.get("token_address")
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
-            result = await self.query_token_buyers(token_address=token_address, limit=function_args.get("limit", 100))
+            result = await self.query_token_buyers(token_address=token_address, limit=function_args.get("limit", 30))
         elif tool_name == "query_top_traders":
             token_address = function_args.get("token_address")
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
-            result = await self.query_top_traders(token_address=token_address, limit=function_args.get("limit", 100))
+            result = await self.query_top_traders(token_address=token_address, limit=function_args.get("limit", 30))
         elif tool_name == "get_top_trending_tokens":
             result = await self.get_top_trending_tokens()
         elif tool_name == "query_holder_status":
