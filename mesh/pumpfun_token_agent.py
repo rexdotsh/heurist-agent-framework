@@ -500,7 +500,7 @@ class PumpFunTokenAgent(MeshAgent):
                   Decimals
                 }
                 Account {
-                  Address
+                  Owner
                 }
                 Holding: PostBalance(maximum: Block_Slot)
               }
@@ -568,7 +568,7 @@ class PumpFunTokenAgent(MeshAgent):
                         percentage = 0
 
                 formatted_holder = {
-                    "address": balance_update["Account"]["Address"],
+                    "address": balance_update["Account"]["Owner"],
                     "holding": holding,
                     "percentage_of_supply": round(percentage, 2),
                     "token_info": {
