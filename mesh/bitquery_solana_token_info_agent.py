@@ -119,6 +119,21 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
+                    "name": "query_token_buyers",
+                    "description": "Fetch first buyers of a token (only last 8 hours of data, try for a token which is recent)",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "token_address": {"type": "string", "description": "Token mint address on Solana"},
+                            "limit": {"type": "number", "description": "Number of buyers to fetch", "default": 100},
+                        },
+                        "required": ["token_address"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
                     "name": "get_top_trending_tokens",
                     "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem. Data comes from Bitquery API and is updated regularly.",
                     "parameters": {
@@ -516,6 +531,105 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
 
         return {"holders": [], "total_supply": 0}
 
+    @monitor_execution()
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def query_token_buyers(self, token_address: str, limit: int = 100) -> Dict:
+        """
+        Query first buyers of a specific token.
+
+        Args:
+            token_address (str): The mint address of the token
+            limit (int): Number of buyers to return
+
+        Returns:
+            Dict: Dictionary containing buyer information
+        """
+        query = """
+        query ($token: String!, $limit: Int!) {
+          Solana {
+            DEXTrades(
+              where: {
+                Trade: {
+                  Buy: {
+                    Currency: {
+                      MintAddress: {
+                        is: $token
+                      }
+                    }
+                  }
+                }
+              }
+              limit: { count: $limit }
+              orderBy: { ascending: Block_Time }
+            ) {
+              Trade {
+                Buy {
+                  Amount
+                  AmountInUSD
+                  Account {
+                    Token {
+                      Owner
+                    }
+                  }
+                  Currency {
+                    Symbol
+                    Decimals
+                  }
+                }
+                Sell {
+                  Currency {
+                    Symbol
+                    MintAddress
+                  }
+                }
+              }
+              Block {
+                Time
+              }
+              Transaction {
+                Index
+              }
+            }
+          }
+        }
+        """
+
+        variables = {"token": token_address, "limit": limit}
+
+        result = await self._execute_query(query, variables)
+
+        if "data" in result and "Solana" in result["data"]:
+            trades = result["data"]["Solana"]["DEXTrades"]
+            formatted_buyers = []
+            unique_buyers = set()  # Track unique buyers
+
+            for trade in trades:
+                if "Trade" not in trade or "Buy" not in trade["Trade"]:
+                    continue
+
+                buy = trade["Trade"]["Buy"]
+                sell_currency = trade["Trade"]["Sell"]["Currency"]
+                owner = buy["Account"]["Token"]["Owner"]
+
+                # Only add unique buyers
+                if owner not in unique_buyers:
+                    unique_buyers.add(owner)
+
+                    formatted_buyer = {
+                        "owner": owner,
+                        "amount": buy["Amount"],
+                        "amount_usd": buy["AmountInUSD"],
+                        "currency_pair": f"{buy['Currency']['Symbol']}/{sell_currency['Symbol']}",
+                        "time": trade["Block"]["Time"],
+                        "transaction_index": trade["Transaction"]["Index"],
+                    }
+                    formatted_buyers.append(formatted_buyer)
+
+            return {"buyers": formatted_buyers, "unique_buyer_count": len(unique_buyers)}
+
+        return {"buyers": [], "unique_buyer_count": 0}
+
     # ------------------------------------------------------------------------
     #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
@@ -533,6 +647,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             if not token_address:
                 return {"error": "Missing 'token_address' in tool_arguments"}
             result = await self.query_token_holders(token_address=token_address)
+        elif tool_name == "query_token_buyers":
+            token_address = function_args.get("token_address")
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            result = await self.query_token_buyers(token_address=token_address, limit=function_args.get("limit", 100))
         elif tool_name == "get_top_trending_tokens":
             result = await self.get_top_trending_tokens()
         else:

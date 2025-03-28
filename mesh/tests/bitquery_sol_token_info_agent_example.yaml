@@ -2,71 +2,74 @@ input_by_token_address:
   query: Get token info for HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
 output_by_token_address:
   response: "**Token Info for [HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC](https://solscan.io/token/HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC)**\n\
-    \n* **Symbol:** ai16z (traded against WSOL)\n* **Current Price:** $0.1931\n* **1-Hour\
-    \ Price Movement:**\n\t+ Change: -$0.0005 (-0.23%)\n\t+ Highest: $0.1955\n\t+\
-    \ Lowest: $0.1888\n* **Volume (1 Hour):** $246,446.32\n* **Total Buy/Sell Volume\
-    \ (unspecified timeframe):** $271,878.54\n* **Liquidity (across multiple pools,\
-    \ Base/Quote in USD):**\n\t+ Average Base (ai16z): ~$624,511\n\t+ Average Quote\
-    \ (WSOL): ~$291,141\n* **Market Cap:** *Not Available*"
-  data: &id005
+    \n* **Current Price:** $0.1926\n* **1-Hour Price Movement:**\n\t+ **Change:**\
+    \ +$0.0023 (+1.20%)\n\t+ **High:** $0.1955\n\t+ **Low:** $0.1895\n* **Volume (1-Hour):**\
+    \ $202,492.49\n* **Total Volume (24-Hour):** $222,191.47 (Note: This figure seems\
+    \ to represent both buy and sell volume, as both are listed with the same value\
+    \ in the data provided)\n* **Liquidity (Across Various Pools):**\n\t+ **Total\
+    \ Base (in USD):** Ranges from $633,052 to $637,669 across pools\n\t+ **Total\
+    \ Quote (in USD):** Ranges from $262,145 to $263,854 across pools\n* **Market\
+    \ Cap:** *Not Available* \n* **Trading Pairs:** ai16z/WSOL (across multiple trades,\
+    \ with no variation in pairs reported)"
+  data: &id006
     data:
       Solana:
         buyVolume:
-        - sum: '271878.5432546433'
+        - sum: '222191.4683122439'
         liquidity:
         - Pool:
             Base:
-              PostAmountInUSD: '623368.725205292'
+              PostAmountInUSD: '633052.272032097'
             Quote:
-              PostAmountInUSD: '292146.86459511804'
+              PostAmountInUSD: '263853.9489884454'
         - Pool:
             Base:
-              PostAmountInUSD: '623322.2480309625'
+              PostAmountInUSD: '633053.2148815149'
             Quote:
-              PostAmountInUSD: '292193.54658831353'
+              PostAmountInUSD: '263853.001689333'
         - Pool:
             Base:
-              PostAmountInUSD: '624215.8044009146'
+              PostAmountInUSD: '633053.8074791232'
             Quote:
-              PostAmountInUSD: '291296.2613013099'
+              PostAmountInUSD: '263852.40629527386'
         - Pool:
             Base:
-              PostAmountInUSD: '625254.0859830499'
+              PostAmountInUSD: '633057.2205113148'
             Quote:
-              PostAmountInUSD: '291272.2380125917'
+              PostAmountInUSD: '263848.97716126806'
         - Pool:
             Base:
-              PostAmountInUSD: '625316.5001261152'
+              PostAmountInUSD: '633057.7205500378'
             Quote:
-              PostAmountInUSD: '291209.6770982505'
+              PostAmountInUSD: '263848.4747639965'
         - Pool:
             Base:
-              PostAmountInUSD: '625712.2170527508'
+              PostAmountInUSD: '633557.1160245988'
             Quote:
-              PostAmountInUSD: '290813.0794526731'
+              PostAmountInUSD: '263346.7951840691'
         - Pool:
             Base:
-              PostAmountInUSD: '626111.8649252474'
+              PostAmountInUSD: '634056.8121894791'
             Quote:
-              PostAmountInUSD: '290723.39637538535'
+              PostAmountInUSD: '262844.95618073776'
         - Pool:
             Base:
-              PostAmountInUSD: '626452.3082810915'
+              PostAmountInUSD: '636765.1318906836'
             Quote:
-              PostAmountInUSD: '290382.4260412867'
+              PostAmountInUSD: '263049.0284044538'
         - Pool:
             Base:
-              PostAmountInUSD: '626612.6224895231'
+              PostAmountInUSD: '637266.9243100347'
             Quote:
-              PostAmountInUSD: '290221.88571681944'
+              PostAmountInUSD: '262546.9787488794'
         - Pool:
             Base:
-              PostAmountInUSD: '626730.0258024888'
+              PostAmountInUSD: '637668.8499378779'
             Quote:
-              PostAmountInUSD: '290104.3257605814'
+              PostAmountInUSD: '262144.9499749573'
         marketcap: []
         sellVolume:
-        - sum: '271878.5432546433'
+        - sum: '222191.4683122439'
         tokenPrice:
         - Trade:
             Buy:
@@ -139,15 +142,15 @@ output_by_token_address:
               Currency:
                 Symbol: WSOL
         volume:
-        - sum: '271878.5432546433'
+        - sum: '222191.4683122439'
       price_movements:
-        current_price: 0.19312188180629164
-        price_change_1h: -0.0004515952705332893
-        price_change_percentage_1h: -0.23329398084535172
-        highest_price_1h: 0.19550656759292906
-        lowest_price_1h: 0.18876551087032567
-        total_volume_1h: 246446.32400658933
-        last_updated: '2025-03-28T08:29:03.397335'
+        current_price: 0.19262486205207097
+        price_change_1h: 0.0022925579478396685
+        price_change_percentage_1h: 1.2045028081960274
+        highest_price_1h: 0.1955115550344999
+        lowest_price_1h: 0.1895275479182601
+        total_volume_1h: 202492.48686246516
+        last_updated: '2025-03-28T08:58:10.317738'
 token_metrics:
   usdc_pair:
     natural_language_query:
@@ -155,140 +158,142 @@ token_metrics:
         query: Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
           using usdc pair
       output:
-        response: "Here is a concise, data-driven response with the requested information\
-          \ for the token **[98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\
-          \ (Large Language Model, LLM) paired with USDC:\n\n* **Market Cap:** Approximately\
-          \ **$1,744,020.87** (Note: All 'PostBalanceInUSD' values were identical,\
-          \ suggesting a stable market cap reading at the time of data capture)\n\
-          * **Liquidity (Base/Quote in USD):** \n\t+ Highest: **Base: $919,569.92**\
-          \ / **Quote (USDC assumed, not explicitly stated but inferred from the request):\
-          \ $758,455.92**\n\t+ Lowest: **Base: $347,394.79** / **Quote: $12,373.25**\
-          \ \n\t+ **Note:** Multiple pool liquidity values are provided, but without\
-          \ explicit USDC pairing in the data. The above highlights the highest and\
-          \ lowest liquidity values, assuming the base could represent the token and\
-          \ the quote its pairing, though the specific pairing token is not confirmed\
-          \ in the provided data for each pool.\n* **Trade Volume (assuming the provided\
-          \ 'sum' is for the USDC pair, though the pair is not explicitly stated in\
-          \ 'volume' or 'buy/sellVolume'):** Approximately **$18,115.37**"
+        response: "Here are the requested metrics for the token **[98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\
+          \ with a USDC pair (note: the provided data primarily references WSOL, but\
+          \ I'll focus on the requested USDC pair, assuming the key figures are somewhat\
+          \ representative or that specific USDC data isn't crucially different):\n\
+          \n* **Market Cap**: The most recent figure available is **$1,767,584.33**\
+          \ (based on the last 'TokenSupplyUpdate' with a 'PostBalanceInUSD' value).\
+          \ \n* **Liquidity** (in USD, for the Base [LLM] and Quote [implied USDC,\
+          \ though primarily WSOL is shown]):\n\t+ **Base (LLM)**: The highest liquidity\
+          \ figure for the Base is approximately **$5,263.16** (Pool with the highest\
+          \ Base 'PostAmountInUSD').\n\t+ **Quote (implied USDC)**: The highest liquidity\
+          \ figure for the Quote (assuming similarity with USDC, as direct USDC data\
+          \ isn't highlighted) is approximately **$48,013.13** (Pool with the highest\
+          \ Quote 'PostAmountInUSD').\n* **Trade Volume** (sum, assumed to be in USDC\
+          \ for this context, though the data shows 'WSOL' trades):\n\t+ **Buy Volume**:\
+          \ **$17,547.86**\n\t+ **Sell Volume**: **$17,547.86** (matches Buy Volume,\
+          \ suggesting a balanced or mirrored trade scenario in the data provided)\n\
+          \t+ **Total Volume**: **$17,547.86** (since Buy and Sell Volumes are equal)"
         data: &id001
           data:
             Solana:
               buyVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               liquidity:
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.3328859157428'
+                    PostAmountInUSD: '537.3265246530167'
                   Quote:
-                    PostAmountInUSD: '425.0594042160387'
+                    PostAmountInUSD: '429.7412227473611'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.5572432222283'
+                    PostAmountInUSD: '538.1926813229758'
                   Quote:
-                    PostAmountInUSD: '424.83183652259765'
+                    PostAmountInUSD: '428.84382442353103'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.4014436079633'
+                    PostAmountInUSD: '538.5230977319625'
                   Quote:
-                    PostAmountInUSD: '424.0010212026709'
+                    PostAmountInUSD: '428.50261796388213'
               - Pool:
                   Base:
-                    PostAmountInUSD: '347.39478919337023'
+                    PostAmountInUSD: '539.013115309234'
                   Quote:
-                    PostAmountInUSD: '12.373252673542556'
+                    PostAmountInUSD: '427.9977395602497'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175378551'
+                    PostAmountInUSD: '5263.155452445881'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '48013.125264788876'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.5362345872586'
+                    PostAmountInUSD: '539.8372672434604'
                   Quote:
-                    PostAmountInUSD: '423.86505656984724'
+                    PostAmountInUSD: '427.1516546969685'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175866889'
+                    PostAmountInUSD: '5262.238433027301'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '48267.1327773081'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.2219729496205'
+                    PostAmountInUSD: '351.92003922102003'
                   Quote:
-                    PostAmountInUSD: '425.1950401813655'
+                    PostAmountInUSD: '12.483352754773742'
               - Pool:
                   Base:
-                    PostAmountInUSD: '537.7115861571356'
+                    PostAmountInUSD: '536.7433668637833'
                   Quote:
-                    PostAmountInUSD: '425.7141161169053'
+                    PostAmountInUSD: '432.59399920308704'
               - Pool:
                   Base:
-                    PostAmountInUSD: '540.0685582502098'
+                    PostAmountInUSD: '536.6400940119173'
                   Quote:
-                    PostAmountInUSD: '423.0937706854744'
+                    PostAmountInUSD: '432.70218880659513'
               marketcap:
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1791912.037417458'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1791912.037417458'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1791912.037417458'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1789783.323793513'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1778636.8549379564'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1778636.8549379564'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1778636.8549379564'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1778636.8549379564'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1779249.4159731306'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1767584.3307337463'
               sellVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               tokenPrice:
               - Trade:
                   Buy:
@@ -361,16 +366,16 @@ token_metrics:
                     Currency:
                       Symbol: WSOL
               volume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
             fallback_used: Used SOL as fallback quote token
             price_movements:
-              current_price: 0.0019170632874593138
-              price_change_1h: 0.0001688258275389671
-              price_change_percentage_1h: 9.65691626048667
-              highest_price_1h: 0.0019251521620899438
-              lowest_price_1h: 0.0017482374599203467
-              total_volume_1h: 15140.187516461208
-              last_updated: '2025-03-28T08:29:17.206942'
+              current_price: 0.0018989881575107574
+              price_change_1h: 5.210269056260563e-05
+              price_change_percentage_1h: 2.8211110810624147
+              highest_price_1h: 0.0019436654914170503
+              lowest_price_1h: 0.0018388204649090769
+              total_volume_1h: 17515.02745981272
+              last_updated: '2025-03-28T08:58:23.501272'
     direct_tool_call:
       input:
         tool: query_token_metrics
@@ -389,135 +394,133 @@ token_metrics:
       output:
         response: "Here are the key metrics for **[98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\
           \ (Large Language Model - LLM) paired with SOL:\n\n* **Market Capitalization**:\
-          \ approximately **$1,744,020.87** (based on the most recent `PostBalanceInUSD`\
-          \ value)\n* **Liquidity** (aggregate from multiple pools, Base and Quote\
-          \ in USD):\n\t+ Base (LLM): ~**$538-$919** (varies across pools)\n\t+ Quote\
-          \ (SOL): ~**$423-$758** (varies across pools)\n* **Trade Volume** (sum,\
-          \ assuming the context implies a specific timeframe not explicitly stated\
-          \ in the query but inferred as recent based on provided data):\n\t+ **Buy\
-          \ Volume**: approximately **$18,115.37**\n\t+ **Sell Volume**: approximately\
-          \ **$18,115.37** (matches buy volume, suggesting a balanced recent trade\
-          \ activity)\n\t+ **Total Volume**: approximately **$18,115.37** (since buy\
-          \ and sell volumes are equal)"
+          \ Approximately **$1,791,912 USD** (based on the most recent `TokenSupplyUpdate`\
+          \ value)\n* **Liquidity (Pool)**: \n\t+ **Base (LLM)**: Average liquidity\
+          \ around **$537-$550 USD** across pools\n\t+ **Quote (WSOL/SOL)**: Average\
+          \ liquidity around **$427,000-$482,000 USD** across pools\n\t+ **Total Liquidity\
+          \ (approximate)**: **$427,537-$482,550 USD** (Base + Quote average)\n* **Trade\
+          \ Volume (1h)**: \n\t+ **Buy Volume**: Approximately **$17,547.86 USD**\n\
+          \t+ **Sell Volume**: Approximately **$17,547.86 USD**\n\t+ **Total Volume**:\
+          \ Approximately **$35,095.72 USD** (sum of buy and sell volumes)"
         data: &id002
           data:
             Solana:
               buyVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               liquidity:
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.3328859157428'
+                    PostAmountInUSD: '549.4448288298197'
                   Quote:
-                    PostAmountInUSD: '425.0594042160387'
+                    PostAmountInUSD: '430.7711183286979'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.5572432222283'
+                    PostAmountInUSD: '5397.421859167442'
                   Quote:
-                    PostAmountInUSD: '424.83183652259765'
+                    PostAmountInUSD: '47939.53954545969'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.4014436079633'
+                    PostAmountInUSD: '550.3312350496365'
                   Quote:
-                    PostAmountInUSD: '424.0010212026709'
+                    PostAmountInUSD: '429.86901413986'
               - Pool:
                   Base:
-                    PostAmountInUSD: '347.39478919337023'
+                    PostAmountInUSD: '537.3265246530167'
                   Quote:
-                    PostAmountInUSD: '12.373252673542556'
+                    PostAmountInUSD: '429.7412227473611'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175378551'
+                    PostAmountInUSD: '538.1926813229758'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '428.84382442353103'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175866889'
+                    PostAmountInUSD: '538.5230977319625'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '428.50261796388213'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.2219729496205'
+                    PostAmountInUSD: '539.013115309234'
                   Quote:
-                    PostAmountInUSD: '425.1950401813655'
+                    PostAmountInUSD: '427.9977395602497'
               - Pool:
                   Base:
-                    PostAmountInUSD: '537.7115861571356'
+                    PostAmountInUSD: '5263.155452445881'
                   Quote:
-                    PostAmountInUSD: '425.7141161169053'
+                    PostAmountInUSD: '48013.125264788876'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.5362345872586'
+                    PostAmountInUSD: '539.8372672434604'
                   Quote:
-                    PostAmountInUSD: '423.86505656984724'
+                    PostAmountInUSD: '427.1516546969685'
               - Pool:
                   Base:
-                    PostAmountInUSD: '540.0685582502098'
+                    PostAmountInUSD: '5262.238433027301'
                   Quote:
-                    PostAmountInUSD: '423.0937706854744'
+                    PostAmountInUSD: '48267.1327773081'
               marketcap:
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1791912.037417458'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1791912.037417458'
               sellVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               tokenPrice:
               - Trade:
                   Buy:
@@ -590,15 +593,15 @@ token_metrics:
                     Currency:
                       Symbol: WSOL
               volume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
             price_movements:
-              current_price: 0.0019170632874593138
-              price_change_1h: 0.0001688258275389671
-              price_change_percentage_1h: 9.65691626048667
-              highest_price_1h: 0.0019251521620899438
-              lowest_price_1h: 0.0017482374599203467
-              total_volume_1h: 15140.187516461208
-              last_updated: '2025-03-28T08:29:30.364799'
+              current_price: 0.0018989881575107574
+              price_change_1h: 5.210269056260563e-05
+              price_change_percentage_1h: 2.8211110810624147
+              highest_price_1h: 0.0019436654914170503
+              lowest_price_1h: 0.0018388204649090769
+              total_volume_1h: 17515.02745981272
+              last_updated: '2025-03-28T08:58:38.448901'
     direct_tool_call:
       input:
         tool: query_token_metrics
@@ -615,137 +618,136 @@ token_metrics:
         query: Get market cap, liquidity and trade volume for 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
           using virtual pair
       output:
-        response: "Here is a concise report based on the provided Solana token trading\
-          \ data for **[98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\
-          \ using a virtual pair:\n\n* **Market Cap**: Approximately **$1,744,020.87**\
-          \ (based on the latest `PostBalanceInUSD` value)\n* **Liquidity** (across\
-          \ multiple pools, showing the two with the highest and lowest liquidity\
-          \ for context):\n\t+ **Highest Liquidity Pool**:\n\t\t- **Base (LLM)**:\
-          \ ~$919,569.92\n\t\t- **Quote (WSOL)**: ~$758,455.92\n\t+ **Lowest Liquidity\
-          \ Pool**:\n\t\t- **Base (LLM)**: ~$347,394.79\n\t\t- **Quote (WSOL)**: ~$12,373.25\n\
-          * **Trade Volume** (virtual pair, latest available):\n\t+ **Buy Volume**:\
-          \ ~$18,115.37\n\t+ **Sell Volume**: ~$18,115.37\n\t+ **Total Volume**: ~$18,115.37\
-          \ (matches buy/sell due to identical values; note that `volume` sum also\
-          \ equals this amount, indicating a possible overlap in reported data)"
+        response: "Here are the key metrics for **[98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\
+          \ (Large Language Model - LLM) based on the provided data:\n\n* **Market\
+          \ Cap:** Approximately **$1,791,912** (based on the most recent `TokenSupplyUpdate`\
+          \ value)\n* **Liquidity:**\n\t+ **Total Base Liquidity:** ~$**55,119** (sum\
+          \ of all `PostAmountInUSD` for Base across pools)\n\t+ **Total Quote Liquidity:**\
+          \ ~$**143,419** (sum of all `PostAmountInUSD` for Quote across pools)\n\t\
+          + **Note:** Liquidity is distributed across 11 observed pools, with values\
+          \ ranging from ~$427 to ~$48,013 for Quote and ~$526 to ~$5,397 for Base.\n\
+          * **Trade Volume (Virtual Pair, recent 1h):**\n\t+ **Buy Volume:** ~$**17,547.86**\n\
+          \t+ **Sell Volume:** ~$**17,547.86**\n\t+ **Total Volume:** ~$**17,547.86**\
+          \ (also mirrored in the `volume` sum)"
         data: &id003
           data:
             Solana:
               buyVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               liquidity:
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.3328859157428'
+                    PostAmountInUSD: '549.4448288298197'
                   Quote:
-                    PostAmountInUSD: '425.0594042160387'
+                    PostAmountInUSD: '430.7711183286979'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.5572432222283'
+                    PostAmountInUSD: '5397.421859167442'
                   Quote:
-                    PostAmountInUSD: '424.83183652259765'
+                    PostAmountInUSD: '47939.53954545969'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.4014436079633'
+                    PostAmountInUSD: '550.3312350496365'
                   Quote:
-                    PostAmountInUSD: '424.0010212026709'
+                    PostAmountInUSD: '429.86901413986'
               - Pool:
                   Base:
-                    PostAmountInUSD: '347.39478919337023'
+                    PostAmountInUSD: '537.3265246530167'
                   Quote:
-                    PostAmountInUSD: '12.373252673542556'
+                    PostAmountInUSD: '429.7412227473611'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175378551'
+                    PostAmountInUSD: '538.1926813229758'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '428.84382442353103'
               - Pool:
                   Base:
-                    PostAmountInUSD: '539.5362345872586'
+                    PostAmountInUSD: '538.5230977319625'
                   Quote:
-                    PostAmountInUSD: '423.86505656984724'
+                    PostAmountInUSD: '428.50261796388213'
               - Pool:
                   Base:
-                    PostAmountInUSD: '919.5699175866889'
+                    PostAmountInUSD: '539.013115309234'
                   Quote:
-                    PostAmountInUSD: '758.4559248627097'
+                    PostAmountInUSD: '427.9977395602497'
               - Pool:
                   Base:
-                    PostAmountInUSD: '538.2219729496205'
+                    PostAmountInUSD: '5263.155452445881'
                   Quote:
-                    PostAmountInUSD: '425.1950401813655'
+                    PostAmountInUSD: '48013.125264788876'
               - Pool:
                   Base:
-                    PostAmountInUSD: '537.7115861571356'
+                    PostAmountInUSD: '539.8372672434604'
                   Quote:
-                    PostAmountInUSD: '425.7141161169053'
+                    PostAmountInUSD: '427.1516546969685'
               - Pool:
                   Base:
-                    PostAmountInUSD: '540.0685582502098'
+                    PostAmountInUSD: '5262.238433027301'
                   Quote:
-                    PostAmountInUSD: '423.0937706854744'
+                    PostAmountInUSD: '48267.1327773081'
               marketcap:
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.1717181662'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1812941.0877931688'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1791912.037417458'
               - TokenSupplyUpdate:
                   Currency:
                     MintAddress: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
                     Name: Large Language Model
                     Symbol: LLM
-                  PostBalanceInUSD: '1744020.8701914104'
+                  PostBalanceInUSD: '1791912.037417458'
               sellVolume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
               tokenPrice:
               - Trade:
                   Buy:
@@ -818,16 +820,16 @@ token_metrics:
                     Currency:
                       Symbol: WSOL
               volume:
-              - sum: '18115.368228300507'
+              - sum: '17547.860779142407'
             fallback_used: Used SOL as fallback quote token
             price_movements:
-              current_price: 0.0019170632874593138
-              price_change_1h: 0.0001688258275389671
-              price_change_percentage_1h: 9.65691626048667
-              highest_price_1h: 0.0019251521620899438
-              lowest_price_1h: 0.0017482374599203467
-              total_volume_1h: 15140.187516461208
-              last_updated: '2025-03-28T08:29:44.787752'
+              current_price: 0.0018989881575107574
+              price_change_1h: 5.210269056260563e-05
+              price_change_percentage_1h: 2.8211110810624147
+              highest_price_1h: 0.0019436654914170503
+              lowest_price_1h: 0.0018388204649090769
+              total_volume_1h: 17515.02745981272
+              last_updated: '2025-03-28T08:58:57.316802'
     direct_tool_call:
       input:
         tool: query_token_metrics
@@ -843,38 +845,42 @@ token_holders:
     input:
       query: Show me the top token holders of HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
     output:
-      response: '**Top 10 Token Holders of [HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC](https://solscan.io/token/HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC)**
+      response: '**Top Token Holders of [HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC](https://solscan.io/token/HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC)**
 
 
-        1. **AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2**: 78,686,456.49 ( Token:
+        * **Note:** Total supply is not available (listed as 0), so percentage of
+        supply for each holder cannot be calculated.
+
+
+        **Ranking by Holding Amount (Descending):**
+
+
+        1. **AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2** - 78,738,235.20 ( Token:
         ai16z )
 
-        2. **u6PJ8DtQuPFnfmwHbGFULQ4u4EgjDiyYKjVEsynXq2w**: 68,750,431.64 ( Token:
+        2. **u6PJ8DtQuPFnfmwHbGFULQ4u4EgjDiyYKjVEsynXq2w** - 68,850,431.64 ( Token:
         ai16z )
 
-        3. **5B7BwmRp9EJfFGLeyC6S6KWGBHRUHZ7WbaDgW8mnVpQY**: 62,928,525.00 ( Token:
+        3. **5B7BwmRp9EJfFGLeyC6S6KWGBHRUHZ7WbaDgW8mnVpQY** - 62,928,525.00 ( Token:
         ai16z )
 
-        4. **A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR**: 35,108,647.40 ( Token:
+        4. **A77HErqtfN1hLLpvZ9pCtu66FEtM8BveoaKbbMoZ4RiR** - 35,108,647.40 ( Token:
         ai16z )
 
-        5. **8CaTuoD1r6CzR1mu6ueTDvjNpLj7sq5nWafDLymkQ4jH**: 30,816,585.17 ( Token:
+        5. **8CaTuoD1r6CzR1mu6ueTDvjNpLj7sq5nWafDLymkQ4jH** - 30,816,585.17 ( Token:
         ai16z )
 
-        6. **ASTyfSima4LLAdDgoFGkgqoKowG1LZFDr9fAQrg7iaJZ**: 18,303,984.14 ( Token:
+        6. **ASTyfSima4LLAdDgoFGkgqoKowG1LZFDr9fAQrg7iaJZ** - 18,303,984.14 ( Token:
         ai16z )
 
-        7. **5sTQ5ih7xtctBhMXHr3f1aWdaXazWrWfoehqWdqWnTFP**: 12,027,530.95 ( Token:
+        7. **6QFG5Zw2DEoMeDkvooqS7t7yf82UQEGHxuViMx9dVJgD** - 17,500,001.00 ( Token:
         ai16z )
 
-        8. **DBmae92YTQKLsNzXcPscxiwPqMcz9stQr2prB5ZCAHPd**: 11,711,898.07 ( Token:
-        ai16z )
-
-        9. **FWznbc'
+        8. **5sTQ5ih7xtct'
       data: &id004
         holders:
         - address: AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2
-          holding: 78686456.49436012
+          holding: 78738235.2045662
           percentage_of_supply: 0
           token_info:
             name: ai16z
@@ -882,7 +888,7 @@ token_holders:
             mint_address: HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
             decimals: 9
         - address: u6PJ8DtQuPFnfmwHbGFULQ4u4EgjDiyYKjVEsynXq2w
-          holding: 68750431.63665156
+          holding: 68850431.63665156
           percentage_of_supply: 0
           token_info:
             name: ai16z
@@ -921,6 +927,14 @@ token_holders:
             symbol: ai16z
             mint_address: HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
             decimals: 9
+        - address: 6QFG5Zw2DEoMeDkvooqS7t7yf82UQEGHxuViMx9dVJgD
+          holding: 17500001.0
+          percentage_of_supply: 0
+          token_info:
+            name: ai16z
+            symbol: ai16z
+            mint_address: HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
+            decimals: 9
         - address: 5sTQ5ih7xtctBhMXHr3f1aWdaXazWrWfoehqWdqWnTFP
           holding: 12027530.949860778
           percentage_of_supply: 0
@@ -945,14 +959,6 @@ token_holders:
             symbol: ai16z
             mint_address: HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
             decimals: 9
-        - address: HVh6wHNBAsG3pq1Bj5oCzRjoWKVogEDHwUHkRz3ekFgt
-          holding: 10545225.854342813
-          percentage_of_supply: 0
-          token_info:
-            name: ai16z
-            symbol: ai16z
-            mint_address: HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
-            decimals: 9
         total_supply: 0
   direct_tool_call:
     input:
@@ -963,31 +969,342 @@ token_holders:
     output:
       response: ''
       data: *id004
+token_buyers:
+  natural_language_query:
+    input:
+      query: Show me the first 100 buyers of 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
+    output:
+      response: "**Top 5 Buyers of [98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump](https://solscan.io/token/98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump)**\n\
+        \nBased on the provided data, here are the top 5 buyers by amount (in USD):\n\
+        \n1. **7hGiaX1CvXHcdkM5HXDGMgTnshPMeWTG7ct2A9QWaBVb**\n\t* Amount: 1,039,498.305231\
+        \ LLM\n\t* Amount (USD): **$1,953.86**\n\t* Time: 2025-03-28T00:50:05Z\n2.\
+        \ **Y8e95Q1YSFhRqcZt99KDUTW1WRa1Zr86weZBmkUfczH**\n\t* Amount: 241,029.413195\
+        \ LLM\n\t* Amount (USD): **$453.04**\n\t* Time: 2025-03-28T00:50:05Z\n3. **6jvYtr9G5WQnKs3cFsFtKmEfkbEnUXFhBKsmZad26QPV**\n\
+        \t* Amount: 120,096.986255 LLM\n\t* Amount (USD): **$227.45**\n\t* Time: 2025-03-28T00:22:37Z\n\
+        4. **YpnnUu1ZPHpAzy4xggEd5pBTbu1aDayXuARsYsavNs9**\n\t* Amount: 255,392.975789\
+        \ LLM\n\t* Amount (USD): **$483.69** (Note: This should be in top 3, but the\
+        \ time is earlier than the top 3, still a significant buyer)\n\t* Time: 2025-03-28T00:22:37Z\n\
+        5. **2MFoS3MPtvyQ4Wh4M9pdfPjz6UhVoNbFbGJAskCPCj3h**\n\t* Amount: 85,073"
+      data: &id005
+        buyers:
+        - owner: AKV6MByJDNJtQ6gEgugo7wrA15FmdYYJXXYJC1qKAadu
+          amount: '27325.531486'
+          amount_usd: '51.61738677493261'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:19:06Z'
+          transaction_index: 1247
+        - owner: 6jvYtr9G5WQnKs3cFsFtKmEfkbEnUXFhBKsmZad26QPV
+          amount: '120096.986255'
+          amount_usd: '227.45032436809467'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:22:37Z'
+          transaction_index: 1225
+        - owner: 9PHm2cYU8DhwBrbRsqqAjhW9uXVrNR1RaLsvo9oGVeaq
+          amount: '53347.982785'
+          amount_usd: '101.03514140702764'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:22:37Z'
+          transaction_index: 878
+        - owner: YpnnUu1ZPHpAzy4xggEd5pBTbu1aDayXuARsYsavNs9
+          amount: '255392.975789'
+          amount_usd: '483.68586919576063'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:22:37Z'
+          transaction_index: 949
+        - owner: FkdDHrM8j8psKbxuwjV1jBKCM2JGPygkj7WCX8sSCzNm
+          amount: '472.425954'
+          amount_usd: '0.8947221727034217'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:22:37Z'
+          transaction_index: 1841
+        - owner: 6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx
+          amount: '10648.387286'
+          amount_usd: '20.166860282865432'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:22:38Z'
+          transaction_index: 212
+        - owner: 7bDXepCazxQFTmJqJM62ZR977GUpVKCmbo6CuFazqg1b
+          amount: '1028.759824'
+          amount_usd: '1.9483565987978502'
+          currency_pair: LLM/LEGIT
+          time: '2025-03-28T00:22:40Z'
+          transaction_index: 1016
+        - owner: CKBCxNxdsfZwTwKYHQmBs7J8zpPjCjMJAxcxoBUwExw6
+          amount: '4122.694880'
+          amount_usd: '7.759210816767812'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:26:33Z'
+          transaction_index: 48
+        - owner: GGztQqQ6pCPaJQnNpXBgELr5cs3WwDakRbh1iEMzjgSJ
+          amount: '1584.141760'
+          amount_usd: '2.9904095680530367'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:38:34Z'
+          transaction_index: 1356
+        - owner: 8eeHetLMG1dpKKsvy5RBbxPmjiZYroeYvJ6kxHgAfxTY
+          amount: '1795.698392'
+          amount_usd: '3.3957515119790314'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:43:51Z'
+          transaction_index: 109
+        - owner: GCvHhEUYQwTJ8jyf8Lc4bv8jBXyZU4LMMsZCobwEPzvM
+          amount: '20198.060000'
+          amount_usd: '38.19579340519616'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:44:55Z'
+          transaction_index: 1519
+        - owner: FmTQMkFEM3asJJfwBFWWFdtVCUfbG21VbdZA8tzGkyoj
+          amount: '29018.061930'
+          amount_usd: '54.57645477619865'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:46:48Z'
+          transaction_index: 1833
+        - owner: CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps
+          amount: '5346.477960'
+          amount_usd: '10.054397864666171'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:49:45Z'
+          transaction_index: 21
+        - owner: EjwdVLEr4Gsnsu1YMVg3RVsBSfsxekrRjBGv2BPE6tSV
+          amount: '7457.245191'
+          amount_usd: '14.016743054325989'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:04Z'
+          transaction_index: 1665
+        - owner: 6VnVNHe15a37iREbGdc67xE9V21e3PNFHpxjxqzDZEmb
+          amount: '132976.001760'
+          amount_usd: '249.94356512657149'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 23
+        - owner: NHtdVXcUuzULRJ3GkupLnZcxmUZ4rTP1u9kVkRzcash
+          amount: '5938.447453'
+          amount_usd: '11.161989442264217'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 30
+        - owner: GPcd4c3RqaD24tfKXzP81SGxeF5wmPjLEbHg6eLD3rDw
+          amount: '910.169975'
+          amount_usd: '1.7107682996308373'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 68
+        - owner: H83cyy3bRDYHLEgPThBkuNfqgAntVU4iSdwGfksw2Dqf
+          amount: '625.388651'
+          amount_usd: '1.1754893134984958'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1004
+        - owner: C4nYJX8RS9PwNZt3UywgbWSTMePAXTWSJELpQU1Y9k8T
+          amount: '5135.080886'
+          amount_usd: '9.651970332034995'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1006
+        - owner: 7C6bBJpKLwjs95L4x3uRF9rnHc2ztefnAgPqZU2qwHXb
+          amount: '12501.219407'
+          amount_usd: '23.49746800670437'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1500
+        - owner: 29AxY2TzneVb9LBRxT4EqrNHjq4kuusxRujc9i6Ny9g9
+          amount: '12792.448554'
+          amount_usd: '24.0448664117288'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1508
+        - owner: HvFdDWS3RqymRAVx1ZdoL2RjiC38r5dtt19Z8op5jqDK
+          amount: '13825.066518'
+          amount_usd: '25.985789675474717'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 12
+        - owner: HTE6gdrpt4eej9eb4cZnpHei3Enf7Msz19rxvUh16pJS
+          amount: '5332.457583'
+          amount_usd: '10.022962350655959'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 30
+        - owner: 2QfBNK2WDwSLoUQRb1zAnp3KM12N9hQ8q6ApwUMnWW2T
+          amount: '1066.658976'
+          amount_usd: '2.0049072291771544'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 79
+        - owner: 7hGiaX1CvXHcdkM5HXDGMgTnshPMeWTG7ct2A9QWaBVb
+          amount: '1039498.305231'
+          amount_usd: '1953.8556499945792'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 80
+        - owner: 2fWyMU2S5ZJMwq9Ay2bwvnfRfiugkJbjWZ8WqKMtD8my
+          amount: '12884.781109'
+          amount_usd: '24.218415982091106'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 95
+        - owner: Cyx9uQ2p1tQyLWxTzosemWeQceAgaSFTDejtVyQbPrfi
+          amount: '15203.541297'
+          amount_usd: '28.576790278141075'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1436
+        - owner: CVyXpJN1X3UQpgtV2YvmSkcSK4YLZHEY1ycRHcz7eiid
+          amount: '14.506090'
+          amount_usd: '0.027265851000624244'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1473
+        - owner: YcjUULpoURFD8TVwDZC8Wsk4RbAY5L62TH3rJoaFFTk
+          amount: '14.506090'
+          amount_usd: '0.027265851000624244'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1478
+        - owner: bobCPc5nqVoX7r8gKzCMPLrKjFidjnSCrAdcYGCH2Ye
+          amount: '5159.960238'
+          amount_usd: '9.698733912339824'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1517
+        - owner: Fast9vhcG2TsyBYmaZDXtXDsNfSDDu9fk9VTLEzpJu1i
+          amount: '561.466557'
+          amount_usd: '1.0553404456332132'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1554
+        - owner: Y8e95Q1YSFhRqcZt99KDUTW1WRa1Zr86weZBmkUfczH
+          amount: '241029.413195'
+          amount_usd: '453.0422785838751'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:05Z'
+          transaction_index: 1455
+        - owner: 2S4SJ9Ffyuvu246xc54buoJg6gZ7wQePoKFwSA3X7Vt3
+          amount: '4947.812816'
+          amount_usd: '9.299978631046343'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 125
+        - owner: ''
+          amount: '1372.507084'
+          amount_usd: '2.579783639122966'
+          currency_pair: LLM/LEGIT
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 716
+        - owner: DrdCYPjXsixUnNofJgvqGnSciN3TpTT5UPfMM6YQCsVc
+          amount: '14.506097'
+          amount_usd: '0.0272658641579228'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 838
+        - owner: FVjmN7fDC2BmiH1mMSoVVhK9VjH36xKhiUHt5HDc1r4t
+          amount: '10.010475'
+          amount_usd: '0.018815829751192358'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 1168
+        - owner: 7FTBmxhxCroB3QG1aMFzxcYnkFczfqmoSTmja8fcJBTq
+          amount: '7228.706550'
+          amount_usd: '13.587178607022052'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 1427
+        - owner: GsnBGGdm5HTESXnfB3XeufCuwukXfWyuUQNMryYo7s3F
+          amount: '214.739159'
+          amount_usd: '0.4036267466487081'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 1297
+        - owner: 4ywa3NKfWRX3jpMxWydiWzELuSbdDUhTV5QnoGexjV3e
+          amount: '4119.496244'
+          amount_usd: '7.743063140138743'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 1795
+        - owner: 4qWht7gPqJSZtXkKFPG2F1SiU3rF9mLyGGkBpc65x89A
+          amount: '10.010520'
+          amount_usd: '0.01881591433382593'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:06Z'
+          transaction_index: 1945
+        - owner: 4AisYaH6GT5jMB1M9LLhWvtHfHyk1trebuTEVua14av1
+          amount: '6639.029047'
+          amount_usd: '12.47881247009486'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:07Z'
+          transaction_index: 1335
+        - owner: 5cwb6Zj2HEK1RTthxQ5J9UNeJJbHzRAguik13ckKTFBg
+          amount: '6481.656962'
+          amount_usd: '12.183013683428877'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:07Z'
+          transaction_index: 1338
+        - owner: 2MFoS3MPtvyQ4Wh4M9pdfPjz6UhVoNbFbGJAskCPCj3h
+          amount: '85073.104742'
+          amount_usd: '159.90460544887503'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:08Z'
+          transaction_index: 348
+        - owner: 6Tn1sGvxBTo8d51EcwknUtE9aNpKyu1WA1TF1wB4wopF
+          amount: '193568.219601'
+          amount_usd: '363.8335508808355'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:16Z'
+          transaction_index: 1695
+        - owner: 9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8
+          amount: '16772.553628'
+          amount_usd: '31.525927946195537'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:50:20Z'
+          transaction_index: 29
+        - owner: 4Q7hoKnM8UEi5NrRsURdBHvqEMehMBjYVywc3KRqWz1Q
+          amount: '286373.721568'
+          amount_usd: '538.292048656197'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:52:37Z'
+          transaction_index: 10
+        - owner: 2VdzLvPZrpvgwT5pUjTFZjDoJZonrBB2xm5jbC1KC671
+          amount: '604.719790'
+          amount_usd: '1.1366820001490636'
+          currency_pair: LLM/WSOL
+          time: '2025-03-28T00:52:39Z'
+          transaction_index: 237
+        unique_buyer_count: 47
+  direct_tool_call:
+    input:
+      tool: query_token_buyers
+      tool_arguments:
+        token_address: 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump
+        limit: 100
+      raw_data_only: true
+    output:
+      response: ''
+      data: *id005
 input_trending:
   query: Get trending tokens
 output_trending:
-  response: "**Trending Solana Tokens (by Trading Volume)**\n\nHere are the top trending\
-    \ Solana tokens based on total traded volume, along with their price movements\
-    \ and market data:\n\n1. **[2etnuybMKnDogVX4EXWB816dNmCMamTjPvdaCZXgpump](https://solscan.io/token/2etnuybMKnDogVX4EXWB816dNmCMamTjPvdaCZXgpump)**\n\
-    \t* **Total Traded Volume:** 2,795,748.81 WSOL\n\t* **Price Movement:** -99.97%\
-    \ (start: 0.0005454208, end: 1.505543e-12)\n\t* **Total Trades:** 13,195\n\t*\
-    \ **DEX:** Raydium AMM\n2. **[CSj2c3wcRd2Tc1dR35GakLDkAC6Gzjt3cVtyyiT7zPQK](https://solscan.io/token/CSj2c3wcRd2Tc1dR35GakLDkAC6Gzjt3cVtyyiT7zPQK)**\n\
-    \t* **Total Traded Volume:** 2,084,999.87 WSOL\n\t* **Price Movement:** -99.25%\
-    \ (start: 0.0008730935, end: 6.4922689e-05)\n\t* **Total Trades:** 20,235\n\t\
-    * **DEX:** Raydium AMM V3\n3. **[AeqrPQUNXb4rfrs7NtQsEPajPxaKvfFC9eQKRhJTN1Ld](https://solscan.io/token/AeqrPQUNXb4rfrs7NtQsEPajPxaKvfFC9eQKRhJTN1Ld)**\n\
-    \t* **Total Traded Volume:** 509,227.49 WSOL\n\t* **Price Movement:** -9.33% (start:\
-    \ 0.0074646798, end: 0.0067733805)\n\t* **Total Trades:** 15,276\n\t* **DEX:**\
-    \ Raydium AMM V3\n4. **[Baby Ghibli"
-  data: &id006
+  response: "**Trending Tokens on Solana (by Trading Volume)**\n\nHere are the top\
+    \ trending tokens on Solana, ranked by total traded volume (in descending order):\n\
+    \n1. **[squAId](https://solscan.io/token/HQPHmHpHxW6T45BFVpkdQoxEEnL2gySRHVQYXeN88Fe1)**\
+    \ - $1,040,567 (Total Traded Volume)\n\t* Price Change: -35.6% (Start: $3.70e-06,\
+    \ End: $2.39e-06)\n\t* DEX: Raydium AMM\n2. **[Ghibli Trump](https://solscan.io/token/GfJBA75mkrPPphvFuHYAgLk5hokh1GeKorNCQTipump)**\
+    \ - $274,792 (Total Traded Volume)\n\t* Price Change: +1068.5% (Start: $2.85e-05,\
+    \ End: $0.0003338)\n\t* DEX: Raydium AMM\n3. **[Official Barron Meme](https://solscan.io/token/GUFqMxPBbjuN3qnTS1Jmcm17Z2DtaVShVt1vanjNc7mb)**\
+    \ - $102,667 (Total Traded Volume)\n\t* Price Change: -96.3% (Start: $0.1029,\
+    \ End: $0.003776)\n\t* DEX: Raydium AMM\n4. **[Baby Ghibli](https://solscan.io/token/AdmJLnmtnvuVyPoPufeHmmq8qKz4DZ86aXPjf4cJPX2W)**\
+    \ - $116,185 (Total Traded Volume)\n\t* Price Change: -22.2% (Start: $0.6074,\
+    \ End: $0.4719)\n\t* DEX: Raydium AMM\n5. **[REVSHARE](https://solscan.io/token/9VxExA1iRPbuLLdSJ2rB3nyBxsyLReT4aqzZBMaBaY1p)**\
+    \ - $29,442 (Total Traded Volume)\n\t* Price Change: -17.4% (Start: $0."
+  data: &id007
     trending_tokens:
     - currency:
         Name: REVSHARE
         MintAddress: 9VxExA1iRPbuLLdSJ2rB3nyBxsyLReT4aqzZBMaBaY1p
         Symbol: REVS
       price:
-        start: 0.0008487322254097343
-        min5: 0.0008487322254097343
-        end: 0.0006159726292824332
+        start: 0.0008226545209416276
+        min5: 0.0008226545209416276
+        end: 0.0006792104335127078
       dex:
         ProtocolName: raydium_cp_swap
         ProtocolFamily: Raydium
@@ -998,46 +1315,21 @@ output_trending:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 57296
-      total_trades: 57465
-      total_traded_volume: 22576.126924635882
-      total_buy_volume: 7914.215251561021
-      total_sell_volume: 14661.91167307492
-      total_buys: 57276
-      total_sells: 189
-    - currency:
-        Name: ''
-        MintAddress: CSj2c3wcRd2Tc1dR35GakLDkAC6Gzjt3cVtyyiT7zPQK
-        Symbol: ''
-      price:
-        start: 0.0008730934925641941
-        min5: 0.0008730934925641941
-        end: 6.492268885727627e-05
-      dex:
-        ProtocolName: amm_v3
-        ProtocolFamily: Raydium
-        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
-      market:
-        MarketAddress: 4XdwCfyph4WN4pFCFnJEeJEUUYcTCP8cMEh3Mcw9XcfJ
-      side_currency:
-        Name: Wrapped Solana
-        MintAddress: So11111111111111111111111111111111111111112
-        Symbol: WSOL
-      makers: 131
-      total_trades: 20235
-      total_traded_volume: 2084499.8689786626
-      total_buy_volume: 1028872.0701645613
-      total_sell_volume: 1055627.798814101
-      total_buys: 10337
-      total_sells: 9898
+      makers: 57439
+      total_trades: 57703
+      total_traded_volume: 29442.47083254902
+      total_buy_volume: 12640.853386565926
+      total_sell_volume: 16801.61744598315
+      total_buys: 57506
+      total_sells: 197
     - currency:
         Name: Baby Ghibli
         MintAddress: AdmJLnmtnvuVyPoPufeHmmq8qKz4DZ86aXPjf4cJPX2W
         Symbol: BabyGhibli
       price:
-        start: 0.25427052580971216
-        min5: 0.25427052580971216
-        end: 0.19253453265248235
+        start: 0.6073778937726981
+        min5: 0.6073778937726981
+        end: 0.4719598950209182
       dex:
         ProtocolName: raydium_amm
         ProtocolFamily: Raydium
@@ -1048,21 +1340,21 @@ output_trending:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 133
-      total_trades: 17374
-      total_traded_volume: 118269.21883603041
-      total_buy_volume: 56582.12720017075
-      total_sell_volume: 61687.09163585967
-      total_buys: 14391
-      total_sells: 2983
+      makers: 145
+      total_trades: 17462
+      total_traded_volume: 116184.5247569556
+      total_buy_volume: 54348.03504279691
+      total_sell_volume: 61836.48971415872
+      total_buys: 14444
+      total_sells: 3018
     - currency:
         Name: S&P 500
         MintAddress: 8vSwZHKP5WJ8ov6awAntB31Kuyh6NYVwi3qmyZsiivRE
         Symbol: S&P500
       price:
-        start: 0.00045333616615275
-        min5: 0.00045333616615275
-        end: 0.00042492395501873847
+        start: 0.00044786281639654763
+        min5: 0.00044786281639654763
+        end: 0.0003792257802044901
       dex:
         ProtocolName: raydium_cp_swap
         ProtocolFamily: Raydium
@@ -1073,13 +1365,13 @@ output_trending:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 5977
-      total_trades: 16985
-      total_traded_volume: 100.52521377022383
-      total_buy_volume: 45.18536604643525
-      total_sell_volume: 55.339847723788495
-      total_buys: 11002
-      total_sells: 5983
+      makers: 6066
+      total_trades: 17252
+      total_traded_volume: 1190.574727304339
+      total_buy_volume: 95.41303707656218
+      total_sell_volume: 1095.1616902277744
+      total_buys: 11180
+      total_sells: 6072
     - currency:
         Name: squAId
         MintAddress: HQPHmHpHxW6T45BFVpkdQoxEEnL2gySRHVQYXeN88Fe1
@@ -1087,7 +1379,7 @@ output_trending:
       price:
         start: 3.7035728642133594e-06
         min5: 3.7035728642133594e-06
-        end: 1.1633241741454391e-05
+        end: 2.3864522177400588e-06
       dex:
         ProtocolName: raydium_amm
         ProtocolFamily: Raydium
@@ -1098,71 +1390,71 @@ output_trending:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 326
-      total_trades: 16336
-      total_traded_volume: 91452.88518516629
-      total_buy_volume: 47167.57231412853
-      total_sell_volume: 44285.31287103775
-      total_buys: 13542
-      total_sells: 2794
+      makers: 329
+      total_trades: 16581
+      total_traded_volume: 96693.64346304261
+      total_buy_volume: 48381.18362558789
+      total_sell_volume: 48312.459837454706
+      total_buys: 13660
+      total_sells: 2921
     - currency:
-        Name: ''
-        MintAddress: AeqrPQUNXb4rfrs7NtQsEPajPxaKvfFC9eQKRhJTN1Ld
-        Symbol: ''
+        Name: Official Barron Meme
+        MintAddress: GUFqMxPBbjuN3qnTS1Jmcm17Z2DtaVShVt1vanjNc7mb
+        Symbol: BARRON
       price:
-        start: 0.007464679816755197
-        min5: 0.007464679816755197
-        end: 0.0067733805076432676
+        start: 0.10292295449732342
+        min5: 0.10292295449732342
+        end: 0.0037756280752204714
       dex:
-        ProtocolName: amm_v3
+        ProtocolName: raydium_amm
         ProtocolFamily: Raydium
-        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
+        ProgramAddress: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
       market:
-        MarketAddress: CppbKhk9mKMMT3oTTY4KpvBLY9TYGGzHknqXnzsEbAKL
+        MarketAddress: 6sjrH7YtFow4nrkPAm8eDEMYXFkvv7FHCSwb1DM6Enib
       side_currency:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 150
-      total_trades: 15276
-      total_traded_volume: 509227.49292609986
-      total_buy_volume: 254338.21703961884
-      total_sell_volume: 254889.27588648116
-      total_buys: 7658
-      total_sells: 7618
+      makers: 134
+      total_trades: 15183
+      total_traded_volume: 102666.5627985779
+      total_buy_volume: 38422.05908768151
+      total_sell_volume: 64244.50371089647
+      total_buys: 11609
+      total_sells: 3574
     - currency:
-        Name: ''
-        MintAddress: 76ERWhDqqdXMJeAYmBQ6F29nwnHxCTs5xR4H7jBAAG9v
-        Symbol: ''
+        Name: Ghibli Trump
+        MintAddress: GfJBA75mkrPPphvFuHYAgLk5hokh1GeKorNCQTipump
+        Symbol: GHIBLIT
       price:
-        start: 0.0030460150500580567
-        min5: 0.0030460150500580567
-        end: 0.016471806962959322
+        start: 2.8471378251911037e-05
+        min5: 2.8471378251911037e-05
+        end: 0.00033383506491018464
       dex:
-        ProtocolName: amm_v3
+        ProtocolName: raydium_amm
         ProtocolFamily: Raydium
-        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
+        ProgramAddress: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
       market:
-        MarketAddress: GyNMCs8mHgVPfaDs7cGVmvTwsGDuK8bwxsQPXztwEexu
+        MarketAddress: HgvhgszkwFw9TvqCQaMsGKRti58tFqWqNsuuSt868pmC
       side_currency:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 151
-      total_trades: 14652
-      total_traded_volume: 489297.3674085333
-      total_buy_volume: 248905.21912373864
-      total_sell_volume: 240392.14828479462
-      total_buys: 7536
-      total_sells: 7116
+      makers: 287
+      total_trades: 15039
+      total_traded_volume: 274792.29274730483
+      total_buy_volume: 144626.10085167826
+      total_sell_volume: 130166.1918956266
+      total_buys: 9668
+      total_sells: 5371
     - currency:
         Name: ''
         MintAddress: 6WsbdhbrA1cjtSo8MjWRoqWJvdRnWK5qMsJWLouJiNKt
         Symbol: ''
       price:
-        start: 0.06056388112151863
-        min5: 0.06056388112151863
-        end: 0.005814824844259426
+        start: 0.064844600227005
+        min5: 0.064844600227005
+        end: 0.00037162173380714936
       dex:
         ProtocolName: raydium_amm
         ProtocolFamily: Raydium
@@ -1174,62 +1466,87 @@ output_trending:
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
       makers: 130
-      total_trades: 13730
-      total_traded_volume: 146145.81870765358
-      total_buy_volume: 63397.944337046516
-      total_sell_volume: 82747.87437060707
-      total_buys: 10178
-      total_sells: 3552
+      total_trades: 13747
+      total_traded_volume: 160543.4834689943
+      total_buy_volume: 66691.51488397362
+      total_sell_volume: 93851.96858502062
+      total_buys: 10174
+      total_sells: 3573
     - currency:
         Name: ''
-        MintAddress: 2etnuybMKnDogVX4EXWB816dNmCMamTjPvdaCZXgpump
+        MintAddress: 76ERWhDqqdXMJeAYmBQ6F29nwnHxCTs5xR4H7jBAAG9v
         Symbol: ''
       price:
-        start: 0.0005454208490159489
-        min5: 0.0005454208490159489
-        end: 1.505543068969275e-12
+        start: 0.005361540501658414
+        min5: 0.005361540501658414
+        end: 0.021416641156262725
       dex:
-        ProtocolName: raydium_amm
+        ProtocolName: amm_v3
         ProtocolFamily: Raydium
-        ProgramAddress: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
+        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
       market:
-        MarketAddress: AEMEyfFiS1evmFrQgYAF5Yfj9re3QpwWzZYrZQvCTF5Q
+        MarketAddress: GyNMCs8mHgVPfaDs7cGVmvTwsGDuK8bwxsQPXztwEexu
       side_currency:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 710
-      total_trades: 13195
-      total_traded_volume: 2795748.808440524
-      total_buy_volume: 1368820.7462130974
-      total_sell_volume: 1426928.062227427
-      total_buys: 10741
-      total_sells: 2454
+      makers: 152
+      total_trades: 11553
+      total_traded_volume: 387382.5186480245
+      total_buy_volume: 197952.89629052585
+      total_sell_volume: 189429.62235749862
+      total_buys: 5955
+      total_sells: 5598
     - currency:
         Name: ''
-        MintAddress: DKtMYPuhFbBfuQM7mLavHkDRfguSMdWvjtZHX3cUz5ad
+        MintAddress: 38RGhaV5twYRwxoP3A3hvWoiwJo9vud595epN5ULn3Br
         Symbol: ''
       price:
-        start: 0.31263637786051496
-        min5: 0.31263637786051496
-        end: 1.0991889875871746e-09
+        start: 0.0002916624647817068
+        min5: 0.0002916624647817068
+        end: 0.00137003672643932
       dex:
-        ProtocolName: raydium_amm
+        ProtocolName: amm_v3
         ProtocolFamily: Raydium
-        ProgramAddress: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
+        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
       market:
-        MarketAddress: HmtEbYKnEyT2hty3NJ2HtYt2PZf138nZF4J3LidvrTeh
+        MarketAddress: CKjNDeYCSAGuyHcbRci14LmabpWASbasFzsJxgZtMrYw
       side_currency:
         Name: Wrapped Solana
         MintAddress: So11111111111111111111111111111111111111112
         Symbol: WSOL
-      makers: 160
-      total_trades: 12689
-      total_traded_volume: 133460.19081783833
-      total_buy_volume: 43951.89104450565
-      total_sell_volume: 89508.29977333265
-      total_buys: 9397
-      total_sells: 3292
+      makers: 215
+      total_trades: 10962
+      total_traded_volume: 1040567.5980476029
+      total_buy_volume: 528819.0072132953
+      total_sell_volume: 511748.5908343078
+      total_buys: 5829
+      total_sells: 5133
+    - currency:
+        Name: ''
+        MintAddress: 369kwN4MFxumJfp92cokeTUSadQD9b2nZ1PK1VXXYv8m
+        Symbol: ''
+      price:
+        start: 0.0006228201788148017
+        min5: 0.0006228201788148017
+        end: 0.00013594158654670117
+      dex:
+        ProtocolName: amm_v3
+        ProtocolFamily: Raydium
+        ProgramAddress: CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK
+      market:
+        MarketAddress: 3pKrbAxLyah7LTdLXEEktRJRGXjuVgYNbxy8vJrr3EvR
+      side_currency:
+        Name: Wrapped Solana
+        MintAddress: So11111111111111111111111111111111111111112
+        Symbol: WSOL
+      makers: 129
+      total_trades: 10485
+      total_traded_volume: 1140934.8613013362
+      total_buy_volume: 562251.3622934697
+      total_sell_volume: 578683.4990078663
+      total_buys: 6204
+      total_sells: 4281
 input_direct_tool:
   tool: query_token_metrics
   tool_arguments:
@@ -1237,16 +1554,16 @@ input_direct_tool:
     quote_token: sol
 output_direct_tool:
   response: ''
-  data: *id005
+  data: *id006
 input_direct_trending:
   tool: get_top_trending_tokens
   tool_arguments: {}
 output_direct_trending:
   response: ''
-  data: *id006
+  data: *id007
 input_raw_data:
   query: Get token info for HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC
   raw_data_only: true
 output_raw_data:
   response: ''
-  data: *id005
+  data: *id006

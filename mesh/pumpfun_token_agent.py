@@ -26,7 +26,7 @@ class PumpFunTokenAgent(MeshAgent):
                 "name": "PumpFun Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
-                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, buyers, and top traders data.",
+                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, and top traders data.",
                 "inputs": [
                     {
                         "name": "query",
@@ -55,7 +55,6 @@ class PumpFunTokenAgent(MeshAgent):
                 "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Pumpfun.png",
                 "examples": [
                     "Latest token launched on Pump.fun in the last 24 hours",
-                    "Show me the first 100 buyers of 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
                     "List the top traders of token 98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump",
                 ],
             }
@@ -125,21 +124,6 @@ class PumpFunTokenAgent(MeshAgent):
                                 "description": "Time offset for interval",
                             },
                         },
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "query_token_buyers",
-                    "description": "Fetch first buyers of a token",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "limit": {"type": "number", "description": "Number of buyers to fetch", "default": 100},
-                        },
-                        "required": ["token_address"],
                     },
                 },
             },
@@ -267,105 +251,6 @@ class PumpFunTokenAgent(MeshAgent):
             return {"tokens": filtered_tokens[:10]}
 
         return {"tokens": []}
-
-    @monitor_execution()
-    @with_cache(ttl_seconds=300)
-    @with_retry(max_retries=3)
-    async def query_token_buyers(self, token_address: str, limit: int = 100) -> Dict:
-        """
-        Query first buyers of a specific token.
-
-        Args:
-            token_address (str): The mint address of the token
-            limit (int): Number of buyers to return
-
-        Returns:
-            Dict: Dictionary containing buyer information
-        """
-        query = """
-        query ($token: String!, $limit: Int!) {
-          Solana {
-            DEXTrades(
-              where: {
-                Trade: {
-                  Buy: {
-                    Currency: {
-                      MintAddress: {
-                        is: $token
-                      }
-                    }
-                  }
-                }
-              }
-              limit: { count: $limit }
-              orderBy: { ascending: Block_Time }
-            ) {
-              Trade {
-                Buy {
-                  Amount
-                  AmountInUSD
-                  Account {
-                    Token {
-                      Owner
-                    }
-                  }
-                  Currency {
-                    Symbol
-                    Decimals
-                  }
-                }
-                Sell {
-                  Currency {
-                    Symbol
-                    MintAddress
-                  }
-                }
-              }
-              Block {
-                Time
-              }
-              Transaction {
-                Index
-              }
-            }
-          }
-        }
-        """
-
-        variables = {"token": token_address, "limit": limit}
-
-        result = await self._execute_query(query, variables)
-
-        if "data" in result and "Solana" in result["data"]:
-            trades = result["data"]["Solana"]["DEXTrades"]
-            formatted_buyers = []
-            unique_buyers = set()  # Track unique buyers
-
-            for trade in trades:
-                if "Trade" not in trade or "Buy" not in trade["Trade"]:
-                    continue
-
-                buy = trade["Trade"]["Buy"]
-                sell_currency = trade["Trade"]["Sell"]["Currency"]
-                owner = buy["Account"]["Token"]["Owner"]
-
-                # Only add unique buyers
-                if owner not in unique_buyers:
-                    unique_buyers.add(owner)
-
-                    formatted_buyer = {
-                        "owner": owner,
-                        "amount": buy["Amount"],
-                        "amount_usd": buy["AmountInUSD"],
-                        "currency_pair": f"{buy['Currency']['Symbol']}/{sell_currency['Symbol']}",
-                        "time": trade["Block"]["Time"],
-                        "transaction_index": trade["Transaction"]["Index"],
-                    }
-                    formatted_buyers.append(formatted_buyer)
-
-            return {"buyers": formatted_buyers, "unique_buyer_count": len(unique_buyers)}
-
-        return {"buyers": [], "unique_buyer_count": 0}
 
     @monitor_execution()
     @with_cache(ttl_seconds=300)
@@ -844,15 +729,6 @@ class PumpFunTokenAgent(MeshAgent):
             interval = function_args.get("interval", "hours")
             offset = function_args.get("offset", 1)
             return await self.query_recent_token_creation(interval=interval, offset=offset)
-
-        elif tool_name == "query_token_buyers":
-            token_address = function_args.get("token_address")
-            limit = function_args.get("limit", 100)
-
-            if not token_address:
-                return {"error": "Missing 'token_address' in tool_arguments"}
-
-            return await self.query_token_buyers(token_address=token_address, limit=limit)
 
         elif tool_name == "query_holder_status":
             token_address = function_args.get("token_address")
