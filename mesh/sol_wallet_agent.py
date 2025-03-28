@@ -21,7 +21,6 @@ load_dotenv()
 class SolWalletAgent(MeshAgent):
     def __init__(self):
         super().__init__()
-        self.session = None
         self.api_url = "https://mainnet.helius-rpc.com"
 
         self.metadata.update(
@@ -64,39 +63,29 @@ class SolWalletAgent(MeshAgent):
             }
         )
 
-    async def __aenter__(self):
-        self.session = aiohttp.ClientSession()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self.session:
-            await self.session.close()
-            self.session = None
-
     async def _request(self, method, url, data=None, json=None, headers=None, params=None, timeout=30):
-        if not self.session:
-            raise RuntimeError("Session not initialized. Use 'async with' context manager.")
-
+        """Make a request to the Helius API using a new session for each request"""
         try:
-            async with self.session.request(
-                method,
-                url,
-                data=data,
-                json=json,
-                headers=headers,
-                params=params,
-                timeout=aiohttp.ClientTimeout(total=timeout),
-            ) as response:
-                match response.status:
-                    case 200:
-                        return await response.json()
-                    case 429:
-                        raise aiohttp.ClientError("Rate limit exceeded")
-                    case _:
-                        # should add better error log
-                        txt = await response.text()
-                        logger.error(txt)
-                        return {}
+            async with aiohttp.ClientSession() as session:
+                async with session.request(
+                    method,
+                    url,
+                    data=data,
+                    json=json,
+                    headers=headers,
+                    params=params,
+                    timeout=aiohttp.ClientTimeout(total=timeout),
+                ) as response:
+                    match response.status:
+                        case 200:
+                            return await response.json()
+                        case 429:
+                            raise aiohttp.ClientError("Rate limit exceeded")
+                        case _:
+                            # should add better error log
+                            txt = await response.text()
+                            logger.error(txt)
+                            return {}
 
         except aiohttp.ClientResponseError as e:
             error_msg = f"HTTP error {e.status}: {e.message}"
