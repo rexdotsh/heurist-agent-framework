@@ -57,6 +57,30 @@ async def run_agent():
                 }
             }
 
+        # Test token holders functionality
+        test_token = "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"  # USDC token address
+        print("\nTesting token holders functionality:")
+        
+        # Test via natural language query
+        holders_input = {
+            "query": f"Show me the top token holders of {test_token}"
+        }
+        holders_output = await agent.handle_message(holders_input)
+        print("Natural language query result for token holders:")
+        print(yaml.dump(holders_output, allow_unicode=True, sort_keys=False))
+        
+        # Test via direct tool call
+        holders_direct_input = {
+            "tool": "query_token_holders",
+            "tool_arguments": {
+                "token_address": test_token
+            },
+            "raw_data_only": True
+        }
+        holders_direct_output = await agent.handle_message(holders_direct_input)
+        print("Direct tool call result for token holders:")
+        print(yaml.dump(holders_direct_output, allow_unicode=True, sort_keys=False))
+
         # Test with a query for trending tokens
         agent_input_trending = {"query": "Get trending tokens"}
         agent_output_trending = await agent.handle_message(agent_input_trending)
@@ -96,6 +120,16 @@ async def run_agent():
             "input_by_token_address": agent_input,
             "output_by_token_address": agent_output,
             "token_metrics": metrics_results,
+            "token_holders": {
+                "natural_language_query": {
+                    "input": holders_input,
+                    "output": holders_output
+                },
+                "direct_tool_call": {
+                    "input": holders_direct_input,
+                    "output": holders_direct_output
+                }
+            },
             "input_trending": agent_input_trending,
             "output_trending": agent_output_trending,
             "input_direct_tool": agent_input_direct_tool,

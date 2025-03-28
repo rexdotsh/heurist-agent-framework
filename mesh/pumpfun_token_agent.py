@@ -26,7 +26,7 @@ class PumpFunTokenAgent(MeshAgent):
                 "name": "PumpFun Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
-                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, holders, buyers, and top traders data.",
+                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, liquidity, buyers, and top traders data.",
                 "inputs": [
                     {
                         "name": "query",
@@ -80,7 +80,6 @@ class PumpFunTokenAgent(MeshAgent):
             CAPABILITIES:
             - Retrieve recent token creations on Pump.fun
             - Analyze token metrics including market cap, liquidity, and volume
-            - Identify token holder distributions and wallet patterns
             - Track buyer activity and trading patterns
 
             RESPONSE GUIDELINES:
@@ -93,7 +92,6 @@ class PumpFunTokenAgent(MeshAgent):
             For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
             - Token addresses on Solana are base58-encoded strings typically ending with 'pump'
             - For token metrics, use SOL as the default quote token unless specified otherwise
-            - When analyzing token holders, focus on concentration patterns and whale activity
             - For trading analysis, highlight unusual volume patterns and top trader behaviors
 
             IMPORTANT:
@@ -127,20 +125,6 @@ class PumpFunTokenAgent(MeshAgent):
                                 "description": "Time offset for interval",
                             },
                         },
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "query_token_holders",
-                    "description": "Fetch top token holders data and distribution",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "token_address": {"type": "string", "description": "Token mint address on Solana"}
-                        },
-                        "required": ["token_address"],
                     },
                 },
             },
@@ -283,126 +267,6 @@ class PumpFunTokenAgent(MeshAgent):
             return {"tokens": filtered_tokens[:10]}
 
         return {"tokens": []}
-
-    @monitor_execution()
-    @with_cache(ttl_seconds=300)
-    @with_retry(max_retries=3)
-    async def query_token_holders(self, token_address: str) -> Dict:
-        """
-        Query top token holders for a specific token.
-
-        Args:
-            token_address (str): The mint address of the token
-
-        Returns:
-            Dict: Dictionary containing holder information
-        """
-        query = """
-        query ($token: String!) {
-          Solana(dataset: realtime) {
-            BalanceUpdates(
-              limit: { count: 10 }
-              orderBy: { descendingByField: "BalanceUpdate_Holding_maximum" }
-              where: {
-                BalanceUpdate: {
-                  Currency: {
-                    MintAddress: { is: $token }
-                  }
-                }
-                Transaction: { Result: { Success: true } }
-              }
-            ) {
-              BalanceUpdate {
-                Currency {
-                  Name
-                  MintAddress
-                  Symbol
-                  Decimals
-                }
-                Account {
-                  Owner
-                }
-                Holding: PostBalance(maximum: Block_Slot)
-              }
-            }
-
-            # Add total supply information
-            TotalSupply: TokenSupplyUpdates(
-              limit: {count: 10}
-              orderBy: {descending: Block_Time}
-              where: {
-                TokenSupplyUpdate: {
-                  Currency: {
-                    MintAddress: {is: $token}
-                  }
-                }
-              }
-            ) {
-              TokenSupplyUpdate {
-                PostBalance
-                Currency {
-                  Decimals
-                }
-              }
-            }
-          }
-        }
-        """
-
-        variables = {"token": token_address}
-
-        result = await self._execute_query(query, variables)
-
-        if "data" in result and "Solana" in result["data"]:
-            holders = result["data"]["Solana"]["BalanceUpdates"]
-            formatted_holders = []
-
-            # Get total supply if available
-            total_supply = 0
-            total_supply_data = result["data"]["Solana"].get("TotalSupply", [])
-            if total_supply_data and len(total_supply_data) > 0:
-                total_supply_update = total_supply_data[0].get("TokenSupplyUpdate", {})
-                if "PostBalance" in total_supply_update:
-                    try:
-                        total_supply = float(total_supply_update["PostBalance"])
-                    except (ValueError, TypeError):
-                        total_supply = 0
-
-            for holder in holders:
-                if "BalanceUpdate" not in holder:
-                    continue
-
-                balance_update = holder["BalanceUpdate"]
-                currency = balance_update["Currency"]
-
-                try:
-                    holding = float(balance_update["Holding"])
-                except (ValueError, TypeError):
-                    holding = 0
-
-                percentage = 0
-                if isinstance(total_supply, (int, float)) and total_supply > 0:
-                    try:
-                        percentage = (holding / total_supply) * 100
-                    except (TypeError, ZeroDivisionError):
-                        percentage = 0
-
-                formatted_holder = {
-                    "address": balance_update["Account"]["Owner"],
-                    "holding": holding,
-                    "percentage_of_supply": round(percentage, 2),
-                    "token_info": {
-                        "name": currency.get("Name", "Unknown"),
-                        "symbol": currency.get("Symbol", "Unknown"),
-                        "mint_address": currency.get("MintAddress", ""),
-                        "decimals": currency.get("Decimals", 0),
-                    },
-                }
-                formatted_holders.append(formatted_holder)
-
-            return {"holders": formatted_holders, "total_supply": total_supply}
-
-        return {"holders": [], "total_supply": 0}
 
     @monitor_execution()
     @with_cache(ttl_seconds=300)
@@ -980,14 +844,6 @@ class PumpFunTokenAgent(MeshAgent):
             interval = function_args.get("interval", "hours")
             offset = function_args.get("offset", 1)
             return await self.query_recent_token_creation(interval=interval, offset=offset)
-
-        elif tool_name == "query_token_holders":
-            token_address = function_args.get("token_address")
-
-            if not token_address:
-                return {"error": "Missing 'token_address' in tool_arguments"}
-
-            return await self.query_token_holders(token_address=token_address)
 
         elif tool_name == "query_token_buyers":
             token_address = function_args.get("token_address")

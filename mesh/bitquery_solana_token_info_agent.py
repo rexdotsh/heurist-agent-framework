@@ -105,6 +105,20 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
+                    "name": "query_token_holders",
+                    "description": "Fetch top token holders data and distribution for any Solana token. This tool provides detailed information about token holders including their balances and percentage of total supply. Use this when you need to analyze the distribution of token ownership.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "token_address": {"type": "string", "description": "Token mint address on Solana"}
+                        },
+                        "required": ["token_address"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
                     "name": "get_top_trending_tokens",
                     "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem. Data comes from Bitquery API and is updated regularly.",
                     "parameters": {
@@ -382,6 +396,126 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         except Exception as e:
             return {"error": f"Failed to fetch top trending tokens: {str(e)}"}
 
+    @monitor_execution()
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def query_token_holders(self, token_address: str) -> Dict:
+        """
+        Query top token holders for a specific token.
+
+        Args:
+            token_address (str): The mint address of the token
+
+        Returns:
+            Dict: Dictionary containing holder information
+        """
+        query = """
+        query ($token: String!) {
+          Solana(dataset: realtime) {
+            BalanceUpdates(
+              limit: { count: 10 }
+              orderBy: { descendingByField: "BalanceUpdate_Holding_maximum" }
+              where: {
+                BalanceUpdate: {
+                  Currency: {
+                    MintAddress: { is: $token }
+                  }
+                }
+                Transaction: { Result: { Success: true } }
+              }
+            ) {
+              BalanceUpdate {
+                Currency {
+                  Name
+                  MintAddress
+                  Symbol
+                  Decimals
+                }
+                Account {
+                  Owner
+                }
+                Holding: PostBalance(maximum: Block_Slot)
+              }
+            }
+
+            # Add total supply information
+            TotalSupply: TokenSupplyUpdates(
+              limit: {count: 10}
+              orderBy: {descending: Block_Time}
+              where: {
+                TokenSupplyUpdate: {
+                  Currency: {
+                    MintAddress: {is: $token}
+                  }
+                }
+              }
+            ) {
+              TokenSupplyUpdate {
+                PostBalance
+                Currency {
+                  Decimals
+                }
+              }
+            }
+          }
+        }
+        """
+
+        variables = {"token": token_address}
+
+        result = await self._execute_query(query, variables)
+
+        if "data" in result and "Solana" in result["data"]:
+            holders = result["data"]["Solana"]["BalanceUpdates"]
+            formatted_holders = []
+
+            # Get total supply if available
+            total_supply = 0
+            total_supply_data = result["data"]["Solana"].get("TotalSupply", [])
+            if total_supply_data and len(total_supply_data) > 0:
+                total_supply_update = total_supply_data[0].get("TokenSupplyUpdate", {})
+                if "PostBalance" in total_supply_update:
+                    try:
+                        total_supply = float(total_supply_update["PostBalance"])
+                    except (ValueError, TypeError):
+                        total_supply = 0
+
+            for holder in holders:
+                if "BalanceUpdate" not in holder:
+                    continue
+
+                balance_update = holder["BalanceUpdate"]
+                currency = balance_update["Currency"]
+
+                try:
+                    holding = float(balance_update["Holding"])
+                except (ValueError, TypeError):
+                    holding = 0
+
+                percentage = 0
+                if isinstance(total_supply, (int, float)) and total_supply > 0:
+                    try:
+                        percentage = (holding / total_supply) * 100
+                    except (TypeError, ZeroDivisionError):
+                        percentage = 0
+
+                formatted_holder = {
+                    "address": balance_update["Account"]["Owner"],
+                    "holding": holding,
+                    "percentage_of_supply": round(percentage, 2),
+                    "token_info": {
+                        "name": currency.get("Name", "Unknown"),
+                        "symbol": currency.get("Symbol", "Unknown"),
+                        "mint_address": currency.get("MintAddress", ""),
+                        "decimals": currency.get("Decimals", 0),
+                    },
+                }
+                formatted_holders.append(formatted_holder)
+
+            return {"holders": formatted_holders, "total_supply": total_supply}
+
+        return {"holders": [], "total_supply": 0}
+
     # ------------------------------------------------------------------------
     #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
@@ -394,6 +528,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             token_address = function_args.get("token_address")
             quote_token = function_args.get("quote_token", "sol")  # Default to "sol" if not provided
             result = await self.query_token_metrics(token_address=token_address, quote_token=quote_token)
+        elif tool_name == "query_token_holders":
+            token_address = function_args.get("token_address")
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            result = await self.query_token_holders(token_address=token_address)
         elif tool_name == "get_top_trending_tokens":
             result = await self.get_top_trending_tokens()
         else:
