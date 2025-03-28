@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 
 import requests
 from dotenv import load_dotenv
+import aiohttp
 
 from core.llm import call_llm_async, call_llm_with_tools_async
 from decorators import monitor_execution, with_cache, with_retry
@@ -15,6 +16,14 @@ load_dotenv()
 
 
 class BitquerySolanaTokenInfoAgent(MeshAgent):
+    # Token address constants
+    USDC_ADDRESS = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    SOL_ADDRESS = "So11111111111111111111111111111111111111112"
+    VIRTUAL_ADDRESS = "3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y"
+
+    # Supported quote tokens
+    SUPPORTED_QUOTE_TOKENS = {"usdc": USDC_ADDRESS, "sol": SOL_ADDRESS, "virtual": VIRTUAL_ADDRESS}
+
     def __init__(self):
         super().__init__()
         self.metadata.update(
@@ -77,12 +86,17 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "get_token_trading_info",
-                    "description": "Get detailed token trading information using Solana mint address. This tool fetches trading data including volume, price movements, and liquidity for any Solana token. Use this when you need to analyze a specific Solana token's market performance. Data comes from Bitquery API and only works with valid Solana token addresses.",
+                    "name": "query_token_metrics",
+                    "description": "Get detailed token trading metrics using Solana mint address. This tool fetches trading data including volume, price movements, and liquidity for any Solana token. Use this when you need to analyze a specific Solana token's market performance. Data comes from Bitquery API and only works with valid Solana token addresses.",
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "token_address": {"type": "string", "description": "The Solana token mint address"}
+                            "token_address": {"type": "string", "description": "The Solana token mint address"},
+                            "quote_token": {
+                                "type": "string",
+                                "description": "Quote token to use ('usdc', 'sol', 'virtual', or the token address)",
+                                "default": "sol"
+                            }
                         },
                         "required": ["token_address"],
                     },
@@ -136,8 +150,156 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
     # ------------------------------------------------------------------------
 
     @with_cache(ttl_seconds=300)  # Cache for 5 minutes
-    async def get_token_trading_info(self, token_address: str) -> Dict:
+    async def query_token_metrics(self, token_address: str, quote_token: str = "sol") -> Dict:
+        """
+        Get detailed token trading information including metrics like volume, liquidity, and market cap.
+
+        Args:
+            token_address (str): The mint address of the token
+            quote_token (str): The quote token to use (usdc, sol, virtual, or token address)
+
+        Returns:
+            Dict: Dictionary containing token trading info and metrics
+        """
         try:
+            # Get the quote token address
+            if quote_token.lower() in self.SUPPORTED_QUOTE_TOKENS:
+                quote_token_address = self.SUPPORTED_QUOTE_TOKENS[quote_token.lower()]
+            else:
+                quote_token_address = quote_token  # Assume it's a direct address if not a key
+
+            time_1h_ago = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+            query = """
+            query ($time_1h_ago: DateTime, $token: String, $quote_token: String) {
+              Solana {
+                volume: DEXTradeByTokens(
+                  where: {
+                    Trade: {
+                      Currency: { MintAddress: { is: $token } }
+                      Side: { Currency: { MintAddress: { is: $quote_token } } }
+                    }
+                    Block: { Time: { since: $time_1h_ago } }
+                  }
+                  limit: {count: 10}
+                ) {
+                  sum(of: Trade_Side_AmountInUSD)
+                }
+                buyVolume: DEXTradeByTokens(
+                  where: {
+                    Trade: {
+                      Currency: { MintAddress: { is: $token } }
+                      Side: {
+                        Currency: { MintAddress: { is: $quote_token } }
+                      }
+                    }
+                    Block: { Time: { since: $time_1h_ago } }
+                  }
+                  limit: {count: 10}
+                ) {
+                  sum(of: Trade_Side_AmountInUSD)
+                }
+                sellVolume: DEXTradeByTokens(
+                  where: {
+                    Trade: {
+                      Currency: { MintAddress: { is: $token } }
+                      Side: {
+                        Currency: { MintAddress: { is: $quote_token } }
+                      }
+                    }
+                    Block: { Time: { since: $time_1h_ago } }
+                  }
+                  limit: {count: 10}
+                ) {
+                  sum(of: Trade_Side_AmountInUSD)
+                }
+                liquidity: DEXPools(
+                  where: {
+                    Pool: {
+                      Market: {
+                        BaseCurrency: { MintAddress: { is: $token } }
+                        QuoteCurrency: { MintAddress: { is: $quote_token } }
+                      }
+                    }
+                    Block: { Time: { till: $time_1h_ago } }
+                  }
+                  limit: { count: 10 }
+                  orderBy: { descending: Block_Time }
+                ) {
+                  Pool {
+                    Base {
+                      PostAmountInUSD
+                    }
+                    Quote {
+                      PostAmountInUSD
+                    }
+                  }
+                }
+                marketcap: TokenSupplyUpdates(
+                  where: {
+                    TokenSupplyUpdate: { Currency: { MintAddress: { is: $token } } }
+                    Block: { Time: { till: $time_1h_ago } }
+                  }
+                  limitBy: { by: TokenSupplyUpdate_Currency_MintAddress, count: 10 }
+                  orderBy: { descending: Block_Time }
+                ) {
+                  TokenSupplyUpdate {
+                    PostBalanceInUSD
+                    Currency {
+                      Name
+                      MintAddress
+                      Symbol
+                    }
+                  }
+                }
+                # Add token price data
+                tokenPrice: DEXTrades(
+                  limit: {count: 10}
+                  orderBy: {descending: Block_Time}
+                  where: {
+                    Trade: {
+                      Buy: {Currency: {MintAddress: {is: $token}}}
+                      Sell: {Currency: {MintAddress: {is: $quote_token}}}
+                    }
+                  }
+                ) {
+                  Trade {
+                    Buy {
+                      Currency {
+                        Symbol
+                      }
+                    }
+                    Sell {
+                      Currency {
+                        Symbol
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            """
+
+            variables = {"time_1h_ago": time_1h_ago, "token": token_address, "quote_token": quote_token_address}
+
+            # Execute the query
+            result = await self._execute_query(query, variables)
+
+            # If no data found with primary quote token, try alternatives
+            if (
+                not result.get("data", {}).get("Solana", {}).get("liquidity")
+                and quote_token.lower() != "sol"
+                and quote_token != self.SOL_ADDRESS
+            ):
+                # Try with SOL as fallback
+                sol_variables = {"time_1h_ago": time_1h_ago, "token": token_address, "quote_token": self.SOL_ADDRESS}
+                result = await self._execute_query(query, sol_variables)
+
+                # Add info about fallback
+                if "data" in result:
+                    result["data"]["fallback_used"] = "Used SOL as fallback quote token"
+
+            # Get trading data for price movements
             trading_data = fetch_and_organize_dex_trade_data(token_address)
             if trading_data:
                 latest_data = trading_data[-1]
@@ -147,20 +309,67 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 price_change_percent = (price_change / first_data["open"]) * 100 if first_data["open"] != 0 else 0
                 total_volume = sum(bucket["volume"] for bucket in trading_data)
 
-                summary = {
-                    "current_price": latest_data["close"],
-                    "price_change_1h": price_change,
-                    "price_change_percentage_1h": price_change_percent,
-                    "highest_price_1h": max(bucket["high"] for bucket in trading_data),
-                    "lowest_price_1h": min(bucket["low"] for bucket in trading_data),
-                    "total_volume_1h": total_volume,
-                    "last_updated": datetime.datetime.utcnow().isoformat(),
-                }
+                # Add price movement data to the result
+                if "data" in result:
+                    result["data"]["price_movements"] = {
+                        "current_price": latest_data["close"],
+                        "price_change_1h": price_change,
+                        "price_change_percentage_1h": price_change_percent,
+                        "highest_price_1h": max(bucket["high"] for bucket in trading_data),
+                        "lowest_price_1h": min(bucket["low"] for bucket in trading_data),
+                        "total_volume_1h": total_volume,
+                        "last_updated": datetime.datetime.utcnow().isoformat(),
+                    }
 
-                return {"summary": summary, "detailed_data": trading_data}
-            return {"error": "No trading data available"}
+            return result
+
         except Exception as e:
             return {"error": f"Failed to fetch token trading info: {str(e)}"}
+
+    async def _execute_query(self, query: str, variables: Dict = None) -> Dict:
+        """
+        Execute a GraphQL query against the Bitquery API with improved error handling.
+
+        Args:
+            query (str): GraphQL query to execute
+            variables (Dict, optional): Variables for the query
+
+        Returns:
+            Dict: Query results
+        """
+        url = "https://streaming.bitquery.io/eap"
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('BITQUERY_API_KEY')}"}
+
+        payload = {"query": query}
+        if variables:
+            payload["variables"] = variables
+
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, json=payload, headers=headers) as response:
+                    response.raise_for_status()
+                    data = await response.json()
+
+                    if "errors" in data:
+                        error_messages = [error.get("message", "Unknown error") for error in data["errors"]]
+                        raise Exception(f"GraphQL errors: {', '.join(error_messages)}")
+
+                    return data
+        except aiohttp.ClientResponseError as e:
+            if e.status == 429:
+                # Rate limit error
+                raise Exception(f"Rate limit exceeded: {str(e)}")
+            elif e.status >= 500:
+                # Server-side error
+                raise Exception(f"Bitquery server error: {str(e)}")
+            else:
+                raise Exception(f"API request failed: {str(e)}")
+        except aiohttp.ClientError as e:
+            # Network-related errors
+            raise Exception(f"Network error when calling Bitquery: {str(e)}")
+        except Exception as e:
+            # Unexpected errors
+            raise Exception(f"Unexpected error during query execution: {str(e)}")
 
     @with_cache(ttl_seconds=300)  # Cache for 5 minutes
     async def get_top_trending_tokens(self) -> Dict:
@@ -180,8 +389,11 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
         """
         A single method that calls the appropriate function, handles errors/formatting
         """
-        if tool_name == "get_token_trading_info":
-            result = await self.get_token_trading_info(function_args["token_address"])
+        if tool_name == "query_token_metrics":
+            # Handle quote_token as optional parameter with default value
+            token_address = function_args.get("token_address")
+            quote_token = function_args.get("quote_token", "sol")  # Default to "sol" if not provided
+            result = await self.query_token_metrics(token_address=token_address, quote_token=quote_token)
         elif tool_name == "get_top_trending_tokens":
             result = await self.get_top_trending_tokens()
         else:
