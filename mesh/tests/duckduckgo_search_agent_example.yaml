@@ -6,23 +6,7 @@ input:
     max_results: 3
   raw_data_only: false
 output:
-  response: 'Here is the answer in a straightforward, conversational manner, following
-    the strict formatting rules:
-
-
-    The latest developments in artificial intelligence include a new research program
-    focused on indigenizing AI, challenging its current direction. In 2025, AI technology
-    is becoming more refined, agile, and secure, with notable advancements in:
-
-
-    Generative AI, particularly in improved models for generating text, images, and
-    audio.
-
-    Healthcare, where AI enhances accurate diagnoses, clinical decision-making, and
-    patient care.
-
-    Telemedicine, with AI-driven adoption in healthcare institutions, and integration
-    into wearable devices for real-time patient data analysis.'
+  response: ''
   data:
     status: success
     data:
@@ -30,20 +14,22 @@ output:
       results:
       - title: Artificial Intelligence News -- ScienceDaily
         link: https://www.sciencedaily.com/news/computers_math/artificial_intelligence/
-        snippet: A New Research Program Is Indigenizing Artificial Intelligence Jan.
-          15, 2025 — A new initiative is challenging the conversation around the direction
-          of artificial intelligence (AI).
-      - title: Future of AI in 2025 [Top Trends and Predictions] - GeeksforGeeks
-        link: https://www.geeksforgeeks.org/future-of-ai/
-        snippet: 'Latest Developments in Artificial Intelligence. AI technology is
-          becoming more adult, nimble, and safe, with wonderful new features that
-          truly extend its use in everyday living. Here are a few buzzwords to note
-          in these updates: Progress In Generative AI: Generative AI is riding high
-          on improved models for the generation of text, images, audio ...'
+        snippet: Artificial Intelligence News. Everything on AI including futuristic
+          robots with artificial intelligence, computer models of human intelligence
+          and more.
       - title: Latest Development of Artificial Intelligence | InData Labs
         link: https://indatalabs.com/blog/ai-latest-developments
-        snippet: The latest development of artificial intelligence in the healthcare
-          world is enabling improvements in accurate diagnoses, clinical decision-making,
-          and optimal patient care. AI research is driving the widespread adoption
-          of telemedicine at healthcare institutions. It's incorporated into wearable
-          devices that offer real-time patient data and ...
+        snippet: Artificial intelligence is one of the most impressive tech advancements
+          of our times. The latest development of generative artificial intelligence
+          has seen it applied across dozens of industries and sectors. From manufacturing
+          and robotics to pharmaceuticals, supply chain management, and everyday AI
+          software automation, it's happening everywhere. Artificial intelligence
+          history and latest ...
+      - title: The Top Artificial Intelligence Trends | IBM
+        link: https://www.ibm.com/think/insights/artificial-intelligence-trends
+        snippet: 2022 was the year that generative artificial intelligence (AI) exploded
+          into the public consciousness, and 2023 was the year it began to take root
+          in the business world. 2024 thus stands to be a pivotal year for the future
+          of AI, as researchers and enterprises seek to establish how this evolutionary
+          leap in technology can be most practically integrated into our everyday
+          lives.

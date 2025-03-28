@@ -2,37 +2,34 @@ ethereum_example:
   input:
     query: What's the most active address on Ethereum during the last 24 hours?
   output:
-    response: "**Ethereum On-Chain Data Analysis Response**\n\n**Query Summary:**\n\
-      * **Blockchain:** Ethereum\n* **Query:** Most Active Address in the Last 24\
-      \ Hours\n\n**Results:**\n\n* **Status:** Success (`code: 0`)\n* **Message:**\
-      \ Success (`msg: Success`)\n\n**Most Active Address (Last 24 Hours):**\n\n|\
-      \ **Address**                                         | **Total Transactions\
-      \ (24H)** |\n|----------------------------------------------------|------------------------------|\n\
-      | **0xdac17f958d2ee523a2206206994597c13d831ec7** | **148,595**             \
-      \     |\n\n**Insights and Observations:**\n\n1. **Exceptional Activity:** The\
-      \ address `0xdac17f958d2ee523a2206206994597c13d831ec7` has shown an extraordinarily\
-      \ high level of activity, with **148,595 transactions** within the last 24 hours.\
-      \ This volume significantly surpasses typical address activity, suggesting automated\
-      \ or high-frequency trading operations.\n\n2. **Possible Use Cases:**\n   -\
-      \ **High-Frequency Trading Bot:** The address might be utilized by a trading\
-      \ bot designed to capitalize on market fluctuations with rapid buy/sell orders.\n\
-      \   - **Decentralized Application (dApp) Contract:** It could be a smart contract\
-      \ address for a highly interactive dApp, such as a gaming platform, decentralized\
-      \ exchange (DEX), or a social media platform, though the transaction volume\
-      \ leans more towards trading activity.\n   - **Wallet Service or Exchange:**\
-      \ Less likely, but it might be a wallet service or an exchange's hot wallet,\
-      \ though the transaction pattern would typically show more balance variability.\n\
-      \n3. **Further Analysis Suggestions:**\n   - **Transaction Type Analysis:**\
-      \ Breaking down the types of transactions (e.g., ETH transfers, contract interactions,\
-      \ token transfers) could provide clearer insights into the address's primary\
-      \ use.\n   - **Counterparty Analysis:** Examining the most frequent counterparties\
-      \ could reveal if the address interacts predominantly with known exchanges,\
-      \ other suspected bots, or a diverse set of addresses.\n   - **Historical Activity\
-      \ Review:** Comparing the last 24 hours' activity with historical data could\
-      \ indicate if this level of activity is anomalous or part of a recurring pattern.\n\
-      \n**Limitations of Current Analysis:**\n- This analysis is based solely on transaction\
-      \ volume and does not account for the nature (type) of these transactions or\
-      \ the involved assets (ETH, tokens, etc.).\n- Deeper insights"
+    response: "**Ethereum Blockchain Analysis: Most Active Address (Last 24 hours)**\n\
+      \n**Query Summary:**\n* **Blockchain:** Ethereum\n* **Query:** Most Active Address\
+      \ in the Last 24 Hours\n* **Status:** Successful (Code: 0, Message: Success)\n\
+      \n**Key Findings:**\n\n* **Most Active Address:** `0xdac17f958d2ee523a2206206994597c13d831ec7`\n\
+      * **Total Transactions in the Last 24 Hours:** **167,444**\n\n**Observations\
+      \ and Insights:**\n\n1. **High Transaction Volume:** The address `0xdac17f958d2ee523a2206206994597c13d831ec7`\
+      \ has exhibited an extraordinarily high transaction count over the last 24 hours,\
+      \ with 167,444 transactions. This suggests a potential automated or high-frequency\
+      \ trading activity, a large-scale NFT minting event, or possibly a decentralized\
+      \ application (dApp) with a high user engagement rate.\n\n2. **Potential Use\
+      \ Cases:**\n   - **DEX/Trading Bot:** Could be a trading bot or a decentralized\
+      \ exchange (DEX) smart contract, given the high transaction frequency, possibly\
+      \ executing trades or facilitating swaps.\n   - **NFT Platform:** Might be associated\
+      \ with an NFT platform that has seen a surge in activity, such as a highly anticipated\
+      \ mint or a popular collection.\n   - **dApp Activity:** Indicates a dApp with\
+      \ a large user base, possibly a gaming platform, a social media dApp, or a DeFi\
+      \ (Decentralized Finance) application with high engagement.\n\n**Recommendations\
+      \ for Further Analysis:**\n\n1. **Transaction Type Analysis:** Drill down into\
+      \ the types of transactions (e.g., ETH transfers, contract calls, NFT transactions)\
+      \ to better understand the nature of the activity.\n2. **Counterparty Analysis:**\
+      \ Examine the top counterparties (addresses interacting with the most active\
+      \ address) to identify potential clusters or networks of activity.\n3. **Temporal\
+      \ Analysis:** Extend the analysis timeframe to observe if this level of activity\
+      \ is a one-time event or part of a larger, ongoing trend.\n\n**Limitations of\
+      \ Current Analysis:**\n- This analysis is based on a 24-hour window. Longer-term\
+      \ data might provide more context.\n- The nature of the transactions (e.g.,\
+      \ simple ETH transfers vs. complex contract interactions) is not specified in\
+      \ the provided data."
     data:
       blockchain: ethereum
       query: most active address in the last 24 hours
@@ -46,7 +43,7 @@ ethereum_example:
           rows:
           - items:
             - '0xdac17f958d2ee523a2206206994597c13d831ec7'
-            - '148595'
+            - '167444'
 direct_example:
   input:
     tool: query_onchain_data
@@ -54,71 +51,7 @@ direct_example:
       blockchain: solana
       query: What's the most active address on Bitcoin during the last 24 hours?
   output:
-    response: '**Error Response Analysis**
-
-
-      **Blockchain Specified:** `solana`
-
-      **Query Requested:** Most active address on **Bitcoin** during the last 24 hours
-
-
-      **Error Details:**
-
-      - **Code:** 5000
-
-      - **Message (msg):** Query failed or was cancelled.
-
-      - **Detail:** Query failed or was cancelled.
-
-
-      **Resolution and Clarification:**
-
-
-      The error occurs due to a **blockchain mismatch** between the specified blockchain
-      (`solana`) and the blockchain requested in the query (`Bitcoin`). Our system
-      is designed to analyze data from the blockchain explicitly mentioned in the
-      query parameters, but in this case, there''s a discrepancy:
-
-
-      1. **Specified Blockchain:** `solana`
-
-      2. **Requested Blockchain in Query:** `Bitcoin`
-
-
-      **Supported Blockchains (for reference):**
-
-      - Ethereum
-
-      - Base
-
-      - Bitcoin
-
-      - Solana
-
-
-      **To Retrieve Meaningful Data:**
-
-      Please reformulate your query to match the blockchain you wish to analyze. Here
-      are two corrected query examples based on your original request:
-
-
-      ### **Option 1: Analyze Solana (as originally specified)**
-
-      - **Blockchain:** `solana` (no change needed)
-
-      - **Revised Query:** "What''s the most active address on Solana during the last
-      24 hours?"
-
-
-      ### **Option 2: Analyze Bitcoin (as requested in the query)**
-
-      - **Blockchain:** `bitcoin` (update the specified blockchain)
-
-      - **Query Remains:** "What''s the most active address on Bitcoin during the
-      last 24 hours?"
-
-
-      **Submit the revised query for a detailed on-chain data analysis.**'
+    response: ''
     data:
       blockchain: solana
       query: What's the most active address on Bitcoin during the last 24 hours?

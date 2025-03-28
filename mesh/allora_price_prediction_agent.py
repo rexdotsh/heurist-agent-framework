@@ -107,6 +107,7 @@ class AlloraPricePredictionAgent(MeshAgent):
     #                       SHARED / UTILITY METHODS
     # ------------------------------------------------------------------------
     async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
+        """Generate a natural language response using the LLM"""
         return await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
@@ -120,6 +121,7 @@ class AlloraPricePredictionAgent(MeshAgent):
         )
 
     def _handle_error(self, maybe_error: dict) -> dict:
+        """Check for and return any errors in the response"""
         if "error" in maybe_error:
             return {"error": maybe_error["error"]}
         return {}
@@ -131,6 +133,7 @@ class AlloraPricePredictionAgent(MeshAgent):
     @with_cache(ttl_seconds=300)
     @with_retry(max_retries=3)
     async def get_allora_prediction(self, token: str, timeframe: str) -> Dict:
+        """Fetch price prediction data from Allora API"""
         should_close = False
         if not self.session:
             self.session = aiohttp.ClientSession()
@@ -170,9 +173,9 @@ class AlloraPricePredictionAgent(MeshAgent):
     # ------------------------------------------------------------------------
     #                      COMMON HANDLER LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
+        """Handle execution of specific tools and return the raw data"""
+
         if tool_name != "get_allora_prediction":
             return {"error": f"Unsupported tool '{tool_name}'"}
 
@@ -199,13 +202,7 @@ class AlloraPricePredictionAgent(MeshAgent):
             }
         }
 
-        if raw_data_only:
-            return {"response": "", "data": formatted_data}
-
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=formatted_data, temperature=0.1
-        )
-        return {"response": explanation, "data": formatted_data}
+        return formatted_data
 
     # ------------------------------------------------------------------------
     #                      MAIN HANDLER
@@ -214,9 +211,13 @@ class AlloraPricePredictionAgent(MeshAgent):
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -227,13 +228,8 @@ class AlloraPricePredictionAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -258,13 +254,15 @@ class AlloraPricePredictionAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.1
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

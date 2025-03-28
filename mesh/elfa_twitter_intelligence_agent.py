@@ -275,7 +275,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             return {"status": "error", "error": str(e)}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """Handle tool execution and optional LLM explanation"""

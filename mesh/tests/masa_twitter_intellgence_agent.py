@@ -34,7 +34,7 @@ async def run_agent():
         agent_output = await agent.handle_message(agent_input)
 
         # Another natural language query
-        agent_input_specific = {"query": "$BTC", "max_results": 100}
+        agent_input_specific = {"query": "$BTC", "max_results": 30}
         agent_output_specific = await agent.handle_message(agent_input_specific)
 
         # Direct tool call

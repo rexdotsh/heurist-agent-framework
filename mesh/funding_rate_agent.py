@@ -433,14 +433,11 @@ class FundingRateAgent(MeshAgent):
         return formatted_rates
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
+        A single method that calls the appropriate function, handles errors/formatting
         """
         if tool_name == "get_all_funding_rates":
             logger.info("Getting all funding rates")
@@ -449,17 +446,11 @@ class FundingRateAgent(MeshAgent):
             if errors:
                 return errors
 
-            # Format the data before returning or explaining
+            # Format the data before returning
             if "funding_rates" in result:
                 result["funding_rates"] = self.format_funding_rates(result["funding_rates"])
 
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=0.3
-            )
-            return {"response": explanation, "data": result}
+            return result
 
         elif tool_name == "get_symbol_funding_rates":
             symbol = function_args.get("symbol")
@@ -472,17 +463,11 @@ class FundingRateAgent(MeshAgent):
             if errors:
                 return errors
 
-            # Format the data before returning or explaining
+            # Format the data before returning
             if "funding_rates" in result:
                 result["funding_rates"] = self.format_funding_rates(result["funding_rates"])
 
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=0.7
-            )
-            return {"response": explanation, "data": result}
+            return result
 
         elif tool_name == "find_cross_exchange_opportunities":
             min_funding_rate_diff = function_args.get("min_funding_rate_diff", 0.0003)
@@ -493,13 +478,7 @@ class FundingRateAgent(MeshAgent):
             if errors:
                 return errors
 
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=0.7
-            )
-            return {"response": explanation, "data": result}
+            return result
 
         elif tool_name == "find_spot_futures_opportunities":
             min_funding_rate = function_args.get("min_funding_rate", 0.0003)
@@ -510,13 +489,7 @@ class FundingRateAgent(MeshAgent):
             if errors:
                 return errors
 
-            if raw_data_only:
-                return {"response": "", "data": result}
-
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=0.7
-            )
-            return {"response": explanation, "data": result}
+            return result
 
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
@@ -526,8 +499,10 @@ class FundingRateAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+          - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+            - if 'raw_data_only' is present, we return tool results without another LLM call
+          - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+            - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -538,17 +513,8 @@ class FundingRateAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            # For a direct tool call, we do NOT use call_llm_with_tools_async
-            # We simply call our helper. We'll pass an empty `query` or something placeholder
-            # if user hasn't given a `query`.
-            # We'll also pass tool_call_id = "direct_tool" for consistency.
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -575,14 +541,15 @@ class FundingRateAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            # Use the same _handle_tool_logic
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool

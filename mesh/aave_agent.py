@@ -114,6 +114,10 @@ class AaveAgent(MeshAgent):
     #                       SHARED / UTILITY METHODS
     # ------------------------------------------------------------------------
     async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
+        """
+        Reusable helper to ask the LLM to generate a user-friendly explanation
+        given a piece of data from a tool call.
+        """
         return await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
@@ -127,6 +131,10 @@ class AaveAgent(MeshAgent):
         )
 
     def _handle_error(self, maybe_error: dict) -> dict:
+        """
+        Small helper to return the error if present in
+        a dictionary with the 'error' key.
+        """
         if "error" in maybe_error:
             return {"error": maybe_error["error"]}
         return {}
@@ -289,11 +297,10 @@ class AaveAgent(MeshAgent):
             return {"error": f"Failed to fetch Aave reserves: {str(e)}"}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
+        """Handle tool execution without LLM"""
         if tool_name != "get_aave_reserves":
             return {"error": f"Unsupported tool '{tool_name}'"}
 
@@ -310,7 +317,7 @@ class AaveAgent(MeshAgent):
         if errors:
             return errors
 
-        formatted_data = {
+        return {
             "reserve_data": {
                 "chain_id": chain_id,
                 "reserves": result["reserves"],
@@ -318,14 +325,6 @@ class AaveAgent(MeshAgent):
                 "total_reserves": result["total_reserves"],
             }
         }
-
-        if raw_data_only:
-            return {"response": "", "data": formatted_data}
-
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=formatted_data, temperature=0.1
-        )
-        return {"response": explanation, "data": formatted_data}
 
     # ------------------------------------------------------------------------
     #                      MAIN HANDLER
@@ -347,13 +346,11 @@ class AaveAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
+            data = await self._handle_tool_logic(
                 tool_name=tool_name,
                 function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
             )
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -378,13 +375,18 @@ class AaveAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
+            data = await self._handle_tool_logic(
                 tool_name=tool_call_name,
                 function_args=tool_call_args,
-                query=query,
-                tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
             )
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id=tool_call.id, data=data, temperature=0.1
+            )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool
