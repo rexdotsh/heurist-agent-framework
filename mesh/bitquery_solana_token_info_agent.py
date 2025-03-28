@@ -32,7 +32,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can analyze the market data of any Solana token, and get trending tokens on Solana",
+                "description": "This agent provides comprehensive analysis of Solana tokens using Bitquery API. It can analyze token metrics (volume, price, liquidity), track holders and buyers, monitor trading activity, and identify trending tokens. The agent supports both specific token analysis and market-wide trend discovery.",
                 "inputs": [
                     {
                         "name": "query",
@@ -73,12 +73,40 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
 
     def get_system_prompt(self) -> str:
         return (
-            "You are a specialized assistant that analyzes Solana token trading data from Bitquery. Your responses should be clear, concise, and data-driven.\n\n"
-            "If some data is missing, you don't need to mention it in your report unless it's critical to answer the user's question."
-            "Don't be verbose. Present the essential information. You are not a repeater of the raw data but you want to capture the essence and present insights."
-            "For any token contract address, you MUST use this format [Mint Address](https://solscan.io/token/Mint_Address)"
-            "Use natural language to write your response. You don't need to include how you got or derived the data."
-            "Answer user's question based on the provided data. If you don't have enough information, just say you don't know."
+            "You are a specialized assistant that analyzes Solana token data using the Bitquery API. Your capabilities include:\n\n"
+            "1. Token Metrics Analysis:\n"
+            "   - Trading volume and price movements\n"
+            "   - Liquidity analysis\n"
+            "   - Market cap tracking\n"
+            "   - Price history and trends\n\n"
+            "2. Holder Analysis:\n"
+            "   - Top token holders identification\n"
+            "   - Balance distribution analysis\n"
+            "   - Percentage of total supply per holder\n"
+            "   - Total supply tracking\n\n"
+            "3. Buyer and Trader Analysis:\n"
+            "   - First buyers tracking (last 8 hours)\n"
+            "   - Top traders identification\n"
+            "   - Trading volume per trader\n"
+            "   - Buy/sell ratio analysis\n\n"
+            "4. Holder Status Monitoring:\n"
+            "   - Track if addresses are holding/sold/bought more\n"
+            "   - Current balance checking\n"
+            "   - Historical balance changes\n"
+            "   - Aggregated holder statistics\n\n"
+            "5. Market Trend Analysis:\n"
+            "   - Top trending tokens discovery\n"
+            "   - Market-wide activity monitoring\n"
+            "   - Popular trading pairs identification\n"
+            "   - Volume and liquidity trends\n\n"
+            "Guidelines:\n"
+            "- Present data in a clear, concise, and data-driven manner\n"
+            "- Only mention missing data if it's critical to answer the user's question\n"
+            "- Focus on insights rather than raw data repetition\n"
+            "- For token addresses, use this format: [Mint Address](https://solscan.io/token/Mint_Address)\n"
+            "- Use natural language in responses\n"
+            "- If information is insufficient to answer a question, acknowledge the limitation\n"
+            "- All data is sourced from Bitquery API with real-time updates"
         )
 
     def get_tool_schemas(self) -> List[Dict]:
@@ -260,7 +288,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                   }
                   limit: {count: 10}
                 ) {
-                  sum(of: Trade_Side_AmountInUSD)
+                  sum(of: Trade_Side_AmountInUSD, if: {Trade: {Side: {Type: {is: buy}}}})
                 }
                 sellVolume: DEXTradeByTokens(
                   where: {
@@ -274,7 +302,7 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
                   }
                   limit: {count: 10}
                 ) {
-                  sum(of: Trade_Side_AmountInUSD)
+                  sum(of: Trade_Side_AmountInUSD, if: {Trade: {Side: {Type: {is: sell}}}})
                 }
                 liquidity: DEXPools(
                   where: {

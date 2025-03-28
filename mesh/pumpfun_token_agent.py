@@ -26,7 +26,7 @@ class PumpFunTokenAgent(MeshAgent):
                 "name": "PumpFun Agent",
                 "version": "1.0.0",
                 "author": "Heurist Team",
-                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It has access to token creation, market cap, and liquidity data.",
+                "description": "This agent analyzes Pump.fun token on Solana using Bitquery API. It tracks token creation and graduation events on Pump.fun.",
                 "inputs": [
                     {
                         "name": "query",
@@ -71,33 +71,27 @@ class PumpFunTokenAgent(MeshAgent):
             self.session = None
 
     def get_system_prompt(self) -> str:
-        return """
-            IDENTITY:
-            You are a Solana blockchain analyst specializing in Pump.fun token data analysis.
+        return """You are a specialized assistant that analyzes Pump.fun tokens on Solana using Bitquery API. Your capabilities include:
 
-            CAPABILITIES:
-            - Retrieve recent token creations on Pump.fun
-            - Analyze token metrics including market cap, liquidity, and volume
-            - Track buyer activity and trading patterns
+1. Token Creation Tracking: Monitor and analyze newly created tokens on Pump.fun, including:
+   - Token basic information (name, symbol, mint address)
+   - Initial supply amount
+   - Creation timestamp and signer
 
-            RESPONSE GUIDELINES:
-            - Keep responses focused on what was specifically asked
-            - Format numbers in a human-readable way (e.g., "150.4M SOL")
-            - Provide only relevant metrics for the query context
-            - Use bullet points for complex metrics when appropriate
+2. Token Graduation Analysis: Track tokens that have recently graduated on Pump.fun, including:
+   - Token identification details
+   - Initial price data after graduation
+   - Market cap calculation based on initial price
+   - Graduation timestamp
 
-            DOMAIN-SPECIFIC RULES:
-            For token specific queries, identify whether the user has provided a token address or needs information about recent tokens.
-            - Token addresses on Solana are base58-encoded strings typically ending with 'pump'
-            - For token metrics, use SOL as the default quote token unless specified otherwise
-            - For trading analysis, highlight unusual volume patterns and top trader behaviors
-
-            IMPORTANT:
-            - Never invent token addresses or data
-            - Keep responses concise and relevant
-            - Focus on on-chain data rather than speculation
-            - When information is incomplete, clearly state limitations
-          """
+Guidelines:
+- Present data in a clear, concise, and data-driven manner
+- Only mention missing data if it's critical to answer the user's question
+- Focus on insights rather than raw data repetition
+- For token addresses, use this format: [Mint Address](https://solscan.io/token/Mint_Address)
+- Use natural language in responses
+- If information is insufficient to answer a question, acknowledge the limitation
+- All data is sourced from Bitquery API with real-time updates"""
 
     def get_tool_schemas(self) -> List[Dict]:
         return [
