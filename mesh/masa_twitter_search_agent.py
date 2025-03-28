@@ -25,7 +25,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can search Twitter through Masa API and analyze the results.",
+                "description": "This agent can search on Twitter through Masa API and analyze the results by identifying trending topics and sentiment related to a topic.",
                 "inputs": [
                     {
                         "name": "query",
@@ -38,7 +38,7 @@ class MasaTwitterSearchAgent(MeshAgent):
                         "description": "Maximum number of results to return.",
                         "type": "int",
                         "required": False,
-                        "default": 100,
+                        "default": 25,
                     },
                     {
                         "name": "raw_data_only",
@@ -91,7 +91,6 @@ class MasaTwitterSearchAgent(MeshAgent):
     4. Sentiment trends if apparent from the content
 
     IMPORTANT:
-    - Respect user privacy by not emphasizing personal information
     - Do not make claims about data that isn't present in the search results
     - Keep responses concise and relevant"""
 
@@ -101,14 +100,14 @@ class MasaTwitterSearchAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "search_twitter",
-                    "description": "Search Twitter for tweets containing specific keywords or phrases",
+                    "description": "Search on Twitter to identify what people are saying about a topic. The search term must be a single word or a short phrase, or an account name or hashtag. Never use a search term that is longer than 2 words. The results contain the tweet content and the impression metrics of the tweet.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "search_term": {"type": "string", "description": "The search term to find tweets"},
                             "max_results": {
                                 "type": "number",
-                                "description": "Maximum number of results to return (default: 100)",
+                                "description": "Maximum number of results to return (default: 25)",
                             },
                         },
                         "required": ["search_term"],
@@ -150,7 +149,7 @@ class MasaTwitterSearchAgent(MeshAgent):
     #                      MASA API-SPECIFIC METHODS
     # ------------------------------------------------------------------------
     @with_cache(ttl_seconds=3600)
-    async def search_twitter(self, search_term: str, max_results: int = 100) -> dict:
+    async def search_twitter(self, search_term: str, max_results: int = 25) -> dict:
         try:
             # Note: The API still expects 'query' as the parameter name
             payload = {"query": search_term, "max_results": max_results}
@@ -202,7 +201,7 @@ class MasaTwitterSearchAgent(MeshAgent):
             metrics = metadata.get("public_metrics", {}) if metadata else {}
 
             formatted_tweet = {
-                "id": tweet.get("ExternalID"),
+                # "id": tweet.get("ExternalID"),
                 "content": tweet.get("Content"),
                 "created_at": created_at,
                 "language": metadata.get("lang") if metadata else None,
@@ -213,8 +212,8 @@ class MasaTwitterSearchAgent(MeshAgent):
                     "quotes": metrics.get("QuoteCount", 0),
                     "bookmarks": metrics.get("BookmarkCount", 0),
                 },
-                "author_id": metadata.get("user_id") if metadata else None,
-                "conversation_id": metadata.get("conversation_id") if metadata else None,
+                # "author_id": metadata.get("user_id") if metadata else None,
+                # "conversation_id": metadata.get("conversation_id") if metadata else None,
             }
 
             formatted_results["tweets"].append(formatted_tweet)
@@ -222,36 +221,27 @@ class MasaTwitterSearchAgent(MeshAgent):
         return formatted_results
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
+        Handle execution of specific tools and return the raw data
         """
-        temp_for_explanation = 0.7
-
         if tool_name == "search_twitter":
             search_term = function_args.get("search_term")
-            max_results = function_args.get("max_results", 100)
+            max_results = function_args.get("max_results", 25)
 
             if not search_term:
                 return {"error": "Missing 'search_term' in tool_arguments"}
 
             logger.info(f"Searching Twitter for: '{search_term}' with max_results={max_results}")
-
             result = await self.search_twitter(search_term, max_results)
+
             errors = self._handle_error(result)
             if errors:
                 return errors
-            if raw_data_only:
-                return {"response": "", "data": result}
-            explanation = await self._respond_with_llm(
-                query=query, tool_call_id=tool_call_id, data=result, temperature=temp_for_explanation
-            )
-            return {"response": explanation, "data": result}
+
+            return result
         else:
             return {"error": f"Unsupported tool '{tool_name}'"}
 
@@ -260,27 +250,24 @@ class MasaTwitterSearchAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
-        - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-        - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
         tool_args = params.get("tool_arguments", {})
         raw_data_only = params.get("raw_data_only", False)
-        if "max_results" in params and tool_name == "search_twitter":
+        if "max_results" in params and (tool_name == "search_twitter" or query):
             tool_args["max_results"] = params.get("max_results")
 
         # ---------------------
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -288,15 +275,17 @@ class MasaTwitterSearchAgent(MeshAgent):
         if query:
             # For Twitter search, we'll directly map the query to the search_twitter tool
             # without requiring LLM to decide, since this is a specialized agent
-            search_args = {"search_term": query, "max_results": params.get("max_results", 100)}
+            search_args = {"search_term": query, "max_results": params.get("max_results", 25)}
 
-            return await self._handle_tool_logic(
-                tool_name="search_twitter",
-                function_args=search_args,
-                query=query,
-                tool_call_id="natural_language_query",
-                raw_data_only=raw_data_only,
+            data = await self._handle_tool_logic(tool_name="search_twitter", function_args=search_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            explanation = await self._respond_with_llm(
+                query=query, tool_call_id="natural_language_query", data=data, temperature=0.7
             )
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool
