@@ -149,6 +149,25 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
+                    "name": "query_holder_status",
+                    "description": "Check if buyers are still holding, sold, or bought more",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "token_address": {"type": "string", "description": "Token mint address on Solana"},
+                            "buyer_addresses": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "List of buyer wallet addresses to check",
+                            },
+                        },
+                        "required": ["token_address", "buyer_addresses"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
                     "name": "get_top_trending_tokens",
                     "description": "Get the current top trending tokens on Solana. This tool retrieves a list of the most popular and actively traded tokens on Solana. It provides key metrics for each trending token including price, volume, and recent price changes. Use this when you want to discover which tokens are currently gaining attention in the Solana ecosystem. Data comes from Bitquery API and is updated regularly.",
                     "parameters": {
@@ -735,6 +754,129 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
 
         return {"traders": [], "markets": []}
 
+    @monitor_execution()
+    @with_cache(ttl_seconds=300)
+    @with_retry(max_retries=3)
+    async def query_holder_status(self, token_address: str, buyer_addresses: List[str]) -> Dict:
+        """
+        Query holder status for specific addresses for a token.
+
+        Args:
+            token_address (str): The mint address of the token
+            buyer_addresses (list[str]): List of buyer addresses to check
+
+        Returns:
+            Dict: Dictionary containing holder status information
+        """
+        # Split addresses into chunks of 50 to avoid query limitations
+        max_addresses_per_query = 50
+        address_chunks = [
+            buyer_addresses[i : i + max_addresses_per_query]
+            for i in range(0, len(buyer_addresses), max_addresses_per_query)
+        ]
+
+        all_holder_statuses = []
+        status_counts = {"holding": 0, "sold": 0, "bought_more": 0, "not_found": 0}
+
+        for address_chunk in address_chunks:
+            query = """
+            query ($token: String!, $addresses: [String!]) {
+              Solana {
+                BalanceUpdates(
+                  where: {
+                    BalanceUpdate: {
+                      Account: {
+                        Token: {
+                          Owner: {
+                            in: $addresses
+                          }
+                        }
+                      }
+                      Currency: {
+                        MintAddress: { is: $token }
+                      }
+                    }
+                  }
+                  limit: {count: 10}
+                  orderBy: {descending: Block_Time}
+                ) {
+                  BalanceUpdate {
+                    Account {
+                      Token {
+                        Owner
+                      }
+                    }
+                    balance: PostBalance(maximum: Block_Slot)
+                    Currency {
+                      Decimals
+                    }
+                  }
+                  Transaction {
+                    Index
+                  }
+                  Block {
+                    Time
+                  }
+                }
+              }
+            }
+            """
+
+            variables = {"token": token_address, "addresses": address_chunk}
+
+            result = await self._execute_query(query, variables)
+
+            if "data" in result and "Solana" in result["data"]:
+                balance_updates = result["data"]["Solana"]["BalanceUpdates"]
+
+                # Add placeholders for missing addresses
+                found_addresses = set()
+                for update in balance_updates:
+                    if "BalanceUpdate" not in update:
+                        continue
+
+                    balance_update = update["BalanceUpdate"]
+                    owner = balance_update["Account"]["Token"]["Owner"]
+                    found_addresses.add(owner)
+
+                    try:
+                        balance = float(balance_update["balance"])
+                    except (ValueError, TypeError):
+                        balance = 0
+
+                    status = "holding" if balance > 0 else "sold"
+                    if balance > 0:
+                        status_counts["holding"] += 1
+                    else:
+                        status_counts["sold"] += 1
+
+                    holder_status = {
+                        "address": owner,
+                        "current_balance": balance,
+                        "status": status,
+                        "last_update": {
+                            "time": update["Block"]["Time"],
+                        }
+                    }
+                    all_holder_statuses.append(holder_status)
+
+                # Add not found addresses
+                for address in address_chunk:
+                    if address not in found_addresses:
+                        status_counts["not_found"] += 1
+                        all_holder_statuses.append({
+                            "address": address,
+                            "current_balance": 0,
+                            "status": "not_found",
+                            "last_update": None
+                        })
+
+        return {
+            "holder_statuses": all_holder_statuses,
+            "summary": status_counts,
+            "total_addresses_checked": len(buyer_addresses),
+        }
+
     # ------------------------------------------------------------------------
     #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
@@ -764,6 +906,12 @@ class BitquerySolanaTokenInfoAgent(MeshAgent):
             result = await self.query_top_traders(token_address=token_address, limit=function_args.get("limit", 100))
         elif tool_name == "get_top_trending_tokens":
             result = await self.get_top_trending_tokens()
+        elif tool_name == "query_holder_status":
+            token_address = function_args.get("token_address")
+            if not token_address:
+                return {"error": "Missing 'token_address' in tool_arguments"}
+            buyer_addresses = function_args.get("buyer_addresses", [])
+            result = await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
 

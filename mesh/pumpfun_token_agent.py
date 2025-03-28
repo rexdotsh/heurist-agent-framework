@@ -129,25 +129,6 @@ class PumpFunTokenAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "query_holder_status",
-                    "description": "Check if buyers are still holding, sold, or bought more",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "token_address": {"type": "string", "description": "Token mint address on Solana"},
-                            "buyer_addresses": {
-                                "type": "array",
-                                "items": {"type": "string"},
-                                "description": "List of buyer wallet addresses to check",
-                            },
-                        },
-                        "required": ["token_address", "buyer_addresses"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
                     "name": "query_latest_graduated_tokens",
                     "description": "Fetch recently graduated tokens from Pump.fun with their latest prices and market caps",
                     "parameters": {
@@ -235,132 +216,6 @@ class PumpFunTokenAgent(MeshAgent):
             return {"tokens": filtered_tokens[:10]}
 
         return {"tokens": []}
-
-    @monitor_execution()
-    @with_cache(ttl_seconds=300)
-    @with_retry(max_retries=3)
-    async def query_holder_status(self, token_address: str, buyer_addresses: List[str]) -> Dict:
-        """
-        Query holder status for specific addresses for a token.
-
-        Args:
-            token_address (str): The mint address of the token
-            buyer_addresses (list[str]): List of buyer addresses to check
-
-        Returns:
-            Dict: Dictionary containing holder status information
-        """
-        # Split addresses into chunks of 50 to avoid query limitations
-        max_addresses_per_query = 50
-        address_chunks = [
-            buyer_addresses[i : i + max_addresses_per_query]
-            for i in range(0, len(buyer_addresses), max_addresses_per_query)
-        ]
-
-        all_holder_statuses = []
-
-        for address_chunk in address_chunks:
-            query = """
-            query ($token: String!, $addresses: [String!]) {
-              Solana {
-                BalanceUpdates(
-                  where: {
-                    BalanceUpdate: {
-                      Account: {
-                        Token: {
-                          Owner: {
-                            in: $addresses
-                          }
-                        }
-                      }
-                      Currency: {
-                        MintAddress: { is: $token }
-                      }
-                    }
-                  }
-                  limit: {count: 10}
-                ) {
-                  BalanceUpdate {
-                    Account {
-                      Token {
-                        Owner
-                      }
-                    }
-                    balance: PostBalance(maximum: Block_Slot)
-                    Currency {
-                      Decimals
-                    }
-                  }
-                  Transaction {
-                    Index
-                  }
-                }
-              }
-            }
-            """
-
-            variables = {"token": token_address, "addresses": address_chunk}
-
-            result = await self._execute_query(query, variables)
-
-            if "data" in result and "Solana" in result["data"]:
-                updates = result["data"]["Solana"]["BalanceUpdates"]
-
-                # Process each balance update
-                for update in updates:
-                    if "BalanceUpdate" not in update:
-                        continue
-
-                    balance_update = update["BalanceUpdate"]
-                    current_balance = balance_update.get("balance", 0)
-                    # Since we can't get initial_balance via sum, we'll use a placeholder
-                    initial_balance = 0  # This would need to be obtained another way
-                    decimals = balance_update.get("Currency", {}).get("Decimals", 0)
-
-                    # Determine status (modified since we can't truly compare with initial balance)
-                    status = "holding"  # Default to holding
-                    if current_balance == 0:
-                        status = "sold_all"
-
-                    holder_status = {
-                        "owner": balance_update["Account"]["Token"]["Owner"],
-                        "current_balance": current_balance,
-                        "initial_balance": initial_balance,
-                        "status": status,
-                        "last_tx_index": update.get("Transaction", {}).get("Index", 0),
-                        "decimals": decimals,
-                    }
-                    all_holder_statuses.append(holder_status)
-
-        # Find addresses that weren't found in the query results
-        found_addresses = {status["owner"] for status in all_holder_statuses}
-        missing_addresses = [addr for addr in buyer_addresses if addr not in found_addresses]
-
-        # Add placeholders for missing addresses
-        for addr in missing_addresses:
-            all_holder_statuses.append(
-                {
-                    "owner": addr,
-                    "current_balance": 0,
-                    "initial_balance": 0,
-                    "status": "no_data",
-                    "last_tx_index": 0,
-                    "decimals": 0,
-                }
-            )
-
-        # Generate summary statistics
-        status_counts = {"holding": 0, "sold_all": 0, "no_data": 0}
-
-        for status in all_holder_statuses:
-            if status["status"] in status_counts:
-                status_counts[status["status"]] += 1
-
-        return {
-            "holder_statuses": all_holder_statuses,
-            "summary": status_counts,
-            "total_addresses_checked": len(buyer_addresses),
-        }
 
     @monitor_execution()
     @with_cache(ttl_seconds=300)
@@ -621,17 +476,6 @@ class PumpFunTokenAgent(MeshAgent):
             interval = function_args.get("interval", "hours")
             offset = function_args.get("offset", 1)
             return await self.query_recent_token_creation(interval=interval, offset=offset)
-
-        elif tool_name == "query_holder_status":
-            token_address = function_args.get("token_address")
-            buyer_addresses = function_args.get("buyer_addresses", [])
-
-            if not token_address:
-                return {"error": "Missing 'token_address' in tool_arguments"}
-            if not buyer_addresses:
-                return {"error": "Missing 'buyer_addresses' in tool_arguments"}
-
-            return await self.query_holder_status(token_address=token_address, buyer_addresses=buyer_addresses)
 
         elif tool_name == "query_latest_graduated_tokens":
             timeframe = function_args.get("timeframe", 24)

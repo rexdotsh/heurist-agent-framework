@@ -106,6 +106,32 @@ async def run_agent():
         print("Direct tool call result for token buyers:")
         print(yaml.dump(buyers_direct_output, allow_unicode=True, sort_keys=False))
 
+        # Test holder status functionality
+        test_token = "4TBi66vi32S7J8X1A6eWfaLHYmUXu7CStcEmsJQdpump"  # Example token address
+        test_addresses = ["5ZZnqunFJZr7QgL6ciFGJtbdy35GoVkvv672JTWhVgET", "DNZwmHYrS7bekmsJeFPxFvkWRfXRPu44phUqZgdK7Pxy"]
+        print("\nTesting holder status functionality:")
+        
+        # Test via natural language query
+        holder_status_input = {
+            "query": f"Check if these addresses {test_addresses} are still holding {test_token}"
+        }
+        holder_status_output = await agent.handle_message(holder_status_input)
+        print("Natural language query result for holder status:")
+        print(yaml.dump(holder_status_output, allow_unicode=True, sort_keys=False))
+        
+        # Test via direct tool call
+        holder_status_direct_input = {
+            "tool": "query_holder_status",
+            "tool_arguments": {
+                "token_address": test_token,
+                "buyer_addresses": test_addresses
+            },
+            "raw_data_only": True
+        }
+        holder_status_direct_output = await agent.handle_message(holder_status_direct_input)
+        print("Direct tool call result for holder status:")
+        print(yaml.dump(holder_status_direct_output, allow_unicode=True, sort_keys=False))
+
         # Test top traders functionality
         test_token = "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"  # Example token address
         print("\nTesting top traders functionality:")
@@ -188,6 +214,16 @@ async def run_agent():
                 "direct_tool_call": {
                     "input": buyers_direct_input,
                     "output": buyers_direct_output
+                }
+            },
+            "holder_status": {
+                "natural_language_query": {
+                    "input": holder_status_input,
+                    "output": holder_status_output
+                },
+                "direct_tool_call": {
+                    "input": holder_status_direct_input,
+                    "output": holder_status_direct_output
                 }
             },
             "top_traders": {
