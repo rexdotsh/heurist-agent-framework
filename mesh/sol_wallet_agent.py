@@ -326,11 +326,11 @@ class SolWalletAgent(MeshAgent):
                 [
                     {
                         "token_address": asset["id"],
-                        "token_img": (
-                            asset.get("content", {}).get("files", [{}])[0]
-                            if asset.get("content", {}).get("files")
-                            else {}
-                        ).get("cdn_uri", ""),
+                        # "token_img": (
+                        #     asset.get("content", {}).get("files", [{}])[0]
+                        #     if asset.get("content", {}).get("files")
+                        #     else {}
+                        # ).get("cdn_uri", ""),
                         "symbol": asset.get("token_info", {}).get("symbol", ""),
                         "price_per_token": asset.get("token_info", {}).get("price_info", {}).get("price_per_token", 0),
                         "total_holding_value": asset.get("token_info", {}).get("price_info", {}).get("total_price", 0),

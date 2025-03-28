@@ -51,7 +51,7 @@ natural_language_query_raw_data:
     raw_data_only: true
   output:
     response: ''
-    data: &id001
+    data:
     - account: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN
       timestamp: 1741136128
       description: DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN swapped 9.4905 SOL
