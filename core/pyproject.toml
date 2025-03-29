@@ -33,11 +33,4 @@ dependencies = [
 "Bug Tracker" = "https://github.com/heurist-ai/heuman-agent-framework/issues"
 
 [tool.setuptools]
-packages = [
-    ".",
-    "components",
-    "workflows",
-    "tools",
-    "utils",
-    "heurist_image"
-]
+packages = {find = {where = ["."], include = ["*"]}}
