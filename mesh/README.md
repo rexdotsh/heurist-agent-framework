@@ -64,9 +64,9 @@ curl -X POST https://sequencer-v2.heurist.xyz/mesh_request \
   -d '{
     "agent_id": "CoinGeckoTokenInfoAgent",
     "input": {
-      "query": "Get info about ADA",
-      "api_key": "YOUR_API_KEY"
-    }
+      "query": "Get info about ADA"
+    },
+    "api_key": "YOUR_API_KEY"
   }'
 ```
 
@@ -94,9 +94,9 @@ curl -X POST https://sequencer-v2.heurist.xyz/mesh_request \
       "tool_arguments": {
         "coingecko_id": "cardano"
       },
-      "raw_data_only": true,
-      "api_key": "YOUR_API_KEY"
-    }
+      "raw_data_only": true
+    },
+    "api_key": "YOUR_API_KEY"
   }'
 ```
 
