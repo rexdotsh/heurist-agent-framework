@@ -14,6 +14,26 @@ Or install directly from the repository:
 pip install git+https://github.com/heurist-ai/heuman-agent-framework.git#subdirectory=core
 ```
 
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure your environment variables:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+- `HEURIST_API_KEY`: Your Heurist API key for accessing LLM and other services
+- `HEURIST_BASE_URL`: Base URL for Heurist API services
+
+Optional variables:
+- `LARGE_MODEL_ID`: ID for the large language model (default: anthropic/claude-3.5-haiku)
+- `SMALL_MODEL_ID`: ID for the small language model
+- `IMAGE_MODEL_ID`: Model for image generation
+- `IMAGE_GENERATION_PROBABILITY`: Probability of generating images (default: 0.3)
+- `FIRECRAWL_KEY`: Required only if using search functionality
+- See `.env.example` for all available configuration options
+
 ## Features
 
 - LLM interaction through various providers

@@ -1,9 +1,18 @@
-from setuptools import find_packages, setup
+from setuptools import setup
 
 setup(
     name="heurist-core",
     version="0.1.0",
-    packages=find_packages(where="."),
+    package_dir={"heurist_core": "."},
+    py_modules=["__init__", "embedding", "imgen", "llm", "voice", "videogen", "config"],
+    packages=[
+        "heurist_core",
+        "heurist_core.components",
+        "heurist_core.workflows",
+        "heurist_core.tools",
+        "heurist_core.utils",
+        "heurist_core.heurist_image",
+    ],
     install_requires=[
         "openai>=1.40.8",
         "requests>=2.31.0",

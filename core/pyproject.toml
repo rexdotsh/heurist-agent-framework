@@ -33,4 +33,6 @@ dependencies = [
 "Bug Tracker" = "https://github.com/heurist-ai/heuman-agent-framework/issues"
 
 [tool.setuptools]
-packages = {find = {where = ["."], include = ["*"]}}
+package-dir = {heurist_core = "."}
+py-modules = ["__init__", "embedding", "imgen", "llm", "voice", "videogen", "config"]
+packages = ["heurist_core", "heurist_core.components", "heurist_core.workflows", "heurist_core.tools", "heurist_core.utils", "heurist_core.heurist_image"]
