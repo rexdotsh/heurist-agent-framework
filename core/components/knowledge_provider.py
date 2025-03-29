@@ -2,7 +2,7 @@ import json
 import logging
 from typing import List
 
-from core.embedding import MessageData, get_embedding
+from ..embedding import MessageData, get_embedding
 
 logger = logging.getLogger(__name__)
 

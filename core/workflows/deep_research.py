@@ -4,7 +4,7 @@ import logging
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple, TypedDict
 
-from core.utils.text_splitter import trim_prompt
+from ..utils.text_splitter import trim_prompt
 
 logger = logging.getLogger(__name__)
 

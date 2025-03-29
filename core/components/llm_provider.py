@@ -4,7 +4,7 @@ import os
 from typing import Dict, List, Optional, Tuple
 
 # Import your LLM functions
-from core.llm import LLMError, call_llm, call_llm_with_tools
+from ..llm import LLMError, call_llm, call_llm_with_tools
 
 logger = logging.getLogger(__name__)
 

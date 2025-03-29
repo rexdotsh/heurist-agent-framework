@@ -6,7 +6,7 @@ from typing import List
 
 import yaml
 
-from core.config import PromptConfig
+from ..config import PromptConfig
 
 logger = logging.getLogger(__name__)
 

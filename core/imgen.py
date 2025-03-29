@@ -8,8 +8,7 @@ import dotenv
 import requests
 from requests.exceptions import Timeout
 
-from core.heurist_image.SmartGen import SmartGen
-
+from .heurist_image.SmartGen import SmartGen
 from .llm import call_llm
 
 # Set up logging

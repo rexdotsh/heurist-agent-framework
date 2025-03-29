@@ -4,8 +4,8 @@ import random
 from pathlib import Path
 from typing import Optional
 
-from core.imgen import generate_image_with_retry_smartgen
-from core.voice import speak_text, transcribe_audio
+from ..imgen import generate_image_with_retry_smartgen
+from ..voice import speak_text, transcribe_audio
 
 logger = logging.getLogger(__name__)
 
