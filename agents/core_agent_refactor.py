@@ -17,11 +17,10 @@ from core.components.media_handler import MediaHandler
 from core.components.personality_provider import PersonalityProvider
 from core.components.validation_manager import ValidationManager
 from core.embedding import MessageStore, PostgresConfig, PostgresVectorStorage, SQLiteConfig, SQLiteVectorStorage
+from core.tools.tools_mcp import Tools
 from core.workflows.augmented_llm import AugmentedLLMCall
 from core.workflows.chain_of_thought import ChainOfThoughtReasoning
 from core.workflows.deep_research import ResearchWorkflow
-
-from .tools.tools_mcp import Tools
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -83,8 +82,8 @@ class CoreAgent(BaseAgent):
         with self._lock:
             self.interfaces[name] = interface
 
-    async def initialize(self, mcp_url: str = "http://localhost:8000/sse"):
-        await self.tools.initialize(mcp_url=mcp_url)
+    async def initialize(self, server_url: str = "http://localhost:8000/sse"):
+        await self.tools.initialize(server_url=server_url)
 
     async def handle_message(
         self,

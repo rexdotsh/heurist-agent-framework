@@ -30,7 +30,6 @@ class ChainOfThoughtReasoning:
             "use_similar": False,
             "store_interaction": False,
         }
-
         # Override with provided options
         if workflow_options:
             options.update(workflow_options)
@@ -128,6 +127,7 @@ class ChainOfThoughtReasoning:
                     user_prompt=str(step),
                     temperature=options["execution_temperature"],
                     skip_tools=skip_tools,
+                    tools=self.tool_manager.get_tools_config() if not skip_tools else None,
                     tool_choice="auto",  # "required" if not skip_tools else None,
                 )
 
