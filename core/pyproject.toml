@@ -8,13 +8,12 @@ version = "0.1.0"
 description = "Core components of the Heurist Agent Framework"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Heurist", email = "info@heurist.ai"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
@@ -32,3 +31,13 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/heurist-ai/heuman-agent-framework"
 "Bug Tracker" = "https://github.com/heurist-ai/heuman-agent-framework/issues"
+
+[tool.setuptools]
+packages = [
+    ".",
+    "components",
+    "workflows",
+    "tools",
+    "utils",
+    "heurist_image"
+]
