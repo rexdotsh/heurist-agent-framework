@@ -9,7 +9,7 @@ from typing import Dict, Optional, Tuple
 import dotenv
 
 from agents.base_agent import BaseAgent
-from clients.firecrawl_client import Firecrawl
+from core.clients.search import SearchClient
 from core.components.conversation_manager import ConversationManager
 from core.components.knowledge_provider import KnowledgeProvider
 from core.components.llm_provider import LLMProvider
@@ -528,13 +528,15 @@ class CoreAgent(BaseAgent):
             # Import here to avoid circular imports
 
             # Initialize Firecrawl client if not already available
-            firecrawl_client = kwargs.get("firecrawl_client") or Firecrawl(
-                api_key=os.environ.get("FIRECRAWL_KEY", ""), api_url=os.environ.get("FIRECRAWL_BASE_URL")
-            )
+
+            # firecrawl_client = kwargs.get("firecrawl_client") or Firecrawl(
+            #     api_key=os.environ.get("FIRECRAWL_KEY", ""), api_url=os.environ.get("FIRECRAWL_BASE_URL")
+            # )
+            search_client = SearchClient(client_type="exa", api_key=os.environ.get("EXA_API_KEY", ""), rate_limit=10)
 
             # Initialize the research workflow
             research_workflow = ResearchWorkflow(
-                llm_provider=self.llm_provider, tool_manager=self.tools, firecrawl_client=firecrawl_client
+                llm_provider=self.llm_provider, tool_manager=self.tools, search_client=search_client
             )
 
             # Configure workflow options

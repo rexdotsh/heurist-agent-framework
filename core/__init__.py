@@ -7,6 +7,7 @@ __version__ = "0.1.0"
 # Import and export main modules
 # Import and export subpackages
 from . import (
+    clients,
     components,
     config,
     custom_smolagents,
@@ -20,6 +21,7 @@ from . import (
     voice,
     workflows,
 )
+from .clients import SearchClient
 from .config import PromptConfig
 from .embedding import MessageData, MessageStore, PostgresVectorStorage, SQLiteVectorStorage, get_embedding
 from .imgen import generate_image, generate_image_with_retry_smartgen
@@ -31,6 +33,7 @@ from .voice import speak_text, transcribe_audio
 # Define what's available in the public API
 __all__ = [
     # Modules
+    "clients",
     "config",
     "embedding",
     "llm",
@@ -45,6 +48,7 @@ __all__ = [
     "workflows",
     "heurist_image",
     # Common functions and classes
+    "SearchClient",
     "call_llm",
     "call_llm_async",
     "call_llm_with_tools",

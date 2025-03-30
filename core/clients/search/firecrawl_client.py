@@ -1,37 +1,30 @@
 import asyncio
-from typing import Dict, List, Optional, TypedDict
+from typing import Optional
 
 from firecrawl import FirecrawlApp
 
-
-class SearchResponse(TypedDict):
-    data: List[Dict[str, str]]
+from .base_search_client import BaseSearchClient, SearchResponse
 
 
-class Firecrawl:
-    """Simple wrapper for Firecrawl SDK."""
+class FirecrawlClient(BaseSearchClient):
+    """Firecrawl implementation of the search client."""
 
-    def __init__(self, api_key: str = "", api_url: Optional[str] = None):
+    def __init__(self, api_key: str = "", api_url: Optional[str] = None, rate_limit: int = 1):
+        super().__init__(api_key, api_url, rate_limit)
         self.app = FirecrawlApp(api_key=api_key, api_url=api_url)
-        self._last_request_time = 0  # Track the last request time
 
-    async def search(self, query: str, timeout: int = 15000, rate_limit: int = 1) -> SearchResponse:
+    async def search(self, query: str, timeout: int = 15000) -> SearchResponse:
         """Search using Firecrawl SDK in a thread pool to keep it async."""
         try:
-            # Add rate limiting delay
-            current_time = asyncio.get_event_loop().time()
-            time_since_last_request = current_time - self._last_request_time
-            if time_since_last_request < rate_limit:
-                await asyncio.sleep(rate_limit - time_since_last_request)
-
-            # Update last request time
-            self._last_request_time = asyncio.get_event_loop().time()
+            # Apply rate limiting
+            await self._apply_rate_limiting()
 
             # Run the synchronous SDK call in a thread pool
             response = await asyncio.get_event_loop().run_in_executor(
                 None,
                 lambda: self.app.search(query=query, params={"scrapeOptions": {"formats": ["markdown"]}}),
             )
+
             # Handle the response format from the SDK
             if isinstance(response, dict) and "data" in response:
                 # Response is already in the right format

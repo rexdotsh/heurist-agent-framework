@@ -11,3 +11,4 @@ aiohttp>=3.9.3
 boto3>=1.35.1
 tiktoken>=0.5.2
 mcp>=0.1.0
+firecrawl>=0.1.0

@@ -25,10 +25,10 @@ class ResearchResult(TypedDict):
 class ResearchWorkflow:
     """Research workflow combining interactive and autonomous research patterns with advanced analysis"""
 
-    def __init__(self, llm_provider, tool_manager, firecrawl_client):
+    def __init__(self, llm_provider, tool_manager, search_client):
         self.llm_provider = llm_provider
         self.tool_manager = tool_manager
-        self.firecrawl = firecrawl_client
+        self.search_client = search_client
         self._last_request_time = 0
 
     async def process(
@@ -208,7 +208,7 @@ class ResearchWorkflow:
         visited_urls: List[str] = None,
         analyses: List[Dict] = None,
     ) -> ResearchResult:
-        """Conduct deep research using Firecrawl with improved handling and rate limiting"""
+        """Conduct deep research using SearchClient with improved handling and rate limiting"""
 
         learnings = learnings or []
         visited_urls = visited_urls or []
@@ -230,10 +230,10 @@ class ResearchWorkflow:
                         await asyncio.sleep(3 - time_since_last)
                     self._last_request_time = current_time
 
-                    # Search using Firecrawl with timeouts and retries
+                    # Search using SearchClient with timeouts and retries
                     for attempt in range(3):
                         try:
-                            result = await self.firecrawl.search(research_query.query, timeout=20000, rate_limit=5)
+                            result = await self.search_client.search(research_query.query, timeout=20000)
                             break
                         except Exception as e:
                             if attempt == 2:  # Last attempt

@@ -27,6 +27,7 @@ setup(
         "tiktoken>=0.5.2",
         "aiohttp>=3.9.3",
         "mcp>=0.1.0",
+        "firecrawl>=0.1.0",
     ],
     python_requires=">=3.8",
 )
