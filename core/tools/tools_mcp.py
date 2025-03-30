@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
-from clients.mcp_client import MCPClient
+from ..clients.mcp_client import MCPClient
 
 logger = logging.getLogger(__name__)
 
