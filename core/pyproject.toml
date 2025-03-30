@@ -46,5 +46,6 @@ packages = [
     "heurist_core.tools",
     "heurist_core.utils",
     "heurist_core.heurist_image",
-    "heurist_core.clients"
+    "heurist_core.clients",
+    "heurist_core.clients.search"
 ]

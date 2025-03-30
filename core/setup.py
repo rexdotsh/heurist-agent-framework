@@ -13,6 +13,7 @@ setup(
         "heurist_core.utils",
         "heurist_core.heurist_image",
         "heurist_core.clients",
+        "heurist_core.clients.search",
     ],
     install_requires=[
         "openai>=1.40.8",

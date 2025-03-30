@@ -1,8 +1,8 @@
 from typing import Optional
 
-from .base_search_client import BaseSearchClient, SearchResponse
-from .exa_client import ExaClient
-from .firecrawl_client import FirecrawlClient
+from .search.base_search_client import BaseSearchClient, SearchResponse
+from .search.exa_client import ExaClient
+from .search.firecrawl_client import FirecrawlClient
 
 
 class SearchClient(BaseSearchClient):
