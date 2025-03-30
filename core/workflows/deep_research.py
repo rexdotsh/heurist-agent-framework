@@ -233,7 +233,7 @@ class ResearchWorkflow:
                     # Search using Firecrawl with timeouts and retries
                     for attempt in range(3):
                         try:
-                            result = await self.firecrawl.search(research_query.query, timeout=20000, limit=5)
+                            result = await self.firecrawl.search(research_query.query, timeout=20000, rate_limit=5)
                             break
                         except Exception as e:
                             if attempt == 2:  # Last attempt
