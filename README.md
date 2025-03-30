@@ -104,7 +104,6 @@ Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mes
 
 <details>
 <summary><b>Click to view all available Mesh Agents (25+)</b></summary>
-
 | Agent | Description | Tools | Source |
 |-------|-------------|-------|--------|
 | **AaveAgent** | Reports on Aave v3 protocols (Ethereum, Polygon, Avalanche, Arbitrum) | • get_aave_reserves | [Source](./mesh/aave_agent.py) |
@@ -118,9 +117,16 @@ Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mes
 | **ElfaTwitterIntelligenceAgent** | Token/topic/account analysis with smart influencer highlighting | • search_mentions<br>• search_account<br>• get_trending_tokens | [Source](./mesh/elfa_twitter_intelligence_agent.py) |
 | **ExaSearchAgent** | Direct answers from web search results | • exa_web_search<br>• exa_answer_question | [Source](./mesh/exa_search_agent.py) |
 | **FirecrawlSearchAgent** | Advanced research with intelligent query generation | • firecrawl_web_search<br>• firecrawl_extract_web_data | [Source](./mesh/firecrawl_search_agent.py) |
-
-*...and 14+ more agents! View the full list in the [Mesh README](./mesh/README.md)*
-</details>
+| **FundingRateAgent** | Fetches funding rate data and identifies arbitrage opportunities | • get_all_funding_rates<br>• get_symbol_funding_rates<br>• find_cross_exchange_opportunities<br>• find_spot_futures_opportunities | [Source](./mesh/funding_rate_agent.py) |
+| **GoplusAnalysisAgent** | Fetches and analyzes security details of blockchain token contracts | • fetch_security_details | [Source](./mesh/goplus_analysis_agent.py) |
+| **MasaTwitterSearchAgent** | Searches Twitter for trending topics and sentiment | • search_twitter | [Source](./mesh/masa_twitter_search_agent.py) |
+| **MetaSleuthSolTokenWalletClusterAgent** | Analyzes wallet clusters holding Solana tokens | • fetch_token_clusters<br>• fetch_cluster_details | [Source](./mesh/metasleuth_sol_token_wallet_cluster_agent.py) |
+| **PumpFunTokenAgent** | Analyzes Pump.fun tokens on Solana | • query_recent_token_creation<br>• query_latest_graduated_tokens | [Source](./mesh/pumpfun_token_agent.py) |
+| **SolWalletAgent** | Queries Solana wallet assets and transactions | • get_wallet_assets<br>• analyze_common_holdings_of_top_holders<br>• get_tx_history | [Source](./mesh/sol_wallet_agent.py) |
+| **ZerionWalletAnalysisAgent** | Analyzes token and NFT holdings for EVM wallets | • fetch_wallet_tokens<br>• fetch_wallet_nfts | [Source](./mesh/zerion_wallet_analysis_agent.py) |
+| **ZkIgniteAnalystAgent** | Analyzes zkSync Era DeFi opportunities | - | [Source](./mesh/zkignite_analyst_agent.py) |
+| **MoniTwitterProfileAgent** | Analyzes Twitter accounts for insights | • get_smart_profile<br>• get_smart_followers_history<br>• get_smart_mentions_history<br>• get_smart_followers_categories<br>• get_smart_followers_full<br>• get_smart_mentions_feed<br>• get_account_full_info | [Source](./mesh/twitter_insight_agent.py) |
+| **TwitterInsightAgent** | Provides Twitter account insights | • get_smart_followers_history<br>• get_smart_followers_categories<br>• get_smart_mentions_feed | [Source](./mesh/twitter_insight_agent.py) |
 
 ## 🚀 Installation
 
