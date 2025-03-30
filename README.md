@@ -103,7 +103,8 @@ Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mes
 ### 🧠 Available Mesh Agents
 
 <details>
-<summary><b>Click to view all available Mesh Agents (25+)</b></summary>
+<summary><b>Click to view all available Mesh Agents (20+)</b></summary>
+
 | Agent | Description | Tools | Source |
 |-------|-------------|-------|--------|
 | **AaveAgent** | Reports on Aave v3 protocols (Ethereum, Polygon, Avalanche, Arbitrum) | • get_aave_reserves | [Source](./mesh/aave_agent.py) |
@@ -127,6 +128,7 @@ Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mes
 | **ZkIgniteAnalystAgent** | Analyzes zkSync Era DeFi opportunities | - | [Source](./mesh/zkignite_analyst_agent.py) |
 | **MoniTwitterProfileAgent** | Analyzes Twitter accounts for insights | • get_smart_profile<br>• get_smart_followers_history<br>• get_smart_mentions_history<br>• get_smart_followers_categories<br>• get_smart_followers_full<br>• get_smart_mentions_feed<br>• get_account_full_info | [Source](./mesh/twitter_insight_agent.py) |
 | **TwitterInsightAgent** | Provides Twitter account insights | • get_smart_followers_history<br>• get_smart_followers_categories<br>• get_smart_mentions_feed | [Source](./mesh/twitter_insight_agent.py) |
+</details>
 
 ## 🚀 Installation
 
