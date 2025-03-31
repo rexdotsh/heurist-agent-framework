@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, TypedDict
 
 import dotenv
 
-from clients.firecrawl_client import Firecrawl
+from core.clients.search_client import SearchClient
 from core.llm import call_llm
 from core.utils.text_splitter import trim_prompt
 
@@ -73,8 +73,8 @@ async def generate_feedback(query: str) -> List[str]:
 
     else:  # Add null check
         try:
-            result = response.replace('```json', '').replace('```', '').strip()
-            result = json.loads(response)
+            result = response["content"].replace("```json", "").replace("```", "").strip()
+            result = json.loads(result)
             questions = result.get("questions", [])
             return questions
         except json.JSONDecodeError as e:
@@ -83,13 +83,8 @@ async def generate_feedback(query: str) -> List[str]:
             return []
 
 
-
-
-# Initialize Firecrawl
-firecrawl = Firecrawl(
-    api_key=os.environ.get("FIRECRAWL_KEY", ""),
-    api_url=os.environ.get("FIRECRAWL_BASE_URL"),
-)
+# Initialize SearchClient
+search_client = SearchClient(client_type="firecrawl", api_key=os.environ.get("FIRECRAWL_KEY", ""), rate_limit=1)
 
 
 async def generate_serp_queries(
@@ -136,8 +131,8 @@ async def generate_serp_queries(
 
     else:
         try:
-            result = response.replace('```json', '').replace('```', '').strip()
-            result = json.loads(response)
+            result = response["content"].replace("```json", "").replace("```", "").strip()
+            result = json.loads(result)
             queries = result.get("queries", [])
             return [SerpQuery(**q) for q in queries][:num_queries]
         except json.JSONDecodeError as e:
@@ -197,9 +192,9 @@ async def process_serp_result(
 
     else:
         try:
-            result = response.replace('```json', '').replace('```', '').strip()
-            result = json.loads(response)
-            
+            result = response["content"].replace("```json", "").replace("```", "").strip()
+            result = json.loads(result)
+
             return {
                 "learnings": result.get("learnings", [])[:num_learnings],
                 "followUpQuestions": result.get("followUpQuestions", [])[:num_follow_up_questions],
@@ -241,8 +236,8 @@ async def write_final_report(prompt: str, learnings: List[str], visited_urls: Li
 
     else:
         try:
-            result = response.replace('```json', '').replace('```', '').strip()
-            result = json.loads(response)
+            result = response["content"].replace("```json", "").replace("```", "").strip()
+            result = json.loads(result)
             report = result.get("reportMarkdown", "")
 
             # Append sources
@@ -285,7 +280,7 @@ async def deep_research(
         async with semaphore:
             try:
                 # Search for content
-                result = await firecrawl.search(serp_query.query, timeout=15000, limit=5)
+                result = await search_client.search(serp_query.query, timeout=15000)
 
                 # Collect new URLs
                 new_urls = [item.get("url") for item in result["data"] if item.get("url")]
