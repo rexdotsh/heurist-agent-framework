@@ -98,11 +98,15 @@ class AgentLoader:
         if "agents" not in metadata:
             metadata["agents"] = {}
 
+        # track current agent ids for cleanup
+        current_agent_ids = set()
+
         for agent_id, agent_cls in agents_dict.items():
             # Skip EchoAgent
             if "EchoAgent" in agent_id:
                 continue
 
+            current_agent_ids.add(agent_id)
             logger.info(f"Updating metadata for agent {agent_id}")
             agent = agent_cls()
 
@@ -154,6 +158,12 @@ class AgentLoader:
                 metadata["agents"][agent_id]["metadata"] = existing_metadata
                 metadata["agents"][agent_id]["module"] = agent_cls.__module__.split(".")[-1]
                 metadata["agents"][agent_id]["tools"] = tools
+
+        # remove any old agents that no longer exist
+        old_agent_ids = set(metadata["agents"].keys()) - current_agent_ids
+        for old_id in old_agent_ids:
+            logger.info(f"Removing metadata for deleted/renamed agent {old_id}")
+            del metadata["agents"][old_id]
 
         return metadata
 

@@ -14,9 +14,7 @@ load_dotenv()
 
 QUERIES = {
     "creation": {"query": "Show me the latest Solana token creations in the last hour"},
-    "graduated_tokens": {
-        "query": "Show me all tokens that have graduated on Pump.fun in the last 48 hours"
-    },
+    "graduated_tokens": {"query": "Show me all tokens that have graduated on Pump.fun in the last 48 hours"},
 }
 
 
@@ -51,7 +49,7 @@ async def format_query_result(query_name: str, agent_output: Dict[str, Any]) -> 
                         "symbol": token.get("token_info", {}).get("symbol", "Unknown"),
                         "mint_address": token.get("token_info", {}).get("mint_address", ""),
                         "decimals": token.get("token_info", {}).get("decimals", 0),
-                    }
+                    },
                 }
                 for token in agent_output.get("data", {}).get("graduated_tokens", [])
             ],
@@ -132,47 +130,42 @@ def main():
 async def test_graduated_tokens(timeframe=24):
     """Run only the graduated tokens test with a specific timeframe."""
     # Update the query to reflect the timeframe
-    QUERIES["graduated_tokens"]["query"] = f"Show me all tokens that have graduated on Pump.fun in the last {timeframe} hours"
-    
+    QUERIES["graduated_tokens"]["query"] = (
+        f"Show me all tokens that have graduated on Pump.fun in the last {timeframe} hours"
+    )
+
     # Run the query
     print(f"Running graduated_tokens test with {timeframe} hour timeframe")
-    
+
     async with PumpFunTokenAgent() as agent:
         # First, try with natural language query
         nl_result = await run_single_query(agent, "graduated_tokens")
         print("Natural language query results:")
         print(yaml.dump(nl_result, allow_unicode=True, sort_keys=False))
-        
+
         # Then try with direct tool call for comparison
         print("\nDirect tool call results:")
-        direct_result = await agent.handle_message({
-            "tool": "query_latest_graduated_tokens",
-            "tool_arguments": {
-                "timeframe": timeframe
-            },
-            "raw_data_only": True
-        })
-        
+        direct_result = await agent.handle_message(
+            {"tool": "query_latest_graduated_tokens", "tool_arguments": {"timeframe": timeframe}, "raw_data_only": True}
+        )
+
         # Count and display tokens found
         token_count = len(direct_result.get("data", {}).get("graduated_tokens", []))
         print(f"Found {token_count} graduated tokens with price data")
-        
+
         # Save results
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem
         output_file = script_dir / f"{current_file}_graduated_tokens_{timeframe}h.yaml"
-        
+
         results = {
             "natural_language_query": nl_result,
             "direct_tool_call": {
-                "input": {
-                    "tool": "query_latest_graduated_tokens",
-                    "tool_arguments": {"timeframe": timeframe}
-                },
-                "output": direct_result
-            }
+                "input": {"tool": "query_latest_graduated_tokens", "tool_arguments": {"timeframe": timeframe}},
+                "output": direct_result,
+            },
         }
-        
+
         await save_results(results, output_file)
         print(f"Results saved to {output_file}")
 
@@ -180,5 +173,5 @@ async def test_graduated_tokens(timeframe=24):
 if __name__ == "__main__":
     # Uncomment to run only the graduated tokens test with a custom timeframe
     # asyncio.run(test_graduated_tokens(48))  # Use 48 hours timeframe
-    
+
     main()

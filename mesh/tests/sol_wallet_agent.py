@@ -50,8 +50,7 @@ async def run_agent():
             "tool_arguments": {"token_address": ca},
         }
         agent_output_holders = await agent.handle_message(agent_input_holders)
-        print(
-            f"Result of analyze_common_holdings_of_top_holders: {agent_output_holders}")
+        print(f"Result of analyze_common_holdings_of_top_holders: {agent_output_holders}")
 
         script_dir = Path(__file__).parent
         current_file = Path(__file__).stem

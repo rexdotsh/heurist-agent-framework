@@ -23,10 +23,10 @@ async def run_agent():
         test_token = "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"
         quote_tokens = ["usdc", "sol", "virtual"]
         metrics_results = {}
-        
+
         for quote_token in quote_tokens:
             print(f"\nTesting metrics with {quote_token.upper()} quote token:")
-            
+
             # Test via natural language query
             metrics_input = {
                 "query": f"Get market cap, liquidity and trade volume for {test_token} using {quote_token} pair"
@@ -34,48 +34,35 @@ async def run_agent():
             metrics_output = await agent.handle_message(metrics_input)
             print(f"Natural language query result for {quote_token}:")
             print(yaml.dump(metrics_output, allow_unicode=True, sort_keys=False))
-            
+
             # Test via direct tool call
             metrics_direct_input = {
                 "tool": "query_token_metrics",
-                "tool_arguments": {
-                    "token_address": test_token,
-                    "quote_token": quote_token
-                },
-                "raw_data_only": True
+                "tool_arguments": {"token_address": test_token, "quote_token": quote_token},
+                "raw_data_only": True,
             }
             metrics_direct_output = await agent.handle_message(metrics_direct_input)
-            
+
             metrics_results[f"{quote_token}_pair"] = {
-                "natural_language_query": {
-                    "input": metrics_input,
-                    "output": metrics_output
-                },
-                "direct_tool_call": {
-                    "input": metrics_direct_input,
-                    "output": metrics_direct_output
-                }
+                "natural_language_query": {"input": metrics_input, "output": metrics_output},
+                "direct_tool_call": {"input": metrics_direct_input, "output": metrics_direct_output},
             }
 
         # Test token holders functionality
         test_token = "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"  # USDC token address
         print("\nTesting token holders functionality:")
-        
+
         # Test via natural language query
-        holders_input = {
-            "query": f"Show me the top token holders of {test_token}"
-        }
+        holders_input = {"query": f"Show me the top token holders of {test_token}"}
         holders_output = await agent.handle_message(holders_input)
         print("Natural language query result for token holders:")
         print(yaml.dump(holders_output, allow_unicode=True, sort_keys=False))
-        
+
         # Test via direct tool call
         holders_direct_input = {
             "tool": "query_token_holders",
-            "tool_arguments": {
-                "token_address": test_token
-            },
-            "raw_data_only": True
+            "tool_arguments": {"token_address": test_token},
+            "raw_data_only": True,
         }
         holders_direct_output = await agent.handle_message(holders_direct_input)
         print("Direct tool call result for token holders:")
@@ -84,23 +71,18 @@ async def run_agent():
         # Test token buyers functionality
         test_token = "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"  # Example token address
         print("\nTesting token buyers functionality:")
-        
+
         # Test via natural language query
-        buyers_input = {
-            "query": f"Show me the first 100 buyers of {test_token}"
-        }
+        buyers_input = {"query": f"Show me the first 100 buyers of {test_token}"}
         buyers_output = await agent.handle_message(buyers_input)
         print("Natural language query result for token buyers:")
         print(yaml.dump(buyers_output, allow_unicode=True, sort_keys=False))
-        
+
         # Test via direct tool call
         buyers_direct_input = {
             "tool": "query_token_buyers",
-            "tool_arguments": {
-                "token_address": test_token,
-                "limit": 100
-            },
-            "raw_data_only": True
+            "tool_arguments": {"token_address": test_token, "limit": 100},
+            "raw_data_only": True,
         }
         buyers_direct_output = await agent.handle_message(buyers_direct_input)
         print("Direct tool call result for token buyers:")
@@ -108,25 +90,23 @@ async def run_agent():
 
         # Test holder status functionality
         test_token = "4TBi66vi32S7J8X1A6eWfaLHYmUXu7CStcEmsJQdpump"  # Example token address
-        test_addresses = ["5ZZnqunFJZr7QgL6ciFGJtbdy35GoVkvv672JTWhVgET", "DNZwmHYrS7bekmsJeFPxFvkWRfXRPu44phUqZgdK7Pxy"]
+        test_addresses = [
+            "5ZZnqunFJZr7QgL6ciFGJtbdy35GoVkvv672JTWhVgET",
+            "DNZwmHYrS7bekmsJeFPxFvkWRfXRPu44phUqZgdK7Pxy",
+        ]
         print("\nTesting holder status functionality:")
-        
+
         # Test via natural language query
-        holder_status_input = {
-            "query": f"Check if these addresses {test_addresses} are still holding {test_token}"
-        }
+        holder_status_input = {"query": f"Check if these addresses {test_addresses} are still holding {test_token}"}
         holder_status_output = await agent.handle_message(holder_status_input)
         print("Natural language query result for holder status:")
         print(yaml.dump(holder_status_output, allow_unicode=True, sort_keys=False))
-        
+
         # Test via direct tool call
         holder_status_direct_input = {
             "tool": "query_holder_status",
-            "tool_arguments": {
-                "token_address": test_token,
-                "buyer_addresses": test_addresses
-            },
-            "raw_data_only": True
+            "tool_arguments": {"token_address": test_token, "buyer_addresses": test_addresses},
+            "raw_data_only": True,
         }
         holder_status_direct_output = await agent.handle_message(holder_status_direct_input)
         print("Direct tool call result for holder status:")
@@ -135,23 +115,18 @@ async def run_agent():
         # Test top traders functionality
         test_token = "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"  # Example token address
         print("\nTesting top traders functionality:")
-        
+
         # Test via natural language query
-        traders_input = {
-            "query": f"List the top traders of {test_token}"
-        }
+        traders_input = {"query": f"List the top traders of {test_token}"}
         traders_output = await agent.handle_message(traders_input)
         print("Natural language query result for top traders:")
         print(yaml.dump(traders_output, allow_unicode=True, sort_keys=False))
-        
+
         # Test via direct tool call
         traders_direct_input = {
             "tool": "query_top_traders",
-            "tool_arguments": {
-                "token_address": test_token,
-                "limit": 100
-            },
-            "raw_data_only": True
+            "tool_arguments": {"token_address": test_token, "limit": 100},
+            "raw_data_only": True,
         }
         traders_direct_output = await agent.handle_message(traders_direct_input)
         print("Direct tool call result for top traders:")
@@ -165,10 +140,7 @@ async def run_agent():
         # Test direct tool call for token metrics
         agent_input_direct_tool = {
             "tool": "query_token_metrics",
-            "tool_arguments": {
-                "token_address": "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC",
-                "quote_token": "sol"
-            },
+            "tool_arguments": {"token_address": "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC", "quote_token": "sol"},
         }
         agent_output_direct_tool = await agent.handle_message(agent_input_direct_tool)
         print(f"Result of direct tool call (token metrics): {agent_output_direct_tool}")
@@ -197,44 +169,20 @@ async def run_agent():
             "output_by_token_address": agent_output,
             "token_metrics": metrics_results,
             "token_holders": {
-                "natural_language_query": {
-                    "input": holders_input,
-                    "output": holders_output
-                },
-                "direct_tool_call": {
-                    "input": holders_direct_input,
-                    "output": holders_direct_output
-                }
+                "natural_language_query": {"input": holders_input, "output": holders_output},
+                "direct_tool_call": {"input": holders_direct_input, "output": holders_direct_output},
             },
             "token_buyers": {
-                "natural_language_query": {
-                    "input": buyers_input,
-                    "output": buyers_output
-                },
-                "direct_tool_call": {
-                    "input": buyers_direct_input,
-                    "output": buyers_direct_output
-                }
+                "natural_language_query": {"input": buyers_input, "output": buyers_output},
+                "direct_tool_call": {"input": buyers_direct_input, "output": buyers_direct_output},
             },
             "holder_status": {
-                "natural_language_query": {
-                    "input": holder_status_input,
-                    "output": holder_status_output
-                },
-                "direct_tool_call": {
-                    "input": holder_status_direct_input,
-                    "output": holder_status_direct_output
-                }
+                "natural_language_query": {"input": holder_status_input, "output": holder_status_output},
+                "direct_tool_call": {"input": holder_status_direct_input, "output": holder_status_direct_output},
             },
             "top_traders": {
-                "natural_language_query": {
-                    "input": traders_input,
-                    "output": traders_output
-                },
-                "direct_tool_call": {
-                    "input": traders_direct_input,
-                    "output": traders_direct_output
-                }
+                "natural_language_query": {"input": traders_input, "output": traders_output},
+                "direct_tool_call": {"input": traders_direct_input, "output": traders_direct_output},
             },
             "input_trending": agent_input_trending,
             "output_trending": agent_output_trending,
