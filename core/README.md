@@ -21,7 +21,7 @@ pip install heurist-core
 Or install directly from the repository:
 
 ```bash
-pip install git+https://github.com/heurist-ai/heuman-agent-framework.git#subdirectory=core
+pip install git+https://github.com/heurist-ai/heurist-agent-framework.git#subdirectory=core
 ```
 
 ## Environment Variables
