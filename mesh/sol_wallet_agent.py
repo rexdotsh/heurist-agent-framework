@@ -21,12 +21,11 @@ load_dotenv()
 class SolWalletAgent(MeshAgent):
     def __init__(self):
         super().__init__()
-        self.session = None
         self.api_url = "https://mainnet.helius-rpc.com"
 
         self.metadata.update(
             {
-                "name": "Solana Wallet Agent",
+                "name": "SolWallet Agent",
                 "version": "1.0.0",
                 "author": "QuantVela",
                 "author_address": "0x53cc700f818DD0b440598c666De2D630F9d47273",
@@ -64,39 +63,29 @@ class SolWalletAgent(MeshAgent):
             }
         )
 
-    async def __aenter__(self):
-        self.session = aiohttp.ClientSession()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self.session:
-            await self.session.close()
-            self.session = None
-
     async def _request(self, method, url, data=None, json=None, headers=None, params=None, timeout=30):
-        if not self.session:
-            raise RuntimeError("Session not initialized. Use 'async with' context manager.")
-
+        """Make a request to the Helius API using a new session for each request"""
         try:
-            async with self.session.request(
-                method,
-                url,
-                data=data,
-                json=json,
-                headers=headers,
-                params=params,
-                timeout=aiohttp.ClientTimeout(total=timeout),
-            ) as response:
-                match response.status:
-                    case 200:
-                        return await response.json()
-                    case 429:
-                        raise aiohttp.ClientError("Rate limit exceeded")
-                    case _:
-                        # should add better error log
-                        txt = await response.text()
-                        logger.error(txt)
-                        return {}
+            async with aiohttp.ClientSession() as session:
+                async with session.request(
+                    method,
+                    url,
+                    data=data,
+                    json=json,
+                    headers=headers,
+                    params=params,
+                    timeout=aiohttp.ClientTimeout(total=timeout),
+                ) as response:
+                    match response.status:
+                        case 200:
+                            return await response.json()
+                        case 429:
+                            raise aiohttp.ClientError("Rate limit exceeded")
+                        case _:
+                            # should add better error log
+                            txt = await response.text()
+                            logger.error(txt)
+                            return {}
 
         except aiohttp.ClientResponseError as e:
             error_msg = f"HTTP error {e.status}: {e.message}"
@@ -136,8 +125,8 @@ class SolWalletAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "get_sol_wallet_assets",
-                    "description": "Query and retrieve all token holdings for a specific Solana wallet address. This tool helps you get detailed information about each asset including SOL balance, token amounts, current prices and total values. Use this when you need to analyze a wallet's portfolio or track significant token holdings on Solana.",
+                    "name": "get_wallet_assets",
+                    "description": "Query and retrieve all token holdings for a specific Solana wallet address. This tool helps you get detailed information about each asset including token amounts, current prices and total holding values. Use this when you need to analyze a wallet's portfolio or track significant token holdings.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -150,8 +139,8 @@ class SolWalletAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "analyze_sol_token_holders",
-                    "description": "Analyze the distribution and behavior patterns of top token holders on Solana. This tool provides insights into who holds the most tokens and what other assets these holders commonly own. Use this when you need to understand token concentration, whale behavior, or common investment patterns among major holders.",
+                    "name": "analyze_common_holdings_of_top_holders",
+                    "description": "Analyze the top tokens commonly held by the holders of a specific token. This tool provides insights into the top 5 most valuable tokens (by total holding value) that are held by the token holders. Use this when you need to understand what other tokens are popular among the holders of a specific token.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -161,7 +150,7 @@ class SolWalletAgent(MeshAgent):
                             },
                             "top_n": {
                                 "type": "integer",
-                                "description": "Number of top holders to analyze (default: 20)",
+                                "description": "Number of top holders to analyze for token holdings (default: 20)",
                                 "default": 20,
                             },
                         },
@@ -172,7 +161,7 @@ class SolWalletAgent(MeshAgent):
             {
                 "type": "function",
                 "function": {
-                    "name": "get_sol_tx_history",
+                    "name": "get_tx_history",
                     "description": "Fetch and analyze recent SWAP transactions for a Solana wallet. This tool helps you track trading activity by providing detailed information about token swaps, including amounts, prices, and transaction types (BUY/SELL). Use this when you need to understand a wallet's trading behavior or monitor specific swap activities.",
                     "parameters": {
                         "type": "object",
@@ -320,32 +309,20 @@ class SolWalletAgent(MeshAgent):
             non_mutable_assets = [asset for asset in filtered_assets if not asset.get("mutable", False)]
 
             hold_tokens = []
-            # Add native SOL balance if exists
-            sol_address = "So11111111111111111111111111111111111111112"
-            if native_balance := data["result"].get("nativeBalance"):
-                hold_tokens.append(
-                    {
-                        "token_address": sol_address,
-                        "token_img": "",
-                        "symbol": "SOL",
-                        "price_per_token": native_balance.get("price_per_sol", 0),
-                        "total_price": native_balance.get("total_price", 0),
-                    }
-                )
 
             # Add other token balances
             hold_tokens.extend(
                 [
                     {
                         "token_address": asset["id"],
-                        "token_img": (
-                            asset.get("content", {}).get("files", [{}])[0]
-                            if asset.get("content", {}).get("files")
-                            else {}
-                        ).get("cdn_uri", ""),
+                        # "token_img": (
+                        #     asset.get("content", {}).get("files", [{}])[0]
+                        #     if asset.get("content", {}).get("files")
+                        #     else {}
+                        # ).get("cdn_uri", ""),
                         "symbol": asset.get("token_info", {}).get("symbol", ""),
                         "price_per_token": asset.get("token_info", {}).get("price_info", {}).get("price_per_token", 0),
-                        "total_price": asset.get("token_info", {}).get("price_info", {}).get("total_price", 0),
+                        "total_holding_value": asset.get("token_info", {}).get("price_info", {}).get("total_price", 0),
                     }
                     for asset in non_mutable_assets
                 ]
@@ -353,8 +330,8 @@ class SolWalletAgent(MeshAgent):
 
             return hold_tokens
 
-        except Exception:
-            # logger.error(f"Error querying HELIUS API: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error querying HELIUS API: {str(e)}")
             return []
 
     @with_cache(ttl_seconds=600)
@@ -363,9 +340,9 @@ class SolWalletAgent(MeshAgent):
         wait=wait_exponential(multiplier=0.1, min=0, max=10),
         stop=stop_after_attempt(5),
     )
-    async def analyze_holders(self, token_address: str, top_n: int = 20) -> Dict:
+    async def analyze_common_holdings_of_top_holders(self, token_address: str, top_n: int = 20) -> Dict:
         """
-        Analyze the token holders and find what they also hold most.
+        Analyze the token holders and find the top 5 most valuable tokens they hold.
         """
         try:
             holders = await self._get_holders(token_address, top_n)
@@ -389,24 +366,15 @@ class SolWalletAgent(MeshAgent):
                     if token_address not in token_map:
                         token_map[token_address] = {
                             "token_address": token_address,
-                            "token_img": token["token_img"],
                             "symbol": token["symbol"],
                             "price_per_token": token["price_per_token"],
-                            "total_price": 0,
-                            "holders": [],
+                            "total_holding_value": 0,
                         }
 
-                    token_map[token_address]["total_price"] += token["total_price"]
-                    token_map[token_address]["holders"].append(
-                        {"address": holder["address"], "total_price": token["total_price"]}
-                    )
+                    token_map[token_address]["total_holding_value"] += token["total_holding_value"]
 
-            # sort by total_price and get top 5
-            sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_price"], reverse=True)[:5]
-
-            # sort each token's holders by total_price and get top 5
-            for token in sorted_tokens:
-                token["holders"] = sorted(token["holders"], key=lambda x: x["total_price"], reverse=True)[:5]
+            # sort by total_holding_value and get top 5
+            sorted_tokens = sorted(token_map.values(), key=lambda x: x["total_holding_value"], reverse=True)[:5]
 
             logger.info(f"Successfully analyzed holders for token: {token_address}")
             return sorted_tokens
@@ -516,14 +484,18 @@ class SolWalletAgent(MeshAgent):
             return [{"error": f"Failed to query transaction history: {str(e)}"}]
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
-        if tool_name == "get_sol_wallet_assets":
+        """Handle execution of specific tools and return the raw data"""
+
+        if tool_name == "get_wallet_assets":
             result = await self.get_wallet_assets(function_args["owner_address"])
-        elif tool_name == "analyze_sol_token_holders":
-            result = await self.analyze_holders(function_args["token_address"], function_args.get("top_n", 20))
-        elif tool_name == "get_sol_tx_history":
+        elif tool_name == "analyze_common_holdings_of_top_holders":
+            result = await self.analyze_common_holdings_of_top_holders(
+                function_args["token_address"], function_args.get("top_n", 20)
+            )
+        elif tool_name == "get_tx_history":
             result = await self.get_tx_history(function_args["owner_address"])
         else:
             return {"error": f"Unsupported tool: {tool_name}"}
@@ -542,8 +514,10 @@ class SolWalletAgent(MeshAgent):
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -590,6 +564,10 @@ class SolWalletAgent(MeshAgent):
             explanation = await self._respond_with_llm(
                 query=query, tool_call_id=tool_call.id, data=data, temperature=0.7
             )
+
             return {"response": explanation, "data": data}
 
+        # ---------------------
+        # 3) NEITHER query NOR tool
+        # ---------------------
         return {"error": "Either 'query' or 'tool' must be provided in the parameters."}

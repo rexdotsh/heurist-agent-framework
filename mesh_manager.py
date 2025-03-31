@@ -70,16 +70,40 @@ class AgentLoader:
             aws_secret_access_key=self.config.s3_secret_key,
         )
 
+    def _download_existing_metadata(self) -> Dict:
+        """Download existing metadata from S3"""
+        try:
+            response = self.s3_client.get_object(Bucket=self.config.s3_bucket, Key="mesh_agents_metadata.json")
+            metadata_json = response["Body"].read().decode("utf-8")
+            metadata = json.loads(metadata_json)
+            logger.info("Successfully downloaded existing agents metadata from S3")
+            return metadata
+        except self.s3_client.exceptions.NoSuchKey:
+            logger.info("No existing metadata found, will create new metadata")
+            return {"last_updated": datetime.now(UTC).isoformat(), "agents": {}}
+        except Exception as e:
+            logger.error(f"Failed to download metadata from S3: {e}")
+            return {"last_updated": datetime.now(UTC).isoformat(), "agents": {}}
+
     def _create_metadata(self, agents_dict: Dict[str, Type[MeshAgent]]) -> Dict:
-        """Create metadata for discovered agents"""
-        metadata = {"last_updated": datetime.now(UTC).isoformat(), "agents": {}}
+        """Update metadata for discovered agents"""
+        # First download existing metadata
+        metadata = self._download_existing_metadata()
+
+        # Update the timestamp
+        metadata["last_updated"] = datetime.now(UTC).isoformat()
+        metadata["last_updated_by"] = "mesh_manager.py"
+
+        # Ensure agents key exists
+        if "agents" not in metadata:
+            metadata["agents"] = {}
 
         for agent_id, agent_cls in agents_dict.items():
             # Skip EchoAgent
             if "EchoAgent" in agent_id:
                 continue
 
-            logger.info(f"Creating metadata for agent {agent_id}")
+            logger.info(f"Updating metadata for agent {agent_id}")
             agent = agent_cls()
 
             # Get base inputs from agent metadata
@@ -114,12 +138,22 @@ class AgentLoader:
             # Update agent metadata with tool-derived inputs
             agent.metadata["inputs"] = inputs
 
-            # Compose agent info
-            metadata["agents"][agent_id] = {
-                "metadata": agent.metadata,
-                "module": agent_cls.__module__.split(".")[-1],
-                "tools": tools,
-            }
+            # Create new agent entry or update existing one
+            if agent_id not in metadata["agents"]:
+                metadata["agents"][agent_id] = {
+                    "metadata": agent.metadata,
+                    "module": agent_cls.__module__.split(".")[-1],
+                    "tools": tools,
+                }
+            else:
+                # Update only the fields from the agent class, preserving other fields
+                existing_metadata = metadata["agents"][agent_id].get("metadata", {})
+                for key, value in agent.metadata.items():
+                    existing_metadata[key] = value
+
+                metadata["agents"][agent_id]["metadata"] = existing_metadata
+                metadata["agents"][agent_id]["module"] = agent_cls.__module__.split(".")[-1]
+                metadata["agents"][agent_id]["tools"] = tools
 
         return metadata
 

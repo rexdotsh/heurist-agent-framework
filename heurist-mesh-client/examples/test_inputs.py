@@ -15,6 +15,13 @@ TOOL_TEST_INPUTS = {
         "get_coingecko_id": {"token_name": "ethereum"},
         "get_token_info": {"coingecko_id": "ethereum"},
         "get_trending_coins": {},
+        "get_token_price_multi": {
+            "ids": "bitcoin,ethereum,solana",
+            "vs_currencies": "usd",
+            "include_market_cap": True,
+            "include_24hr_vol": True,
+            "include_24hr_change": True,
+        },
     },
     "DeepResearchAgent": {"deep_research": {"query": "What is the total value locked in Aave v3?"}},
     "DexScreenerTokenInfoAgent": {
@@ -69,6 +76,11 @@ TOOL_TEST_INPUTS = {
             ],
         },
         "query_top_traders": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
+    },
+    "SolWalletAgent": {
+        "analyze_sol_token_holders": {"token_address": "J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U"},
+        "get_sol_tx_history": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
+        "get_sol_wallet_assets": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
     },
     "ZerionWalletAnalysisAgent": {
         "fetch_wallet_tokens": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},

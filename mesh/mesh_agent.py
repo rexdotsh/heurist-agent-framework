@@ -42,6 +42,7 @@ class MeshAgent(ABC):
             "hidden": False,
             "recommended": False,
             "image_url": "",
+            "examples": [],
         }
         self.heurist_base_url = HEURIST_BASE_URL
         self.heurist_api_key = HEURIST_API_KEY

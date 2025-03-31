@@ -66,7 +66,13 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
                 "external_apis": ["Elfa"],
                 "tags": ["Social", "Twitter"],
                 "recommended": True,
-                "image_url": "",  # use the logo of elfa
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Elfa.png",
+                "examples": [
+                    "Search for mentions of Heurist, HEU, and heurist_ai in the last 30 days",
+                    "Analyze the Twitter account @heurist_ai",
+                    "Get trending tokens on Twitter in the last 24 hours",
+                    "What are people talking about ETH and SOL this week?",
+                ],
             }
         )
 
@@ -269,7 +275,7 @@ class ElfaTwitterIntelligenceAgent(MeshAgent):
             return {"status": "error", "error": str(e)}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """Handle tool execution and optional LLM explanation"""

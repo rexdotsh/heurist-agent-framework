@@ -44,7 +44,13 @@ class GoplusAnalysisAgent(MeshAgent):
                 ],
                 "external_apis": ["GoPlus"],
                 "tags": ["Security"],
-                "image_url": "",  # use the logo of goplus
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Goplus.png",  # use the logo of goplus
+                "examples": [
+                    "Check the safety of this token: 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9 on Ethereum",
+                    "Analyze the security of this Solana token: AcmFHCquGwbrPxh9b3sUPMtAtXKMjkEzKnqkiHEnpump",
+                    "Is 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599 safe on ETH mainnet?",
+                    "Check the security details of token 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb on Base chain",
+                ],
             }
         )
 

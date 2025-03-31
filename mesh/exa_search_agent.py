@@ -53,7 +53,12 @@ class ExaSearchAgent(MeshAgent):
                 "external_apis": ["Exa"],
                 "tags": ["Search"],
                 "recommended": True,
-                "image_url": "",  # use the logo of exa
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Exa.png",
+                "examples": [
+                    "What is the latest news on Bitcoin?",
+                    "Recent developments in quantum computing",
+                    "Search for articles about the latest trends in AI",
+                ],
             }
         )
 
@@ -212,7 +217,7 @@ class ExaSearchAgent(MeshAgent):
             return {"error": f"Failed to get answer: {str(e)}"}
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
     async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         if tool_name == "exa_web_search":

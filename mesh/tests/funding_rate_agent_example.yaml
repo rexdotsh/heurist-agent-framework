@@ -1,38 +1,28 @@
 input_by_symbol:
   query: What are the current funding rates for Bitcoin?
 output_by_symbol:
-  response: '**Current Bitcoin (BTC) Funding Rates Across Exchanges:**
-
-
-    | **Exchange** | **Funding Interval** | **1-Day Funding Rate** | **Formatted Rate**
-    |
-
-    | --- | --- | --- | --- |
-
-    | **Binance** | 8 hours | 0.00012002 | 0.0120% |
-
-    | **Bybit** | 8 hours | -8.966e-05 | -0.0090% |
-
-    | **Gate.io** | 8 hours | 0.000144 | 0.0144% |
-
-    | **OKX** | 8 hours | 8.791e-05 | 0.0088% |
-
-    | **dYdX** | 1 hour | 0.00027949 | 0.0279% (Note: **1-hour interval**, others
-    are 8 hours) |
-
-
-    **Observations:**
-
-
-    * **Highest Funding Rate:** dYdX (0.0279%, 1-hour interval) - Note the shorter
-    funding interval.
-
-    * **lowest Funding Rate:** Bybit (-0.0090%, 8-hour interval) - **Negative funding
-    rate**, indicating long positions are subsidized.
-
-    * **Most Similar Rates:** Binance (0.0120%), Gate.io (0.0144%), and OKX (0.0088%)
-    all have relatively close rates, with Gate.io offering the highest among these
-    three.'
+  response: "**Current Bitcoin (BTC) Funding Rates Across Exchanges:**\n\nHere are\
+    \ the funding rates for BTC, formatted as percentages with 4 decimal places, along\
+    \ with their respective funding intervals and exchanges:\n\n* **Binance (8h interval)**:\n\
+    \t+ 1d rate: **-0.0056%** (note: actual rate for 8h interval not provided, 1d\
+    \ rate given instead)\n* **Bybit (8h interval)**:\n\t+ 1d rate: **-0.0014%** (note:\
+    \ actual rate for 8h interval not provided, 1d rate given instead)\n* **Gate.io\
+    \ (8h interval)**:\n\t+ 1d rate: **-0.0020%** (note: actual rate for 8h interval\
+    \ not provided, 1d rate given instead)\n* **OKX (8h interval)**:\n\t+ 1d rate:\
+    \ **0.0021%** (note: actual rate for 8h interval not provided, 1d rate given instead)\n\
+    * **dYdX (1h interval)**:\n\t+ 1d rate: **-0.0219%** (note: significantly shorter\
+    \ interval than others, rates may fluctuate more rapidly)\n\n**Observations and\
+    \ Potential Strategies:**\n\n* **Cross-Exchange Arbitrage Opportunity:**\n\t+\
+    \ Go long on **Bybit** (-0.0014%) and short on **OKX** (0.0021%) considering their\
+    \ 8h intervals align, but be aware the rates provided are for 1d. **Rate Difference:\
+    \ 0.0035%** (meets the 0.03% threshold, but verify 8h rates for accuracy).\n\t\
+    + **Caution:** dYdX's 1h interval and significantly different rate (-0.0219%)\
+    \ suggest a unique market condition, but its short interval might not directly\
+    \ compare to the 8h intervals of other exchanges.\n\n**Recommendation:**\nBefore\
+    \ executing any arbitrage, **verify the actual 8h funding rates** for Binance,\
+    \ Bybit, Gate.io, and OKX to ensure the opportunity remains viable. Additionally,\
+    \ consider trading fees, slippage, and minimum viable position sizes across these\
+    \ exchanges."
   data:
     symbol: BTC
     funding_rates:
@@ -42,7 +32,7 @@ output_by_symbol:
         name: Binance
       rates:
         1h: N/A
-        1d: 0.00012002
+        1d: -5.616e-05
         7d: N/A
       funding_interval: 8
       last_updated: N/A
@@ -52,7 +42,7 @@ output_by_symbol:
         name: Bybit
       rates:
         1h: N/A
-        1d: -8.966e-05
+        1d: -1.385e-05
         7d: N/A
       funding_interval: 8
       last_updated: N/A
@@ -62,7 +52,7 @@ output_by_symbol:
         name: Gate.io
       rates:
         1h: N/A
-        1d: 0.000144
+        1d: -2.0e-05
         7d: N/A
       funding_interval: 8
       last_updated: N/A
@@ -72,7 +62,7 @@ output_by_symbol:
         name: OKX
       rates:
         1h: N/A
-        1d: 8.791e-05
+        1d: 2.055e-05
         7d: N/A
       funding_interval: 8
       last_updated: N/A
@@ -82,7 +72,7 @@ output_by_symbol:
         name: dYdX
       rates:
         1h: N/A
-        1d: 0.00027949
+        1d: -0.00021894
         7d: N/A
       funding_interval: 1
       last_updated: N/A
@@ -90,1031 +80,854 @@ input_by_arbitrage:
   query: Find arbitrage opportunities across exchanges with at least 0.05% funding
     rate difference
 output_by_arbitrage:
-  response: "**Cross-Exchange Arbitrage Opportunities with at least 0.05% Funding\
-    \ Rate Difference**\n\nAfter analyzing the provided data, I've identified the\
-    \ following cross-exchange arbitrage opportunities with a funding rate difference\
-    \ of at least 0.05% (as per your request):\n\n1. **RARE**\n\t* **Long Exchange:**\
-    \ Binance (Rate: -0.1027%, Funding Interval: 4h, Quote Currency: USDT)\n\t* **Short\
-    \ Exchange:** Gate.io (Rate: -0.066%, Funding Interval: 4h, Quote Currency: USDT)\n\
-    \t* **Rate Difference:** 0.0367% (meets the 0.05% threshold is not met, but close;\
-    \ consider with caution)\n\t* **Strategy:** Go long on RARE on Binance and short\
-    \ on Gate.io, exploiting the rate difference.\n\t* **Risks:** Liquidity risks\
-    \ on Binance, counterparty risks on both exchanges.\n\n2. **MELANIA**\n\t* **Long\
-    \ Exchange:** Gate.io (Rate: -0.0311%, Funding Interval: 4h, Quote Currency: USDT)\n\
-    \t* **Short Exchange:** Bybit (Rate: -0.0193%, Funding Interval: 4h, Quote Currency:\
-    \ USDT)\n\t* **Rate Difference:** 0.0118% (does not meet the 0.05% threshold;\
-    \ not recommended)\n\t* **Strategy:** None recommended due to not meeting the\
-    \ threshold.\n\t* **Risks:** N/A\n\n3. **IOST**\n\t* **Long Exchange:** Bybit\
-    \ (Rate: -0.0551%, Funding Interval: 8h, Quote Currency: USDT)\n\t* **Short Exchange:**\
-    \ OKX (Rate: -0.0464%, Funding Interval: 8h, Quote Currency: USDT)\n\t* **Rate\
-    \ Difference:** 0.0087% (does not meet the 0.05% threshold; not recommended)\n\
-    \t* **Strategy:** None recommended due to not meeting the threshold.\n\t* **Risks:**\
-    \ N/A\n\n4. **SONIC**\n\t* **Long Exchange:** Bybit (Rate: -0.0082%, Funding Interval:\
-    \ 1h, Quote Currency: USDT)\n\t* **Short Exchange:** OKX (Rate: -0.0042%, Funding\
-    \ Interval: 8h, Quote Currency: USDT)\n\t* **"
+  response: "**Cross-Exchange Funding Rate Arbitrage Opportunities with at least 0.05%\
+    \ difference**\n\nAfter analyzing the provided data, I've identified opportunities\
+    \ that meet the 0.05% funding rate difference threshold. Please note that before\
+    \ executing any trades, consider trading fees, slippage, and minimum viable position\
+    \ sizes, as well as liquidity and counterparty risks.\n\n**Significant Arbitrage\
+    \ Opportunities (≥ 0.05% rate difference):**\n\n1. **MOVE**\n\t* **Long on:**\
+    \ Binance (-0.0323% every 4 hours)\n\t* **Short on:** Bybit (-0.0158% every 4\
+    \ hours)\n\t* **Rate Difference:** 0.0165% (every 4 hours)\n\t* **Strategy:**\
+    \ Go long on MOVE on Binance and short on Bybit to capitalize on the funding rate\
+    \ difference.\n\t* **Risks:** Monitor liquidity on both exchanges, and be aware\
+    \ of potential differences in contract specifications.\n\n2. **AUCTION**\n\t*\
+    \ **Long on:** Bybit (-0.00698% every 4 hours)\n\t* **Short on:** OKX (-0.00322%\
+    \ every 2 hours) **[Caution: Different funding intervals]**\n\t* **Rate Difference:**\
+    \ 0.00376% (every 4 hours for Bybit; adjustment needed for OKX's 2-hour interval)\n\
+    \t* **Strategy:** Go long on AUCTION on Bybit and short on OKX, adjusting for\
+    \ the differing funding intervals to maximize the rate difference.\n\t* **Risks:**\
+    \ Be cautious of the differing funding intervals and potential liquidity issues.\n\
+    \n**Other notable mentions (close to or above 0.03% but below 0.05% threshold,\
+    \ for informational purposes):**\n\n* **OM**: Binance (-0.00295% every 4 hours)\
+    \ and Bybit (0.00017% every 4 hours) with a 0.00312% difference.\n* **CRO**: OKX\
+    \ (-0.00516% every 8 hours) and Gate.io (-0.00269% every 8 hours) with a 0.00247%\
+    \ difference.\n* **VANA**: Binance (-0.00199% every 4 hours) and Bybit (0.00018%\
+    \ every 4 hours) with a 0.00217% difference.\n\n**Remember to:**\n- Verify the\
+    \ rates as they can fluctuate"
   data:
     cross_exchange_opportunities:
     - symbol: BNB
-      rate_diff: 0.00083496
+      rate_diff: 0.00061604
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00082087
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00020483
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: ADA
+      rate_diff: 0.0006186799999999999
       long_exchange:
         id: 6
         name: dYdX
-        rate: -0.00060996
+        rate: -0.00031868
         funding_interval: 1
         quote_currency: USD
       short_exchange:
         id: 4
         name: Gate.io
-        rate: 0.000225
+        rate: 0.0003
         funding_interval: 8
         quote_currency: USDT
-    - symbol: HYPE
-      rate_diff: 0.00073039
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.000207
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 6
-        name: dYdX
-        rate: 0.00093739
-        funding_interval: 1
-        quote_currency: USD
     - symbol: OM
-      rate_diff: 0.00062448
-      long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00020204
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 2
-        name: OKX
-        rate: 0.00042244
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: ENA
-      rate_diff: 0.00060841
-      long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00038862
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00021979
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: LINK
-      rate_diff: 0.00100294
+      rate_diff: 0.00312252
       long_exchange:
         id: 1
         name: Binance
-        rate: -0.00070294
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: BNX
-      rate_diff: 0.00264781
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00294781
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: 1000BONK
-      rate_diff: 0.000797
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.000497
+        rate: -0.00295394
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
         id: 3
         name: Bybit
-        rate: 0.0003
+        rate: 0.00016858
         funding_interval: 4
-        quote_currency: USDT
-    - symbol: AVAX
-      rate_diff: 0.00062241
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.000645
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -2.259e-05
-        funding_interval: 8
         quote_currency: USDT
     - symbol: 1000SATS
-      rate_diff: 0.00327
+      rate_diff: 0.00115467
       long_exchange:
         id: 1
         name: Binance
-        rate: 0.0003
+        rate: 0.00027633
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
         id: 4
         name: Gate.io
-        rate: 0.00357
+        rate: 0.001431
         funding_interval: 4
         quote_currency: USDT
-    - symbol: ONDO
-      rate_diff: 0.0006146299999999999
+    - symbol: PNUT
+      rate_diff: 0.00051896
       long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00054063
-        funding_interval: 1
-        quote_currency: USD
+        id: 2
+        name: OKX
+        rate: -0.00026896
+        funding_interval: 8
+        quote_currency: USDT
       short_exchange:
         id: 4
         name: Gate.io
-        rate: 7.4e-05
+        rate: 0.00025
         funding_interval: 4
         quote_currency: USDT
     - symbol: TRX
-      rate_diff: 0.00052536
+      rate_diff: 0.0005725000000000001
       long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00022536
+        id: 1
+        name: Binance
+        rate: -0.0003085
         funding_interval: 8
         quote_currency: USDT
       short_exchange:
         id: 4
         name: Gate.io
-        rate: 0.0003
+        rate: 0.000264
         funding_interval: 8
         quote_currency: USDT
-    - symbol: TAO
-      rate_diff: 0.00069248
+    - symbol: UNI
+      rate_diff: 0.00072341
       long_exchange:
         id: 3
         name: Bybit
-        rate: -0.0007208
-        funding_interval: 4
+        rate: -0.00050284
+        funding_interval: 8
         quote_currency: USDT
       short_exchange:
-        id: 2
-        name: OKX
-        rate: -2.832e-05
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: SEI
-      rate_diff: 0.00303473
-      long_exchange:
         id: 6
         name: dYdX
-        rate: -0.00273473
+        rate: 0.00022057
         funding_interval: 1
         quote_currency: USD
+    - symbol: NEAR
+      rate_diff: 0.00067043
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00037043
+        funding_interval: 8
+        quote_currency: USDT
       short_exchange:
         id: 4
         name: Gate.io
         rate: 0.0003
         funding_interval: 8
         quote_currency: USDT
-    - symbol: APT
-      rate_diff: 0.0005095900000000001
+    - symbol: ALCH
+      rate_diff: 0.0016648600000000002
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: 0.0003
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 2
+        name: OKX
+        rate: 0.00196486
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: FARTCOIN
+      rate_diff: 0.00174327
       long_exchange:
         id: 2
         name: OKX
-        rate: -0.0007533
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00024371
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: ORDI
-      rate_diff: 0.00232702
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.002076
+        rate: -0.00157978
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00025102
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: RARE
-      rate_diff: 0.03674511
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.10274511
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.066
-        funding_interval: 4
-        quote_currency: USDT
+        id: 6
+        name: dYdX
+        rate: 0.00016349
+        funding_interval: 1
+        quote_currency: USD
     - symbol: MOVE
-      rate_diff: 0.0023561999999999997
+      rate_diff: 0.016462209999999998
       long_exchange:
         id: 1
         name: Binance
-        rate: -0.0034482
+        rate: -0.03225656
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.001092
-        funding_interval: 8
+        id: 3
+        name: Bybit
+        rate: -0.01579435
+        funding_interval: 4
         quote_currency: USDT
     - symbol: BERA
-      rate_diff: 0.00218075
-      long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00260739
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00042664
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: TIA
-      rate_diff: 0.0007012300000000001
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00133522
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00063399
-        funding_interval: 1
-        quote_currency: USD
-    - symbol: LDO
-      rate_diff: 0.00051196
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00038228
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 6
-        name: dYdX
-        rate: 0.00012968
-        funding_interval: 1
-        quote_currency: USD
-    - symbol: ATOM
-      rate_diff: 0.0005550499999999999
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00102492
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00046987
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: ETC
-      rate_diff: 0.00062561
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00032561
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: OP
-      rate_diff: 0.00062046
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00032046
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: ARB
-      rate_diff: 0.00054817
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00024817
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: GRASS
-      rate_diff: 0.00185038
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00165076
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00019962
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: VET
-      rate_diff: 0.00052183
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00022183
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: NOT
-      rate_diff: 0.0005818900000000001
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.0003
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00028189
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: AUCTION
-      rate_diff: 0.00134258
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00450566
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00316308
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: CRV
-      rate_diff: 0.00050965
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00020965
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: RENDER
-      rate_diff: 0.0007244899999999999
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00047024
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00025425
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: KAITO
-      rate_diff: 0.0012393600000000001
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00158763
-        funding_interval: 2
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00034827
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: EOS
-      rate_diff: 0.0012109
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.00094404
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00026686
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: HIPPO
-      rate_diff: 0.0015023
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: 1.0e-05
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.0015123
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: ARKM
-      rate_diff: 0.00209944
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00941286
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00731342
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: POL
-      rate_diff: 0.00064914
+      rate_diff: 0.0014392300000000005
       long_exchange:
         id: 3
         name: Bybit
-        rate: -0.00034914
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: SWARMS
-      rate_diff: 0.00053647
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
+        rate: -0.00497819
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
         id: 2
         name: OKX
-        rate: 0.00083647
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: DOG
-      rate_diff: 0.000828
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.000528
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: AI16Z
-      rate_diff: 0.00100409
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.000277
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 2
-        name: OKX
-        rate: 0.00128109
+        rate: -0.00353896
         funding_interval: 4
         quote_currency: USDT
     - symbol: LAYER
-      rate_diff: 0.0024257600000000003
+      rate_diff: 0.00263372
       long_exchange:
         id: 1
         name: Binance
-        rate: -0.00026338
+        rate: -0.00213052
         funding_interval: 2
         quote_currency: USDT
       short_exchange:
         id: 2
         name: OKX
-        rate: 0.00216238
+        rate: 0.0005032
         funding_interval: 2
         quote_currency: USDT
-    - symbol: USUAL
-      rate_diff: 0.00107785
+    - symbol: FORM
+      rate_diff: 0.00061443
       long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00309606
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00201821
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: EIGEN
-      rate_diff: 0.00073988
-      long_exchange:
-        id: 6
-        name: dYdX
-        rate: -0.00043988
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: TRB
-      rate_diff: 0.0005427699999999999
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00030072
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
         id: 3
         name: Bybit
-        rate: 0.00024205
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: REZ
-      rate_diff: 0.0007193
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00102687
+        rate: -0.00035997
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00030757
+        id: 1
+        name: Binance
+        rate: 0.00025446
         funding_interval: 4
         quote_currency: USDT
-    - symbol: RUNE
-      rate_diff: 0.0021934
+    - symbol: RENDER
+      rate_diff: 0.00079336
       long_exchange:
         id: 1
         name: Binance
-        rate: -0.0024094
-        funding_interval: 8
+        rate: -0.00054336
+        funding_interval: 4
         quote_currency: USDT
       short_exchange:
         id: 4
         name: Gate.io
-        rate: -0.000216
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: MELANIA
-      rate_diff: 0.01176073
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.031052
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.01929127
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: MANA
-      rate_diff: 0.0005306099999999999
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00023061
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: DF
-      rate_diff: 0.00266359
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.002392
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00027159
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: IOTX
-      rate_diff: 0.000672
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.000846
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.000174
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: AIXBT
-      rate_diff: 0.0019894199999999996
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00029739
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 2
-        name: OKX
-        rate: 0.00228681
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: IO
-      rate_diff: 0.00054402
-      long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.00029402
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
         rate: 0.00025
         funding_interval: 4
         quote_currency: USDT
-    - symbol: COMP
-      rate_diff: 0.00066843
+    - symbol: AUCTION
+      rate_diff: 0.00376261
       long_exchange:
-        id: 1
-        name: Binance
-        rate: -0.0017372
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
         id: 3
         name: Bybit
-        rate: -0.00106877
-        funding_interval: 8
+        rate: -0.0069835
+        funding_interval: 4
         quote_currency: USDT
-    - symbol: BOME
-      rate_diff: 0.00057371
+      short_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00322089
+        funding_interval: 2
+        quote_currency: USDT
+    - symbol: IP
+      rate_diff: 0.00089838
       long_exchange:
         id: 2
         name: OKX
-        rate: -0.00027371
-        funding_interval: 8
+        rate: -0.00093272
+        funding_interval: 4
         quote_currency: USDT
       short_exchange:
+        id: 6
+        name: dYdX
+        rate: -3.434e-05
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: GRASS
+      rate_diff: 0.0011150700000000001
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00089384
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 1
+        name: Binance
+        rate: 0.00022123
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: MUBARAK
+      rate_diff: 0.0007572100000000001
+      long_exchange:
         id: 3
         name: Bybit
         rate: 0.0003
         funding_interval: 4
         quote_currency: USDT
-    - symbol: IOST
-      rate_diff: 0.008653800000000003
+      short_exchange:
+        id: 1
+        name: Binance
+        rate: 0.00105721
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: S
+      rate_diff: 0.00054674
       long_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.05509142
+        id: 2
+        name: OKX
+        rate: -0.00024674
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 6
+        name: dYdX
+        rate: 0.0003
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: NIL
+      rate_diff: 0.0017939100000000001
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00106123
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 6
+        name: dYdX
+        rate: 0.00073268
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: ALGO
+      rate_diff: 0.00051536
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00021536
         funding_interval: 8
         quote_currency: USDT
       short_exchange:
-        id: 2
-        name: OKX
-        rate: -0.04643762
+        id: 4
+        name: Gate.io
+        rate: 0.0003
         funding_interval: 8
         quote_currency: USDT
-    - symbol: B3
-      rate_diff: 0.002804889999999999
+    - symbol: KAITO
+      rate_diff: 0.00065664
       long_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.01595367
+        id: 2
+        name: OKX
+        rate: -0.00035572
         funding_interval: 2
         quote_currency: USDT
       short_exchange:
-        id: 1
-        name: Binance
-        rate: -0.01314878
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: BRETT
-      rate_diff: 0.00201366
+        id: 6
+        name: dYdX
+        rate: 0.00030092
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: ZRO
+      rate_diff: 0.00082341
       long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00086041
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
         id: 4
         name: Gate.io
-        rate: -0.001756
+        rate: -3.7e-05
         funding_interval: 4
         quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00025766
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: GPS
-      rate_diff: 0.00080868
+    - symbol: GALA
+      rate_diff: 0.00063403
       long_exchange:
         id: 3
         name: Bybit
-        rate: -0.00058764
+        rate: -0.00033403
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.0003
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: MNT
+      rate_diff: 0.0009843999999999999
+      long_exchange:
+        id: 6
+        name: dYdX
+        rate: -0.00155762
+        funding_interval: 1
+        quote_currency: USD
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00057322
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: PARTI
+      rate_diff: 0.0020707700000000004
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00781425
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
         id: 1
         name: Binance
-        rate: 0.00022104
+        rate: -0.00574348
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: CRO
+      rate_diff: 0.00247066
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00516066
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: -0.00269
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: W
+      rate_diff: 0.00099
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00153699
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00054699
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: API3
+      rate_diff: 0.0013028499999999995
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00713285
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: -0.00583
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: VANA
+      rate_diff: 0.0021650799999999998
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00198696
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: 0.00017812
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: RED
+      rate_diff: 0.0019014900000000005
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.01381911
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.01191762
         funding_interval: 4
         quote_currency: USDT
     - symbol: 1000RATS
-      rate_diff: 0.00151483
+      rate_diff: 0.00150383
       long_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00010112
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.00161595
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: COW
-      rate_diff: 0.0005212799999999999
-      long_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00022128
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 1
-        name: Binance
-        rate: 0.0003
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: X
-      rate_diff: 0.00053249
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00043049
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 4
-        name: Gate.io
-        rate: 0.000102
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: IOTA
-      rate_diff: 0.00101211
-      long_exchange:
-        id: 4
-        name: Gate.io
-        rate: -0.000793
-        funding_interval: 8
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00021911
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: ANIME
-      rate_diff: 0.00057552
-      long_exchange:
-        id: 6
-        name: dYdX
-        rate: 4.709e-05
-        funding_interval: 1
-        quote_currency: USD
-      short_exchange:
-        id: 2
-        name: OKX
-        rate: 0.00062261
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: ME
-      rate_diff: 0.0005659700000000001
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00028362
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00028235
-        funding_interval: 4
-        quote_currency: USDT
-    - symbol: SWEAT
-      rate_diff: 0.00140088
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00110088
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.0003
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: SONIC
-      rate_diff: 0.00391475
-      long_exchange:
-        id: 3
-        name: Bybit
-        rate: -0.00815812
-        funding_interval: 1
-        quote_currency: USDT
-      short_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00424337
-        funding_interval: 8
-        quote_currency: USDT
-    - symbol: GAS
-      rate_diff: 0.00103551
-      long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00078551
-        funding_interval: 4
-        quote_currency: USDT
-      short_exchange:
         id: 3
         name: Bybit
         rate: 0.00025
         funding_interval: 4
         quote_currency: USDT
-    - symbol: ONT
-      rate_diff: 0.0010039600000000001
+      short_exchange:
+        id: 1
+        name: Binance
+        rate: 0.00175383
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: ORCA
+      rate_diff: 0.0006230700000000003
       long_exchange:
-        id: 2
-        name: OKX
-        rate: -0.00088279
+        id: 3
+        name: Bybit
+        rate: -0.00396607
         funding_interval: 4
         quote_currency: USDT
       short_exchange:
-        id: 3
-        name: Bybit
-        rate: 0.00012117
+        id: 4
+        name: Gate.io
+        rate: -0.003343
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: VIRTUAL
+      rate_diff: 0.0005866000000000001
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.0003366
         funding_interval: 4
         quote_currency: USDT
-    - symbol: XTZ
-      rate_diff: 0.00130973
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.00025
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: ZETA
+      rate_diff: 0.0014530300000000001
       long_exchange:
         id: 2
         name: OKX
-        rate: -0.00171925
+        rate: -0.00151059
         funding_interval: 8
         quote_currency: USDT
       short_exchange:
         id: 3
         name: Bybit
-        rate: -0.00040952
+        rate: -5.756e-05
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: NEIROETH
+      rate_diff: 0.00139975
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: 2.564e-05
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 2
+        name: OKX
+        rate: 0.00142539
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: JTO
+      rate_diff: 0.00085465
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00055834
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 6
+        name: dYdX
+        rate: 0.00029631
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: MELANIA
+      rate_diff: 0.0012034200000000002
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00106542
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.000138
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: RSR
+      rate_diff: 0.0006577999999999999
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.0005738
         funding_interval: 8
         quote_currency: USDT
-    - symbol: VELO
-      rate_diff: 0.00052675
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 8.4e-05
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: IMX
+      rate_diff: 0.00127449
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00119249
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 8.2e-05
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: DOGS
+      rate_diff: 0.0006394599999999999
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00033946
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 1
+        name: Binance
+        rate: 0.0003
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: VINE
+      rate_diff: 0.00075154
       long_exchange:
         id: 2
         name: OKX
-        rate: -0.00040398
+        rate: -0.00047416
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 6
+        name: dYdX
+        rate: 0.00027738
+        funding_interval: 1
+        quote_currency: USD
+    - symbol: GRIFFAIN
+      rate_diff: 0.0007035300000000001
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -4.253e-05
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.000661
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: BIO
+      rate_diff: 0.00075284
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00045284
         funding_interval: 8
         quote_currency: USDT
       short_exchange:
         id: 3
         name: Bybit
-        rate: 0.00012277
+        rate: 0.0003
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: ANKR
+      rate_diff: 0.0008286600000000002
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00223279
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00140413
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: COTI
+      rate_diff: 0.00059454
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00072825
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00013371
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: ME
+      rate_diff: 0.00114591
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00089591
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.00025
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: SONIC
+      rate_diff: 0.00072882
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00042882
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: 0.0003
+        funding_interval: 1
+        quote_currency: USDT
+    - symbol: ZEC
+      rate_diff: 0.0008932599999999999
+      long_exchange:
+        id: 1
+        name: Binance
+        rate: -0.00061546
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: 0.0002778
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: AKT
+      rate_diff: 0.0009676399999999999
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -0.00109064
+        funding_interval: 4
+        quote_currency: USDT
+      short_exchange:
+        id: 4
+        name: Gate.io
+        rate: -0.000123
+        funding_interval: 4
+        quote_currency: USDT
+    - symbol: MEMEFI
+      rate_diff: 0.00134148
+      long_exchange:
+        id: 3
+        name: Bybit
+        rate: -5.839e-05
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 2
+        name: OKX
+        rate: 0.00128309
+        funding_interval: 8
+        quote_currency: USDT
+    - symbol: AGLD
+      rate_diff: 0.0005143799999999999
+      long_exchange:
+        id: 2
+        name: OKX
+        rate: -0.00021438
+        funding_interval: 8
+        quote_currency: USDT
+      short_exchange:
+        id: 3
+        name: Bybit
+        rate: 0.0003
         funding_interval: 8
         quote_currency: USDT
     - symbol: LOOKS
-      rate_diff: 0.00128904
+      rate_diff: 0.00057464
       long_exchange:
         id: 3
         name: Bybit
-        rate: -3.957e-05
+        rate: 0.0003
         funding_interval: 8
         quote_currency: USDT
       short_exchange:
         id: 2
         name: OKX
-        rate: 0.00124947
+        rate: 0.00087464
         funding_interval: 8
         quote_currency: USDT
 input_by_spot_futures:
   query: What are the best spot-futures funding rate opportunities right now?
 output_by_spot_futures:
-  response: "Based on the provided data, I've identified the most significant spot-futures\
-    \ funding rate opportunities. Please note that I've filtered the results to only\
-    \ include opportunities with a funding rate difference of at least 0.01% (as per\
-    \ the domain-specific rules).\n\n**Opportunities:**\n\n1. **BNX (Binance)**\n\t\
-    * Funding Rate: **0.00294781%** (8h interval)\n\t* Comparison: This rate is significantly\
-    \ higher than the 0.0003% rates observed on other exchanges (e.g., Bybit, Gate.io)\
-    \ for the same symbol.\n\t* Strategy: Hold BNX spot on Binance and short BNX perpetual\
-    \ futures on Bybit or Gate.io.\n\t* **Rate Difference:** ≥ 0.01% (significant\
-    \ opportunity)\n2. **BTCDOM (Binance)**\n\t* Funding Rate: **0.00089214%** (8h\
-    \ interval)\n\t* Comparison: This rate is higher than the 0.0003% rates observed\
-    \ on other exchanges (e.g., Bybit, Gate.io) for similar symbols.\n\t* Strategy:\
-    \ Hold BTCDOM spot on Binance and short a similar futures contract on Bybit or\
-    \ Gate.io (if available).\n\t* **Rate Difference:** ≥ 0.01% (significant opportunity)\n\
-    3. **HIPPO (Binance)**\n\t* Funding Rate: **0.0015123%** (4h interval)\n\t* Comparison:\
-    \ This rate is higher than the 0.0003% rates observed on other exchanges (e.g.,\
-    \ Bybit, OKX) for the same symbol.\n\t* Strategy: Hold HIPPO spot on Binance and\
-    \ short HIPPO perpetual futures on Bybit or OKX.\n\t* **Rate Difference:** ≥ 0.01%\
-    \ (significant opportunity)\n4. **ARC (OKX)**\n\t* Funding Rate: **0.00148639%**\
-    \ (4h interval)\n\t* Comparison: This rate is higher than the 0.0003% rates observed\
-    \ on other exchanges (e.g., Bybit, Binance) for the same symbol.\n\t* Strategy:\
-    \ Hold ARC spot on OKX and short ARC perpetual futures on Bybit or Binance.\n\t\
-    * **Rate Difference:** ≥ 0.01% (significant opportunity)\n5. **LAYER (OKX)**\n\
-    \t* Funding Rate: **0.00216238%** ("
+  response: "**Spot-Futures Funding Rate Opportunities**\n\nAfter analyzing the provided\
+    \ data, I've identified significant spot-futures funding rate opportunities with\
+    \ a minimum of 0.01% positive funding rate. Please note that the funding intervals\
+    \ vary across exchanges, and the rates are formatted as percentages with 4 decimal\
+    \ places.\n\n**Opportunities:**\n\n1. **APE (ApeCoin)**\n\t* Binance (8h): 0.021076%\
+    \ (Spot) vs. 0.00014597% (Futures on Bybit, 8h)\n\t* **Strategy:** Hold APE spot\
+    \ on Binance and short APE futures on Bybit\n\t* **Potential Risks:** Liquidity\
+    \ risks, counterparty risks, and differences in funding intervals (consider the\
+    \ 8h interval on both exchanges)\n2. **MASK (Mask Network)**\n\t* Binance (8h):\
+    \ 0.014485% (Spot) vs. 0.029890% (Futures on Bybit, 8h)\n\t* **Strategy:** Hold\
+    \ MASK spot on Binance and short MASK futures on Bybit\n\t* **Potential Risks:**\
+    \ Liquidity risks, counterparty risks, and differences in funding intervals (consider\
+    \ the 8h interval on both exchanges)\n3. **GMT (Stepn)**\n\t* Binance (8h): 0.020172%\
+    \ (Spot) vs. 0.0003% (Futures on Bybit, 8h)\n\t* **Strategy:** Hold GMT spot on\
+    \ Binance and short GMT futures on Bybit\n\t* **Potential Risks:** Liquidity risks,\
+    \ counterparty risks, and differences in funding intervals (consider the 8h interval\
+    \ on both exchanges)\n4. **MANA (Decentraland)**\n\t* Binance (8h): 0.028193%\
+    \ (Spot) vs. 0.0002097% (Futures on Bybit, 8h)\n\t* **Strategy:** Hold MANA spot\
+    \ on Binance and short MANA futures on Bybit\n\t* **Potential Risks:** Liquidity\
+    \ risks, counterparty risks, and differences in funding intervals (consider the\
+    \ 8h interval on both exchanges)\n\n**Important Considerations:**\n\n* **Liquidity\
+    \ Risks:** Ensure sufficient liquidity on both spot and futures markets to enter\
+    \ and exit positions.\n* **Counterparty Risks:** Be aware of the counterparty\
+    \ risks associated with"
   data:
     spot_futures_opportunities:
-    - symbol: HYPE
+    - symbol: XRP
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SOL
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000294
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ETH
       exchange_id: 6
       exchange_name: dYdX
-      funding_rate: 0.00093739
+      funding_rate: 0.00023729
       funding_interval: 1
       quote_currency: USD
-    - symbol: OM
+    - symbol: XRP
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014698
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DOGE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014257
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SOL
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00022016
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ENA
       exchange_id: 1
       exchange_name: Binance
       funding_rate: 0.0003
@@ -1126,47 +939,107 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: DOGE
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ADA
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024068
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SUI
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0001843
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ADA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LTC
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00017376
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000PEPE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0001986
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: XRP
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: BGB
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TRUMP
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: OM
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00016858
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1000PEPE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00021508
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HYPE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00033395
+      funding_interval: 8
+      quote_currency: USDT
     - symbol: LINK
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: BNX
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.00294781
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: OM
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.00039261
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: 1000BONK
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: HYPE
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.00075786
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: 1000SATS
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: ACT
+    - symbol: ONDO
       exchange_id: 4
       exchange_name: Gate.io
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
+      quote_currency: USDT
+    - symbol: AVAX
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.000179
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LINK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00026116
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LTC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00014635
+      funding_interval: 8
       quote_currency: USDT
     - symbol: HBAR
       exchange_id: 4
@@ -1174,77 +1047,65 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: SEI
+    - symbol: SUI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022288
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SUI
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ACT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00026907
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: kPEPE
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00046739
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: LINK
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DOT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WLD
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00020926
       funding_interval: 8
       quote_currency: USDT
     - symbol: 1000SATS
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.00357
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00027633
       funding_interval: 4
       quote_currency: USDT
-    - symbol: WIF
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.000301
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: WLD
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: HMSTR
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: WIF
+    - symbol: TRUMP
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00016012
       funding_interval: 4
       quote_currency: USDT
-    - symbol: OM
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: FARTCOIN
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: OM
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00042244
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: BNX
+    - symbol: PEPE
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
       funding_interval: 8
-      quote_currency: USDT
-    - symbol: VET
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: POPCAT
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
       quote_currency: USDT
     - symbol: 1000CHEEMS
       exchange_id: 1
@@ -1252,17 +1113,611 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
+    - symbol: AVAX
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAO
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TRUMP
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LTC
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DOT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ENA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: UNI
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00020961
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WIF
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NEAR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0001632
+      funding_interval: 8
+      quote_currency: USDT
     - symbol: ALCH
       exchange_id: 1
       exchange_name: Binance
-      funding_rate: 0.00030106
+      funding_rate: 0.00099542
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: FIL
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024356
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: APT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0002923
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SUI
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00012705
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ONDO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: FARTCOIN
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00016349
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: LTC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00012899
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WIF
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: DOT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00020367
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NEIRO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0001273
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TRUMP
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.0004199
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: MASK
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014485
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: XLM
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00028722
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FORM
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00025446
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: KAS
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ARB
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00025428
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HYPE
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000334
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: RENDER
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: HBAR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00026857
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LDO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00025489
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TIA
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014617
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: APT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CAKE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00015951
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VET
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: APT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025489
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BCH
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022618
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HBAR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SUI
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00021838
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ENA
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00026914
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ALCH
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TIA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NEAR
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00022636
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1000SATS
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.001431
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LTC
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: XLM
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ORDI
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024312
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ARB
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000196
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WLD
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LDO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00020676
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TRUMP
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00013513
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ATOM
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00013372
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WLD
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00023412
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FET
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ETC
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: INJ
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DOGE
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00027259
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: MUBARAK
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00105721
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ORDI
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: TRX
       exchange_id: 4
       exchange_name: Gate.io
+      funding_rate: 0.000264
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LINK
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: OP
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00018915
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MKR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014134
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AAVE
+      exchange_id: 4
+      exchange_name: Gate.io
       funding_rate: 0.0003
       funding_interval: 8
+      quote_currency: USDT
+    - symbol: XLM
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025647
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ATOM
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00029026
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: POPCAT
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00038028
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: PNUT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AAVE
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ALGO
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: INJ
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00023696
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: KAITO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00025523
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: POL
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LINK
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00016467
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ETC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00027561
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BCH
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.000144
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SEI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00013699
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GALA
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00013376
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FIL
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: POL
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: INJ
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00017617
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ALCH
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: S
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: MKR
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00029157
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ALCH
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00196486
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SHIB1000
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022886
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NOT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: STRK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: FIL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00012721
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FET
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00015645
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SHIB
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: KAS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0001631
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TIA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: MASK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002989
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BCH
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AI16Z
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00019277
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SAND
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00013196
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PENGU
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AVAX
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00020149
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ONDO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: JUP
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
       quote_currency: USDT
     - symbol: MASK
       exchange_id: 4
@@ -1270,34 +1725,46 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: FARTCOIN
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
+    - symbol: HIPPO
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: NEIROETH
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: S
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: DOT
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00018653
       funding_interval: 8
       quote_currency: USDT
-    - symbol: FARTCOIN
-      exchange_id: 4
-      exchange_name: Gate.io
+    - symbol: POPCAT
+      exchange_id: 1
+      exchange_name: Binance
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: SWARMS
+    - symbol: POPCAT
       exchange_id: 4
       exchange_name: Gate.io
-      funding_rate: 0.0003
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ETC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00028838
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: UNI
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000139
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GOAT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: AI16Z
@@ -1306,70 +1773,16 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: ALCH
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: WLD
+    - symbol: SHIB
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00030128
+      funding_rate: 0.00018119
       funding_interval: 8
-      quote_currency: USDT
-    - symbol: BTCDOM
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.00089214
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: TST
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: POL
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: CRO
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: ARC
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.00101382
-      funding_interval: 4
       quote_currency: USDT
     - symbol: PYTH
       exchange_id: 4
       exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: BNX
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.00042937
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: ACT
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00052297
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: POPCAT
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: ARB
@@ -1378,34 +1791,52 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: 10000SATS
+    - symbol: TRB
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: DOG
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00014
       funding_interval: 8
       quote_currency: USDT
-    - symbol: MANA
+    - symbol: CATI
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
-      funding_interval: 8
+      funding_interval: 4
       quote_currency: USDT
-    - symbol: KAVA
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: SWARMS
+    - symbol: DEXE
       exchange_id: 1
       exchange_name: Binance
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: NEIROETH
+    - symbol: ICP
       exchange_id: 3
       exchange_name: Bybit
+      funding_rate: 0.00015172
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TON
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: WLD
+      exchange_id: 6
+      exchange_name: dYdX
       funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: SWARMS
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000206
       funding_interval: 4
       quote_currency: USDT
     - symbol: GALA
@@ -1414,34 +1845,106 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: PNUT
+    - symbol: HMSTR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: USUAL
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014687
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BTCDOM
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00031222
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ALGO
       exchange_id: 3
       exchange_name: Bybit
+      funding_rate: 0.00013522
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LDO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ATOM
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000268
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000RATS
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00175383
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ICP
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024477
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CAKE
+      exchange_id: 4
+      exchange_name: Gate.io
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: AI16Z
+    - symbol: MANA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DYDX
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
+      funding_rate: 0.00024985
+      funding_interval: 8
       quote_currency: USDT
-    - symbol: HIPPO
+    - symbol: UNI
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00011748
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CRV
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NOT
       exchange_id: 1
       exchange_name: Binance
-      funding_rate: 0.0015123
+      funding_rate: 0.00010727
       funding_interval: 4
       quote_currency: USDT
-    - symbol: DEGO
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
+    - symbol: MKR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00013581
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: POL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: SOLV
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
+    - symbol: ORDI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: ETC
@@ -1450,47 +1953,257 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: NEIROETH
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.000402
+    - symbol: BGSC
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000386
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AI16Z
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: GOAT
+    - symbol: VVV
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00029305
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: APE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00021076
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CRV
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00026894
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ZK
       exchange_id: 1
       exchange_name: Binance
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: QUICK
+    - symbol: EOS
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
-      funding_interval: 4
+      funding_interval: 8
       quote_currency: USDT
-    - symbol: VINE
+    - symbol: GRASS
       exchange_id: 1
       exchange_name: Binance
+      funding_rate: 0.00022123
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ARC
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00039048
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LAYER
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.0005032
+      funding_interval: 2
+      quote_currency: USDT
+    - symbol: ETHFI
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1000BONK
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: S
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: WIF
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.0001469
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: X
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00029202
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: BOME
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CAKE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BRETT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VIRTUAL
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: OP
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00010048
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ENS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HMSTR
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SHELL
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: RUNE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TRB
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0001986
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: HBAR
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: HBAR
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00020015
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ENS
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NIL
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00073268
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: SAND
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PLUME
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00012966
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ICP
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WIF
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: XLM
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00011015
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MUBARAK
+      exchange_id: 3
+      exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
     - symbol: ARC
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.00102051
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: XMR
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: NEIROETH
+    - symbol: RUNE
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
-      funding_interval: 4
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LDO
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00027999
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000FLOKI
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014642
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ENS
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: IOTX
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
       quote_currency: USDT
     - symbol: ZEREBRO
       exchange_id: 1
@@ -1498,71 +2211,59 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: RAY
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
+    - symbol: STRK
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0002775
       funding_interval: 4
       quote_currency: USDT
-    - symbol: AMB
+    - symbol: AR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00014716
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SWARMS
       exchange_id: 1
       exchange_name: Binance
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: MOODENG
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
+    - symbol: VANA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00017812
       funding_interval: 4
       quote_currency: USDT
-    - symbol: CRV
-      exchange_id: 4
-      exchange_name: Gate.io
+    - symbol: CFX
+      exchange_id: 1
+      exchange_name: Binance
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: 1000RATS
+    - symbol: AIXBT
       exchange_id: 1
       exchange_name: Binance
-      funding_rate: 0.00161595
+      funding_rate: 0.00012603
       funding_interval: 4
       quote_currency: USDT
-    - symbol: COW
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: HIPPO
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: CHILLGUY
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: BIO
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: RAYSOL
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: JASMY
+    - symbol: ATH
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
+      quote_currency: USDT
+    - symbol: GOAT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BRETT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
       quote_currency: USDT
     - symbol: OP
       exchange_id: 4
@@ -1570,25 +2271,25 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: ALCH
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00036012
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: XMR
-      exchange_id: 1
-      exchange_name: Binance
-      funding_rate: 0.0003
+    - symbol: SAND
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00017573
       funding_interval: 8
       quote_currency: USDT
-    - symbol: NC
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00052565
+    - symbol: TIA
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00029207
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: KAITO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000275
       funding_interval: 4
       quote_currency: USDT
-    - symbol: JASMY
+    - symbol: MKR
       exchange_id: 4
       exchange_name: Gate.io
       funding_rate: 0.0003
@@ -1600,46 +2301,64 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: PENDLE
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: CATI
+    - symbol: MANA
       exchange_id: 1
       exchange_name: Binance
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: CRO
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00028193
       funding_interval: 8
       quote_currency: USDT
-    - symbol: KAS
+    - symbol: ARB
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00018132
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HIPPO
       exchange_id: 1
       exchange_name: Binance
-      funding_rate: 0.0003
+      funding_rate: 0.00044162
       funding_interval: 4
       quote_currency: USDT
-    - symbol: AXS
+    - symbol: CHZ
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0002225
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: RARE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00020462
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 10000SATS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00018854
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: APE
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GMT
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: PIPPIN
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: PEOPLE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00022749
       funding_interval: 8
       quote_currency: USDT
-    - symbol: STPT
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: GMT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00020172
       funding_interval: 8
       quote_currency: USDT
     - symbol: PURR
@@ -1648,17 +2367,671 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 1
       quote_currency: USD
+    - symbol: EIGEN
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AR
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000226
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: APE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00014597
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DOGS
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SNX
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00020704
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GRT
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: THETA
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00018635
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PEOPLE
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00036594
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: IOTA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NEO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FLOKI
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: KAITO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00030092
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: JASMY
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: RAY
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SCR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LPT
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SAGA
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: JASMY
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ARC
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: GPS
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00017893
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: XMR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00017969
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SOLV
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00012192
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: DF
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AIXBT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00017359
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: KAS
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: COMP
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00022719
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: THE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TRB
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.0001798
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: POL
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00019502
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: JUP
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.000299
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ZEREBRO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PENGU
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: HMSTR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SPX
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00010791
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: UXLINK
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: DRIFT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00028033
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VINE
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00016639
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: LDO
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: APT
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: DYDX
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GRIFFAIN
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00012366
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: KOMA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: JUP
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00020995
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: HIPPO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: MOODENG
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: UXLINK
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: kNEIRO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00024632
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: MELANIA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000138
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: GRIFFAIN
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000661
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: EIGEN
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NEIROETH
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ARKM
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000256
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BOME
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00024888
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ZK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BANANA
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1000RATS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: RAYSOL
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024897
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1MBABYDOGE
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BROCCOLI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00027617
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VET
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PAXG
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00030628
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BANANAS31
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00129846
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: COW
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024735
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ME
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00012811
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: DEXE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BIGTIME
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CHILLGUY
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00053378
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00074015
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: WAVES
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: USUAL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00013463
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MEME
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00026257
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TURBO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00028929
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SONIC
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USDT
+    - symbol: DEGO
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VVV
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: EGLD
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: USDC
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ACT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ANIME
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NOT
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00035489
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MOCA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000217
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CHILLGUY
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ACX
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: PIPPIN
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SUSHI
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ZEC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002778
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: STPT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00055845
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AI16Z
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: UNI
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00022057
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: BLUR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022042
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BB
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00013976
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SHELL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: OL
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00032173
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SNX
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GRIFFAIN
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: HYPE
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00034529
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TSTBSC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BCH
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00023162
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: PENGU
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.000283
+      funding_interval: 4
+      quote_currency: USDT
     - symbol: GOAT
       exchange_id: 6
       exchange_name: dYdX
       funding_rate: 0.0003
       funding_interval: 1
       quote_currency: USD
-    - symbol: PYTH
+    - symbol: USUAL
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: kSHIB
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0002564
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: XMR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00021909
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BROCCOLI714
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00072534
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TON
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00028518
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: TUT
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
+      quote_currency: USDT
+    - symbol: ZKJ
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00015644
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ETHBTC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00015909
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AERGO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ME
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: RAY
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00025677
+      funding_interval: 8
       quote_currency: USDT
     - symbol: DOG
       exchange_id: 3
@@ -1672,40 +3045,88 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: ZEREBRO
+    - symbol: BIGTIME
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ARB
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00013474
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: AIXBT
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00028488
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: KOMA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AIXBT
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00049166
+      funding_rate: 0.00024306
       funding_interval: 4
       quote_currency: USDT
-    - symbol: CAKE
-      exchange_id: 3
-      exchange_name: Bybit
+    - symbol: JTO
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00029631
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ANIME
+      exchange_id: 6
+      exchange_name: dYdX
       funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: PROM
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: EIGEN
-      exchange_id: 4
-      exchange_name: Gate.io
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: SWARMS
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: PEAQ
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: GODS
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00050816
+    - symbol: TNSR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022676
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: G
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BADGER
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00026467
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: PROM
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CKB
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: REZ
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00024249
       funding_interval: 4
       quote_currency: USDT
     - symbol: CHILLGUY
@@ -1714,19 +3135,55 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 1
       quote_currency: USD
-    - symbol: LAYER
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00216238
-      funding_interval: 2
-      quote_currency: USDT
-    - symbol: ACT
+    - symbol: SXP
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: JELLY
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00016166
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: PENGU
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00029814
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PONKE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: SWEAT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: A8
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SPX
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00012077
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: IOST
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00022637
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ATA
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
@@ -1744,11 +3201,35 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: GIGA
+    - symbol: CVX
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TST
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00015414
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: IOTA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0001332
       funding_interval: 8
+      quote_currency: USDT
+    - symbol: RARE
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: UMA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00023232
+      funding_interval: 4
       quote_currency: USDT
     - symbol: NS
       exchange_id: 3
@@ -1756,40 +3237,106 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: WAVES
+    - symbol: BLUR
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.00025576
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: NEIROETH
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00142539
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CAKE
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00028848
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: X
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: L3
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: DEXE
+    - symbol: USTC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00057573
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: IOST
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
-      funding_interval: 4
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: GRIFFAIN
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
       quote_currency: USDT
     - symbol: VINE
       exchange_id: 6
       exchange_name: dYdX
-      funding_rate: 0.0003
+      funding_rate: 0.00027738
       funding_interval: 1
       quote_currency: USD
-    - symbol: J
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00059584
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: SPX
+    - symbol: REZ
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00024258
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VINE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00015067
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CGPT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000225
+      funding_interval: 2
+      quote_currency: USDT
+    - symbol: MASK
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00046454
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PENGU
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00027179
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: DEGEN
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002459
       funding_interval: 4
       quote_currency: USDT
     - symbol: AVA
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: TWT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: 10000LADYS
@@ -1798,31 +3345,55 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: OP
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0002595
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ARC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00020973
+      funding_interval: 4
+      quote_currency: USDT
     - symbol: LUCE
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: W
+    - symbol: KSM
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00027476
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SONIC
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000225
+      funding_interval: 1
+      quote_currency: USDT
+    - symbol: AXL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00017707
       funding_interval: 4
       quote_currency: USDT
-    - symbol: A8
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: STRK
+      exchange_id: 4
+      exchange_name: Gate.io
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: CAT
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00066806
       funding_interval: 4
       quote_currency: USDT
     - symbol: BAKE
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: COTI
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
@@ -1834,11 +3405,59 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: MEME
+    - symbol: MERL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: POWR
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 4
+      quote_currency: USDT
+    - symbol: AGI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MEME
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AGLD
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ENS
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00019963
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: STORJ
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00013835
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000NEIROCTO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TURBO
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00032928
+      funding_interval: 8
       quote_currency: USDT
     - symbol: ORDER
       exchange_id: 3
@@ -1846,28 +3465,28 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: AIXBT
+    - symbol: SKL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002464
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PENDLE
       exchange_id: 6
       exchange_name: dYdX
-      funding_rate: 0.0003
+      funding_rate: 0.00010688
       funding_interval: 1
       quote_currency: USD
-    - symbol: AIXBT
+    - symbol: XION
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: DUCK
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00228681
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: CHILLGUY
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: RED
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00023863
       funding_interval: 4
       quote_currency: USDT
     - symbol: ZEREBRO
@@ -1879,13 +3498,19 @@ output_by_spot_futures:
     - symbol: BSV
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: GODS
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MEMEFI
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00128309
       funding_interval: 8
       quote_currency: USDT
     - symbol: RAYDIUM
@@ -1897,25 +3522,61 @@ output_by_spot_futures:
     - symbol: MOODENG
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: VINE
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00030605
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: VVV
+    - symbol: GAS
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 4
+      quote_currency: USDT
+    - symbol: STG
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SWELL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: RDNT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: LUNC
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00015002
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
       quote_currency: USDT
     - symbol: AI
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SCRT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00023773
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SCR
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00015865
       funding_interval: 4
       quote_currency: USDT
     - symbol: NEO
@@ -1924,17 +3585,17 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: BOME
+    - symbol: MYRO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: VANRY
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 4
-      quote_currency: USDT
-    - symbol: PEOPLE
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 8
       quote_currency: USDT
     - symbol: OGN
       exchange_id: 3
@@ -1942,52 +3603,106 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: ETHBTC
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.00212988
-      funding_interval: 8
-      quote_currency: USDT
-    - symbol: 1000000MOG
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: NEIRO
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00049639
       funding_interval: 4
       quote_currency: USDT
-    - symbol: GRIFFAIN
+    - symbol: ONT
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00078706
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: FET
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00021526
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: FLOW
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00018641
       funding_interval: 8
       quote_currency: USDT
+    - symbol: XLM
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00027652
+      funding_interval: 1
+      quote_currency: USD
     - symbol: 1000000CHEEMS
       exchange_id: 3
       exchange_name: Bybit
+      funding_rate: 0.00020492
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: RARE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: 1INCH
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00021249
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ONT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: COOKIE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: BADGER
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SOLV
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: AIOZ
+      exchange_id: 3
+      exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: TWT
+    - symbol: ANIME
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000275
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ONE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00022897
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: VELO
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
-      funding_interval: 4
+      funding_interval: 8
       quote_currency: USDT
-    - symbol: HYPE
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00068033
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: FUEL
+    - symbol: AERO
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: ARC
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00148639
+      funding_rate: 0.00019478
       funding_interval: 4
       quote_currency: USDT
     - symbol: 1000TURBO
@@ -1996,16 +3711,16 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: JELLYJELLY
-      exchange_id: 3
-      exchange_name: Bybit
-      funding_rate: 0.0003
+    - symbol: QTUM
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00025992
       funding_interval: 4
       quote_currency: USDT
     - symbol: SAGA
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: VRA
@@ -2014,17 +3729,77 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: LOOKS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: RUNE
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00020151
+      funding_interval: 1
+      quote_currency: USD
     - symbol: PRIME
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: FLR
+    - symbol: KMNO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ALT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00021898
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: THE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ETHFI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00016671
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: PEOPLE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000146
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: PRCL
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
+      quote_currency: USDT
+    - symbol: GRASS
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00015662
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: ENJ
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00012005
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ACX
+      exchange_id: 1
+      exchange_name: Binance
+      funding_rate: 0.0003
+      funding_interval: 4
       quote_currency: USDT
     - symbol: ALEO
       exchange_id: 3
@@ -2032,31 +3807,79 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: AIXBT
+    - symbol: 1000X
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.0002803
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BIGTIME
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00023839
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: STORJ
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00014592
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: VTHO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CETUS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: MEME
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00024837
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: MOODENG
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00042217
       funding_interval: 4
       quote_currency: USDT
     - symbol: GOAT
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00037378
+      funding_rate: 0.00045345
       funding_interval: 4
       quote_currency: USDT
-    - symbol: AI16Z
-      exchange_id: 2
-      exchange_name: OKX
-      funding_rate: 0.00128109
-      funding_interval: 4
-      quote_currency: USDT
-    - symbol: TOKEN
+    - symbol: MOODENG
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00029035
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: UXLINK
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
-    - symbol: MAVIA
+    - symbol: TRX
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00024882
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: AEVO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: QTUM
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
@@ -2071,27 +3894,75 @@ output_by_spot_futures:
     - symbol: SUPER
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00013286
       funding_interval: 4
       quote_currency: USDT
-    - symbol: TROY
+    - symbol: MTL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000000BABYDOGE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CTC
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
-    - symbol: POPCAT
+    - symbol: LPT
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00066118
-      funding_interval: 4
+      funding_rate: 0.00011377
+      funding_interval: 8
       quote_currency: USDT
-    - symbol: SWARMS
+    - symbol: UXLINK
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00083647
+      funding_rate: 0.0005536
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TAO
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00027914
       funding_interval: 4
       quote_currency: USDT
+    - symbol: SUNDOG
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: TROY
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: STRK
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00013424
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FLOCK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ZK
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00030576
+      funding_interval: 1
+      quote_currency: USD
     - symbol: FOXY
       exchange_id: 3
       exchange_name: Bybit
@@ -2101,7 +3972,13 @@ output_by_spot_futures:
     - symbol: ANIME
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00062261
+      funding_rate: 0.00031561
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ILV
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
       funding_interval: 4
       quote_currency: USDT
     - symbol: TAIKO
@@ -2116,16 +3993,34 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: XVG
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CELO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00021129
+      funding_interval: 8
+      quote_currency: USDT
     - symbol: LOOKS
       exchange_id: 2
       exchange_name: OKX
-      funding_rate: 0.00124947
+      funding_rate: 0.00087464
       funding_interval: 8
+      quote_currency: USDT
+    - symbol: LSK
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 4
       quote_currency: USDT
     - symbol: 1000CAT
       exchange_id: 3
       exchange_name: Bybit
-      funding_rate: 0.0003
+      funding_rate: 0.00025
       funding_interval: 4
       quote_currency: USDT
     - symbol: FWOG
@@ -2134,16 +4029,82 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: LPT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0001591
+      funding_interval: 4
+      quote_currency: USDT
     - symbol: CFX
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
-    - symbol: ZEREBRO
+    - symbol: CHZ
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: AVL
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000275
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: NEAR
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00027395
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: GMT
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.0003
+      funding_interval: 1
+      quote_currency: USD
+    - symbol: BLUR
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00061815
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: ZEN
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: 1000TOSHI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: FXS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: SWARMS
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: QNT
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00012385
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: THETA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00029197
       funding_interval: 8
       quote_currency: USDT
     - symbol: OL
@@ -2158,7 +4119,31 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: ETHFI
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00031789
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: VELO
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00025819
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: WOO
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00018513
+      funding_interval: 8
+      quote_currency: USDT
     - symbol: ROSE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: YFI
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
@@ -2170,10 +4155,58 @@ output_by_spot_futures:
       funding_rate: 0.0003
       funding_interval: 8
       quote_currency: USDT
+    - symbol: SAFE
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002678
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: BIGTIME
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00025
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: COW
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.000225
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: SWEAT
+      exchange_id: 2
+      exchange_name: OKX
+      funding_rate: 0.00021834
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: ME
+      exchange_id: 6
+      exchange_name: dYdX
+      funding_rate: 0.00020811
+      funding_interval: 1
+      quote_currency: USD
     - symbol: BIO
       exchange_id: 3
       exchange_name: Bybit
       funding_rate: 0.0003
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: CATI
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002362
+      funding_interval: 4
+      quote_currency: USDT
+    - symbol: MANA
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.0002097
+      funding_interval: 8
+      quote_currency: USDT
+    - symbol: COMP
+      exchange_id: 3
+      exchange_name: Bybit
+      funding_rate: 0.00012859
       funding_interval: 8
       quote_currency: USDT
     - symbol: PHA

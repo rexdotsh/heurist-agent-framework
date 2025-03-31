@@ -44,9 +44,16 @@ class ZerionWalletAnalysisAgent(MeshAgent):
                     {"name": "data", "description": "The wallet details", "type": "dict"},
                 ],
                 "external_apis": ["Zerion"],
-                "tags": ["Onchain Data"],
+                "tags": ["EVM Wallet"],
                 "recommended": True,
-                "image_url": "",  # use the logo of zerion
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Zerion.png",  # use the logo of zerion
+                "examples": [
+                    "What tokens does 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D hold?",
+                    "Show me all NFT collections owned by 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
+                    "Analyze the token portfolio of wallet 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
+                    "What's the total value of tokens in 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D?",
+                    "Which tokens held by 0x7d9d1821d15B9e0b8Ab98A058361233E255E405D have had the most price change in the last 24 hours?",
+                ],
             }
         )
 

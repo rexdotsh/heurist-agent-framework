@@ -28,11 +28,11 @@ class CarvOnchainDataAgent(MeshAgent):
                 "version": "1.0.0",
                 "author": "Heurist Team",
                 "author_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D",
-                "description": "This agent can query on-chain data from multiple blockchains using natural language through the CARV API.",
+                "description": "This agent can query blockchain metrics of Ethereum, Base, Bitcoin, or Solana using natural language through the CARV API.",
                 "inputs": [
                     {
                         "name": "query",
-                        "description": "Natural language query about on-chain data for Ethereum, Base, Bitcoin, or Solana",
+                        "description": "Natural language query about blockchain metrics.",
                         "type": "str",
                         "required": False,
                     },
@@ -47,18 +47,24 @@ class CarvOnchainDataAgent(MeshAgent):
                 "outputs": [
                     {
                         "name": "response",
-                        "description": "Natural language explanation of the on-chain data",
+                        "description": "Natural language explanation of the blockchain metrics",
                         "type": "str",
                     },
                     {
                         "name": "data",
-                        "description": "Structured on-chain data response",
+                        "description": "Structured blockchain metrics response",
                         "type": "dict",
                     },
                 ],
                 "external_apis": ["CARV"],
                 "tags": ["Onchain Data"],
-                "image_url": "",  # use carv logo
+                "image_url": "https://raw.githubusercontent.com/heurist-network/heurist-agent-framework/refs/heads/main/mesh/images/Carv.png",
+                "examples": [
+                    "Identify the biggest transaction of ETH in the past 30 days",
+                    "How many Bitcoins have been mined since the beginning of 2025?",
+                    "What are the top 5 most popular smart contracts on Ethereum in the past 30 days?",
+                ],
+                "large_model_id": "openai/gpt-4o-mini",
             }
         )
 
@@ -72,19 +78,16 @@ class CarvOnchainDataAgent(MeshAgent):
             self.session = None
 
     def get_system_prompt(self) -> str:
-        return """You are a blockchain data analyst that can access on-chain data from various blockchain networks.
+        return """You are a blockchain data analyst that can access blockchain metrics from various blockchain networks.
 
         IMPORTANT GUIDELINES:
         - You can only analyze data from Ethereum, Base, Bitcoin, and Solana blockchains.
-        - Always ensure the user specifies which blockchain they want data from.
-        - If the blockchain is not specified or is unsupported, politely explain the limitation.
-        - Parse the user's query to identify the requested blockchain and the specific data they want.
-        - Formulate your responses in a clear, concise manner with relevant on-chain metrics.
-        - When possible, explain patterns or trends that might explain the data.
-
-        For example query "What's the most active address on Ethereum during the past 24 hours?" clearly specifies Ethereum blockchain.
-
-        Ensure your query is specific enough to return meaningful data. Include time periods when relevant.
+        - Always infer the blockchain from the user's query.
+        - If the blockchain is not supported, explain the limitation.
+        - Convert the user's query to a clear and accurate natural language query such as "What's the most active address on Ethereum during the past 24 hours?" or "Identify the biggest transaction of ETH in the past 30 days" to be used as the input for your tool.
+        - Respond with natural language in a clear, concise manner with relevant data returned from the tool. Do not use markdown formatting or bullet points unless requested.
+        - Remember, ETH has 18 decimals, so if ETH amounts are returned, you should consider 10E18 as the denominator.
+        - Never make up data that is not returned from the tool.
         """
 
     def get_tool_schemas(self) -> List[Dict]:
@@ -93,7 +96,7 @@ class CarvOnchainDataAgent(MeshAgent):
                 "type": "function",
                 "function": {
                     "name": "query_onchain_data",
-                    "description": "Query real-time on-chain data from Ethereum, Base, Bitcoin, or Solana. Retrieves insights on transaction activity, smart contract interactions, wallet movements, and network analytics for the specified blockchain. Use this when structured blockchain data is needed based on a natural language request.",
+                    "description": "Query blockchain data from Ethereum, Base, Bitcoin, or Solana with natural language. Access detailed metrics including: block data (timestamps, hash, miner, gas used/limit), transaction details (hash, from/to addresses, values, gas prices), and network utilization statistics. Can calculate aggregate statistics like daily transaction counts, average gas prices, top wallet activities, and blockchain growth trends. Results can be filtered by time periods, address types, transaction values, and more.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -104,7 +107,7 @@ class CarvOnchainDataAgent(MeshAgent):
                             },
                             "query": {
                                 "type": "string",
-                                "description": "A natural language query describing the on-chain data request.",
+                                "description": "A natural language query describing the blockchain metrics request.",
                             },
                         },
                         "required": ["blockchain", "query"],
@@ -116,11 +119,30 @@ class CarvOnchainDataAgent(MeshAgent):
     # ------------------------------------------------------------------------
     #                       SHARED / UTILITY METHODS
     # ------------------------------------------------------------------------
-    async def _respond_with_llm(self, query: str, tool_call_id: str, data: dict, temperature: float) -> str:
+    async def _respond_with_llm(
+        self,
+        query: str,
+        tool_call_id: str,
+        data: dict,
+        temperature: float,
+        tool_name: str = None,
+        tool_args: dict = None,
+    ) -> str:
         """
         Reusable helper to ask the LLM to generate a user-friendly explanation
         given a piece of data from a tool call.
+
+        Args:
+            query: The original user query
+            tool_call_id: The ID of the tool call
+            data: The result data from the tool call
+            temperature: LLM temperature parameter
+            tool_name: The name of the tool that was called (defaults to "query_onchain_data")
+            tool_args: The arguments that were passed to the tool
         """
+        tool_name = tool_name or "query_onchain_data"
+        tool_args = tool_args or {}
+
         return await call_llm_async(
             base_url=self.heurist_base_url,
             api_key=self.heurist_api_key,
@@ -128,6 +150,17 @@ class CarvOnchainDataAgent(MeshAgent):
             messages=[
                 {"role": "system", "content": self.get_system_prompt()},
                 {"role": "user", "content": query},
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": tool_call_id,
+                            "type": "function",
+                            "function": {"name": tool_name, "arguments": json.dumps(tool_args)},
+                        }
+                    ],
+                },
                 {"role": "tool", "content": str(data), "tool_call_id": tool_call_id},
             ],
             temperature=temperature,
@@ -150,7 +183,7 @@ class CarvOnchainDataAgent(MeshAgent):
     @with_retry(max_retries=3)
     async def query_onchain_data(self, blockchain: str, query: str) -> Dict:
         """
-        Query the CARV API with a natural language question about on-chain data.
+        Query the CARV API with a natural language question about blockchain metrics.
         """
         should_close = False
         if not self.session:
@@ -189,21 +222,18 @@ class CarvOnchainDataAgent(MeshAgent):
 
         except Exception as e:
             logger.error(f"Error querying CARV API: {str(e)}")
-            return {"error": f"Failed to query on-chain data: {str(e)}"}
+            return {"error": f"Failed to query blockchain metrics: {str(e)}"}
         finally:
             if should_close and self.session:
                 await self.session.close()
                 self.session = None
 
     # ------------------------------------------------------------------------
-    #                      COMMON HANDLER LOGIC
+    #                      TOOL HANDLING LOGIC
     # ------------------------------------------------------------------------
-    async def _handle_tool_logic(
-        self, tool_name: str, function_args: dict, query: str, tool_call_id: str, raw_data_only: bool
-    ) -> Dict[str, Any]:
+    async def _handle_tool_logic(self, tool_name: str, function_args: dict) -> Dict[str, Any]:
         """
-        A single method that calls the appropriate function, handles
-        errors/formatting, and optionally calls the LLM to explain the result.
+        Handle execution of specific tools and return the raw data.
         """
         if tool_name != "query_onchain_data":
             return {"error": f"Unsupported tool '{tool_name}'"}
@@ -226,13 +256,7 @@ class CarvOnchainDataAgent(MeshAgent):
             "results": result,
         }
 
-        if raw_data_only:
-            return {"response": "", "data": formatted_data}
-
-        explanation = await self._respond_with_llm(
-            query=query, tool_call_id=tool_call_id, data=formatted_data, temperature=0.3
-        )
-        return {"response": explanation, "data": formatted_data}
+        return formatted_data
 
     # ------------------------------------------------------------------------
     #                      MAIN HANDLER
@@ -241,9 +265,13 @@ class CarvOnchainDataAgent(MeshAgent):
     @with_retry(max_retries=3)
     async def handle_message(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
+        Handle incoming messages, supporting both direct tool calls and natural language queries.
+
         Either 'query' or 'tool' is required in params.
-          - If 'tool' is provided, call that tool directly with 'tool_arguments' (bypassing the LLM).
-          - If 'query' is provided, route via LLM for dynamic tool selection.
+        - If 'query' is present, it means "agent mode", we use LLM to interpret the query and call tools
+          - if 'raw_data_only' is present, we return tool results without another LLM call
+        - If 'tool' is present, it means "direct tool call mode", we bypass LLM and directly call the API
+          - never run another LLM call, this minimizes latency and reduces error
         """
         query = params.get("query")
         tool_name = params.get("tool")
@@ -254,13 +282,8 @@ class CarvOnchainDataAgent(MeshAgent):
         # 1) DIRECT TOOL CALL
         # ---------------------
         if tool_name:
-            return await self._handle_tool_logic(
-                tool_name=tool_name,
-                function_args=tool_args,
-                query=query or "Direct tool call without LLM.",
-                tool_call_id="direct_tool",
-                raw_data_only=raw_data_only,
-            )
+            data = await self._handle_tool_logic(tool_name=tool_name, function_args=tool_args)
+            return {"response": "", "data": data}
 
         # ---------------------
         # 2) NATURAL LANGUAGE QUERY (LLM decides the tool)
@@ -286,13 +309,22 @@ class CarvOnchainDataAgent(MeshAgent):
             tool_call_name = tool_call.function.name
             tool_call_args = json.loads(tool_call.function.arguments)
 
-            return await self._handle_tool_logic(
-                tool_name=tool_call_name,
-                function_args=tool_call_args,
+            data = await self._handle_tool_logic(tool_name=tool_call_name, function_args=tool_call_args)
+
+            if raw_data_only:
+                return {"response": "", "data": data}
+
+            # Second API call to generate the final response
+            explanation = await self._respond_with_llm(
                 query=query,
                 tool_call_id=tool_call.id,
-                raw_data_only=raw_data_only,
+                data=data,
+                temperature=0.3,
+                tool_name=tool_call_name,
+                tool_args=tool_call_args,
             )
+
+            return {"response": explanation, "data": data}
 
         # ---------------------
         # 3) NEITHER query NOR tool
