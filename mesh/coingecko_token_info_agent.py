@@ -766,6 +766,37 @@ class CoinGeckoTokenInfoAgent(MeshAgent):
             return {"error": f"Failed to fetch category data: {str(e)}"}
 
     @with_cache(ttl_seconds=300)  # Cache for 5 minutes
+    async def _get_token_price_multi(
+        self,
+        ids: str,
+        vs_currencies: str,
+        include_market_cap: bool = False,
+        include_24hr_vol: bool = False,
+        include_24hr_change: bool = False,
+        include_last_updated_at: bool = False,
+        precision: str = None,
+    ) -> dict:
+        try:
+            params = {
+                "ids": ids,
+                "vs_currencies": vs_currencies,
+                "include_market_cap": str(include_market_cap).lower(),
+                "include_24hr_vol": str(include_24hr_vol).lower(),
+                "include_24hr_change": str(include_24hr_change).lower(),
+                "include_last_updated_at": str(include_last_updated_at).lower(),
+            }
+
+            if precision:
+                params["precision"] = precision
+
+            response = requests.get(f"{self.api_url}/simple/price", headers=self.headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error(f"Error: {e}")
+            return {"error": f"Failed to fetch multi-token price data: {str(e)}"}
+
+    @with_cache(ttl_seconds=300)  # Cache for 5 minutes
     async def _get_tokens_by_category(
         self,
         category_id: str,
