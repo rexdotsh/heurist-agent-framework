@@ -98,11 +98,15 @@ class AgentLoader:
         if "agents" not in metadata:
             metadata["agents"] = {}
 
+        # track current agent ids for cleanup
+        current_agent_ids = set()
+
         for agent_id, agent_cls in agents_dict.items():
             # Skip EchoAgent
             if "EchoAgent" in agent_id:
                 continue
 
+            current_agent_ids.add(agent_id)
             logger.info(f"Updating metadata for agent {agent_id}")
             agent = agent_cls()
 
@@ -155,6 +159,12 @@ class AgentLoader:
                 metadata["agents"][agent_id]["module"] = agent_cls.__module__.split(".")[-1]
                 metadata["agents"][agent_id]["tools"] = tools
 
+        # remove any old agents that no longer exist
+        old_agent_ids = set(metadata["agents"].keys()) - current_agent_ids
+        for old_id in old_agent_ids:
+            logger.info(f"Removing metadata for deleted/renamed agent {old_id}")
+            del metadata["agents"][old_id]
+
         return metadata
 
     def _upload_metadata(self, metadata: Dict) -> None:
@@ -186,7 +196,7 @@ class AgentLoader:
 
             # Create source code link
             module_name = agent_data.get("module", "")
-            source_link = f"[Source](./mesh/{module_name}.py)" if module_name else "-"
+            source_link = f"[Source](./{module_name}.py)" if module_name else "-"
 
             # Create table row
             description = agent_data["metadata"].get("description", "").replace("\n", " ")
@@ -197,21 +207,24 @@ class AgentLoader:
 
     def _update_readme_with_agents(self, table_content: str) -> None:
         """Update the README file with new agent table"""
-        readme_path = Path(__file__).parent / "README.md"
+        readme_path = Path(__file__).parent / "mesh" / "README.md"
 
         try:
             with open(readme_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Find the section
-            section_pattern = r"(### Available Mesh Agents\n)(.*?)(\n###)"
+            section_pattern = r"(## Appendix: All Available Mesh Agents\n)(.*?)(\n---)"
             if not re.search(section_pattern, content, re.DOTALL):
-                logger.warning("Could not find '### Available Mesh Agents' section in README")
+                logger.warning("Could not find '## Appendix: All Available Mesh Agents' section in README")
                 return
 
             # Replace content between headers
             updated_content = re.sub(
-                section_pattern, f"### Available Mesh Agents\n\n{table_content}\n\n###", content, flags=re.DOTALL
+                section_pattern,
+                f"## Appendix: All Available Mesh Agents\n\n{table_content}\n---",
+                content,
+                flags=re.DOTALL,
             )
 
             with open(readme_path, "w", encoding="utf-8") as f:

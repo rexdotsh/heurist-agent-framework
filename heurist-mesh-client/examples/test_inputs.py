@@ -2,13 +2,23 @@ TOOL_TEST_INPUTS = {
     "AaveAgent": {"get_aave_reserves": {"chain_id": 137}},
     "AlloraPricePredictionAgent": {"get_allora_prediction": {"token": "ETH", "timeframe": "5m"}},
     "BitquerySolanaTokenInfoAgent": {
-        "get_token_trading_info": {"token_address": "So11111111111111111111111111111111111111112"},
+        "query_token_metrics": {"token_address": "So11111111111111111111111111111111111111112", "quote_token": "sol"},
+        "query_token_holders": {"token_address": "So11111111111111111111111111111111111111112"},
+        "query_token_buyers": {"token_address": "So11111111111111111111111111111111111111112", "limit": 30},
+        "query_top_traders": {"token_address": "So11111111111111111111111111111111111111112", "limit": 30},
+        "query_holder_status": {
+            "token_address": "So11111111111111111111111111111111111111112",
+            "buyer_addresses": [
+                "ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n",
+                "9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6",
+            ],
+        },
         "get_top_trending_tokens": {},
     },
     "CarvOnchainDataAgent": {
         "query_onchain_data": {
-            "blockchain": "solana",
-            "query": "What's the most active address on Bitcoin during the last 24 hours?",
+            "blockchain": "bitcoin",
+            "query": "How many Bitcoins have been mined since the beginning of 2025?",
         }
     },
     "CoinGeckoTokenInfoAgent": {
@@ -21,6 +31,15 @@ TOOL_TEST_INPUTS = {
             "include_market_cap": True,
             "include_24hr_vol": True,
             "include_24hr_change": True,
+        },
+        "get_categories_list": {},
+        "get_category_data": {"order": "market_cap_desc"},
+        "get_tokens_by_category": {
+            "category_id": "layer-1",
+            "vs_currency": "usd",
+            "order": "market_cap_desc",
+            "per_page": 10,
+            "page": 1,
         },
     },
     "DeepResearchAgent": {"deep_research": {"query": "What is the total value locked in Aave v3?"}},
@@ -65,25 +84,20 @@ TOOL_TEST_INPUTS = {
     },
     "PumpFunTokenAgent": {
         "query_recent_token_creation": {},
-        "query_token_metrics": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
-        "query_token_holders": {"token_address": "2GxdEZQ5d9PsUqyGy43qv4fmNJWrnLp6qY4dTyNepump"},
-        "query_token_buyers": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
-        "query_holder_status": {
-            "token_address": "2Z4FzKBcw48KBD2PaR4wtxo4sYGbS7QqTQCLoQnUpump",
-            "buyer_addresses": [
-                "ApRJBQEKfmcrViQkH94BkzRFUGWtA8uC71DXu6USdd3n",
-                "9nG4zw1jVJFpEtSLmbGQpTnpG2TiKfLXWkkTyyRvxTt6",
-            ],
-        },
-        "query_top_traders": {"token_address": "98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump"},
+        "query_latest_graduated_tokens": {"timeframe": 48},
     },
     "SolWalletAgent": {
-        "analyze_sol_token_holders": {"token_address": "J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U"},
-        "get_sol_tx_history": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
-        "get_sol_wallet_assets": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
+        "analyze_common_holdings_of_top_holders": {"token_address": "J7tYmq2JnQPvxyhcXpCDrvJnc9R5ts8rv7tgVHDPsw7U"},
+        "get_tx_history": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
+        "get_wallet_assets": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
     },
     "ZerionWalletAnalysisAgent": {
         "fetch_wallet_tokens": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},
         "fetch_wallet_nfts": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},
+    },
+    "TwitterInsightAgent": {
+        "get_smart_followers_history": {"username": "heurist_ai", "timeframe": "D7"},
+        "get_smart_followers_categories": {"username": "heurist_ai"},
+        "get_smart_mentions_feed": {"username": "heurist_ai", "limit": 100},
     },
 }

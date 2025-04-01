@@ -168,3 +168,6 @@ embeddings.db
 *.DS_Store
 .DS_Store
 agents/config/test.prompts.yaml
+
+# Test results from heurist-mesh-client/examples/test_agents.py
+test_results.json
