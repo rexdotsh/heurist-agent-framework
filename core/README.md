@@ -400,30 +400,37 @@ Tools enable agents to interact with external systems and services.
 Generic tool execution framework.
 
 ```python
-from heurist_core.tools import ToolBox, tool
+from heurist_core.tools import ToolBox, Tools, tool
 
-# Define a tool using the decorator
-@tool(name="calculator", description="Performs arithmetic operations")
-def calculator(expression: str) -> dict:
-    """Calculate the result of a mathematical expression."""
-    try:
-        result = eval(expression)
-        return {"result": result}
-    except Exception as e:
-        return {"error": str(e)}
+# Create a custom toolbox by inheriting from ToolBox
+class MyToolBox(ToolBox):
+    def __init__(self):
+        super().__init__()
 
-# Initialize toolbox
-toolbox = ToolBox()
-toolbox.register_tool(calculator)
+        # Define a tool using the decorator
+        @tool(description="Performs arithmetic operations")
+        def calculator(expression: str) -> dict:
+            """Calculate the result of a mathematical expression."""
+            try:
+                result = eval(expression)
+                return {"result": result}
+            except Exception as e:
+                return {"error": str(e)}
 
-# Get tool configurations for LLM
-tools_config = toolbox.get_tools_config()
+        # Add the decorated tool to the toolbox
+        self.decorated_tools.append(calculator)
 
-# Execute a tool
-result = await toolbox.execute_tool(
-    "calculator",               # Tool name
-    {"expression": "2 + 2"},    # Tool arguments
-    None                        # Optional context
+# Initialize Tools with your custom toolbox
+tools = Tools(MyToolBox)
+
+# Initialize LLM provider with tools
+llm_provider = LLMProvider(tool_manager=tools)
+
+# Now the LLM can use the calculator tool automatically when needed
+response, _, tool_calls = await llm_provider.call(
+    system_prompt="You are a helpful assistant with access to a calculator.",
+    user_prompt="What is 234 * 456?",
+    skip_tools=False  # Enable tool usage
 )
 ```
 
@@ -433,24 +440,25 @@ Tools integration with Machine Cognition Protocol.
 
 ```python
 from heurist_core.tools.tools_mcp import Tools
+from heurist_core.components import LLMProvider
 
-# Initialize tools
+# Initialize MCP tools
 tools = Tools()
 
 # Initialize MCP connection
 await tools.initialize(server_url="https://sequencer-v2.heurist.xyz/tool51d0cadd/sse")
 
-# Get tool configurations for LLM
-tools_config = tools.get_tools_config()
+# Initialize LLM provider with MCP tools
+llm_provider = LLMProvider(tool_manager=tools)
 
-# Execute a tool
-result = await tools.execute_tool(
-    "weather",                  # Tool name
-    {"location": "New York"},   # Tool arguments
-    None                        # Optional context
+# Now the LLM can use any available MCP tools automatically
+response, _, tool_calls = await llm_provider.call(
+    system_prompt="You are a helpful assistant with access to various tools.",
+    user_prompt="What's the weather in New York?",
+    skip_tools=False  # Enable tool usage
 )
 
-# Clean up resources
+# Don't forget to clean up when done
 await tools.cleanup()
 ```
 
