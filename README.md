@@ -43,33 +43,31 @@ Want to contribute your own agent? Check out the [Mesh README](./mesh/README.md)
 
 Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mesh-mcp-server) to set up a server and give your AI assistant a powerup.
 
-### Available Mesh Agents
+### Recommended Mesh Agents
 
-| Agent ID | Description | Available Tools | Source Code | External APIs |
-|----------|-------------|-----------------|-------------|---------------|
-| AaveAgent | This agent can report the status of Aave v3 protocols deployed on Ethereum, Polygon, Avalanche, and Arbitrum with details on liquidity, borrowing rates, and more | • get_aave_reserves | [Source](./mesh/aave_agent.py) | Aave |
-| AlloraPricePredictionAgent | This agent can predict the price of ETH/BTC with confidence intervals using Allora price prediction API | • get_allora_prediction | [Source](./mesh/allora_price_prediction_agent.py) | Allora |
-| BitquerySolanaTokenInfoAgent | This agent provides comprehensive analysis of Solana tokens using Bitquery API. It can analyze token metrics (volume, price, liquidity), track holders and buyers, monitor trading activity, and identify trending tokens. The agent supports both specific token analysis and market-wide trend discovery. | • query_token_metrics<br>• query_token_holders<br>• query_token_buyers<br>• query_top_traders<br>• query_holder_status<br>• get_top_trending_tokens | [Source](./mesh/bitquery_solana_token_info_agent.py) | Bitquery |
-| CarvOnchainDataAgent | This agent can query blockchain metrics of Ethereum, Base, Bitcoin, or Solana using natural language through the CARV API. | • query_onchain_data | [Source](./mesh/carv_onchain_data_agent.py) | CARV |
-| CoinGeckoTokenInfoAgent | This agent can fetch token information, market data, trending coins, and category data from CoinGecko. | • get_coingecko_id<br>• get_token_info<br>• get_trending_coins<br>• get_token_price_multi<br>• get_categories_list<br>• get_category_data<br>• get_tokens_by_category | [Source](./mesh/coingecko_token_info_agent.py) | Coingecko |
-| DeepResearchAgent | Advanced research agent that performs multi-level web searches with recursive exploration, analyzes content across sources, and produces comprehensive research reports with key insights | • deep_research | [Source](./mesh/deep_research_agent.py) | Firecrawl |
-| DexScreenerTokenInfoAgent | This agent fetches real-time DEX trading data and token information across multiple chains using DexScreener API | • search_pairs<br>• get_specific_pair_info<br>• get_token_pairs | [Source](./mesh/dexscreener_token_info_agent.py) | DexScreener |
-| DuckDuckGoSearchAgent | This agent can fetch and analyze web search results using DuckDuckGo API and provide intelligent summaries. | • search_web | [Source](./mesh/duckduckgo_search_agent.py) | DuckDuckGo |
-| ElfaTwitterIntelligenceAgent | This agent analyzes a token or a topic or a Twitter account using Twitter data and Elfa API. It highlights smart influencers. | • search_mentions<br>• search_account<br>• get_trending_tokens | [Source](./mesh/elfa_twitter_intelligence_agent.py) | Elfa |
-| ExaSearchAgent | This agent can search the web using Exa's API and provide direct answers to questions. | • exa_web_search<br>• exa_answer_question | [Source](./mesh/exa_search_agent.py) | Exa |
-| FirecrawlSearchAgent | Advanced search agent that uses Firecrawl to perform research with intelligent query generation and content analysis. | • firecrawl_web_search<br>• firecrawl_extract_web_data | [Source](./mesh/firecrawl_search_agent.py) | Firecrawl |
-| FundingRateAgent | This agent can fetch funding rate data and identify arbitrage opportunities across cryptocurrency exchanges. | • get_all_funding_rates<br>• get_symbol_funding_rates<br>• find_cross_exchange_opportunities<br>• find_spot_futures_opportunities | [Source](./mesh/funding_rate_agent.py) | Coinsider |
-| GoplusAnalysisAgent | This agent can fetch and analyze security details of blockchain token contracts using GoPlus API. | • fetch_security_details | [Source](./mesh/goplus_analysis_agent.py) | GoPlus |
-| MasaTwitterSearchAgent | This agent can search on Twitter through Masa API and analyze the results by identifying trending topics and sentiment related to a topic. | • search_twitter | [Source](./mesh/masa_twitter_search_agent.py) | Masa |
-| MetaSleuthSolTokenWalletClusterAgent | This agent can analyze the wallet clusters holding a specific Solana token, and identify top holder behavior, concentration, and potential market manipulation. | • fetch_token_clusters<br>• fetch_cluster_details | [Source](./mesh/metasleuth_sol_token_wallet_cluster_agent.py) | MetaSleuth |
-| PumpFunTokenAgent | This agent analyzes Pump.fun token on Solana using Bitquery API. It tracks token creation and graduation events on Pump.fun. | • query_recent_token_creation<br>• query_latest_graduated_tokens | [Source](./mesh/pumpfun_token_agent.py) | Bitquery |
-| SolWalletAgent | This agent can query Solana wallet assets and recent swap transactions using Helius API. | • get_wallet_assets<br>• analyze_common_holdings_of_top_holders<br>• get_tx_history | [Source](./mesh/sol_wallet_agent.py) | Helius |
-| ZerionWalletAnalysisAgent | This agent can fetch and analyze the token and NFT holdings of a crypto wallet (must be EVM chain) | • fetch_wallet_tokens<br>• fetch_wallet_nfts | [Source](./mesh/zerion_wallet_analysis_agent.py) | Zerion |
-| ZkIgniteAnalystAgent | This agent analyzes zkSync Era DeFi opportunities in the zkIgnite program and has access to real-time yield and TVL data | - | [Source](./mesh/zkignite_analyst_agent.py) | Merkl, DefiLlama |
-| MoniTwitterProfileAgent | This agent analyzes Twitter accounts providing insights on smart followers, mentions, and account activity. | • get_smart_profile<br>• get_smart_followers_history<br>• get_smart_mentions_history<br>• get_smart_followers_categories<br>• get_smart_followers_full<br>• get_smart_mentions_feed<br>• get_account_full_info | [Source](./mesh/twitter_insight_agent.py) | Moni |
-| TwitterInsightAgent | This agent analyzes Twitter accounts providing insights on smart followers, mentions, and account activity. | • get_smart_followers_history<br>• get_smart_followers_categories<br>• get_smart_mentions_feed | [Source](./mesh/twitter_insight_agent.py) | Moni |
+• [BitquerySolanaTokenInfoAgent](./mesh/bitquery_solana_token_info_agent.py) - Provides comprehensive analysis of Solana tokens including metrics, holders, trading activity, and trending token discovery
 
-### Usage
+• [CoinGeckoTokenInfoAgent](./mesh/coingecko_token_info_agent.py) - Fetches token information, market data, trending coins, and category data from CoinGecko
+
+• [DexScreenerTokenInfoAgent](./mesh/dexscreener_token_info_agent.py) - Fetches real-time DEX trading data and token information across multiple chains
+
+• [ElfaTwitterIntelligenceAgent](./mesh/elfa_twitter_intelligence_agent.py) - Analyzes tokens, topics or Twitter accounts using Twitter data, highlighting smart influencers
+
+• [ExaSearchAgent](./mesh/exa_search_agent.py) - Searches the web and provides direct answers to questions
+
+• [GoplusAnalysisAgent](./mesh/goplus_analysis_agent.py) - Fetches and analyzes security details of blockchain token contracts
+
+• [MetaSleuthSolTokenWalletClusterAgent](./mesh/metasleuth_sol_token_wallet_cluster_agent.py) - Analyzes wallet clusters holding Solana tokens to identify holder behavior, concentration, and potential market manipulation
+
+• [PumpFunTokenAgent](./mesh/pumpfun_token_agent.py) - Analyzes Pump.fun tokens on Solana, tracking token creation and graduation events
+
+• [SolWalletAgent](./mesh/sol_wallet_agent.py) - Queries Solana wallet assets and recent swap transactions
+
+### Full List of Mesh Agents
+
+[View the full list](./mesh/README.md#appendix-all-available-mesh-agents)
+
+### Usage and Development Guide
 
 [Read the Mesh documentation](./mesh/README.md)
 
@@ -182,8 +180,8 @@ We encourage the community to open **GitHub issues** whenever you have a new ide
 
 1. **Integration Request**  
    - For requests to integrate with a new data source (e.g., CoinGecko, arXiv) or a new AI use case.  
-   - **Most important** for the community, as these issues help drive the direction of our framework’s evolution.  
-   - If you have an idea but aren’t sure how to implement it, open an issue under this label so others can pick it up or offer suggestions.
+   - **Most important** for the community, as these issues help drive the direction of our framework's evolution.  
+   - If you have an idea but aren't sure how to implement it, open an issue under this label so others can pick it up or offer suggestions.
 
 2. **Bug**  
    - For reporting errors or unexpected behavior in the framework.  
@@ -197,13 +195,13 @@ We encourage the community to open **GitHub issues** whenever you have a new ide
    - The bounty label indicates that Heurist team or another community member are offering a reward to whoever resolves the issue.  
    - **Bounty Rules**:
      - Make sure to read the issue description carefully for scope and acceptance criteria.  
-     - Once your Pull Request addressing the bounty is merged, we’ll follow up on fulfilling the reward.  
+     - Once your Pull Request addressing the bounty is merged, we'll follow up on fulfilling the reward.  
      - Additional instructions (e.g., contact method) may be included in the issue itself.
 
 ### Picking Up an Issue
 
 - Look for **Integration Requests** or **Bounty** issues if you want to contribute new features or earn rewards.  
-- Feel free to discuss approaches in the comments. If you’re ready to tackle it, mention “I’m working on this!” so others know it’s in progress.
+- Feel free to discuss approaches in the comments. If you're ready to tackle it, mention "I'm working on this!" so others know it's in progress.
 
 This process helps us stay organized, encourages community involvement, and keeps development transparent.
 
