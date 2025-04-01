@@ -167,3 +167,6 @@ tweet_history.json
 embeddings.db
 *.DS_Store
 .DS_Store
+
+# Test results from heurist-mesh-client/examples/test_agents.py
+test_results.json

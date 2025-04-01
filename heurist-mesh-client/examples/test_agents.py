@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from typing import Dict, Optional
@@ -35,7 +36,7 @@ def execute_test(
     inputs: Dict,
     console: Console,
     format_output: callable,
-) -> tuple[Optional[str], float]:
+) -> tuple[Optional[str], float, Optional[Dict]]:
     console.print(f"\n[bold blue]Testing {agent_id} - {tool_name}[/bold blue]")
     console.print(f"[dim]Inputs: {format_output(str(inputs))}")
 
@@ -72,7 +73,7 @@ def execute_test(
             console.print(
                 Panel(str(error), title=f"[red]{agent_id} - {tool_name} Error[/red]", border_style="red", expand=False)
             )
-            return error, elapsed
+            return error, elapsed, None
 
         console.print(
             Panel(
@@ -82,7 +83,7 @@ def execute_test(
                 expand=False,
             )
         )
-        return None, elapsed
+        return None, elapsed, result
 
     except Exception as e:
         elapsed = time.time() - start_time
@@ -95,7 +96,7 @@ def execute_test(
                 expand=False,
             )
         )
-        return error_str, elapsed
+        return error_str, elapsed, None
 
 
 def test_tool(
@@ -107,23 +108,28 @@ def test_tool(
     format_output: callable,
     test_results: list,
 ) -> None:
-    error, elapsed = execute_test(client, agent_id, tool_name, inputs, console, format_output)
-    test_results.append((f"{agent_id} - {tool_name}", error, elapsed))
+    error, elapsed, result = execute_test(client, agent_id, tool_name, inputs, console, format_output)
+    test_results.append((f"{agent_id} - {tool_name}", error, elapsed, inputs, result))
 
 
-def display_test_summary(results: list[tuple[str, Optional[str], float]], skipped: list[str], console: Console):
-    successes = [(name, duration) for name, error, duration in results if not error]
-    failures = [(name, error, duration) for name, error, duration in results if error]
+def display_test_summary(
+    results: list[tuple[str, Optional[str], float, Dict, Optional[Dict]]],
+    skipped: list[str],
+    console: Console,
+    json_output: Optional[str] = None,
+):
+    successes = [(name, duration, inputs, result) for name, error, duration, inputs, result in results if not error]
+    failures = [(name, error, duration, inputs, result) for name, error, duration, inputs, result in results if error]
 
     console.print("\n[bold]Test Run Summary[/bold]")
 
     console.print("\n[bold green]Successful Tests:[/bold green]")
-    for name, duration in successes:
+    for name, duration, _, _ in successes:
         console.print(f"✓ {name} ({duration:.2f}s)")
 
     if failures:
         console.print("\n[bold red]Failed Tests:[/bold red]")
-        for name, error, duration in failures:
+        for name, error, duration, _, _ in failures:
             console.print(f"✗ {name} ({duration:.2f}s)")
             console.print(f"  Error: {error}")
 
@@ -134,13 +140,38 @@ def display_test_summary(results: list[tuple[str, Optional[str], float]], skippe
 
     total = len(successes) + len(failures)
     success_rate = (len(successes) / total * 100) if total > 0 else 0
-    avg_time = sum(duration for _, duration in successes) / len(successes) if successes else 0
+    avg_time = sum(duration for _, duration, _, _ in successes) / len(successes) if successes else 0
 
     console.print("\n[bold]Statistics:[/bold]")
     console.print(f"Total Tests: {total}")
     console.print(f"Success Rate: {success_rate:.1f}%")
     console.print(f"Average Response Time: {avg_time:.2f}s")
     console.print(f"Skipped Tests: {len(skipped)}")
+
+    if json_output:
+        agent_results = {}
+        for name, error, duration, inputs, result in results:
+            agent_id = name.split(" - ")[0]
+            tool_name = name.split(" - ")[1]
+
+            if agent_id not in agent_results:
+                agent_results[agent_id] = {"tools": {}}
+
+            agent_results[agent_id]["tools"][tool_name] = {
+                "success": not error,
+                "duration": duration,
+                "error": error,
+                "result": result,
+            }
+
+        json_data = {
+            "summary": {"total": total, "success_rate": success_rate, "avg_time": avg_time, "skipped": len(skipped)},
+            "agents": agent_results,
+            "skipped": skipped,
+        }
+        with open(json_output, "w") as f:
+            json.dump(json_data, f, indent=2)
+        console.print(f"\n[green]Test results written to {json_output}[/green]")
 
 
 @click.group()
@@ -223,7 +254,19 @@ def list_agents():
 @click.argument("agent_tool_pairs", required=False)
 @click.option("--include-disabled", is_flag=True, help="Include disabled agents in testing")
 @click.option("--no-trim", is_flag=True, help="Disable output trimming")
-def test_agent(agent_tool_pairs: Optional[str] = None, include_disabled: bool = False, no_trim: bool = False):
+@click.option(
+    "--json",
+    is_flag=False,
+    flag_value="test_results.json",
+    default=None,
+    help="Path to save test results as JSON",
+)
+def test_agent(
+    agent_tool_pairs: Optional[str] = None,
+    include_disabled: bool = False,
+    no_trim: bool = False,
+    json: Optional[str] = None,
+):
     """Test specific agent-tool pairs. Format: 'agent1,tool1 agent2,tool2' or just 'agent1' to test all tools"""
     if not os.getenv("HEURIST_API_KEY"):
         click.echo("Error: HEURIST_API_KEY environment variable not set")
@@ -298,12 +341,12 @@ def test_agent(agent_tool_pairs: Optional[str] = None, include_disabled: bool = 
                         console.print(f"[yellow]No test inputs defined for agent {agent_id}[/yellow]")
 
         if test_results:
-            display_test_summary(test_results, skipped_tests, console)
+            display_test_summary(test_results, skipped_tests, console, json)
 
     except KeyboardInterrupt:
         console.print("\n[bold red]Testing interrupted by user[/bold red]")
         if test_results:
-            display_test_summary(test_results, skipped_tests, console)
+            display_test_summary(test_results, skipped_tests, console, json)
         raise click.Abort()
 
 
