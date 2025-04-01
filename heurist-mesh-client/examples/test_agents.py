@@ -57,6 +57,12 @@ def execute_test(
                     error = result["data"]["error"]
                 elif "errorMessage" in result["data"]:
                     error = result["data"]["errorMessage"]
+                elif "results" in result["data"] and isinstance(result["data"]["results"], dict):
+                    results = result["data"]["results"]
+                    if "code" in results and results.get("code") != 0:
+                        error = f"{results.get('msg', 'Unknown error')} (code: {results['code']})"
+                        if "detail" in results:
+                            error += f" - {results['detail']}"
 
             if not error and "response" in result:
                 if not result["response"] and isinstance(result.get("data"), dict) and result["data"].get("error"):
