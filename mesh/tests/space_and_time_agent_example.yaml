@@ -1,0 +1,80 @@
+ethereum_example:
+  input:
+    query: Get the number of blocks created on Ethereum per day over the last month
+  output:
+    response: "It looks like I didn't receive a proper query response. Let's break\
+      \ down the original request into a simulated SQL query, and I'll provide the\
+      \ response in the desired format. I'll also explain the process for clarity.\n\
+      \n**Original Request:**\nGet the number of blocks created on Ethereum per day\
+      \ over the last month\n\n**Simulated SQL Query (if Space and Time data platform\
+      \ supported direct SQL input):**\n```sql\nSELECT \n  DATE_TRUNC('day', block_timestamp)\
+      \ AS day,\n  COUNT(block_hash) AS num_blocks\nFROM \n  ethereum.blocks\nWHERE\
+      \ \n  block_timestamp >= NOW() - INTERVAL '1 month'\nGROUP BY \n  DATE_TRUNC('day',\
+      \ block_timestamp)\nORDER BY \n  day ASC;\n```\n**Explanation of the Simulated\
+      \ Query:**\n\n* **SELECT**: We're selecting two main pieces of information:\n\
+      \t+ `DATE_TRUNC('day', block_timestamp) AS day`: This truncates the block's\
+      \ timestamp to the day level, grouping all blocks created on the same day together.\n\
+      \t+ `COUNT(block_hash) AS num_blocks`: This counts the number of unique block\
+      \ hashes (i.e., the number of blocks) for each day.\n* **FROM `ethereum.blocks`**:\
+      \ We're querying the `blocks` table within the Ethereum schema.\n* **WHERE `block_timestamp\
+      \ >= NOW() - INTERVAL '1 month'`**: This filters the results to only include\
+      \ blocks created within the last month from the current time.\n* **GROUP BY\
+      \ `DATE_TRUNC('day', block_timestamp)`**: Groups the results by each unique\
+      \ day.\n* **ORDER BY `day ASC`**: Orders the results in ascending chronological\
+      \ order by day.\n\n**Simulated Response (since we can't execute the actual query):**\n\
+      \nAssuming the last month's data (for demonstration purposes, let's say from\
+      \ March 1, 2023, to March 31, 2023), here's a simulated response:\n\n| **Day**\
+      \       | **Number of Blocks (`num_blocks`)** |\n|---------------|-------------------------------------|\n\
+      | 2023-03-01   | 6500                                |\n| 2023-03-02   | 6200\
+      \                                |\n| ...          | ...                   \
+      \              |\n| 2023-03-25   | 6800                                |\n|\
+      \ 2023-03-26   | 6300                                |\n| ...          | ...\
+      \                                 |\n| 2023-03-31   | 6650"
+    data:
+      error: No SQL generated from the query
+schema_example:
+  input:
+    tool: list_schemas
+    tool_arguments: {}
+  output:
+    response: ''
+    data:
+      error: 'Failed to list schemas: 404 page not found'
+tables_example:
+  input:
+    tool: list_tables
+    tool_arguments:
+      schema: HEURIST
+  output:
+    response: ''
+    data:
+      error: 'Failed to list tables: 404 page not found'
+columns_example:
+  input:
+    tool: list_table_columns
+    tool_arguments:
+      schema: HEURIST
+      table: S1_GPU_PERFORMANCE
+  output:
+    response: ''
+    data:
+      error: 'Failed to list table columns: 404 page not found'
+raw_example:
+  input:
+    query: What are the top 10 NFT collections by trading volume on Ethereum?
+    raw_data_only: true
+  output:
+    response: ''
+    data:
+      error: 'SQL generation failed: {"status":"error","message":"Invalid selection
+        of schemas"}'
+specific_example:
+  input:
+    tool: query_space_and_time
+    tool_arguments:
+      query: What's the daily average gas price on Ethereum for the past week?
+      schema: ETHEREUM
+  output:
+    response: ''
+    data:
+      error: No SQL generated from the query
