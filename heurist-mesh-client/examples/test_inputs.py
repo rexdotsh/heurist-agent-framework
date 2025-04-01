@@ -17,8 +17,8 @@ TOOL_TEST_INPUTS = {
     },
     "CarvOnchainDataAgent": {
         "query_onchain_data": {
-            "blockchain": "solana",
-            "query": "What's the most active address on Bitcoin during the last 24 hours?",
+            "blockchain": "bitcoin",
+            "query": "How many Bitcoins have been mined since the beginning of 2025?",
         }
     },
     "CoinGeckoTokenInfoAgent": {
