@@ -1,80 +1,360 @@
-ethereum_example:
+query 1:
   input:
     query: Get the number of blocks created on Ethereum per day over the last month
+    raw_data_only: false
   output:
-    response: "It looks like I didn't receive a proper query response. Let's break\
-      \ down the original request into a simulated SQL query, and I'll provide the\
-      \ response in the desired format. I'll also explain the process for clarity.\n\
-      \n**Original Request:**\nGet the number of blocks created on Ethereum per day\
-      \ over the last month\n\n**Simulated SQL Query (if Space and Time data platform\
-      \ supported direct SQL input):**\n```sql\nSELECT \n  DATE_TRUNC('day', block_timestamp)\
-      \ AS day,\n  COUNT(block_hash) AS num_blocks\nFROM \n  ethereum.blocks\nWHERE\
-      \ \n  block_timestamp >= NOW() - INTERVAL '1 month'\nGROUP BY \n  DATE_TRUNC('day',\
-      \ block_timestamp)\nORDER BY \n  day ASC;\n```\n**Explanation of the Simulated\
-      \ Query:**\n\n* **SELECT**: We're selecting two main pieces of information:\n\
-      \t+ `DATE_TRUNC('day', block_timestamp) AS day`: This truncates the block's\
-      \ timestamp to the day level, grouping all blocks created on the same day together.\n\
-      \t+ `COUNT(block_hash) AS num_blocks`: This counts the number of unique block\
-      \ hashes (i.e., the number of blocks) for each day.\n* **FROM `ethereum.blocks`**:\
-      \ We're querying the `blocks` table within the Ethereum schema.\n* **WHERE `block_timestamp\
-      \ >= NOW() - INTERVAL '1 month'`**: This filters the results to only include\
-      \ blocks created within the last month from the current time.\n* **GROUP BY\
-      \ `DATE_TRUNC('day', block_timestamp)`**: Groups the results by each unique\
-      \ day.\n* **ORDER BY `day ASC`**: Orders the results in ascending chronological\
-      \ order by day.\n\n**Simulated Response (since we can't execute the actual query):**\n\
-      \nAssuming the last month's data (for demonstration purposes, let's say from\
-      \ March 1, 2023, to March 31, 2023), here's a simulated response:\n\n| **Day**\
-      \       | **Number of Blocks (`num_blocks`)** |\n|---------------|-------------------------------------|\n\
-      | 2023-03-01   | 6500                                |\n| 2023-03-02   | 6200\
-      \                                |\n| ...          | ...                   \
-      \              |\n| 2023-03-25   | 6800                                |\n|\
-      \ 2023-03-26   | 6300                                |\n| ...          | ...\
-      \                                 |\n| 2023-03-31   | 6650"
+    response: '**Analysis: Ethereum Blocks Created per Day (March 3, 2025 - April
+      2, 2025)**
+
+
+      **Time Period Covered:** March 3, 2025, to April 2, 2025 (approximately 1 month)
+
+
+      **Blockchain Network:** Ethereum
+
+
+      **Metric:** Number of Blocks Created per Day
+
+
+      **Query Results:**
+
+
+      | **Block Date** | **Block Count** |
+
+      | --- | --- |
+
+      | 2025-03-03 | 7,165 |
+
+      | 2025-03-04 | 7,166 |
+
+      | ... | ... |
+
+      | 2025-04-01 | 7,165 |
+
+      | 2025-04-02 | **1,499** (partial day, up to query execution time) |
+
+
+      **Aggregate Statistics (Full Days Only, Mar 3 - Apr 1):**
+
+
+      * **Average Blocks per Day:** 7,162
+
+      * **Highest Blocks in a Day:** 7,176 (Mar 21 & Mar 26)
+
+      * **Lowest Blocks in a Day:** 7,050 (Mar 25)
+
+
+      **Trends and Patterns:**
+
+
+      1. **Consistency in Block Creation:** The Ethereum network demonstrates a consistent
+      block creation rate, averaging approximately 7,162 blocks per day over the observed
+      month.
+
+      2. **Minimal Variance:** The daily block count variance is relatively low, indicating
+      a stable network with a consistent block time (around 15 seconds on average,
+      though not directly queried here).
+
+      3. **No Significant Downtime:** There is no evidence of significant network
+      downtime or block creation halts during the analyzed period, suggesting high
+      network reliability.
+
+      4. **Partial Day Anomaly (Apr 2):** The block count for April 2 is notably lower
+      (1,499) due to the query capturing only a portion of the day, up to the execution
+      time.
+
+
+      **Context for Blockchain Metrics:**
+
+
+      * **Block Creation Rate:** A consistent block creation rate is crucial for the
+      health of the Ethereum network, ensuring timely transaction processing and smart
+      contract execution.
+
+      * **Network Stability:** The low variance in block creation underscores the
+      stability of the Ethereum network, which is vital for maintaining user and developer
+      trust.
+
+
+      **Observation on Significant Changes:**
+
+      No significant changes or anomalies in the block creation rate were observed
+      during the full days of the analyzed period, indicating a stable operational
+      state of the Ethereum network. The only notable deviation is the lower count'
     data:
-      error: No SQL generated from the query
-schema_example:
+      status: success
+      nl_query: Get the number of blocks created on Ethereum per day over the last
+        month
+      sql_query: "SELECT CAST(TIME_STAMP AS DATE) AS block_date, COUNT(BLOCK_NUMBER)\
+        \ AS block_count \nFROM ETHEREUM.BLOCKS \nWHERE TIME_STAMP >= date_sub(CAST('2025-04-02'\
+        \ AS DATE), 30) \nGROUP BY CAST(TIME_STAMP AS DATE) \nORDER BY block_date\
+        \ LIMIT 200;"
+      result:
+      - BLOCK_DATE: '2025-03-03'
+        BLOCK_COUNT: 7165
+      - BLOCK_DATE: '2025-03-04'
+        BLOCK_COUNT: 7166
+      - BLOCK_DATE: '2025-03-05'
+        BLOCK_COUNT: 7164
+      - BLOCK_DATE: '2025-03-06'
+        BLOCK_COUNT: 7158
+      - BLOCK_DATE: '2025-03-07'
+        BLOCK_COUNT: 7152
+      - BLOCK_DATE: '2025-03-08'
+        BLOCK_COUNT: 7152
+      - BLOCK_DATE: '2025-03-09'
+        BLOCK_COUNT: 7160
+      - BLOCK_DATE: '2025-03-10'
+        BLOCK_COUNT: 7158
+      - BLOCK_DATE: '2025-03-11'
+        BLOCK_COUNT: 7157
+      - BLOCK_DATE: '2025-03-12'
+        BLOCK_COUNT: 7160
+      - BLOCK_DATE: '2025-03-13'
+        BLOCK_COUNT: 7169
+      - BLOCK_DATE: '2025-03-14'
+        BLOCK_COUNT: 7160
+      - BLOCK_DATE: '2025-03-15'
+        BLOCK_COUNT: 7170
+      - BLOCK_DATE: '2025-03-16'
+        BLOCK_COUNT: 7161
+      - BLOCK_DATE: '2025-03-17'
+        BLOCK_COUNT: 7161
+      - BLOCK_DATE: '2025-03-18'
+        BLOCK_COUNT: 7155
+      - BLOCK_DATE: '2025-03-19'
+        BLOCK_COUNT: 7158
+      - BLOCK_DATE: '2025-03-20'
+        BLOCK_COUNT: 7162
+      - BLOCK_DATE: '2025-03-21'
+        BLOCK_COUNT: 7176
+      - BLOCK_DATE: '2025-03-22'
+        BLOCK_COUNT: 7168
+      - BLOCK_DATE: '2025-03-23'
+        BLOCK_COUNT: 7173
+      - BLOCK_DATE: '2025-03-24'
+        BLOCK_COUNT: 7167
+      - BLOCK_DATE: '2025-03-25'
+        BLOCK_COUNT: 7150
+      - BLOCK_DATE: '2025-03-26'
+        BLOCK_COUNT: 7176
+      - BLOCK_DATE: '2025-03-27'
+        BLOCK_COUNT: 7162
+      - BLOCK_DATE: '2025-03-28'
+        BLOCK_COUNT: 7160
+      - BLOCK_DATE: '2025-03-29'
+        BLOCK_COUNT: 7154
+      - BLOCK_DATE: '2025-03-30'
+        BLOCK_COUNT: 7172
+      - BLOCK_DATE: '2025-03-31'
+        BLOCK_COUNT: 7162
+      - BLOCK_DATE: '2025-04-01'
+        BLOCK_COUNT: 7165
+      - BLOCK_DATE: '2025-04-02'
+        BLOCK_COUNT: 1499
+query 2:
   input:
-    tool: list_schemas
-    tool_arguments: {}
-  output:
-    response: ''
-    data:
-      error: 'Failed to list schemas: 404 page not found'
-tables_example:
-  input:
-    tool: list_tables
+    tool: generate_and_execute_sql
     tool_arguments:
-      schema: HEURIST
-  output:
-    response: ''
-    data:
-      error: 'Failed to list tables: 404 page not found'
-columns_example:
-  input:
-    tool: list_table_columns
-    tool_arguments:
-      schema: HEURIST
-      table: S1_GPU_PERFORMANCE
-  output:
-    response: ''
-    data:
-      error: 'Failed to list table columns: 404 page not found'
-raw_example:
-  input:
-    query: What are the top 10 NFT collections by trading volume on Ethereum?
+      nl_query: What's the average transactions in past week for Ethereum
     raw_data_only: true
   output:
     response: ''
     data:
-      error: 'SQL generation failed: {"status":"error","message":"Invalid selection
-        of schemas"}'
-specific_example:
+      status: success
+      nl_query: What's the average transactions in past week for Ethereum
+      sql_query: 'SELECT CAST(COUNT(TRANSACTION_HASH) AS DECIMAL) / 7 AS average_transactions
+
+        FROM ETHEREUM.TRANSACTIONS
+
+        WHERE TIME_STAMP >= date_sub(CAST(''2025-04-02'' AS DATE), 7) LIMIT 200;'
+      result:
+      - AVERAGE_TRANSACTIONS: 1274894.285714
+query 3:
   input:
-    tool: query_space_and_time
-    tool_arguments:
-      query: What's the daily average gas price on Ethereum for the past week?
-      schema: ETHEREUM
+    query: Tell me top 10 GPUs from HEURIST
+    raw_data_only: false
   output:
-    response: ''
+    response: '**Top 10 GPUs from HEURIST Based on Performance Metrics**
+
+
+      **Time Period Covered:** Not specified in the query results (assuming latest
+      available data)
+
+
+      **Blockchain Network:** HEURIST (note: HEURIST is not a widely recognized blockchain
+      network; if this is an error, please provide more context)
+
+
+      **Performance Metrics:**
+
+
+      * **Total Performance**: Sum of **Total Llama Points** and **Total Waifu Points**
+      (units not specified, assuming arbitrary performance units)
+
+
+      **Top 10 GPUs by Total Performance:**
+
+
+      | **Rank** | **Miner ID** | **Total Llama Points** | **Total Waifu Points**
+      | **Total Performance** |
+
+      | --- | --- | --- | --- | --- |
+
+      | 1 | `0xbf56a3e7b4a6f95a08e255bd28d806033b98c9c8` | 6.76M | 2.27M | **9.04M**
+      |
+
+      | 2 | `0xd84f2a1e504f15b413ca9feea52135f01c5c775a-d3cfe7` | 76.15K | 2.01M |
+      **2.09M** |
+
+      | 3 | `0x9dc6498823421d7169c4eb1cbf4812de802c4b49` | 1.71M | 0 | **1.71M** |
+
+      | 4 | `0x3cab8f4bb867fa1331b702709fb3f480f26051be-0b86f3` | 58.51K | 1.57M |
+      **1.57M** |
+
+      | 5 | `0x3cab8f4bb867fa1331b702709fb3f480f26051be-e81212` | 64.48K | 1.39M |
+      **1.39M** |
+
+      | 6 | `0xb997e140032800cf5b87b1ae9d0f3d98c75eb43c` | 272.61K | 1.08M | **1.35M**
+      |
+
+      | 7 | `0x3cab8f4bb867fa1331b702709fb3f480f26051be-f567e8`'
     data:
-      error: No SQL generated from the query
+      status: success
+      nl_query: Select the top 10 GPUs from HEURIST based on performance metrics.
+      sql_query: 'SELECT MINER_ID, SUM(LLAMA_POINTS) AS total_llama_points, SUM(WAIFU_POINTS)
+        AS total_waifu_points, (SUM(LLAMA_POINTS) + SUM(WAIFU_POINTS)) AS total_performance
+
+        FROM HEURIST.S1_GPU_PERFORMANCE
+
+        GROUP BY MINER_ID
+
+        ORDER BY total_performance DESC
+
+        LIMIT 10'
+      result:
+      - MINER_ID: '0xbf56a3e7b4a6f95a08e255bd28d806033b98c9c8'
+        TOTAL_LLAMA_POINTS: 6764585.464266794
+        TOTAL_WAIFU_POINTS: 2272462.839542406
+        TOTAL_PERFORMANCE: 9037048.3038092
+      - MINER_ID: 0xd84f2a1e504f15b413ca9feea52135f01c5c775a-d3cfe7
+        TOTAL_LLAMA_POINTS: 76150.66466702876
+        TOTAL_WAIFU_POINTS: 2018096.3625149229
+        TOTAL_PERFORMANCE: 2094247.0271819516
+      - MINER_ID: '0x9dc6498823421d7169c4eb1cbf4812de802c4b49'
+        TOTAL_LLAMA_POINTS: 1712451.1076429472
+        TOTAL_WAIFU_POINTS: 0.0
+        TOTAL_PERFORMANCE: 1712451.1076429472
+      - MINER_ID: 0x3cab8f4bb867fa1331b702709fb3f480f26051be-0b86f3
+        TOTAL_LLAMA_POINTS: 58.50732036333221
+        TOTAL_WAIFU_POINTS: 1573011.8884726253
+        TOTAL_PERFORMANCE: 1573070.3957929886
+      - MINER_ID: 0x3cab8f4bb867fa1331b702709fb3f480f26051be-e81212
+        TOTAL_LLAMA_POINTS: 64.47830569139074
+        TOTAL_WAIFU_POINTS: 1390950.6609047032
+        TOTAL_PERFORMANCE: 1391015.1392103946
+      - MINER_ID: '0xb997e140032800cf5b87b1ae9d0f3d98c75eb43c'
+        TOTAL_LLAMA_POINTS: 272612.1240295123
+        TOTAL_WAIFU_POINTS: 1075632.9677501044
+        TOTAL_PERFORMANCE: 1348245.0917796167
+      - MINER_ID: 0x3cab8f4bb867fa1331b702709fb3f480f26051be-f567e8
+        TOTAL_LLAMA_POINTS: 24.773263235862977
+        TOTAL_WAIFU_POINTS: 1264787.0139653988
+        TOTAL_PERFORMANCE: 1264811.7872286346
+      - MINER_ID: 0x3cab8f4bb867fa1331b702709fb3f480f26051be-4dfa26
+        TOTAL_LLAMA_POINTS: 0.0
+        TOTAL_WAIFU_POINTS: 1205470.5591125402
+        TOTAL_PERFORMANCE: 1205470.5591125402
+      - MINER_ID: '0x8199ab525e3b446bfd37b8b6d020e1d852e52404'
+        TOTAL_LLAMA_POINTS: 1097708.0113136324
+        TOTAL_WAIFU_POINTS: 31946.72084178942
+        TOTAL_PERFORMANCE: 1129654.7321554217
+      - MINER_ID: '0x5d00e31f2b0d26f924c4d56bfdfa7bd1fe95426f'
+        TOTAL_LLAMA_POINTS: 1077647.5409476263
+        TOTAL_WAIFU_POINTS: 31364.00956691303
+        TOTAL_PERFORMANCE: 1109011.5505145395
+query 4:
+  input:
+    query: How many transactions occurred on Ethereum yesterday?
+    raw_data_only: false
+  output:
+    response: "**Analysis Report: Ethereum Transactions for Yesterday (April 1, 2025)**\n\
+      \n**User Intent:** Count the number of transactions on the Ethereum blockchain\
+      \ for yesterday.\n\n**SQL Query Used:**\n```sql\nSELECT COUNT(*) AS transaction_count\
+      \ \nFROM ETHEREUM.TRANSACTIONS \nWHERE TIME_STAMP >= CAST('2025-04-01' AS TIMESTAMP)\
+      \ \n  AND TIME_STAMP < CAST('2025-04-02' AS TIMESTAMP) \nLIMIT 200;\n```\n**Query\
+      \ Results Interpretation:**\n\n* **Transaction Count for April 1, 2025:** **1.3M**\
+      \ (1,300,081 transactions)\n\n**Key Observations and Insights:**\n\n1. **Daily\
+      \ Transaction Volume:** Ethereum processed approximately **1.3 million transactions**\
+      \ yesterday (April 1, 2025). This indicates a high level of activity on the\
+      \ network.\n2. **Network Utilization:** The significant number of transactions\
+      \ suggests robust network utilization, which can be attributed to various factors\
+      \ such as:\n\t* High user engagement with DeFi (Decentralized Finance) applications.\n\
+      \t* Increased activity in NFT (Non-Fungible Token) marketplaces.\n\t* Growing\
+      \ adoption of Ethereum-based blockchain solutions.\n3. **Context for Comparison:**\n\
+      \t* For a more comprehensive understanding, it would be beneficial to compare\
+      \ this daily transaction count with:\n\t\t+ Historical averages (e.g., weekly,\
+      \ monthly averages) to identify trends.\n\t\t+ Peaks and troughs in transaction\
+      \ volumes to correlate with significant events or updates in the Ethereum ecosystem.\n\
+      \n**Technical Blockchain Term Explanation:**\n\n* **Transaction (in the context\
+      \ of Ethereum):** A transaction refers to an action initiated by an externally\
+      \ owned account (user) or a smart contract, which can include sending Ether\
+      \ (ETH), executing smart contract functions, or interacting with decentralized\
+      \ applications (dApps).\n\n**Time Period Covered by Analysis:** April 1, 2025\
+      \ (00:00:00 to 23:59:59)\n\n**Blockchain Network:** Ethereum Mainnet\n\n**Note\
+      \ on the SQL Query's `LIMIT 200;` Clause:**\nThe provided SQL query includes\
+      \ a `LIMIT 200;` clause, which typically restricts the output to a maximum of\
+      \ 200 rows. However, since the query is using `COUNT(*)` to aggregate all transactions\
+      \ into a single count value, the `LIMIT 200;` does not affect the outcome in\
+      \ this specific case, always returning just"
+    data:
+      status: success
+      nl_query: Count the number of transactions on the Ethereum blockchain for yesterday.
+      sql_query: SELECT COUNT(*) AS transaction_count FROM ETHEREUM.TRANSACTIONS WHERE
+        TIME_STAMP >= CAST('2025-04-01' AS TIMESTAMP) AND TIME_STAMP < CAST('2025-04-02'
+        AS TIMESTAMP) LIMIT 200;
+      result:
+      - TRANSACTION_COUNT: 1300081
+query 5:
+  input:
+    query: What's the largest transaction value on Ethereum in the past 24 hours?
+    raw_data_only: false
+  output:
+    response: "**Analysis Results: Largest Transaction Value on Ethereum (Past 24\
+      \ hours)**\n\n**Time Period Covered:** April 1, 2025, to April 2, 2025 (last\
+      \ 24 hours, as of the query execution time)\n\n**Blockchain Network:** Ethereum\n\
+      \n**User Query Interpretation:**\nYou requested the largest transaction value\
+      \ on the Ethereum blockchain for the past 24 hours.\n\n**SQL Query Used:**\n\
+      ```sql\nSELECT MAX(VALUE_) AS largest_transaction_value \nFROM ethereum.transactions\
+      \ \nWHERE TIME_STAMP >= CAST('2025-04-01' AS TIMESTAMP) \nLIMIT 200;\n```\n\
+      **Note on SQL Query:**\n- The query filters transactions from the last 24 hours\
+      \ (as of April 1, 2025).\n- The `LIMIT 200` clause might not affect the `MAX`\
+      \ aggregation in this context but could potentially limit the scope if the query\
+      \ were modified to fetch multiple records.\n\n**Result Interpretation:**\n\n\
+      * **Largest Transaction Value (Past 24 hours):** \n  * **Value:** 46,915,665,424,120,000,000\
+      \ wei\n  * **Formatted Value for Clarity:** Approximately **46.92 Billion Ether\
+      \ (ETH)**\n\n**Observations and Context:**\n\n* **Significant Transaction:**\
+      \ A transaction of this magnitude is extremely rare and significant, indicating\
+      \ a substantial movement of ETH, possibly related to a large investor, a notable\
+      \ NFT sale, a major crypto fund adjustment, or another high-value transaction.\n\
+      * **Market Impact:** Transactions of this scale can potentially influence Ethereum's\
+      \ market dynamics, though the actual impact would depend on various factors\
+      \ including the sender, recipient, and the broader market context at the time\
+      \ of the transaction.\n* **Context for Blockchain Metrics:**\n\t+ **Wei to ETH\
+      \ Conversion:** 1 ETH = 1,000,000,000,000,000 wei (1 quintillion wei). The transaction\
+      \ value is thus approximately 46.92 billion ETH.\n\t+ **Blockchain Transaction\
+      \ Value:** This value represents the amount of ETH transferred and does not\
+      \ account for the transaction fee, which would be additional.\n\n**Recommendations\
+      \ for Further Analysis:**\n\n* Investigate the transaction details (e.g., sender,\
+      \ recipient, gas price) for deeper insights into the nature of this transaction.\n\
+      * Analyze the market trends before and after this transaction to understand\
+      \ its potential impact on Ethereum's price.\n* Compare this transaction with\
+      \ historical large transactions on the Ethereum network"
+    data:
+      status: success
+      nl_query: Select max(value) as largest_transaction_value from ethereum.transactions
+        where timestamp >= now() - interval '24 hours'
+      sql_query: SELECT MAX(VALUE_) AS largest_transaction_value FROM ethereum.transactions
+        WHERE TIME_STAMP >= CAST('2025-04-01' AS TIMESTAMP) LIMIT 200;
+      result:
+      - LARGEST_TRANSACTION_VALUE: '46915665424120000000000'
