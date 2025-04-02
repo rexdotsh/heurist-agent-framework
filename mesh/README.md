@@ -429,6 +429,7 @@ Thank you for contributing to **Heurist Mesh** and helping build a diverse ecosy
 | TwitterInsightAgent | This agent analyzes Twitter accounts providing insights on smart followers, mentions, and account activity. | • get_smart_followers_history<br>• get_smart_followers_categories<br>• get_smart_mentions_feed | [Source](./twitter_insight_agent.py) | Moni |
 | AaveAgent | This agent can report the status of Aave v3 protocols deployed on Ethereum, Polygon, Avalanche, and Arbitrum with details on liquidity, borrowing rates, and more | • get_aave_reserves | [Source](./aave_agent.py) | Aave |
 | SolWalletAgent | This agent can query Solana wallet assets and recent swap transactions using Helius API. | • get_wallet_assets<br>• analyze_common_holdings_of_top_holders<br>• get_tx_history | [Source](./sol_wallet_agent.py) | Helius |
+| SpaceTimeAgent | This agent can generate and execute SQL queries from natural language using Space and Time APIs. It's particularly useful for blockchain data analysis. | • generate_and_execute_sql | [Source](./space_and_time_agent.py) | Space and Time |
 ---  
 
 *This document is a work-in-progress. Please feel free to update and improve it as the system evolves.*
