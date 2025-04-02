@@ -91,6 +91,9 @@ TOOL_TEST_INPUTS = {
         "get_tx_history": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
         "get_wallet_assets": {"owner_address": "DbDi7soBXALYRMZSyJMEAfpaK3rD1hr5HuCYzuDrcEEN"},
     },
+    "SpaceTimeAgent": {
+        "generate_and_execute_sql": {"nl_query": "What's the average transactions in past week for Ethereum"},
+    },
     "ZerionWalletAnalysisAgent": {
         "fetch_wallet_tokens": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},
         "fetch_wallet_nfts": {"wallet_address": "0x7d9d1821d15B9e0b8Ab98A058361233E255E405D"},
