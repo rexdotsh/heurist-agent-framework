@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Dict
 
 import boto3
+import requests
 
 logging.basicConfig(
     level=logging.INFO,
@@ -134,6 +135,15 @@ class MetadataManager:
             self.s3_client = None
             log.info("S3 credentials not found, skipping metadata upload")
 
+    def fetch_existing_metadata(self) -> Dict:
+        try:
+            response = requests.get("https://mesh.heurist.ai/mesh_agents_metadata.json")
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            log.warning(f"Failed to fetch existing metadata: {e}")
+            return {"agents": {}}
+
     def load_agents(self) -> Dict[str, dict]:
         mesh_dir = Path("mesh")
         if not mesh_dir.exists():
@@ -188,9 +198,21 @@ class MetadataManager:
         return agents_dict
 
     def create_metadata(self, agents_dict: Dict[str, dict]) -> Dict:
+        existing_metadata = self.fetch_existing_metadata()
+        existing_agents = existing_metadata.get("agents", {})
+
+        # preserve total_calls and greeting_message for each agent
+        # these are added by a separate AWS cronjob, so preserve them
+        for agent_id, agent_data in agents_dict.items():
+            if agent_id in existing_agents:
+                existing_agent = existing_agents[agent_id]
+                if "total_calls" in existing_agent.get("metadata", {}):
+                    agent_data["metadata"]["total_calls"] = existing_agent["metadata"]["total_calls"]
+                if "greeting_message" in existing_agent.get("metadata", {}):
+                    agent_data["metadata"]["greeting_message"] = existing_agent["metadata"]["greeting_message"]
+
         metadata = {
             "last_updated": datetime.now(UTC).isoformat(),
-            "last_updated_by": "github-action",
             "agents": agents_dict,
         }
         return metadata
