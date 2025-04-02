@@ -123,12 +123,12 @@ class AgentMetadataExtractor(ast.NodeVisitor):
 class MetadataManager:
     def __init__(self):
         # Only initialize S3 client if all required env vars are present
-        if all(k in os.environ for k in ["S3_ENDPOINT", "ACCESS_KEY", "SECRET_KEY"]):
+        if all(k in os.environ for k in ["S3_ENDPOINT", "S3_ACCESS_KEY", "S3_SECRET_KEY"]):
             self.s3_client = boto3.client(
                 "s3",
                 endpoint_url=os.environ["S3_ENDPOINT"],
-                aws_access_key_id=os.environ["ACCESS_KEY"],
-                aws_secret_access_key=os.environ["SECRET_KEY"],
+                aws_access_key_id=os.environ["S3_ACCESS_KEY"],
+                aws_secret_access_key=os.environ["S3_SECRET_KEY"],
                 region_name="enam",
             )
         else:
