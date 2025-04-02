@@ -161,12 +161,12 @@ Workflows provide higher-level reasoning patterns:
 
 - **ToolBox**: Base framework for tool definition and registration
 - **Tools**: Tool management and execution layer
-- **ToolsMCP**: Integration with Machine Cognition Protocol
+- **ToolsMCP**: Integration with MCP Protocol for tool execution
 
 #### External Clients
 
 - **SearchClient**: Unified client for web search (Firecrawl/Exa)
-- **MCPClient**: Client for Machine Cognition Protocol
+- **MCPClient**: Client for MCP Protocol for local or remote servers.
 
 ### Agent Usage and Development Guide
 Read the [Agent Usage and Development Guide](./agents/README.md)  
