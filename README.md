@@ -106,7 +106,7 @@ Head to [heurist-mesh-mcp-server](https://github.com/heurist-network/heurist-mes
 The framework follows a modular, component-based architecture:
 
 <div align="center">
-<img src="./docs/img/agent_hl.png" alt="Heurist Agent Framework" width="500">
+<img src="./docs/img/agent_hl.png" alt="Heurist Agent Framework" width="75%">
 </div>
 
 ### Agent Structure
