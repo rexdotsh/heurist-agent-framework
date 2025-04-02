@@ -2,8 +2,10 @@
 
 Core components of the Heurist Agent Framework for building LLM-powered agents.
 
+
 ## Table of Contents
 
+- [Overview](#overview)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Components](#components)
@@ -11,6 +13,18 @@ Core components of the Heurist Agent Framework for building LLM-powered agents.
 - [Tools](#tools)
 - [Clients](#clients)
 - [Usage Examples](#usage-examples)
+
+## Overview
+
+<div align="center">
+    <img src="../docs/img/heurist_core_overview.png" alt="Heurist Agent Framework Banner" width="75%" />
+</div>
+
+Heurist Core is a Python package that provides a set of core components, tools, and workflows for building LLM-powered agents or applications.
+
+Components are designed to be used in conjunction with each other to create a complete agent or application. Enabling easier development by wrapping common patterns and functionality.
+
+Workflows are designed to be used as a starting point for building more complex agents or applications. They enable higher level patterns for agentic systems, such as RAG + tools, Chain of Thought, and more.
 
 ## Installation
 
@@ -50,7 +64,7 @@ The Heurist Core package provides several core components for building LLM-power
 
 ### LLMProvider
 
-Handles interactions with LLM services.
+Handles interactions with LLM services. Easily integrates with tools and tool managers for painless tool use.
 
 ```python
 from heurist_core.components import LLMProvider
@@ -393,7 +407,7 @@ report, _, research_results = await research_workflow.process(
 
 ## Tools
 
-Tools enable agents to interact with external systems and services.
+Tools enable agents to interact with external systems and services. Tools enables extendibility and modularity, while enabling easier tool execution and management.
 
 ### ToolBox
 
@@ -436,7 +450,7 @@ response, _, tool_calls = await llm_provider.call(
 
 ### Tools (MCP)
 
-Tools integration with Machine Cognition Protocol.
+Tools integration with MCP. Tools MCP enables simple tool management and execution for Heurist Mesh agents and any other MCP Servers.
 
 ```python
 from heurist_core.tools.tools_mcp import Tools
@@ -509,7 +523,7 @@ firecrawl_client.update_rate_limit(rate_limit=2)
 
 ### MCPClient
 
-Client for Machine Cognition Protocol integration.
+Client for MCP Protocol, facilitating communication and interaction with MCP Servers.
 
 ```python
 from heurist_core.clients import MCPClient
